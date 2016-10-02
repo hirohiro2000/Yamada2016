@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 public class MechanocalGirl : MonoBehaviour 
 {
-	private GameObject			m_putResourceGuide	= null;
-
 	public	GameObject			m_resActionBar	= null;
 	private GameObject			m_actionBar		= null;
 
@@ -24,8 +22,6 @@ public class MechanocalGirl : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		m_putResourceGuide				= GameObject.Find("PutResourceGuide");
-
 		m_actionBar						= Instantiate( m_resActionBar );
 		m_actionBar.transform.parent	= GameObject.Find("Canvas").transform;
 
@@ -95,7 +91,7 @@ public class MechanocalGirl : MonoBehaviour
 		if( slider.GetValue() >= 1.0f )
 		{
 			m_actionState = ActionState.Common;
-			m_putResourceGuide.GetComponent<PutResourceGuide>().AddResource();
+			//GetComponent<ResourceGuide>().AddResource();
 			ChangeActionBarState( false );
 			return;
 		}
@@ -117,6 +113,7 @@ public class MechanocalGirl : MonoBehaviour
 		if( slider.GetValue() >= 1.0f )
 		{
 			m_actionState = ActionState.Common;
+			GetComponent<ItemController>().CreateItem();
 			ChangeActionBarState( false );
 			return;
 		}

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PutResourceGuide : MonoBehaviour
+public class ResourceGuide : MonoBehaviour
 {
     private GameObject		m_staticResources		= null;
     private GameObject		m_fieldResources		= null;
@@ -10,9 +10,6 @@ public class PutResourceGuide : MonoBehaviour
 
 	private int				m_guideID				= 0;
     private float			m_rotateAngle			= 0;
-
-    private GameObject		m_mechanicalGirl		= null;
-
 
     // Use this for initialization
     void Start ()
@@ -25,9 +22,6 @@ public class PutResourceGuide : MonoBehaviour
 
 
 		Instantiate( m_barricade ).transform.parent = m_staticResources.transform;
-
-
-		m_mechanicalGirl   = GameObject.Find("MechanicalGirl");
     }
 
     void Update()
@@ -36,6 +30,10 @@ public class PutResourceGuide : MonoBehaviour
 		UpdateGuideAngle();
     }
 
+
+	//---------------------------------------------------------------------------
+	//	3d
+	//---------------------------------------------------------------------------
     void UpdateGuide()
     {
         for ( int i = 0; i < m_staticResources.transform.childCount; i++ )
@@ -44,12 +42,12 @@ public class PutResourceGuide : MonoBehaviour
         }
 
 
-		Vector3		forward		= m_mechanicalGirl.transform.forward;
+		Vector3		forward		= transform.forward;
         float		putDist     = 3.0f;
 		Transform	guide		= m_staticResources.transform.GetChild( m_guideID );
 
-		guide.position  = m_mechanicalGirl.transform.position + forward * putDist;
-		guide.rotation  = m_mechanicalGirl.transform.rotation * Quaternion.AngleAxis( m_rotateAngle, Vector3.up );
+		guide.position  = transform.position + forward * putDist;
+		guide.rotation  = transform.rotation * Quaternion.AngleAxis( m_rotateAngle, Vector3.up );
     }
 	void UpdateGuideAngle()
 	{
@@ -64,7 +62,6 @@ public class PutResourceGuide : MonoBehaviour
 			m_rotateAngle -= rot;
 		}
 	}
-
     public void AddResource()
     {
 		GameObject add = Instantiate( m_staticResources.transform.GetChild( m_guideID ).gameObject );
@@ -72,4 +69,9 @@ public class PutResourceGuide : MonoBehaviour
 		add.transform.parent	= m_fieldResources.transform;
 		add.transform.position	= m_staticResources.transform.GetChild( m_guideID ).position;
 	}
+
+
+	//---------------------------------------------------------------------------
+	//	ui
+	//---------------------------------------------------------------------------
 }
