@@ -4,8 +4,10 @@ using UnityEngine.UI;
 
 public class MechanocalGirl : MonoBehaviour 
 {
-	public	GameObject	m_resActionBar	= null;
-	private GameObject	m_actionBar		= null;
+	private GameObject			m_putResourceGuide	= null;
+
+	public	GameObject			m_resActionBar	= null;
+	private GameObject			m_actionBar		= null;
 
 	private const KeyCode		m_putKey		= KeyCode.Z;
 	private const KeyCode		m_createKey		= KeyCode.X;
@@ -16,19 +18,22 @@ public class MechanocalGirl : MonoBehaviour
 		PutResource,
 		CreateResource,
 	}
-	private ActionState m_actionState = ActionState.Common;
+	private ActionState			m_actionState = ActionState.Common;
 
 
 	// Use this for initialization
 	void Start ()
 	{
+		m_putResourceGuide				= GameObject.Find("PutResourceGuide");
+
 		m_actionBar						= Instantiate( m_resActionBar );
 		m_actionBar.transform.parent	= GameObject.Find("Canvas").transform;
+
 		ChangeActionBarState( false );
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	void FixedUpdate () 
 	{
 		switch( m_actionState )
 		{
@@ -50,9 +55,8 @@ public class MechanocalGirl : MonoBehaviour
 		direction.Normalize();
 
 		float axis				= ( Mathf.Abs(v) > Mathf.Abs(h) )? Mathf.Abs(v) : Mathf.Abs(h);
-		//axis					= Mathf.Clamp( axis, 0.5f, 1.0f );
-		float moveSpeed 		= 30.0f;
-		transform.position 		+= direction * axis * moveSpeed * Time.deltaTime;
+		float moveSpeed 		= 20.0f;
+		transform.localPosition += direction * axis * moveSpeed * Time.fixedDeltaTime;
 
 		
 		//	rotate
@@ -61,7 +65,7 @@ public class MechanocalGirl : MonoBehaviour
 
 		if ( animDir.sqrMagnitude > 0.001f )
 		{
-			Vector3 newDir 		= Vector3.RotateTowards( transform.forward, animDir, 10.0f*Time.deltaTime, 0f );
+			Vector3 newDir 		= Vector3.RotateTowards( transform.forward, animDir, 10.0f*Time.fixedDeltaTime, 0f );
 			transform.rotation 	= Quaternion.LookRotation( newDir );
 		}
 
@@ -91,6 +95,7 @@ public class MechanocalGirl : MonoBehaviour
 		if( slider.GetValue() >= 1.0f )
 		{
 			m_actionState = ActionState.Common;
+			m_putResourceGuide.GetComponent<PutResourceGuide>().AddResource();
 			ChangeActionBarState( false );
 			return;
 		}

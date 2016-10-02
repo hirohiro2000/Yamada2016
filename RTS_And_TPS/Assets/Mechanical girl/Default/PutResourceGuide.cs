@@ -4,12 +4,14 @@ using System.Collections.Generic;
 
 public class PutResourceGuide : MonoBehaviour
 {
-    private GameObject    m_staticResources		= null;
-    private GameObject    m_fieldResources		= null;
-    public  GameObject   m_barricade 			= null;
-    private int           m_guideID				= 0;
+    private GameObject		m_staticResources		= null;
+    private GameObject		m_fieldResources		= null;
+    public  GameObject		m_barricade 			= null;
 
-    private GameObject    m_mechanicalGirl		= null;
+	private int				m_guideID				= 0;
+    private float			m_rotateAngle			= 0;
+
+    private GameObject		m_mechanicalGirl		= null;
 
 
     // Use this for initialization
@@ -31,10 +33,10 @@ public class PutResourceGuide : MonoBehaviour
     void Update()
     {
         UpdateGuide();
-        AddResource();
+		UpdateGuideAngle();
     }
 
-     void UpdateGuide()
+    void UpdateGuide()
     {
         for ( int i = 0; i < m_staticResources.transform.childCount; i++ )
         {
@@ -47,15 +49,24 @@ public class PutResourceGuide : MonoBehaviour
 		Transform	guide		= m_staticResources.transform.GetChild( m_guideID );
 
 		guide.position  = m_mechanicalGirl.transform.position + forward * putDist;
-		guide.rotation  = m_mechanicalGirl.transform.rotation;
+		guide.rotation  = m_mechanicalGirl.transform.rotation * Quaternion.AngleAxis( m_rotateAngle, Vector3.up );
     }
+	void UpdateGuideAngle()
+	{
+		const float rot = 360.0f / 8.0f;
 
-    void AddResource()
+		if( Input.GetKeyDown( KeyCode.Q ) )
+		{
+			m_rotateAngle += rot;
+		}
+		else if( Input.GetKeyDown( KeyCode.Q ) )
+		{
+			m_rotateAngle -= rot;
+		}
+	}
+
+    public void AddResource()
     {
-		if (!Input.GetKeyDown(KeyCode.Space))
-			return;
-
-
 		GameObject add = Instantiate( m_staticResources.transform.GetChild( m_guideID ).gameObject );
 
 		add.transform.parent	= m_fieldResources.transform;
