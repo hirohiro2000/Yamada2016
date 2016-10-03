@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TPSMoveController : MonoBehaviour {
+public class TPSMoveController : MonoBehaviour
+{
 
 	[SerializeField]
 	float speed;
@@ -9,26 +10,31 @@ public class TPSMoveController : MonoBehaviour {
 	[SerializeField, Range(0.1f, 1.0f)]
 	float sensitivity;
 
+	Vector3 velocity;
+
 	Rigidbody _rigidBody;
 	Rigidbody rigidBody
 	{
 		get
 		{
-			if(_rigidBody == null)
+			if (_rigidBody == null)
 			{
 				_rigidBody = GetComponent<Rigidbody>();
 			}
 			return _rigidBody;
-        }
+		}
 	}
 
 	// Use this for initialization
-	void Start () {
-	
+	void Start()
+	{
+
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
+	void Update()
+	{
+
 
 		Vector3 forward = transform.forward;
 		forward.y = .0f;
@@ -44,9 +50,30 @@ public class TPSMoveController : MonoBehaviour {
 		inputDir += forward * (Input.GetAxis("Vertical") * speed);
 
 		Vector3 addDir = new Vector3();
-		addDir.x = (inputDir.x - rigidBody.velocity.x) * sensitivity;
-		addDir.z = (inputDir.z - rigidBody.velocity.z) * sensitivity;
+		addDir.x = (inputDir.x - /*rigidBody.*/velocity.x) * sensitivity;
+		addDir.z = (inputDir.z - /*rigidBody.*/velocity.z) * sensitivity;
 
-		rigidBody.velocity += addDir;
-    }
+		/*rigidBody.*/
+		velocity += addDir;
+
+	}
+
+	public void FixedUpdate()
+	{
+		velocity += Physics.gravity * Time.fixedDeltaTime;
+		transform.position = transform.position + velocity * Time.fixedDeltaTime;
+	}
+
+	public void OnCollisionStay(Collision collision)
+	{
+		foreach( ContactPoint contact in collision.contacts)
+		{
+			if(contact.normal.y > 0.5f)
+			{
+				velocity.y = .0f;
+			}
+		}
+	}
+
+
 }
