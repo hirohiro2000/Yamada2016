@@ -22,8 +22,8 @@ public class Enemy : MonoBehaviour {
 		Vector3 v = m_targert - transform.position;
 		v.Normalize();
 
-		float speed = 0.01f;
-		transform.position += v * speed;
+		float speed = 1.0f;
+		transform.position += v * speed * Time.deltaTime;
 	}
 
 	void OnCollisionEnter( Collision collision )
