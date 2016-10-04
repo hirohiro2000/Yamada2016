@@ -24,7 +24,6 @@ public class ItemController : MonoBehaviour
 	{
 		m_kindMax = GameObject.Find("ResourceInformation").transform.childCount;
 
-
 		m_frameList = new List<GameObject>();
 
 		for( int i=0; i<m_kindMax; ++i )
@@ -58,11 +57,7 @@ public class ItemController : MonoBehaviour
 	}
 	void UpdateForcus()
 	{
-		if( Input.GetKeyUp( KeyCode.Space ) )
-		{
-			m_curForcus++;
-			m_curForcus %= m_kindMax;
-		}
+		m_curForcus = GetComponent<GirlController>().GetItemFocus();
 	}
 	void UpdateScale ()
 	{
@@ -79,7 +74,7 @@ public class ItemController : MonoBehaviour
 	//
 	public void CreateItem()
 	{
-		//	make an item using some costs
+		//	make an item using decided costs
 		Info i;
 		i.num = m_infoList[ m_curForcus ].num + 1;
 		m_infoList[ m_curForcus ] = i;

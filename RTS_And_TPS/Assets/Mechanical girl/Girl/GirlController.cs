@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class MechanocalGirl : MonoBehaviour 
+public class GirlController : MonoBehaviour 
 {
 	public	GameObject			m_resActionBar	= null;
 	private GameObject			m_actionBar		= null;
@@ -10,13 +10,18 @@ public class MechanocalGirl : MonoBehaviour
 	private const KeyCode		m_putKey		= KeyCode.Z;
 	private const KeyCode		m_createKey		= KeyCode.X;
 
+	
+	private int					m_itemKindMax	= 0;
+	private int					m_curItemFocus	= 0;
+
+
 	private enum ActionState
 	{
 		Common,
 		PutResource,
 		CreateResource,
 	}
-	private ActionState			m_actionState = ActionState.Common;
+	private ActionState			m_actionState	= ActionState.Common;
 
 
 	// Use this for initialization
@@ -26,21 +31,34 @@ public class MechanocalGirl : MonoBehaviour
 		m_actionBar.transform.parent	= GameObject.Find("Canvas").transform;
 
 		ChangeActionBarState( false );
+
+		m_itemKindMax					= GameObject.Find("ResourceInformation").transform.childCount;
 	}
 	
-	// Update is called once per frame
+
+	//	物理挙動を含むなら固定更新に書く
+	void Update () 
+	{
+		switch( m_actionState )
+		{
+		case ActionState.Common:			UpdateCommon();		break;
+		case ActionState.PutResource:		PutResource();		break;
+		case ActionState.CreateResource:	CreateResource();	break;
+		}
+	}
 	void FixedUpdate () 
 	{
 		switch( m_actionState )
 		{
-		case ActionState.Common:			IsMovedByKey(); break;
-		case ActionState.PutResource:		PutResource();	break;
-		case ActionState.CreateResource:	CreateResource();break;
+		case ActionState.Common:			MovedByKey();		break;
+		case ActionState.PutResource:							break;
+		case ActionState.CreateResource:						break;
 		}
 	}
 
+
 	//
-	void IsMovedByKey()
+	void MovedByKey()
 	{		
 		//	move
 		float v = Input.GetAxis ("Vertical");
@@ -63,6 +81,15 @@ public class MechanocalGirl : MonoBehaviour
 		{
 			Vector3 newDir 		= Vector3.RotateTowards( transform.forward, animDir, 10.0f*Time.fixedDeltaTime, 0f );
 			transform.rotation 	= Quaternion.LookRotation( newDir );
+		}		
+	}
+	void UpdateCommon()
+	{
+		//
+		if( Input.GetKeyDown( KeyCode.Space ) )
+		{
+			m_curItemFocus++;
+			m_curItemFocus %= m_itemKindMax;
 		}
 
 
@@ -91,7 +118,7 @@ public class MechanocalGirl : MonoBehaviour
 		if( slider.GetValue() >= 1.0f )
 		{
 			m_actionState = ActionState.Common;
-			//GetComponent<ResourceGuide>().AddResource();
+			GetComponent<ResourceCreator>().AddResource();
 			ChangeActionBarState( false );
 			return;
 		}
@@ -108,7 +135,7 @@ public class MechanocalGirl : MonoBehaviour
 		slider.m_pos = transform.position;
 		slider.m_cur += 1.0f;//kari
 
-		
+
 		//	change state
 		if( slider.GetValue() >= 1.0f )
 		{
@@ -125,10 +152,18 @@ public class MechanocalGirl : MonoBehaviour
 		}
 	}
 
+
 	//
 	void ChangeActionBarState( bool enable )
 	{
 		m_actionBar.GetComponent<ValueSlider>().m_cur	= 0.0f;
 		m_actionBar.active								= enable;
+	}
+
+
+	//
+	public int GetItemFocus()
+	{
+		return m_curItemFocus;
 	}
 }
