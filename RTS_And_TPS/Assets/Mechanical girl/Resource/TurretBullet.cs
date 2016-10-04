@@ -17,7 +17,6 @@ public class TurretBullet : MonoBehaviour
 	{
 		transform.position += m_direction * m_speed * Time.deltaTime;
 
-
 		//
 		m_lifespan -= Time.deltaTime;
 		if( m_lifespan < 0 )

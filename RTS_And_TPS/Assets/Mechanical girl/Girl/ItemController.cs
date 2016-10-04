@@ -114,7 +114,6 @@ public class ItemController : MonoBehaviour
 			"",
 			"box");
 
-        // Make a label that uses the "box" GUIStyle.
         GUI.TextArea ( new Rect (700,400,200,100), 
 			"　資源残量　" + m_resourcePoint.ToString() +
 			"\n　作成費用　" + b.m_createCost.ToString() +

@@ -36,7 +36,7 @@ public class GirlController : MonoBehaviour
 	}
 	
 
-	//	物理挙動を含むなら固定更新に書く
+	//	Write to the FixedUpdate if including physical behavior
 	void Update () 
 	{
 		switch( m_actionState )

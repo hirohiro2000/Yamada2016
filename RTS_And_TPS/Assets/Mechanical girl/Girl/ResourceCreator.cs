@@ -20,14 +20,15 @@ public class ResourceCreator : MonoBehaviour
 		m_fieldResources		= new GameObject();
 		m_fieldResources.name	= "FieldResources";
 
-		GameObject obj = GameObject.Find("ResourceInformation");
+
+		GameObject obj	= GameObject.Find("ResourceInformation");
 		
 		for( int i=0; i<obj.transform.childCount; ++i )
 		{
-			Transform add = Instantiate( obj.transform.GetChild(i) );
-			add.GetComponent<Collider>().enabled = false;
+			Transform add							= Instantiate( obj.transform.GetChild(i) );
+			add.parent								= m_staticResources.transform;
+			add.GetComponent<Collider>().enabled	= false;
 			add.GetComponent<Pauser>().Enable( false );
-			add.parent	= m_staticResources.transform;
 		}
     }
 
@@ -44,7 +45,7 @@ public class ResourceCreator : MonoBehaviour
 
 		for ( int i = 0; i < m_staticResources.transform.childCount; i++ )
         {
-            m_staticResources.transform.GetChild(i).gameObject.active = (i == m_guideID);
+            m_staticResources.transform.GetChild(i).gameObject.active = ( i == m_guideID );
         }
 
 
