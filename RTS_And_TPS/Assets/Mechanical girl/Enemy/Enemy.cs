@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour {
 
 
 	//test
-	private int m_hp = 10;
+	public int m_hp = 10;
 
 
 
@@ -34,10 +34,19 @@ public class Enemy : MonoBehaviour {
 		if( collision.gameObject.tag == "TurretBullet")
 		{
 			m_hp--;
-			 
+		
 			if( m_hp <= 0 )
 				Destroy( gameObject );
+		}		
+	}
+	void OnCollisionStay(Collision collision)
+	{
+		if (collision.gameObject.tag == "Razer")
+		{
+			m_hp--;
+
+			if (m_hp <= 0)
+				Destroy(gameObject);
 		}
 	}
-
 }

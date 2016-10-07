@@ -6,10 +6,13 @@ public class ResourceCreator : MonoBehaviour
 {
     private GameObject		m_staticResources		= null;
     private GameObject		m_fieldResources		= null;
-    public  GameObject		m_barricade 			= null;
+
+	public  GameObject		m_gridSplitSpacePlane	= null;
+	public	float			m_gridSplitSpaceScale	= 10.0f;
 
 	private int				m_guideID				= 1;
     private float			m_rotateAngle			= 0;
+
 
     // Use this for initialization
     void Start ()
@@ -20,6 +23,8 @@ public class ResourceCreator : MonoBehaviour
 		m_fieldResources		= new GameObject();
 		m_fieldResources.name	= "FieldResources";
 
+		m_gridSplitSpacePlane	= Instantiate( m_gridSplitSpacePlane );
+		m_gridSplitSpacePlane.transform.localScale = new Vector3( m_gridSplitSpaceScale*0.1f, 1.0f, m_gridSplitSpaceScale*0.1f );
 
 		GameObject obj	= GameObject.Find("ResourceInformation");
 		
@@ -40,6 +45,10 @@ public class ResourceCreator : MonoBehaviour
 
 	void UpdateGuide()
     {
+		//	update grid plane
+		m_gridSplitSpacePlane.transform.position = ComputeGridPosition( transform.position );
+
+
 		//	update guide-object
 		m_guideID = GetComponent<GirlController>().GetItemFocus();
 
@@ -70,12 +79,21 @@ public class ResourceCreator : MonoBehaviour
 			m_rotateAngle -= rot;
 		}
 	}
+	Vector3 ComputeGridPosition( Vector3 pos )
+	{
+		//	四捨五入
+		int splitScaleX = (int)(( pos.x / m_gridSplitSpaceScale ) + ( Mathf.Sign( pos.x )>0? 0.5f:-0.5f ));
+		int splitScaleZ = (int)(( pos.z / m_gridSplitSpaceScale ) + ( Mathf.Sign( pos.z )>0? 0.5f:-0.5f ));
+
+		return new Vector3( splitScaleX*m_gridSplitSpaceScale, pos.y, splitScaleZ*m_gridSplitSpaceScale );
+	}
     public void AddResource()
     {
 		GameObject add = Instantiate( m_staticResources.transform.GetChild( m_guideID ).gameObject );
 
 		add.transform.parent	= m_fieldResources.transform;
-		add.transform.position	= m_staticResources.transform.GetChild( m_guideID ).position;
+		//add.transform.position	= m_staticResources.transform.GetChild( m_guideID ).position;
+		add.transform.position = ComputeGridPosition( transform.position );
 		add.GetComponent<Collider>().enabled = true;
 		add.GetComponent<Pauser>().Enable( true );
 	}
