@@ -169,6 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2431673fe0b48374cb46c0752fc3b183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_targettingSpeed: 0.1
 --- !u!114 &11491098
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -181,7 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bullet: {fileID: 180896, guid: 96c12297e05f0cc4695f884bff8928fc, type: 2}
-  m_fireInterval: 10
+  m_fireInterval: 30
 --- !u!135 &13574446
 SphereCollider:
   m_ObjectHideFlags: 1

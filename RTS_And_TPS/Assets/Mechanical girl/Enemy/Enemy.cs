@@ -26,27 +26,28 @@ public class Enemy : MonoBehaviour {
 		transform.position += v * speed * Time.deltaTime;
 	}
 
+	//↓仮
+	void CollisionCommon( GameObject obj )
+	{
+		int power = obj.GetComponent<AttackParam>().m_attack;
+
+		m_hp -= power;		
+		GameObject.Find("NumberEffectFactory").GetComponent<NumberEffectFactory>().Create( transform.position, power );
+		
+		if( m_hp <= 0 )
+			Destroy( gameObject );
+	}
 	void OnCollisionEnter( Collision collision )
 	{
 		if( collision.gameObject.name == "Tower")
 			Destroy( gameObject );
 
-		if( collision.gameObject.tag == "TurretBullet")
-		{
-			m_hp--;
-		
-			if( m_hp <= 0 )
-				Destroy( gameObject );
-		}		
+		if( collision.gameObject.tag == "ResourceOn" )
+			CollisionCommon( collision.gameObject );	
 	}
-	void OnCollisionStay(Collision collision)
+	void OnCollisionStay( Collision collision )
 	{
-		if (collision.gameObject.tag == "Razer")
-		{
-			m_hp--;
-
-			if (m_hp <= 0)
-				Destroy(gameObject);
-		}
+		if( collision.gameObject.tag == "ResourceStay" )
+			CollisionCommon( collision.gameObject );
 	}
 }

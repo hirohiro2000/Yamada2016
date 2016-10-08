@@ -7,8 +7,8 @@ public class GirlController : MonoBehaviour
 	public	GameObject			m_resActionBar	= null;
 	private GameObject			m_actionBar		= null;
 
-	private const KeyCode		m_putKey		= KeyCode.Z;
-	private const KeyCode		m_createKey		= KeyCode.X;
+	private const KeyCode		m_putKey		= KeyCode.I;
+	private const KeyCode		m_createKey		= KeyCode.K;
 
 	
 	private int					m_itemKindMax	= 0;
@@ -28,7 +28,7 @@ public class GirlController : MonoBehaviour
 	void Start ()
 	{
 		m_actionBar						= Instantiate( m_resActionBar );
-		m_actionBar.transform.parent	= GameObject.Find("Canvas").transform;
+		m_actionBar.transform.SetParent	( GameObject.Find("Canvas").transform );
 
 		ChangeActionBarState( false );
 
@@ -64,13 +64,14 @@ public class GirlController : MonoBehaviour
 		float v = Input.GetAxis ("Vertical");
 		float h = Input.GetAxis ("Horizontal");
 
-		Vector3 cameraForward 	= Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+		Vector3 cameraForward 	= Vector3.Scale( Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
 		Vector3 direction 		= cameraForward * v + Camera.main.transform.right * h;
 		direction.Normalize();
 
 		float axis				= ( Mathf.Abs(v) > Mathf.Abs(h) )? Mathf.Abs(v) : Mathf.Abs(h);
 		float moveSpeed 		= 20.0f;
 		transform.localPosition += direction * axis * moveSpeed * Time.fixedDeltaTime;
+		//transform.localPosition += direction * moveSpeed * Time.fixedDeltaTime;
 
 		
 		//	rotate
@@ -94,7 +95,8 @@ public class GirlController : MonoBehaviour
 
 
 		//	change state
-		if( Input.GetKeyDown( m_putKey ) )
+		if( Input.GetKeyDown( m_putKey ) &&
+			GetComponent<ResourceCreator>().CheckIfCanPutResource() )
 		{
 			m_actionState = ActionState.PutResource;
 			m_actionBar.GetComponent<ValueSlider>().SetColor( Color.green );

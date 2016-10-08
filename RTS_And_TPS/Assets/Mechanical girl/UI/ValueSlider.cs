@@ -6,7 +6,6 @@ public class ValueSlider : MonoBehaviour
 {
 	private RectTransform		m_rectTransform = null;
 	private Slider				m_slider;
-	private Image				m_fill;  // assign in the editor the "Fill"
 
 	public	float				m_max = 100.0f;
 	public	float				m_cur = 100.0f;

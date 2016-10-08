@@ -31,7 +31,7 @@ public class ItemController : MonoBehaviour
 		for( int i=0; i<m_kindMax; ++i )
 		{
 			GameObject add			= Instantiate( m_frame );
-			add.transform.parent	= GameObject.Find("Canvas").transform;
+			add.transform.SetParent( GameObject.Find("Canvas").transform );
 			add.transform.position	= new Vector3( i*50 + 100, 50, 0 );
 			add.transform.GetChild(0).GetComponent<Text>().text = "0";
 
@@ -85,11 +85,11 @@ public class ItemController : MonoBehaviour
 		m_frameList[ m_curForcus ].transform.GetChild(0).GetComponent<Text>().text = i.num.ToString();
 
 		//
-		m_resourcePoint -= m_resourceInformation.GetChild( m_curForcus ).GetComponent<BaseResource>().m_createCost;
+		m_resourcePoint -= m_resourceInformation.GetChild( m_curForcus ).GetComponent<ResourceParam>().m_createCost;
 	}
 	bool CheckWhetherTheCostIsEnough()
 	{
-		return m_resourcePoint >= m_resourceInformation.GetChild( m_curForcus ).GetComponent<BaseResource>().m_createCost;
+		return m_resourcePoint >= m_resourceInformation.GetChild( m_curForcus ).GetComponent<ResourceParam>().m_createCost;
 	}
 	bool CheckWhetherNumberIsEnough()
 	{
@@ -100,7 +100,7 @@ public class ItemController : MonoBehaviour
 	void OnGUI ()
 	{
 		Transform		g = GameObject.Find("ResourceInformation").transform.GetChild( m_curForcus );
-		BaseResource	b = g.GetComponent<BaseResource>();
+		ResourceParam	b = g.GetComponent<ResourceParam>();
 
 		GUIStyle		style = new GUIStyle();
 		style.alignment = TextAnchor.MiddleLeft;

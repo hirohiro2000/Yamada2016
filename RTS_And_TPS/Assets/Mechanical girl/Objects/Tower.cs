@@ -9,7 +9,7 @@ public class Tower : MonoBehaviour
 	void Start ()
 	{
 		m_actionBar						= Instantiate( m_actionBar );
-		m_actionBar.transform.parent	= GameObject.Find("Canvas").transform;
+		m_actionBar.transform.SetParent( GameObject.Find("Canvas").transform );
 	}
 	
 	// Update is called once per frame

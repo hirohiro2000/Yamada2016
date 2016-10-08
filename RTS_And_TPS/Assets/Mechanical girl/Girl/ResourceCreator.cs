@@ -4,15 +4,18 @@ using System.Collections.Generic;
 
 public class ResourceCreator : MonoBehaviour
 {
-    private GameObject		m_staticResources		= null;
-    private GameObject		m_fieldResources		= null;
+    private GameObject		m_staticResources			= null;
+    private GameObject		m_fieldResources			= null;
 
-	public  GameObject		m_gridSplitSpacePlane	= null;
-	public	float			m_gridSplitSpaceScale	= 10.0f;
+	public  GameObject		m_gridSplitSpacePlane		= null;
+	public	float			m_gridSplitSpaceScale		= 10.0f;
+	private	const int		m_gridSplitNum				= 100;
+	private bool[,]			m_isGridResourceExistents	= null;
 
-	private int				m_guideID				= 1;
-    private float			m_rotateAngle			= 0;
+	private int				m_guideID					= 1;
+    private float			m_rotateAngle				= 0;
 
+	
 
     // Use this for initialization
     void Start ()
@@ -23,8 +26,19 @@ public class ResourceCreator : MonoBehaviour
 		m_fieldResources		= new GameObject();
 		m_fieldResources.name	= "FieldResources";
 
+
 		m_gridSplitSpacePlane	= Instantiate( m_gridSplitSpacePlane );
 		m_gridSplitSpacePlane.transform.localScale = new Vector3( m_gridSplitSpaceScale*0.1f, 1.0f, m_gridSplitSpaceScale*0.1f );
+
+		m_isGridResourceExistents = new bool[ m_gridSplitNum, m_gridSplitNum ];
+		for( int i=0; i<m_gridSplitNum; ++i )
+		{
+			for( int j=0; j<m_gridSplitNum; ++j )
+			{
+				m_isGridResourceExistents[i,j] = false;
+			}
+		}
+
 
 		GameObject obj	= GameObject.Find("ResourceInformation");
 		
@@ -32,16 +46,15 @@ public class ResourceCreator : MonoBehaviour
 		{
 			Transform add							= Instantiate( obj.transform.GetChild(i) );
 			add.parent								= m_staticResources.transform;
-			add.GetComponent<Collider>().enabled	= false;
-			add.GetComponent<Pauser>().Enable( false );
+			ChangeGuideState( add.gameObject, false );
 		}
     }
-
     void Update()
     {
         UpdateGuide();
 		UpdateGuideAngle();
     }
+
 
 	void UpdateGuide()
     {
@@ -64,21 +77,34 @@ public class ResourceCreator : MonoBehaviour
 		Transform	guide		= m_staticResources.transform.GetChild( m_guideID );
 
 		guide.position  = transform.position + forward * putDist;
-		guide.rotation  = transform.rotation * Quaternion.AngleAxis( m_rotateAngle, Vector3.up );
+		//guide.rotation  = transform.rotation * Quaternion.AngleAxis( m_rotateAngle, Vector3.up );
+		guide.rotation  = Quaternion.AngleAxis( m_rotateAngle, Vector3.up );
     }
 	void UpdateGuideAngle()
 	{
 		const float rot = 360.0f / 8.0f;
 
-		if( Input.GetKeyDown( KeyCode.Q ) )
+		if( Input.GetKeyDown( KeyCode.U ) )
 		{
 			m_rotateAngle += rot;
 		}
-		else if( Input.GetKeyDown( KeyCode.E ) )
+		else if( Input.GetKeyDown( KeyCode.O ) )
 		{
 			m_rotateAngle -= rot;
 		}
 	}
+	void ChangeGuideState( GameObject obj, bool ena )
+	{
+		obj.GetComponent<Collider>().enabled = ena;
+		obj.GetComponent<Pauser>().Enable( ena );
+
+		for (int i = 0; i < obj.transform.childCount; ++i)
+		{
+			obj.transform.GetChild(i).GetComponent<Collider>().enabled = ena;
+		}
+	}
+
+
 	Vector3 ComputeGridPosition( Vector3 pos )
 	{
 		//	四捨五入
@@ -87,6 +113,17 @@ public class ResourceCreator : MonoBehaviour
 
 		return new Vector3( splitScaleX*m_gridSplitSpaceScale, pos.y, splitScaleZ*m_gridSplitSpaceScale );
 	}
+	void ComputeGridResourceExistentIDFromPosition( out int i, out int j )
+	{
+		float half = ( m_gridSplitSpaceScale * m_gridSplitNum * 0.5f ) + ( m_gridSplitSpaceScale * 0.5f );
+		i = (int)(( transform.position.x + half ) / m_gridSplitSpaceScale );
+		j = (int)(( transform.position.z + half ) / m_gridSplitSpaceScale );
+
+		//Debug.Log(i);
+		//Debug.Log(j);
+	}
+
+
     public void AddResource()
     {
 		GameObject add = Instantiate( m_staticResources.transform.GetChild( m_guideID ).gameObject );
@@ -94,7 +131,20 @@ public class ResourceCreator : MonoBehaviour
 		add.transform.parent	= m_fieldResources.transform;
 		//add.transform.position	= m_staticResources.transform.GetChild( m_guideID ).position;
 		add.transform.position = ComputeGridPosition( transform.position );
-		add.GetComponent<Collider>().enabled = true;
-		add.GetComponent<Pauser>().Enable( true );
+		ChangeGuideState( add, true );
+
+		//	リソース配置フラグをセット
+		{
+			int i,j;
+			ComputeGridResourceExistentIDFromPosition( out i, out j );
+			m_isGridResourceExistents[i,j] = true;
+		}
+	}
+	public bool CheckIfCanPutResource()
+	{
+		int i,j;
+		ComputeGridResourceExistentIDFromPosition( out i, out j );
+
+		return !m_isGridResourceExistents[i,j];
 	}
 }
