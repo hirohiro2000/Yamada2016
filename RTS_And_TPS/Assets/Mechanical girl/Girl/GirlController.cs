@@ -9,6 +9,7 @@ public class GirlController : MonoBehaviour
 
 	private const KeyCode		m_putKey		= KeyCode.I;
 	private const KeyCode		m_createKey		= KeyCode.K;
+	private const KeyCode		m_levelUpKey	= KeyCode.L;
 
 	
 	private int					m_itemKindMax	= 0;
@@ -20,6 +21,7 @@ public class GirlController : MonoBehaviour
 		Common,
 		PutResource,
 		CreateResource,
+		LevelUpResource,
 	}
 	private ActionState			m_actionState	= ActionState.Common;
 
@@ -44,6 +46,7 @@ public class GirlController : MonoBehaviour
 		case ActionState.Common:			UpdateCommon();		break;
 		case ActionState.PutResource:		PutResource();		break;
 		case ActionState.CreateResource:	CreateResource();	break;
+		case ActionState.LevelUpResource:	LevelUpResource();	break;
 		}
 	}
 	void FixedUpdate () 
@@ -51,8 +54,6 @@ public class GirlController : MonoBehaviour
 		switch( m_actionState )
 		{
 		case ActionState.Common:			MovedByKey();		break;
-		case ActionState.PutResource:							break;
-		case ActionState.CreateResource:						break;
 		}
 	}
 
@@ -96,7 +97,7 @@ public class GirlController : MonoBehaviour
 
 		//	change state
 		if( Input.GetKeyDown( m_putKey ) &&
-			GetComponent<ResourceCreator>().CheckIfCanPutResource() )
+			!GetComponent<ResourceCreator>().CheckExistResource() )
 		{
 			m_actionState = ActionState.PutResource;
 			m_actionBar.GetComponent<ValueSlider>().SetColor( Color.green );
@@ -106,6 +107,13 @@ public class GirlController : MonoBehaviour
 		{
 			m_actionState = ActionState.CreateResource;
 			m_actionBar.GetComponent<ValueSlider>().SetColor( Color.cyan );
+			ChangeActionBarState( true );
+		}
+		if( Input.GetKeyDown( m_levelUpKey ) &&
+			GetComponent<ResourceCreator>().CheckExistResource() )
+		{
+			m_actionState = ActionState.LevelUpResource;
+			m_actionBar.GetComponent<ValueSlider>().SetColor( Color.yellow );
 			ChangeActionBarState( true );
 		}
 	}
@@ -147,6 +155,28 @@ public class GirlController : MonoBehaviour
 			return;
 		}
 		if( Input.GetKeyUp( m_createKey ) )
+		{
+			m_actionState = ActionState.Common;
+			ChangeActionBarState( false );
+			return;
+		}
+	}
+	void LevelUpResource()
+	{
+		ValueSlider slider = m_actionBar.GetComponent<ValueSlider>();
+		slider.m_pos = transform.position;
+		slider.m_cur += 1.0f;//kari
+
+
+		//	change state
+		if( slider.GetValue() >= 1.0f )
+		{
+			m_actionState = ActionState.Common;
+			GetComponent<ResourceCreator>().LevelUpResource();
+			ChangeActionBarState( false );
+			return;
+		}
+		if( Input.GetKeyUp( m_levelUpKey ) )
 		{
 			m_actionState = ActionState.Common;
 			ChangeActionBarState( false );

@@ -10,12 +10,17 @@ public class ResourceCreator : MonoBehaviour
 	public  GameObject		m_gridSplitSpacePlane		= null;
 	public	float			m_gridSplitSpaceScale		= 10.0f;
 	private	const int		m_gridSplitNum				= 100;
-	private bool[,]			m_isGridResourceExistents	= null;
 
 	private int				m_guideID					= 1;
     private float			m_rotateAngle				= 0;
 
-	
+	struct GridInformation
+	{
+		public bool			exist;
+		public GameObject	resource;
+	}
+	private GridInformation[,]	m_fieldResourceInformations		= null;
+
 
     // Use this for initialization
     void Start ()
@@ -30,15 +35,17 @@ public class ResourceCreator : MonoBehaviour
 		m_gridSplitSpacePlane	= Instantiate( m_gridSplitSpacePlane );
 		m_gridSplitSpacePlane.transform.localScale = new Vector3( m_gridSplitSpaceScale*0.1f, 1.0f, m_gridSplitSpaceScale*0.1f );
 
-		m_isGridResourceExistents = new bool[ m_gridSplitNum, m_gridSplitNum ];
+		m_fieldResourceInformations = new GridInformation[ m_gridSplitNum, m_gridSplitNum ];
 		for( int i=0; i<m_gridSplitNum; ++i )
 		{
 			for( int j=0; j<m_gridSplitNum; ++j )
 			{
-				m_isGridResourceExistents[i,j] = false;
+				m_fieldResourceInformations[i,j].exist		= false;
+				m_fieldResourceInformations[i,j].resource	= null;
 			}
 		}
 
+		m_fieldResourceInformations[0,0].exist = false;
 
 		GameObject obj	= GameObject.Find("ResourceInformation");
 		
@@ -56,6 +63,9 @@ public class ResourceCreator : MonoBehaviour
     }
 
 
+	//---------------------------------------------------------------------
+	//  
+	//---------------------------------------------------------------------
 	void UpdateGuide()
     {
 		//	update grid plane
@@ -98,13 +108,44 @@ public class ResourceCreator : MonoBehaviour
 		obj.GetComponent<Collider>().enabled = ena;
 		obj.GetComponent<Pauser>().Enable( ena );
 
-		for (int i = 0; i < obj.transform.childCount; ++i)
+		for( int i = 0; i < obj.transform.childCount; ++i )
 		{
 			obj.transform.GetChild(i).GetComponent<Collider>().enabled = ena;
 		}
 	}
 
 
+	//---------------------------------------------------------------------
+	//  
+	//---------------------------------------------------------------------
+	public void AddResource()
+    {
+		GameObject add = Instantiate( m_staticResources.transform.GetChild( m_guideID ).gameObject );
+
+		add.transform.parent	= m_fieldResources.transform;
+		//add.transform.position	= m_staticResources.transform.GetChild( m_guideID ).position;
+		add.transform.position = ComputeGridPosition( transform.position );
+		ChangeGuideState( add, true );
+
+		//	リソース配置フラグをセット
+		{
+			int i,j;
+			ComputeGridResourceExistentIDFromPosition( out i, out j );
+			m_fieldResourceInformations[i,j].exist		= true;
+			m_fieldResourceInformations[i,j].resource	= add;
+		}
+	}
+	public void LevelUpResource()
+    {
+		int i,j;
+		ComputeGridResourceExistentIDFromPosition( out i, out j );
+		m_fieldResourceInformations[i,j].resource.GetComponent<ResourceParam>().m_level++;
+	}
+
+
+	//---------------------------------------------------------------------
+	//  
+	//---------------------------------------------------------------------
 	Vector3 ComputeGridPosition( Vector3 pos )
 	{
 		//	四捨五入
@@ -121,30 +162,12 @@ public class ResourceCreator : MonoBehaviour
 
 		//Debug.Log(i);
 		//Debug.Log(j);
-	}
-
-
-    public void AddResource()
-    {
-		GameObject add = Instantiate( m_staticResources.transform.GetChild( m_guideID ).gameObject );
-
-		add.transform.parent	= m_fieldResources.transform;
-		//add.transform.position	= m_staticResources.transform.GetChild( m_guideID ).position;
-		add.transform.position = ComputeGridPosition( transform.position );
-		ChangeGuideState( add, true );
-
-		//	リソース配置フラグをセット
-		{
-			int i,j;
-			ComputeGridResourceExistentIDFromPosition( out i, out j );
-			m_isGridResourceExistents[i,j] = true;
-		}
-	}
-	public bool CheckIfCanPutResource()
+	}  
+	public bool CheckExistResource()
 	{
 		int i,j;
 		ComputeGridResourceExistentIDFromPosition( out i, out j );
 
-		return !m_isGridResourceExistents[i,j];
+		return m_fieldResourceInformations[i,j].exist;
 	}
 }

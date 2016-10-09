@@ -22,4 +22,9 @@ public class TurretBullet : MonoBehaviour
 		if( m_lifespan < 0 )
 			Destroy( gameObject );
 	}
+
+	void OnCollisionEnter( Collision collision )
+	{
+		Destroy( gameObject );
+	}
 }
