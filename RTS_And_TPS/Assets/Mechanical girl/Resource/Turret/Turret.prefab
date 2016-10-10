@@ -158,6 +158,7 @@ MonoBehaviour:
   m_createCost: 50
   m_createTime: 3
   m_puttingTime: 3
+  m_level: 1
 --- !u!114 &11479578
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -182,7 +183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bullet: {fileID: 180896, guid: 96c12297e05f0cc4695f884bff8928fc, type: 2}
-  m_fireInterval: 30
+  m_fireInterval: 50
 --- !u!135 &13574446
 SphereCollider:
   m_ObjectHideFlags: 1

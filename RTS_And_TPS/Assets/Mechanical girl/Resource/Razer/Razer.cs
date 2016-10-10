@@ -21,5 +21,16 @@ public class Razer : MonoBehaviour
 			//	1はビーム
 			transform.GetChild(1).gameObject.active = !transform.GetChild(1).gameObject.active;
 		}
+
+		UpdateLevel();
+	}
+
+	void UpdateLevel()
+	{	
+		int			level		= GetComponent<ResourceParam>().m_level;
+		float		addScale	= 0.5f * ( level-1 );
+		Transform	beam		= transform.GetChild(1);
+
+		beam.localScale = new Vector3( 0.1f+addScale, beam.localScale.y, 0.1f+addScale );
 	}
 }

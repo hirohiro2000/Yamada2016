@@ -214,6 +214,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 11469018, guid: 84bf35e89fc41554593d7e112c9a76eb, type: 2}
+      propertyPath: m_num
+      value: 50
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 84bf35e89fc41554593d7e112c9a76eb, type: 2}
   m_IsPrefabParent: 0
@@ -880,6 +884,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_enemy: {fileID: 136810, guid: d66b739d04c848142ae80eff4d388aff, type: 2}
+  m_max: 300
+  m_interval: 25
 --- !u!4 &1519988155
 Transform:
   m_ObjectHideFlags: 0

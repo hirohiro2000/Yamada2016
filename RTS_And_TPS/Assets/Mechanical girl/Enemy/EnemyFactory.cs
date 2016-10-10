@@ -3,8 +3,10 @@ using System.Collections;
 
 public class EnemyFactory : MonoBehaviour
 {
-	public GameObject	m_enemy;
-	private int			m_timer = 0;
+	public	GameObject	m_enemy;
+	public	int			m_max		= 300;
+	public	int			m_interval	= 30;
+	private int			m_timer		= 0;
 
 	// Use this for initialization
 	void Start ()
@@ -15,7 +17,10 @@ public class EnemyFactory : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if( m_timer++ > 30 )
+		if( transform.childCount >= m_max )
+			return;
+
+		if( m_timer++ > m_interval )
 		{
 			GameObject	e			= Instantiate( m_enemy );
 			

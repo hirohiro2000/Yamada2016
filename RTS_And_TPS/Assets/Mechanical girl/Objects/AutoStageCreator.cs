@@ -16,7 +16,7 @@ public class AutoStageCreator : MonoBehaviour
 
 		for( int i=0; i<m_num; ++i )
 		{
-			GameObject g = Instantiate( wall[ Random.Range(0,2) ] );
+			GameObject g = Instantiate( wall[ Random.Range(0,3) ] );
 			g.transform.SetParent( transform );
 			g.transform.position = new Vector3( Random.Range(-m_range,m_range), g.transform.position.y, Random.Range(-m_range,m_range) );
 			g.transform.rotation = Quaternion.AngleAxis( 360.0f/Random.Range(1,8), Vector3.up );
