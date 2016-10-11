@@ -45,7 +45,6 @@ public class ResourceCreator : MonoBehaviour
 			}
 		}
 
-		m_fieldResourceInformations[0,0].exist = false;
 
 		GameObject obj	= GameObject.Find("ResourceInformation");
 		
@@ -77,7 +76,7 @@ public class ResourceCreator : MonoBehaviour
 
 		for ( int i = 0; i < m_staticResources.transform.childCount; i++ )
         {
-            m_staticResources.transform.GetChild(i).gameObject.active = ( i == m_guideID );
+            m_staticResources.transform.GetChild(i).gameObject.SetActive( i == m_guideID );
         }
 
 
@@ -105,8 +104,11 @@ public class ResourceCreator : MonoBehaviour
 	}
 	void ChangeGuideState( GameObject obj, bool ena )
 	{
-		obj.GetComponent<Collider>().enabled = ena;
-		obj.GetComponent<Pauser>().Enable( ena );
+		if( obj.GetComponent<Collider>() )
+			obj.GetComponent<Collider>().enabled = ena;
+
+		if ( obj.GetComponent<Pauser>() )
+			obj.GetComponent<Pauser>().Enable( ena );
 
 		for( int i = 0; i < obj.transform.childCount; ++i )
 		{
@@ -139,7 +141,9 @@ public class ResourceCreator : MonoBehaviour
     {
 		int i,j;
 		ComputeGridResourceExistentIDFromPosition( out i, out j );
-		m_fieldResourceInformations[i,j].resource.GetComponent<ResourceParam>().m_level++;
+
+		if( m_fieldResourceInformations[i,j].resource != null )
+			m_fieldResourceInformations[i,j].resource.GetComponent<ResourceParam>().m_level++;
 	}
 
 
@@ -160,6 +164,13 @@ public class ResourceCreator : MonoBehaviour
 		i = (int)(( transform.position.x + half ) / m_gridSplitSpaceScale );
 		j = (int)(( transform.position.z + half ) / m_gridSplitSpaceScale );
 
+		//
+		if( i < 0 || j < 0 || i >= m_gridSplitNum || j >= m_gridSplitNum )
+		{
+			Debug.Log("out of range in ComputeGridResourceExistentIDFromPosition");
+		}
+
+		//
 		//Debug.Log(i);
 		//Debug.Log(j);
 	}  

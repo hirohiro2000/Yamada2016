@@ -189,7 +189,7 @@ public class GirlController : MonoBehaviour
 	void ChangeActionBarState( bool enable )
 	{
 		m_actionBar.GetComponent<ValueSlider>().m_cur	= 0.0f;
-		m_actionBar.active								= enable;
+		m_actionBar.SetActive( enable );
 	}
 
 

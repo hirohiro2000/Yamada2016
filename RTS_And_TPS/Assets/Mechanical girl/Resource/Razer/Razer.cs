@@ -19,7 +19,7 @@ public class Razer : MonoBehaviour
 			m_time = 0;
 
 			//	1はビーム
-			transform.GetChild(1).gameObject.active = !transform.GetChild(1).gameObject.active;
+			transform.GetChild(1).gameObject.SetActive( !transform.GetChild(1).gameObject.activeInHierarchy );
 		}
 
 		UpdateLevel();
