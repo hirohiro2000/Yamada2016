@@ -107,7 +107,7 @@ public class ResourceCreator : MonoBehaviour
 		if( obj.GetComponent<Collider>() )
 			obj.GetComponent<Collider>().enabled = ena;
 
-		if ( obj.GetComponent<Pauser>() )
+		if( obj.GetComponent<Pauser>() )
 			obj.GetComponent<Pauser>().Enable( ena );
 
 		for( int i = 0; i < obj.transform.childCount; ++i )
