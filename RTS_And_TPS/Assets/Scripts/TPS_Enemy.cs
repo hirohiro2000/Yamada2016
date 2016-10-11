@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Enemy : MonoBehaviour {
+public class TPS_Enemy : MonoBehaviour {
 	[SerializeField]
 	float hp;
 	// Use this for initialization

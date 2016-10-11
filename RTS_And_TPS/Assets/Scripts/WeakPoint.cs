@@ -4,16 +4,16 @@ using System.Collections;
 public class WeakPoint : MonoBehaviour
 {
 
-	Enemy enemy;
+	TPS_Enemy enemy;
 	[SerializeField]
 	float damageMultiple;
 	// Use this for initialization
 	void Start()
 	{
-		enemy = GetComponent<Enemy>();
+		enemy = GetComponent<TPS_Enemy>();
 		if(enemy == null)
 		{
-			enemy = GetComponentInParent<Enemy>();
+			enemy = GetComponentInParent<TPS_Enemy>();
 		}
     }
 
