@@ -234,7 +234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcbc13d1b7d6b0e42ad4342b27793e98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_interval: 100
+  m_interval: 0.5
 --- !u!114 &11412714
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -273,6 +273,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_attack: 1
+  m_defense: 0
+  m_maxhp: 0
+  m_hp: 0
 --- !u!114 &11465422
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -284,7 +287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2431673fe0b48374cb46c0752fc3b183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_targettingSpeed: 0.05
+  m_targettingSpeed: 0.1
 --- !u!136 &13658782
 CapsuleCollider:
   m_ObjectHideFlags: 1

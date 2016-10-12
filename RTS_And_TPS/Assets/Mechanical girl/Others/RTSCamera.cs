@@ -22,11 +22,18 @@ public class RTSCamera : MonoBehaviour
 		ChaseTarget ();
 	}
 
-	private void ChaseTarget()
+	void ChaseTarget()
 	{
+		Vector3 dir	= m_dir.normalized * m_targetDistance;
 
-		Vector3 dir		= m_dir.normalized *m_targetDistance;
+		if( m_mechanicalGirl == null )
+		{
+			transform.position	= Vector3.zero + dir;
+			transform.LookAt( Vector3.zero );
+			return;
+		}
+
 		transform.position	= m_mechanicalGirl.transform.position + dir;
-		transform.LookAt ( m_mechanicalGirl.transform.position );
+		transform.LookAt( m_mechanicalGirl.transform.position );
 	}
 }

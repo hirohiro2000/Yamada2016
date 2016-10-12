@@ -3,25 +3,17 @@ using System.Collections;
 
 public class Razer : MonoBehaviour
 {
-	public  int m_interval	= 100;
-	private int m_time		= 0;
+	public  float	m_interval	= 1.0f;
 
 	// Use this for initialization
 	void Start ()
 	{	
+		StartCoroutine( ChangeOnOff() );
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate ()
+	void Update ()
 	{
-		if( ++m_time > m_interval )
-		{
-			m_time = 0;
-
-			//	1はビーム
-			transform.GetChild(1).gameObject.SetActive( !transform.GetChild(1).gameObject.activeInHierarchy );
-		}
-
 		UpdateLevel();
 	}
 
@@ -33,4 +25,13 @@ public class Razer : MonoBehaviour
 
 		beam.localScale = new Vector3( 0.1f+addScale, beam.localScale.y, 0.1f+addScale );
 	}
+
+	IEnumerator ChangeOnOff()
+    {
+        while( true )
+        {
+           	transform.GetChild(1).gameObject.SetActive( !transform.GetChild(1).gameObject.activeInHierarchy );
+            yield return new WaitForSeconds( m_interval );
+        }     
+    }
 }

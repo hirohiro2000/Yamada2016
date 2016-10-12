@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Tower : MonoBehaviour
+public class DefendedTower : MonoBehaviour
 {
 	public	GameObject m_actionBar	= null;
 
@@ -21,9 +21,14 @@ public class Tower : MonoBehaviour
 
 	void OnCollisionEnter( Collision collision )
 	{
-		if( collision.gameObject.tag == "Enemy")
+		if( collision.gameObject.tag == "RTSEnemy" )
 		{
-			m_actionBar.GetComponent<ValueSlider>().m_cur -= 3.0f;
+			var a = collision.gameObject.GetComponent<CollisionParam>();
+			var d = GetComponent<CollisionParam>();
+			
+			CollisionParam.ComputeDamage( a, ref d );
+			m_actionBar.GetComponent<ValueSlider>().SetValue( d.GetRate() );
+			Destroy( collision.gameObject );
 		}
 	}
 }

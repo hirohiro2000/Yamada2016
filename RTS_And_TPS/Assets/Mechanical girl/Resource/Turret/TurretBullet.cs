@@ -3,8 +3,8 @@ using System.Collections;
 
 public class TurretBullet : MonoBehaviour
 {
-	public Vector3	m_direction;
-	public float	m_speed		= 1.0f;
+	public	Vector3	m_direction;
+	public	float	m_speed		= 1.0f;
 	private float	m_lifespan	= 3.0f;
 
 	// Use this for initialization

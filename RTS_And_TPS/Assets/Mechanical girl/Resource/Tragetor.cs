@@ -7,9 +7,9 @@ public class Tragetor : MonoBehaviour
 	public	float		m_targettingSpeed = 0.1f;
 
 	// Use this for initialization
-	void Start ()
+	void Start()
 	{
-		m_enemyFactory	= GameObject.Find("EnemyFactory");
+		m_enemyFactory = GameObject.Find("EnemyFactory");
 	}
 	
 	// Update is called once per frame

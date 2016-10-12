@@ -11,14 +11,7 @@ public class ItemController : MonoBehaviour
 	private	List<GameObject>	m_frameList		= null;
 	private int					m_kindMax		= 0;
 	private int					m_curForcus		= 0;
-	private int					m_resourcePoint = 999;
-
-	public struct Info
-	{
-		public int num;
-	}
-	private	List<Info>			m_infoList		= null;
-
+	private int					m_resourcePoint = 100;
 
 	// Use this for initialization
 	void Start ()
@@ -36,17 +29,6 @@ public class ItemController : MonoBehaviour
 			add.transform.GetChild(0).GetComponent<Text>().text = "0";
 
 			m_frameList.Add( add );
-		}
-
-
-		m_infoList = new List<Info>();
-
-		for( int i=0; i<m_kindMax; ++i )
-		{
-			Info add;
-			add.num = 0;
-
-			m_infoList.Add( add );
 		}
 	}
 	
@@ -74,27 +56,19 @@ public class ItemController : MonoBehaviour
 
 
 	//
+	public void AddResourceCost( int cost )
+	{
+		m_resourcePoint += cost;
+	}
 	public void CreateItem()
 	{
-		//	make an item using decided costs
-		Info i;
-		i.num = m_infoList[ m_curForcus ].num + 1;
-		m_infoList[ m_curForcus ] = i;
-
-		//	add num
-		m_frameList[ m_curForcus ].transform.GetChild(0).GetComponent<Text>().text = i.num.ToString();
-
-		//
 		m_resourcePoint -= m_resourceInformation.GetChild( m_curForcus ).GetComponent<ResourceParam>().m_createCost;
 	}
-	bool CheckWhetherTheCostIsEnough()
+	public bool CheckWhetherTheCostIsEnough()
 	{
 		return m_resourcePoint >= m_resourceInformation.GetChild( m_curForcus ).GetComponent<ResourceParam>().m_createCost;
 	}
-	bool CheckWhetherNumberIsEnough()
-	{
-		return  m_infoList[ m_curForcus ].num > 0;
-	}
+
 
 	//
 	void OnGUI ()

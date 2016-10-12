@@ -14,7 +14,7 @@ public class Turret : MonoBehaviour
 	void Start ()
 	{
 		m_initFireInterval	= m_fireInterval;
-		m_bulletsParent		= GameObject.Find("BulletsParent").transform;
+		m_bulletsParent		= GameObject.Find("ResourceBulletsParent").transform;
 	}
 	
 	// Update is called once per frame
