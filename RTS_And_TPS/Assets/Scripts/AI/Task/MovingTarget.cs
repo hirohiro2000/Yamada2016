@@ -4,7 +4,7 @@ using System.Collections;
 /**
  *@brief そのうちState関連はMonoBehaviorから外す可能性あり
  */
-public class MovingTarget : MonoBehaviour
+public class MovingTarget : TaskBase
 {
     private NavMeshAgent m_navmesh_accessor;
 
@@ -31,18 +31,20 @@ public class MovingTarget : MonoBehaviour
     void Start () {
         //test    
 	}
-	
-    public void UpdateExpress()
+
+    public override void Enter(TargetingSystem target_system, EnemyTaskDirector task_director)
+    {
+        base.Enter(target_system, task_director);
+    }
+
+    public override void Execute(TargetingSystem target_system, EnemyTaskDirector task_director)
     {
         m_navmesh_accessor.SetDestination(m_target_object.transform.position);
     }
 
-    /**
-    *@note stateは明示的に更新を行う
-    */
-    void Update ()
+    public override void Exit(TargetingSystem target_system, EnemyTaskDirector task_director)
     {
-        
+        base.Exit(target_system, task_director);
     }
 
     public void SetNavmesh(NavMeshAgent agent)

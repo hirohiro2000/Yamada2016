@@ -15,7 +15,8 @@ public class EnemyTaskDirector : MonoBehaviour {
 
     MovingTarget             m_move_state;  //とりあえず
     EnemyParam              m_param;
-    TaskEvaluationBase    m_task_evalution_object;
+    TaskEvaluationBase     m_task_evalution_object;
+    TaskBase                    m_current_task;
 
     [SerializeField, HeaderAttribute("攻撃系タスクの配列")]
 
@@ -40,11 +41,12 @@ public class EnemyTaskDirector : MonoBehaviour {
         //test
         m_move_state.SetTarget(GameObject.Find("MechanicalGirl"));
         m_move_state.SetNavmesh(GetComponent<NavMeshAgent>());
+        m_current_task = m_move_state;
     }
 	
 	// Update is called once per frame
 	void Update () {
-       m_move_state.UpdateExpress();
+        m_current_task.Execute(m_targeting_system,this);
 	}
 
     public void SendMessage(TaskMessageWrapper message)
