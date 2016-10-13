@@ -151,6 +151,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &104612
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 488626}
+  m_Layer: 0
+  m_Name: TaskHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &106112
 GameObject:
   m_ObjectHideFlags: 1
@@ -1666,10 +1681,14 @@ GameObject:
   - 4: {fileID: 449094}
   - 136: {fileID: 13626830}
   - 195: {fileID: 19577834}
-  - 114: {fileID: 11415492}
+  - 114: {fileID: 11421022}
+  - 114: {fileID: 11448784}
+  - 114: {fileID: 11426580}
+  - 114: {fileID: 11453570}
+  - 114: {fileID: 11475160}
   m_Layer: 0
   m_Name: EnemyTest
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3025,11 +3044,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 177802}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 90.5, y: 0, z: 5.46}
+  m_LocalPosition: {x: -94.32014, y: 0.5, z: 49.81209}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 440770}
+  - {fileID: 488626}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &450654
@@ -3662,6 +3682,19 @@ Transform:
   - {fileID: 492910}
   m_Father: {fileID: 451548}
   m_RootOrder: 9
+--- !u!4 &488626
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104612}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 449094}
+  m_RootOrder: 1
 --- !u!4 &488912
 Transform:
   m_ObjectHideFlags: 1
@@ -3966,7 +3999,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &11415492
+--- !u!114 &11421022
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -3974,11 +4007,59 @@ MonoBehaviour:
   m_GameObject: {fileID: 177802}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24eba62b96da7a54baca528d3863f4ee, type: 3}
+  m_Script: {fileID: 11500000, guid: 1866b74a4f2b47647ad8ab1c6a0a545d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_default_steering_radius: 0.76
-  m_adjust_max_steering_radius: 5.41
+  robo_attack_priority: 0.5
+  girl_attack_priority: 0.5
+  defense_base_attack_priority: 0.5
+  obstacle_attack_priority: 0.5
+--- !u!114 &11426580
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 177802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a2eddb069e702941808659448344e23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11448784
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 177802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adcc575f232cb7d43b8e5f4eb972fa64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_priority_array: []
+--- !u!114 &11453570
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 177802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2da69f97077b3343acd2b495aa57aba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_update_interval: 0.5
+--- !u!114 &11475160
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 177802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d7f815c115b0a6468112e6b435288e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &13626830
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -3988,10 +4069,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.39
-  m_Height: 1.48
+  m_Radius: 0.48
+  m_Height: 2.02
   m_Direction: 1
-  m_Center: {x: 0.07, y: 1.3, z: -0.04}
+  m_Center: {x: 0.07, y: 0.7, z: -0.04}
 --- !u!137 &13718612
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

@@ -17,9 +17,10 @@ public class EnemyGenerator : MonoBehaviour {
 	void Start ()
     {
         m_sporn_point_list = new List<RespornPoint>();
-        for (int i = 0; i < transform.childCount; i++)
+        var sporn_point = GameObject.Find("SpornPoint");
+        for (int i = 0; i < sporn_point.transform.childCount; i++)
         {
-            m_sporn_point_list.Add(transform.GetChild(i).GetComponent<RespornPoint>());
+            m_sporn_point_list.Add(sporn_point.transform.GetChild(i).GetComponent<RespornPoint>());
         }
         StartCoroutine(Resporn());
 	}
@@ -32,6 +33,8 @@ public class EnemyGenerator : MonoBehaviour {
             var new_object =  Instantiate(m_generate_object);
             var resporn_object = m_sporn_point_list[UnityEngine.Random.Range(0, transform.childCount)];
             new_object.transform.position = resporn_object.GetRespornPos();
+            yield return null;
+            new_object.transform.parent = transform;
             yield return new WaitForSeconds(m_resporn_interval_second);
 
         }     
