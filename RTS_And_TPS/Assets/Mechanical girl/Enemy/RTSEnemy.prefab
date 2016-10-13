@@ -15,6 +15,7 @@ GameObject:
   - 23: {fileID: 2307954}
   - 114: {fileID: 11403794}
   - 114: {fileID: 11448442}
+  - 114: {fileID: 11435948}
   m_Layer: 0
   m_Name: RTSEnemy
   m_TagString: RTSEnemy
@@ -76,8 +77,8 @@ Rigidbody:
   m_GameObject: {fileID: 136810}
   serializedVersion: 2
   m_Mass: 5
-  m_Drag: 0
-  m_AngularDrag: 0
+  m_Drag: 0.1
+  m_AngularDrag: 0.1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -106,6 +107,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d5934faf0af925458b7561d86476424, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11435948
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 136810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f49dd5cb6b7f9b44abe62ab3667ed3cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_valueSliderObject: {fileID: 118014, guid: 730110299ad46e5438babfc1c53e2918, type: 2}
+  m_color: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &11448442
 MonoBehaviour:
   m_ObjectHideFlags: 1

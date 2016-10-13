@@ -26,13 +26,13 @@ public class RTSEnemy : MonoBehaviour
 		var a = obj.gameObject.GetComponent<CollisionParam>();
 		var d = GetComponent<CollisionParam>();
 
-		CollisionParam.ComputeDamage( a, ref d );
+		CollisionParam.ComputeDamage( a, ref d, true );
 	
 		if ( d.m_hp <= 0 )
 		{ 
 			//test
 			GameObject.Find( "MechanicalGirl" ).GetComponent<ItemController>().AddResourceCost(20);
-			GameObject.Find("NumberEffectFactory").GetComponent<NumberEffectFactory>().Create( transform.position, 20, Color.green );
+			GameObject.Find( "NumberEffectFactory" ).GetComponent<NumberEffectFactory>().Create( transform.position, 20, Color.green );
 
 			Destroy( gameObject );
 		}

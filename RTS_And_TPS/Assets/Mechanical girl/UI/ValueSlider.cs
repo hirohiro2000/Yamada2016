@@ -26,11 +26,11 @@ public class ValueSlider : MonoBehaviour
 		m_slider.value			 = m_cur / m_max;
 	}
 
-	public float GetValue()
+	public float GetRate()
 	{
 		return m_cur / m_max;
 	}
-	public void SetValue( float rate )
+	public void SetRate( float rate )
 	{
 		m_cur = m_max * rate;
 	}

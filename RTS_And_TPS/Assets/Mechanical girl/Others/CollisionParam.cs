@@ -24,11 +24,12 @@ public class CollisionParam : MonoBehaviour
 		return (float)m_hp / (float)m_maxhp;
 	}
 
-	static public void ComputeDamage( CollisionParam attack, ref CollisionParam defense )
+	static public void ComputeDamage( CollisionParam attack, ref CollisionParam defense, bool effectEnable )
 	{
 		int power = attack.m_attack - defense.m_defense;
-
 		defense.m_hp -= power;
-		GameObject.Find("NumberEffectFactory").GetComponent<NumberEffectFactory>().Create( defense.gameObject.transform.position, power, Color.yellow );
+
+		if( effectEnable )
+			GameObject.Find("NumberEffectFactory").GetComponent<NumberEffectFactory>().Create( defense.gameObject.transform.position, power, Color.yellow );
 	}
 }

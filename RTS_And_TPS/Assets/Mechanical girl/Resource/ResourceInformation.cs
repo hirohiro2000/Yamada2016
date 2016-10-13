@@ -111,17 +111,19 @@ public class ResourceInformation : MonoBehaviour
 	//---------------------------------------------------------------------
 	public void SetGridInformation( GameObject game, Vector3 pos, bool enable )
 	{
-		var resource = ComputeGridResource( pos );
-
+		//i don't know how to get reference
+		int x,y;
+		ComputeGridResourceExistentID( pos, out x, out y );
+		
 		if( enable )
 		{
-			resource.resource	= game;
-			resource.exist		= true;
+			m_fieldResourceInformations[x,y].resource	= game;
+			m_fieldResourceInformations[x,y].exist		= true;
 		}
 		else
 		{
-			Destroy( resource.resource );
-			resource.exist = false;
+			Destroy( m_fieldResourceInformations[x,y].resource );
+			m_fieldResourceInformations[x,y].exist = false;
 		}
 	}
 }

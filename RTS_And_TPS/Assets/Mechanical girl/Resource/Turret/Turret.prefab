@@ -15,6 +15,7 @@ GameObject:
   - 114: {fileID: 11491098}
   - 114: {fileID: 11439508}
   - 114: {fileID: 11479578}
+  - 114: {fileID: 11484694}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -170,7 +171,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2431673fe0b48374cb46c0752fc3b183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_forcusRange: 30
   m_targettingSpeed: 0.2
+--- !u!114 &11484694
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 105384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ed49a5c80889444d98c8f110f9459e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11491098
 MonoBehaviour:
   m_ObjectHideFlags: 1

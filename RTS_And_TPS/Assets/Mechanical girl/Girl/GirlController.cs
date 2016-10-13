@@ -134,7 +134,7 @@ public class GirlController : MonoBehaviour
 
 
 		//	change state
-		if( m_varSlider.GetValue() >= 1.0f )
+		if( m_varSlider.GetRate() >= 1.0f )
 		{
 			m_actionState = ActionState.Common;
 			m_resourceCreator.AddResource();
@@ -156,7 +156,7 @@ public class GirlController : MonoBehaviour
 
 
 		//	change state
-		if( m_varSlider.GetValue() >= 1.0f )
+		if( m_varSlider.GetRate() >= 1.0f )
 		{
 			m_actionState = ActionState.Common;
 			ChangeActionBarState( false );
@@ -175,7 +175,7 @@ public class GirlController : MonoBehaviour
 		m_varSlider.m_cur += 1.0f;//kari
 
 		//	change state
-		if( m_varSlider.GetValue() >= 1.0f )
+		if( m_varSlider.GetRate() >= 1.0f )
 		{
 			m_actionState = ActionState.Common;
 			int cost = m_resourceInformation.LevelUpResource( transform.position );
