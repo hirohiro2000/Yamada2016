@@ -48,13 +48,14 @@ public class ResourceInformation : MonoBehaviour
 	//---------------------------------------------------------------------
 	public int LevelUpResource( Vector3 pos )
     {
-		int x,y;
-		ComputeGridResourceExistentID( pos, out x, out y );
+		var gi = ComputeGridResource( pos );
 
-		if( m_fieldResourceInformations[x,y].resource != null )
+		if( gi.resource != null )
 		{
-			var rp = m_fieldResourceInformations[x,y].resource.GetComponent<ResourceParam>();
-			rp.m_level++;
+			var cp = gi.resource.GetComponent<CollisionParam>();
+			var rp = gi.resource.GetComponent<ResourceParam>();
+
+			cp.LevelUp();
 			return rp.m_createCost;
 		}
 
@@ -99,6 +100,15 @@ public class ResourceInformation : MonoBehaviour
 	public bool CheckExistResourceFromPosition( Vector3 pos )
 	{
 		return ComputeGridResource( pos ).exist;
+	}
+	public bool CheckIfCanUpALevel( Vector3 pos, int haveCost )
+	{
+		var gi = ComputeGridResource( pos );
+
+		if( gi.resource == null )
+			return false;
+
+		return haveCost >= gi.resource.GetComponent<ResourceParam>().m_createCost;
 	}
 	public ResourceParam GetResourceParamFromPosition( Vector3 pos )
 	{

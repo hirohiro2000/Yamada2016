@@ -28,7 +28,7 @@ public class HpBar : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		m_valueSlider.SetActive( m_valueSliderRef.GetRate() < 1.0f );
+		//m_valueSlider.SetActive( m_valueSliderRef.GetRate() < 1.0f );
 		m_valueSliderRef.SetRate( m_param.GetRate() );
 		m_valueSliderRef.m_pos = transform.position;
 		m_valueSliderRef.SetColor( m_color );

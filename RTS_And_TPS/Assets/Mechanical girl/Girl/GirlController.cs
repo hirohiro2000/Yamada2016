@@ -120,7 +120,8 @@ public class GirlController : MonoBehaviour
 		//	ChangeActionBarState(true);
 		//}
 		if ( Input.GetKeyDown( m_levelUpKey ) &&
-			m_resourceInformation.CheckExistResourceFromPosition( transform.position ))
+			m_resourceInformation.CheckExistResourceFromPosition( transform.position ) &&
+			m_resourceInformation.CheckIfCanUpALevel( transform.position, m_itemCntroller.GetHaveCost() ))
 		{
 			m_actionState = ActionState.LevelUpResource;
 			m_varSlider.SetColor( Color.yellow );
@@ -138,7 +139,7 @@ public class GirlController : MonoBehaviour
 		{
 			m_actionState = ActionState.Common;
 			m_resourceCreator.AddResource();
-			m_itemCntroller.CreateItem();
+			m_itemCntroller.UseResourceCost();
 			ChangeActionBarState( false );
 			return;
 		}

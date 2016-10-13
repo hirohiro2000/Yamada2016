@@ -8,13 +8,14 @@ public class Turret : MonoBehaviour
 
 	private int			m_initFireInterval	= 0;
 	private int			m_timer				= 0;
-	private Transform	m_bulletsParent;
+
+	private CollisionParam m_param = null;
 
 	// Use this for initialization
 	void Start ()
 	{
 		m_initFireInterval	= m_fireInterval;
-		m_bulletsParent		= GameObject.Find("ResourceBulletsParent").transform;
+		m_param				= GetComponent<CollisionParam>();
 	}
 	
 	// Update is called once per frame
@@ -24,17 +25,13 @@ public class Turret : MonoBehaviour
 		if( m_timer++ > m_fireInterval )
 		{
 			GameObject g			= Instantiate( m_bullet );
-			g.transform.parent		= m_bulletsParent;
 			g.transform.position	= transform.position;
 			g.GetComponent<TurretBullet>().m_direction = transform.forward;
-			m_timer = 0;
+			g.AddComponent<CollisionParam>().Copy( m_param );
+
+			m_timer = 0;	
 		}
 
-		UpdateParam();
-	}
-
-	void UpdateParam()
-	{
-		m_fireInterval = m_initFireInterval / GetComponent<ResourceParam>().m_level;
+		m_fireInterval = m_initFireInterval / m_param.m_level;
 	}
 }

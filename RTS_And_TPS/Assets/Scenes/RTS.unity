@@ -788,7 +788,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_enemy: {fileID: 136810, guid: d66b739d04c848142ae80eff4d388aff, type: 2}
   m_max: 100
-  m_interval: 2
+  m_eachInterval: 1
+  m_waveInterval: 10
 --- !u!4 &657006612
 Transform:
   m_ObjectHideFlags: 0
@@ -970,34 +971,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 902171668}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &920441796
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 920441797}
-  m_Layer: 0
-  m_Name: ResourceBulletsParent
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &920441797
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 920441796}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 12
 --- !u!1 &935630393
 GameObject:
   m_ObjectHideFlags: 0
@@ -1104,10 +1077,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f4a4e17161730449955bb2aa3c12f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_level: 1
   m_attack: 0
   m_defense: 0
-  m_maxhp: 100
   m_hp: 100
+  m_attackUp: 0
+  m_defenseUp: 0
+  m_hpUp: 0
 --- !u!114 &935630400
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -21,18 +21,18 @@ public class BombController : MonoBehaviour
 		{
 			Destroy( gameObject );
 
-			GameObject ef = GameObject.Find("EnemyFactory");
+			//GameObject ef = GameObject.Find("EnemyFactory");
 
-			for( int i=0; i<ef.transform.childCount; ++i )
-			{
-				Vector3 pos		= ef.transform.GetChild(i).transform.position;
-				float	dist	= ( transform.position - pos ).sqrMagnitude;
+			//for( int i=0; i<ef.transform.childCount; ++i )
+			//{
+			//	Vector3 pos		= ef.transform.GetChild(i).transform.position;
+			//	float	dist	= ( transform.position - pos ).sqrMagnitude;
 
-				if( dist < m_bombRange*m_bombRange )
-				{
-					Destroy( ef.transform.GetChild(i).gameObject );
-				}
-			}
+			//	if( dist < m_bombRange*m_bombRange )
+			//	{
+			//		Destroy( ef.transform.GetChild(i).gameObject );
+			//	}
+			//}
 		}
 	}
 }

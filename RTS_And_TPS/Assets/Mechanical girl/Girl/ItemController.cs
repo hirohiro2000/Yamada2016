@@ -56,11 +56,15 @@ public class ItemController : MonoBehaviour
 
 
 	//
+	public int GetHaveCost()
+	{
+		return m_resourcePoint;
+	}
 	public void AddResourceCost( int cost )
 	{
 		m_resourcePoint += cost;
 	}
-	public void CreateItem()
+	public void UseResourceCost()
 	{
 		m_resourcePoint -= m_resourceInformation.GetChild( m_curForcus ).GetComponent<ResourceParam>().m_createCost;
 	}
@@ -91,8 +95,7 @@ public class ItemController : MonoBehaviour
         GUI.TextArea ( new Rect (700,400,200,100), 
 			"　資源残量　" + m_resourcePoint.ToString() +
 			"\n　作成費用　" + b.m_createCost.ToString() +
-			"\n　作成時間　" + b.m_createTime.ToString() + "秒" +
-			"\n　設置時間　" + b.m_puttingTime.ToString() + "秒",
+			"\n　作成時間　" + b.m_createTime.ToString() + "秒",
 			style );
     }
 }

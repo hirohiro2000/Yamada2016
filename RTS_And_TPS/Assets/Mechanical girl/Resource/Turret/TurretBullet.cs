@@ -15,8 +15,8 @@ public class TurretBullet : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		transform.position += m_direction * m_speed * Time.deltaTime;
-
+		transform.position	+= ( m_direction * m_speed * Time.deltaTime );
+		
 		//
 		m_lifespan -= Time.deltaTime;
 		if( m_lifespan < 0 )

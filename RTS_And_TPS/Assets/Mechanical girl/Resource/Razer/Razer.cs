@@ -4,6 +4,7 @@ using System.Collections;
 public class Razer : MonoBehaviour
 {
 	public  float	m_interval	= 1.0f;
+	private int		m_lazerID	= 1;
 
 	// Use this for initialization
 	void Start ()
@@ -14,23 +15,14 @@ public class Razer : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		UpdateLevel();
-	}
-
-	void UpdateLevel()
-	{	
-		int			level		= GetComponent<ResourceParam>().m_level;
-		float		addScale	= 0.5f * ( level-1 );
-		Transform	beam		= transform.GetChild(1);
-
-		beam.localScale = new Vector3( 0.1f+addScale, beam.localScale.y, 0.1f+addScale );
 	}
 
 	IEnumerator ChangeOnOff()
     {
         while( true )
         {
-           	transform.GetChild(1).gameObject.SetActive( !transform.GetChild(1).gameObject.activeInHierarchy );
+			var g = transform.GetChild( m_lazerID ).gameObject;
+           	g.SetActive( !g.activeInHierarchy );
             yield return new WaitForSeconds( m_interval );
         }     
     }

@@ -17,7 +17,7 @@ public class Tragetor : MonoBehaviour
 	void Update ()
 	{
 		int		nearID	= -1;
-		float	near	= m_forcusRange*m_forcusRange;//float.MaxValue;
+		float	near	= m_forcusRange*m_forcusRange;
 
 		for( int i=0; i<m_enemyFactory.transform.childCount; ++i )
 		{
