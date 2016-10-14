@@ -66,11 +66,12 @@ GameObject:
   - 135: {fileID: 13533450}
   - 23: {fileID: 2353018}
   - 114: {fileID: 11466828}
+  - 114: {fileID: 11442166}
   - 114: {fileID: 11459728}
   - 114: {fileID: 11450528}
   m_Layer: 0
   m_Name: Bomb
-  m_TagString: Untagged
+  m_TagString: ResourceStay
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -262,6 +263,24 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 140446}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &11442166
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 173636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f4a4e17161730449955bb2aa3c12f45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_level: 1
+  m_attack: 100
+  m_defense: 0
+  m_hp: 10
+  m_attackUp: 100
+  m_defenseUp: 0
+  m_hpUp: 0
 --- !u!114 &11450528
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -299,7 +318,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_createCost: 20
   m_createTime: 2
-  m_puttingTime: 1
 --- !u!135 &13533450
 SphereCollider:
   m_ObjectHideFlags: 1

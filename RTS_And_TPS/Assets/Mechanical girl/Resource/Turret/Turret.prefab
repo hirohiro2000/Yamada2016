@@ -15,6 +15,9 @@ GameObject:
   - 114: {fileID: 11491098}
   - 114: {fileID: 11439508}
   - 114: {fileID: 11479578}
+  - 114: {fileID: 11444558}
+  - 114: {fileID: 11476074}
+  - 114: {fileID: 11458566}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -144,6 +147,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9340b9eaf15ea0d4bb1788d6fad667f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11444558
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 105384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f4a4e17161730449955bb2aa3c12f45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_level: 1
+  m_attack: 5
+  m_defense: 0
+  m_hp: 50
+  m_attackUp: 7
+  m_defenseUp: 1
+  m_hpUp: 0
+--- !u!114 &11458566
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 105384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d7c283fae189846a673d75aa7e54a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_valueSlider: {fileID: 118014, guid: 730110299ad46e5438babfc1c53e2918, type: 2}
+  m_sliderColor: {r: 0, g: 1, b: 1, a: 1}
+  m_levelTextEnable: 1
+  m_levelText: {fileID: 184810, guid: 3fa5ce17d7cae9048a3543dfe7aee321, type: 2}
 --- !u!114 &11474530
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -157,8 +193,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_createCost: 50
   m_createTime: 3
-  m_puttingTime: 3
-  m_level: 1
+--- !u!114 &11476074
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 105384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f49dd5cb6b7f9b44abe62ab3667ed3cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11479578
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -170,7 +215,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2431673fe0b48374cb46c0752fc3b183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_targettingSpeed: 0.1
+  m_forcusRange: 30
+  m_targettingSpeed: 0.2
 --- !u!114 &11491098
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -183,7 +229,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bullet: {fileID: 180896, guid: 96c12297e05f0cc4695f884bff8928fc, type: 2}
-  m_fireInterval: 50
+  m_fireInterval: 1
+  m_bulletSpeed: 80
 --- !u!135 &13574446
 SphereCollider:
   m_ObjectHideFlags: 1

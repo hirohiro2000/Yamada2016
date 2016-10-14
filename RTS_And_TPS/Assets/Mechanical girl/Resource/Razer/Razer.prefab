@@ -33,6 +33,9 @@ GameObject:
   - 114: {fileID: 11465422}
   - 114: {fileID: 11412714}
   - 114: {fileID: 11447886}
+  - 114: {fileID: 11442204}
+  - 114: {fileID: 11455304}
+  - 114: {fileID: 11492444}
   m_Layer: 0
   m_Name: Razer
   m_TagString: Untagged
@@ -51,7 +54,6 @@ GameObject:
   - 33: {fileID: 3318358}
   - 136: {fileID: 13658782}
   - 23: {fileID: 2385298}
-  - 114: {fileID: 11450806}
   m_Layer: 0
   m_Name: Beam
   m_TagString: ResourceStay
@@ -234,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcbc13d1b7d6b0e42ad4342b27793e98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_interval: 100
+  m_interval: 0.5
 --- !u!114 &11412714
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -246,6 +248,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9340b9eaf15ea0d4bb1788d6fad667f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11442204
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f4a4e17161730449955bb2aa3c12f45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_level: 1
+  m_attack: 1
+  m_defense: 0
+  m_hp: 100
+  m_attackUp: 1
+  m_defenseUp: 0
+  m_hpUp: 0
 --- !u!114 &11447886
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -257,22 +277,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dafe97c5f27a52a4282bde65345ac642, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_createCost: 0
-  m_createTime: 0
-  m_puttingTime: 0
-  m_level: 1
---- !u!114 &11450806
+  m_createCost: 70
+  m_createTime: 3
+--- !u!114 &11455304
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 162686}
+  m_GameObject: {fileID: 149536}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f4a4e17161730449955bb2aa3c12f45, type: 3}
+  m_Script: {fileID: 11500000, guid: f49dd5cb6b7f9b44abe62ab3667ed3cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_attack: 1
 --- !u!114 &11465422
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -284,7 +301,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2431673fe0b48374cb46c0752fc3b183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_targettingSpeed: 0.05
+  m_forcusRange: 30
+  m_targettingSpeed: 0.1
+--- !u!114 &11492444
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 149536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d7c283fae189846a673d75aa7e54a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_valueSlider: {fileID: 118014, guid: 730110299ad46e5438babfc1c53e2918, type: 2}
+  m_sliderColor: {r: 0, g: 1, b: 1, a: 1}
+  m_levelTextEnable: 1
+  m_levelText: {fileID: 184810, guid: 3fa5ce17d7cae9048a3543dfe7aee321, type: 2}
 --- !u!136 &13658782
 CapsuleCollider:
   m_ObjectHideFlags: 1

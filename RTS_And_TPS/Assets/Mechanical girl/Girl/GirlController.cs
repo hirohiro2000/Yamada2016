@@ -7,11 +7,15 @@ public class GirlController : MonoBehaviour
 	public	GameObject			m_resActionBar	= null;
 	private GameObject			m_actionBar		= null;
 
-	private const KeyCode		m_putKey		= KeyCode.I;
-	private const KeyCode		m_createKey		= KeyCode.K;
+	private ValueSlider			m_varSlider;
+	private ResourceInformation	m_resourceInformation;
+	private ResourceCreator		m_resourceCreator;
+	private ItemController		m_itemCntroller;
+
+	private const KeyCode		m_createKey		= KeyCode.I;
+	private const KeyCode		m_breakKey		= KeyCode.K;
 	private const KeyCode		m_levelUpKey	= KeyCode.L;
 
-	
 	private int					m_itemKindMax	= 0;
 	private int					m_curItemFocus	= 0;
 
@@ -31,8 +35,14 @@ public class GirlController : MonoBehaviour
 	{
 		m_actionBar						= Instantiate( m_resActionBar );
 		m_actionBar.transform.SetParent	( GameObject.Find("Canvas").transform );
+		m_varSlider						= m_actionBar.GetComponent<ValueSlider>();
 
 		ChangeActionBarState( false );
+
+
+		m_resourceInformation			= GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
+		m_resourceCreator				= GetComponent<ResourceCreator>();
+		m_itemCntroller					= GetComponent<ItemController>();
 
 		m_itemKindMax					= GameObject.Find("ResourceInformation").transform.childCount;
 	}
@@ -44,8 +54,8 @@ public class GirlController : MonoBehaviour
 		switch( m_actionState )
 		{
 		case ActionState.Common:			UpdateCommon();		break;
-		case ActionState.PutResource:		PutResource();		break;
-		case ActionState.CreateResource:	CreateResource();	break;
+		case ActionState.PutResource:		CreateResource();	break;
+		case ActionState.CreateResource:	BreakResource();	break;
 		case ActionState.LevelUpResource:	LevelUpResource();	break;
 		}
 	}
@@ -72,7 +82,6 @@ public class GirlController : MonoBehaviour
 		float axis				= ( Mathf.Abs(v) > Mathf.Abs(h) )? Mathf.Abs(v) : Mathf.Abs(h);
 		float moveSpeed 		= 20.0f;
 		transform.localPosition += direction * axis * moveSpeed * Time.fixedDeltaTime;
-		//transform.localPosition += direction * moveSpeed * Time.fixedDeltaTime;
 
 		
 		//	rotate
@@ -96,61 +105,41 @@ public class GirlController : MonoBehaviour
 
 
 		//	change state
-		if( Input.GetKeyDown( m_putKey ) &&
-			!GetComponent<ResourceCreator>().CheckExistResource() )
+		if( Input.GetKeyDown( m_createKey ) &&
+			m_itemCntroller.CheckWhetherTheCostIsEnough() &&
+			!m_resourceInformation.CheckExistResourceFromPosition( transform.position ))
 		{
 			m_actionState = ActionState.PutResource;
-			m_actionBar.GetComponent<ValueSlider>().SetColor( Color.green );
+			m_varSlider.SetColor( Color.green );
 			ChangeActionBarState( true );
 		}
-		if( Input.GetKeyDown( m_createKey ) )
-		{
-			m_actionState = ActionState.CreateResource;
-			m_actionBar.GetComponent<ValueSlider>().SetColor( Color.cyan );
-			ChangeActionBarState( true );
-		}
-		if( Input.GetKeyDown( m_levelUpKey ) &&
-			GetComponent<ResourceCreator>().CheckExistResource() )
+		//if (Input.GetKeyDown( m_breakKey ))
+		//{
+		//	m_actionState = ActionState.CreateResource;
+		//	m_actionBar.GetComponent<ValueSlider>().SetColor(Color.cyan);
+		//	ChangeActionBarState(true);
+		//}
+		if ( Input.GetKeyDown( m_levelUpKey ) &&
+			m_resourceInformation.CheckExistResourceFromPosition( transform.position ) &&
+			m_resourceInformation.CheckIfCanUpALevel( transform.position, m_itemCntroller.GetHaveCost() ))
 		{
 			m_actionState = ActionState.LevelUpResource;
-			m_actionBar.GetComponent<ValueSlider>().SetColor( Color.yellow );
+			m_varSlider.SetColor( Color.yellow );
 			ChangeActionBarState( true );
-		}
-	}
-	void PutResource()
-	{
-		ValueSlider slider = m_actionBar.GetComponent<ValueSlider>();
-		slider.m_pos = transform.position;
-		slider.m_cur += 1.0f;//kari
-
-
-		//	change state
-		if( slider.GetValue() >= 1.0f )
-		{
-			m_actionState = ActionState.Common;
-			GetComponent<ResourceCreator>().AddResource();
-			ChangeActionBarState( false );
-			return;
-		}
-		if( Input.GetKeyUp( m_putKey ) )
-		{
-			m_actionState = ActionState.Common;
-			ChangeActionBarState( false );
-			return;
 		}
 	}
 	void CreateResource()
 	{
-		ValueSlider slider = m_actionBar.GetComponent<ValueSlider>();
-		slider.m_pos = transform.position;
-		slider.m_cur += 1.0f;//kari
+		m_varSlider.m_pos = transform.position;
+		m_varSlider.m_cur += 1.0f;//kari
 
 
 		//	change state
-		if( slider.GetValue() >= 1.0f )
+		if( m_varSlider.GetRate() >= 1.0f )
 		{
 			m_actionState = ActionState.Common;
-			GetComponent<ItemController>().CreateItem();
+			m_resourceCreator.AddResource();
+			m_itemCntroller.UseResourceCost();
 			ChangeActionBarState( false );
 			return;
 		}
@@ -161,18 +150,37 @@ public class GirlController : MonoBehaviour
 			return;
 		}
 	}
-	void LevelUpResource()
+	void BreakResource()
 	{
-		ValueSlider slider = m_actionBar.GetComponent<ValueSlider>();
-		slider.m_pos = transform.position;
-		slider.m_cur += 1.0f;//kari
+		m_varSlider.m_pos = transform.position;
+		m_varSlider.m_cur += 1.0f;//kari
 
 
 		//	change state
-		if( slider.GetValue() >= 1.0f )
+		if( m_varSlider.GetRate() >= 1.0f )
 		{
 			m_actionState = ActionState.Common;
-			GetComponent<ResourceCreator>().LevelUpResource();
+			ChangeActionBarState( false );
+			return;
+		}
+		if( Input.GetKeyUp( m_breakKey ) )
+		{
+			m_actionState = ActionState.Common;
+			ChangeActionBarState( false );
+			return;
+		}
+	}
+	void LevelUpResource()
+	{
+		m_varSlider.m_pos = transform.position;
+		m_varSlider.m_cur += 1.0f;//kari
+
+		//	change state
+		if( m_varSlider.GetRate() >= 1.0f )
+		{
+			m_actionState = ActionState.Common;
+			int cost = m_resourceInformation.LevelUpResource( transform.position );
+			m_itemCntroller.AddResourceCost( -cost );
 			ChangeActionBarState( false );
 			return;
 		}
@@ -188,7 +196,7 @@ public class GirlController : MonoBehaviour
 	//
 	void ChangeActionBarState( bool enable )
 	{
-		m_actionBar.GetComponent<ValueSlider>().m_cur	= 0.0f;
+		m_varSlider.m_cur	= 0.0f;
 		m_actionBar.SetActive( enable );
 	}
 

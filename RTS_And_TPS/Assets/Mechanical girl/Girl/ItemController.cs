@@ -11,14 +11,7 @@ public class ItemController : MonoBehaviour
 	private	List<GameObject>	m_frameList		= null;
 	private int					m_kindMax		= 0;
 	private int					m_curForcus		= 0;
-	private int					m_resourcePoint = 999;
-
-	public struct Info
-	{
-		public int num;
-	}
-	private	List<Info>			m_infoList		= null;
-
+	public  int					m_resourcePoint = 100;
 
 	// Use this for initialization
 	void Start ()
@@ -36,17 +29,6 @@ public class ItemController : MonoBehaviour
 			add.transform.GetChild(0).GetComponent<Text>().text = "0";
 
 			m_frameList.Add( add );
-		}
-
-
-		m_infoList = new List<Info>();
-
-		for( int i=0; i<m_kindMax; ++i )
-		{
-			Info add;
-			add.num = 0;
-
-			m_infoList.Add( add );
 		}
 	}
 	
@@ -74,27 +56,23 @@ public class ItemController : MonoBehaviour
 
 
 	//
-	public void CreateItem()
+	public int GetHaveCost()
 	{
-		//	make an item using decided costs
-		Info i;
-		i.num = m_infoList[ m_curForcus ].num + 1;
-		m_infoList[ m_curForcus ] = i;
-
-		//	add num
-		m_frameList[ m_curForcus ].transform.GetChild(0).GetComponent<Text>().text = i.num.ToString();
-
-		//
+		return m_resourcePoint;
+	}
+	public void AddResourceCost( int cost )
+	{
+		m_resourcePoint += cost;
+	}
+	public void UseResourceCost()
+	{
 		m_resourcePoint -= m_resourceInformation.GetChild( m_curForcus ).GetComponent<ResourceParam>().m_createCost;
 	}
-	bool CheckWhetherTheCostIsEnough()
+	public bool CheckWhetherTheCostIsEnough()
 	{
 		return m_resourcePoint >= m_resourceInformation.GetChild( m_curForcus ).GetComponent<ResourceParam>().m_createCost;
 	}
-	bool CheckWhetherNumberIsEnough()
-	{
-		return  m_infoList[ m_curForcus ].num > 0;
-	}
+
 
 	//
 	void OnGUI ()
@@ -117,8 +95,7 @@ public class ItemController : MonoBehaviour
         GUI.TextArea ( new Rect (700,400,200,100), 
 			"　資源残量　" + m_resourcePoint.ToString() +
 			"\n　作成費用　" + b.m_createCost.ToString() +
-			"\n　作成時間　" + b.m_createTime.ToString() + "秒" +
-			"\n　設置時間　" + b.m_puttingTime.ToString() + "秒",
+			"\n　作成時間　" + b.m_createTime.ToString() + "秒",
 			style );
     }
 }
