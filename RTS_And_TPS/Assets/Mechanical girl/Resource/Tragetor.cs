@@ -4,19 +4,20 @@ using System.Collections;
 public class Tragetor : MonoBehaviour
 {
 	private GameObject	m_enemyFactory;
-	public	float		m_targettingSpeed = 0.1f;
+	public	float		m_forcusRange		= 30.0f;
+	public	float		m_targettingSpeed	= 0.1f;
 
 	// Use this for initialization
-	void Start ()
+	void Start()
 	{
-		m_enemyFactory	= GameObject.Find("EnemyFactory");
+		m_enemyFactory = GameObject.Find("EnemyFactory");
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
 		int		nearID	= -1;
-		float	near	= float.MaxValue;
+		float	near	= m_forcusRange*m_forcusRange;
 
 		for( int i=0; i<m_enemyFactory.transform.childCount; ++i )
 		{

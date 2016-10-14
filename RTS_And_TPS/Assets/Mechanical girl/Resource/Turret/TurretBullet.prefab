@@ -12,7 +12,6 @@ GameObject:
   - 135: {fileID: 13530356}
   - 23: {fileID: 2318388}
   - 114: {fileID: 11489882}
-  - 114: {fileID: 11448066}
   m_Layer: 0
   m_Name: TurretBullet
   m_TagString: ResourceOn
@@ -66,18 +65,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 180896}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &11448066
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 180896}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f4a4e17161730449955bb2aa3c12f45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_attack: 2
 --- !u!114 &11489882
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -89,8 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f8ae2196153d2429fb02a5c9c6f054, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_direction: {x: 0, y: 0, z: 0}
-  m_speed: 50
+  m_lifespan: 10
 --- !u!135 &13530356
 SphereCollider:
   m_ObjectHideFlags: 1

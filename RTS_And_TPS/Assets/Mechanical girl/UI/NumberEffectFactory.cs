@@ -26,11 +26,6 @@ public class NumberEffectFactory : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		//if( Input.GetKeyDown( KeyCode.Return ) )
-		//{
-		//	Create( new Vector3( 0,0,0 ), 5 );
-		//}
-
 		for( int i=0; i<m_data.Count; ++i )
 		{
 			if( --m_data[i].life <= 0 )
@@ -46,7 +41,7 @@ public class NumberEffectFactory : MonoBehaviour
 		}
 	}
 
-	public void Create( Vector3 pos, int num )
+	public void Create( Vector3 pos, int num, Color cl )
 	{
 		float range = 20.0f;
 
@@ -55,6 +50,7 @@ public class NumberEffectFactory : MonoBehaviour
 		txt.transform.position  = RectTransformUtility.WorldToScreenPoint ( Camera.main, pos );
 		txt.transform.position += new Vector3( Random.Range(-range,range),Random.Range(-range,range),Random.Range(-range,range));
 		txt.GetComponent<Text>().text = num.ToString();
+		txt.GetComponent<Text>().color = cl;
 		
 		Data data	= new Data();
 		data.obj	= txt;

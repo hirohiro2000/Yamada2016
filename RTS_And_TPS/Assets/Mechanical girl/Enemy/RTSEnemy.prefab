@@ -11,11 +11,14 @@ GameObject:
   - 33: {fileID: 3383752}
   - 65: {fileID: 6570168}
   - 54: {fileID: 5444910}
-  - 114: {fileID: 11403794}
+  - 195: {fileID: 19520356}
   - 23: {fileID: 2307954}
+  - 114: {fileID: 11403794}
+  - 114: {fileID: 11448442}
+  - 114: {fileID: 11434878}
   m_Layer: 0
-  m_Name: Enemy
-  m_TagString: Enemy
+  m_Name: RTSEnemy
+  m_TagString: RTSEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74,8 +77,8 @@ Rigidbody:
   m_GameObject: {fileID: 136810}
   serializedVersion: 2
   m_Mass: 5
-  m_Drag: 0
-  m_AngularDrag: 0
+  m_Drag: 0.1
+  m_AngularDrag: 0.1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -104,8 +107,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d5934faf0af925458b7561d86476424, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_targert: {x: 0, y: 0, z: 0}
+--- !u!114 &11434878
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 136810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d7c283fae189846a673d75aa7e54a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_valueSlider: {fileID: 118014, guid: 730110299ad46e5438babfc1c53e2918, type: 2}
+  m_sliderColor: {r: 1, g: 0, b: 0, a: 1}
+  m_levelTextEnable: 0
+  m_levelText: {fileID: 184810, guid: 3fa5ce17d7cae9048a3543dfe7aee321, type: 2}
+--- !u!114 &11448442
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 136810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f4a4e17161730449955bb2aa3c12f45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_level: 1
+  m_attack: 1
+  m_defense: 0
   m_hp: 10
+  m_attackUp: 0
+  m_defenseUp: 0
+  m_hpUp: 0
+--- !u!195 &19520356
+NavMeshAgent:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 136810}
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Speed: 5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0.5
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

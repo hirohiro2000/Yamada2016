@@ -22,14 +22,17 @@ public class ValueSlider : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		m_rectTransform.position = RectTransformUtility.WorldToScreenPoint ( Camera.main, m_pos+m_offset );
+		m_rectTransform.position = RectTransformUtility.WorldToScreenPoint( Camera.main, m_pos+m_offset );
 		m_slider.value			 = m_cur / m_max;
 	}
 
-	public float GetValue()
+	public float GetRate()
 	{
-		//return m_slider.value;
 		return m_cur / m_max;
+	}
+	public void SetRate( float rate )
+	{
+		m_cur = m_max * rate;
 	}
 
 	public void SetColor( Color color )
