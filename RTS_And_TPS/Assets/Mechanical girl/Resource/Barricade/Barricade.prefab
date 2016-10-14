@@ -11,12 +11,11 @@ GameObject:
   - 33: {fileID: 3351986}
   - 65: {fileID: 6503738}
   - 23: {fileID: 2368840}
-  - 114: {fileID: 11454904}
   - 114: {fileID: 11479182}
   - 114: {fileID: 11453046}
   - 114: {fileID: 11459258}
   - 114: {fileID: 11485322}
-  - 114: {fileID: 11434154}
+  - 114: {fileID: 11410666}
   m_Layer: 0
   m_Name: Barricade
   m_TagString: Untagged
@@ -82,7 +81,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &11434154
+--- !u!114 &11410666
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -90,9 +89,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 116518}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ed49a5c80889444d98c8f110f9459e7, type: 3}
+  m_Script: {fileID: 11500000, guid: d1d7c283fae189846a673d75aa7e54a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_valueSlider: {fileID: 118014, guid: 730110299ad46e5438babfc1c53e2918, type: 2}
+  m_sliderColor: {r: 0, g: 1, b: 1, a: 1}
+  m_levelTextEnable: 1
+  m_levelText: {fileID: 184810, guid: 3fa5ce17d7cae9048a3543dfe7aee321, type: 2}
 --- !u!114 &11453046
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -107,21 +110,10 @@ MonoBehaviour:
   m_level: 1
   m_attack: 0
   m_defense: 0
-  m_hp: 500
+  m_hp: 300
   m_attackUp: 0
   m_defenseUp: 1
-  m_hpUp: 1000
---- !u!114 &11454904
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 116518}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8feb9edafe8ed540986d70dc4499b68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_hpUp: 800
 --- !u!114 &11459258
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -157,8 +149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f49dd5cb6b7f9b44abe62ab3667ed3cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_valueSliderObject: {fileID: 118014, guid: 730110299ad46e5438babfc1c53e2918, type: 2}
-  m_color: {r: 0, g: 1, b: 1, a: 1}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

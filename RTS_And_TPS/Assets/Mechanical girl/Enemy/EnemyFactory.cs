@@ -15,7 +15,7 @@ public class EnemyFactory : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		StartCoroutine( Sporn() );
+		StartCoroutine( Spawn() );
 	}
 	
 	// Update is called once per frame
@@ -36,18 +36,22 @@ public class EnemyFactory : MonoBehaviour
 		}
 	}
 
-	IEnumerator Sporn()
+	IEnumerator Spawn()
     {
         while( true )
         {
 			if( m_running )
 			{
 				GameObject	e			= Instantiate( m_enemy );
-				var	cp					= e.GetComponent<CollisionParam>();
-				cp.m_attack				= ( m_curWave / 3 ) + 1;
-				cp.m_defense			= ( m_curWave / 5 );
-				cp.m_hp					= ( m_curWave / 2 ) * 20 + 10;
 
+				//	set wave information
+				int attack				= ( m_curWave / 3 ) + 1;
+				int defense				= ( m_curWave / 5 );
+				int hp					= ( m_curWave / 2 ) * 10 + 10;
+				e.GetComponent<CollisionParam>().SetInitParam( attack, defense, hp );
+				e.GetComponent<NavMeshAgent>().speed = ( m_curWave / 2 ) + 5;
+
+				//	set spawned information
 				Vector2 rnd             = new Vector2( Random.Range( -10.0f, 10.0f ), Random.Range( -10.0f, 10.0f ) );
 				rnd.Normalize();
 				rnd						*= Random.Range( 40.0f, 80.0f );

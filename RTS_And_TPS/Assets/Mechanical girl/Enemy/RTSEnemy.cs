@@ -20,22 +20,22 @@ public class RTSEnemy : MonoBehaviour
 	{
 	}
 
-	//↓仮
+	//	↓仮
 	void CollisionCommon( GameObject obj )
 	{
-		var a = GameObjectExtension.GetComponentInParentAndChildren< CollisionParam >( obj.gameObject );
+		var a = GameObjectExtension.GetComponentInParentAndChildren<CollisionParam>( obj.gameObject );
 		var d = GetComponent<CollisionParam>();
 
 		CollisionParam.ComputeDamage( a, ref d, true );
-	
-		if ( d.m_hp <= 0 )
-		{ 
+
+		if( d.m_hp <= 0 )
+		{
 			//	test
 			int getcost = 10;
-			GameObject.Find( "MechanicalGirl" ).GetComponent<ItemController>().AddResourceCost( getcost );
-			GameObject.Find( "NumberEffectFactory" ).GetComponent<NumberEffectFactory>().Create( transform.position, getcost, Color.green );
+			GameObject.Find("MechanicalGirl").GetComponent<ItemController>().AddResourceCost( getcost );
+			GameObject.Find("NumberEffectFactory").GetComponent<NumberEffectFactory>().Create( transform.position, getcost, Color.green );
 
-			Destroy( gameObject );
+			Destroy(gameObject);
 		}
 	}
 	void OnCollisionEnter(Collision collision)

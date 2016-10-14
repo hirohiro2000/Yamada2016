@@ -3,9 +3,9 @@ using System.Collections;
 
 public class TurretBullet : MonoBehaviour
 {
-	public	Vector3	m_direction;
-	public	float	m_speed		= 1.0f;
-	private float	m_lifespan	= 3.0f;
+	private	Vector3	m_direction;
+	private	float	m_speed		= 1.0f;
+	public float	m_lifespan	= 3.0f;
 
 	// Use this for initialization
 	void Start ()
@@ -21,6 +21,12 @@ public class TurretBullet : MonoBehaviour
 		m_lifespan -= Time.deltaTime;
 		if( m_lifespan < 0 )
 			Destroy( gameObject );
+	}
+
+	public void Set( Vector3 dir, float speed )
+	{
+		m_direction = dir;
+		m_speed		= speed;
 	}
 
 	void OnCollisionEnter( Collision collision )

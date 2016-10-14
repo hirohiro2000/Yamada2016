@@ -11,7 +11,7 @@ public class ItemController : MonoBehaviour
 	private	List<GameObject>	m_frameList		= null;
 	private int					m_kindMax		= 0;
 	private int					m_curForcus		= 0;
-	private int					m_resourcePoint = 100;
+	public  int					m_resourcePoint = 100;
 
 	// Use this for initialization
 	void Start ()

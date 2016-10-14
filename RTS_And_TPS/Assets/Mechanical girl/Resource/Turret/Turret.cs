@@ -5,6 +5,7 @@ public class Turret : MonoBehaviour
 {
 	public GameObject	m_bullet;
 	public int			m_fireInterval		= 1;
+	public float		m_bulletSpeed		= 1.0f;
 
 	private int			m_initFireInterval	= 0;
 	private int			m_timer				= 0;
@@ -26,7 +27,7 @@ public class Turret : MonoBehaviour
 		{
 			GameObject g			= Instantiate( m_bullet );
 			g.transform.position	= transform.position;
-			g.GetComponent<TurretBullet>().m_direction = transform.forward;
+			g.GetComponent<TurretBullet>().Set( transform.forward, m_bulletSpeed );
 			g.AddComponent<CollisionParam>().Copy( m_param );
 
 			m_timer = 0;	

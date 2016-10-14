@@ -15,7 +15,7 @@ GameObject:
   - 23: {fileID: 2307954}
   - 114: {fileID: 11403794}
   - 114: {fileID: 11448442}
-  - 114: {fileID: 11435948}
+  - 114: {fileID: 11434878}
   m_Layer: 0
   m_Name: RTSEnemy
   m_TagString: RTSEnemy
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d5934faf0af925458b7561d86476424, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11435948
+--- !u!114 &11434878
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -115,11 +115,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 136810}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f49dd5cb6b7f9b44abe62ab3667ed3cb, type: 3}
+  m_Script: {fileID: 11500000, guid: d1d7c283fae189846a673d75aa7e54a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_valueSliderObject: {fileID: 118014, guid: 730110299ad46e5438babfc1c53e2918, type: 2}
-  m_color: {r: 1, g: 0, b: 0, a: 1}
+  m_valueSlider: {fileID: 118014, guid: 730110299ad46e5438babfc1c53e2918, type: 2}
+  m_sliderColor: {r: 1, g: 0, b: 0, a: 1}
+  m_levelTextEnable: 0
+  m_levelText: {fileID: 184810, guid: 3fa5ce17d7cae9048a3543dfe7aee321, type: 2}
 --- !u!114 &11448442
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -131,10 +133,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f4a4e17161730449955bb2aa3c12f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_level: 1
   m_attack: 1
   m_defense: 0
-  m_maxhp: 10
   m_hp: 10
+  m_attackUp: 0
+  m_defenseUp: 0
+  m_hpUp: 0
 --- !u!195 &19520356
 NavMeshAgent:
   m_ObjectHideFlags: 1
