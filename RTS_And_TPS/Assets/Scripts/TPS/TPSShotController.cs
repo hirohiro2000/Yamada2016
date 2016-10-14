@@ -70,4 +70,17 @@ public class TPSShotController : MonoBehaviour {
 		emit.GetComponent<TPSNormalGun>().Shot_Start(2.0f);
 
 	}
+
+	void OnGUI()
+	{
+		//照準の描画
+		GUIStyle style = new GUIStyle();
+		style.normal.textColor = Color.white;
+		style.fontSize =(int)( Screen.height * 0.05f);
+		style.alignment = TextAnchor.MiddleCenter;
+		GUI.Label(new Rect(.0f, .0f, Screen.width, Screen.height), "+", style);
+
+
+	}
+
 }

@@ -33,7 +33,8 @@ public class TPSNormalGun : MonoBehaviour
 
 	public void OnCollisionEnter(Collision collision)
 	{
-		Instantiate(particle, transform.position, transform.rotation * Quaternion.AngleAxis(180, Vector3.right));
+		if(particle != null)
+			Instantiate(particle, transform.position, transform.rotation * Quaternion.AngleAxis(180, Vector3.right));
 		Destroy(this.gameObject);
 	}
 }

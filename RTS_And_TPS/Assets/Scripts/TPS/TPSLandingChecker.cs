@@ -15,7 +15,7 @@ public class TPSLandingChecker : MonoBehaviour
 			Rigidbody rigidBody = gameObject.AddComponent<Rigidbody>();
 			rigidBody.isKinematic = true;
 		}
-		Debug.LogWarning("現在、床判定はオブジェクト名がFloorかで判定しています");
+		Debug.LogWarning("現在、床判定はレイヤーで判定しています");
 	}
 
 	// Update is called once per frame
@@ -26,7 +26,7 @@ public class TPSLandingChecker : MonoBehaviour
 
 	public void OnTriggerStay(Collider other)
 	{
-		if(other.gameObject.name == "Floor")
+		if(other.gameObject.layer == LayerMask.NameToLayer("Floor"))
 		{
 			isLanding = true;
         }

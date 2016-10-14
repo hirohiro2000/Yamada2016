@@ -1,0 +1,37 @@
+﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+public class TPS_Generator : MonoBehaviour {
+
+	[SerializeField, Range(.0f, 10.0f)]
+	private float m_resporn_interval_second = 2.0f;
+
+	[SerializeField]
+	private GameObject m_generate_object;
+
+	// Use this for initialization
+	void Start()
+	{
+		StartCoroutine(Resporn());
+	}
+
+	IEnumerator Resporn()
+	{
+		while (true)
+		{
+			//子供のPosと向き配置します
+			var new_object = Instantiate(m_generate_object);
+			var resporn_object = transform.GetChild(Random.Range(0, transform.childCount));
+			var agent = new_object.GetComponent<NavMeshAgent>();
+			if (agent != null)
+				agent.Warp(resporn_object.position);
+			else
+				new_object.transform.position = resporn_object.position;
+			new_object.transform.rotation = resporn_object.rotation;
+			yield return new WaitForSeconds(m_resporn_interval_second);
+
+		}
+
+	}
+}
