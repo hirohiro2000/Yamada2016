@@ -39,7 +39,9 @@ public class MovingTarget : TaskBase
 
     public override void Execute(TargetingSystem target_system, EnemyTaskDirector task_director)
     {
-        m_navmesh_accessor.SetDestination(m_target_object.transform.position);
+     //   if (m_navmesh_accessor.pathStatus != NavMeshPathStatus.PathInvalid)
+            m_navmesh_accessor.SetDestination(m_target_object.transform.position);
+        //m_navmesh_accessor.destination = m_target_object.transform.position;
     }
 
     public override void Exit(TargetingSystem target_system, EnemyTaskDirector task_director)

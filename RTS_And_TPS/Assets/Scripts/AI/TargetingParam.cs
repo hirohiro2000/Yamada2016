@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyParam : MonoBehaviour {
+public class TargetingParam : MonoBehaviour {
 
     [SerializeField, HeaderAttribute("ロボットの狙いやすさ(大きいほど狙いやすくなる)"), Range(.0f, 1.0f)]
     public float robo_attack_priority = 0.5f;

@@ -3,8 +3,15 @@ using System.Collections;
 
 public class TaskBase : MonoBehaviour {
 
-	// Use this for initialization
+    protected TaskEvaluationBase m_rater;
     
+    void Awake()
+    {
+        m_rater = GetComponent<TaskEvaluationBase>();
+        if (!m_rater)
+            Debug.Log("this task not attach evalution object !!");
+    }
+               
     public virtual void Execute(TargetingSystem target_system,
                                            EnemyTaskDirector task_director
                                            )
@@ -24,5 +31,16 @@ public class TaskBase : MonoBehaviour {
                                        )
     {
         Debug.Log("TaskBase::Exit call");
+    }
+
+    public float EvalutionScore(
+        TargetingSystem current_target_info,
+        EnemyTaskDirector director,
+        ViewMessageWrapper.MessageType message_type,
+        GameObject evalution_object,
+        string evalution_tag
+        )
+    {
+       return m_rater.Execute(current_target_info, director,message_type,evalution_object,evalution_tag);
     }
 }
