@@ -2,7 +2,7 @@
 using System.Collections;
 
 /**
- *@brief そのうちState関連はMonoBehaviorから外す可能性あり
+ *@note そのうちState関連はMonoBehaviorから外す可能性あり
  */
 public class MovingTarget : TaskBase
 {
@@ -14,14 +14,16 @@ public class MovingTarget : TaskBase
     [SerializeField, Range(.0f, 10.0f)]
     private float m_adjust_max_steering_radius = 2.0f;
 
-    private float m_path_update_interval = 1.5f;
+    private float m_path_update_interval = 0.35f;
     private bool m_coroutine_flg = false;
     Vector3 m_target_point;
 
     TargetingSystem m_target_director;
 
 
-    GameObject target_point_object;
+    LineRenderer m_path_renderer;
+
+ //   GameObject target_point_object;
 
     private float m_last_path_update_time;
 
@@ -53,9 +55,10 @@ public class MovingTarget : TaskBase
             Debug.Log("Target lost");
         }
         m_navmesh_accessor.SetDestination(m_target_point);
-        Debug.Log("UpdateGoalPoint call");
+        m_path_renderer.SetVertexCount(m_navmesh_accessor.path.corners.Length);
+        m_path_renderer.SetPositions(m_navmesh_accessor.path.corners);
 
-        target_point_object.transform.localPosition = m_target_point;
+      //  target_point_object.transform.localPosition = m_target_point;
     }
 
     public override void Initialize(GameObject owner)
@@ -64,7 +67,7 @@ public class MovingTarget : TaskBase
         m_navmesh_accessor = owner.GetComponent<NavMeshAgent>();
         m_default_steering_radius += UnityEngine.Random.Range(.0f, m_adjust_max_steering_radius);
         m_navmesh_accessor.radius = m_default_steering_radius;
-        target_point_object = transform.FindChild("Cube").gameObject;
+        m_path_renderer = GetComponent<LineRenderer>();
     }
 
     public override void Enter(TargetingSystem target_system, EnemyTaskDirector task_director)
@@ -75,10 +78,14 @@ public class MovingTarget : TaskBase
         m_target_point = target_system.m_current_target.transform.position;
         m_coroutine_flg = true;
         m_last_path_update_time = Time.realtimeSinceStartup;
+        m_navmesh_accessor.Resume();
     }
 
     public override TaskBase.Status Execute(TargetingSystem target_system, EnemyTaskDirector task_director)
     {
+        var path_status = m_navmesh_accessor.pathStatus;
+        Debug.Log("path is " + path_status);
+
         UpdateGoalPoint();
         if (IsReachingGoalPoint())
         {
@@ -106,7 +113,7 @@ public class MovingTarget : TaskBase
     {
         float dist = (m_target_point - m_owner_object.transform.position).magnitude;
         //0.005fは調整値
-        if (dist <   0.5f)
+        if (dist <   2.0f)
         {
             return true;
         }

@@ -82,7 +82,7 @@ public class EnemyTaskDirector : MonoBehaviour {
         }
         m_current_task = new_task;
         m_current_task.Enter(target_director, this);
-        Debug.Log("new_task is " + m_current_task.name);
+        //Debug.Log("new_task is " + m_current_task.name);
     }
 
     public TaskBase.Status UpdateTask(TargetingSystem target_director)
@@ -90,8 +90,8 @@ public class EnemyTaskDirector : MonoBehaviour {
         TaskBase.Status current_status = TaskBase.Status.Active;
         if (m_current_task)
             current_status = m_current_task.Execute(target_director, this);
-        else
-            Debug.Log(gameObject.name +  " current_task is null");
+        //else
+           // Debug.Log(gameObject.name +  " current_task is null");
 
         return current_status;
     }
