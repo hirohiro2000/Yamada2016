@@ -3,6 +3,7 @@ using System.Collections;
 
 public class RendererSwitch : MonoBehaviour {
 
+    [SerializeField]
     private MeshRenderer renderer;
 
     bool enable_switch;
@@ -13,9 +14,10 @@ public class RendererSwitch : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        renderer = GetComponent<MeshRenderer>();
+        if(!renderer)
+            renderer = GetComponent<MeshRenderer>();
         //StartCoroutine(SwitchLoop());
-        Activate();
+        //Activate();
 	}
 	
     IEnumerator SwitchLoop()
@@ -42,17 +44,20 @@ public class RendererSwitch : MonoBehaviour {
         
 
 	// Update is called once per frame
-	void Update () {
-	    
-        if(Input.GetKeyDown(KeyCode.Space) && is_enable)
-        {
-            Disable();
-        }
-
-        if (Input.GetKeyDown(KeyCode.M) && !is_enable)
-        {
-            Activate();
-        }
+	void Update ()
+    {
 
     }
+
+    public void ReturnColor()
+    {
+        renderer.material.color = Color.white;
+    }
+
+    public void ChangeColor(Color col)
+    {
+        renderer.material.color = col;
+    }
+
+
 }

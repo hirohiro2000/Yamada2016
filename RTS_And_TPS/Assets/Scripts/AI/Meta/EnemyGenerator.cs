@@ -27,17 +27,15 @@ public class EnemyGenerator : MonoBehaviour {
 	
     IEnumerator Resporn()
     {
-        while (true)
-        {
-            
+      //  while (true)
             var new_object =  Instantiate(m_generate_object);
-            var resporn_object = m_sporn_point_list[UnityEngine.Random.Range(0, transform.childCount)];
+            var resporn_object = m_sporn_point_list[UnityEngine.Random.Range(0, m_sporn_point_list.Count)];
             new_object.transform.position = resporn_object.GetRespornPos();
             yield return null;
             new_object.transform.parent = transform;
             yield return new WaitForSeconds(m_resporn_interval_second);
 
-        }     
+      //  }     
 
     }
 

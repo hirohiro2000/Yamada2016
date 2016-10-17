@@ -4,19 +4,30 @@ using System.Collections;
 public class TaskBase : MonoBehaviour {
 
     protected TaskEvaluationBase m_rater;
-    
+    protected GameObject            m_owner_object;
+
+
+    public enum Status
+    {
+        Active,
+        Completed,
+        Failed,
+    }
+
+    //Awakeが何故か呼ばれなかった
     void Awake()
     {
-        m_rater = GetComponent<TaskEvaluationBase>();
-        if (!m_rater)
-            Debug.Log("this task not attach evalution object !!");
+      
     }
-               
-    public virtual void Execute(TargetingSystem target_system,
+    
+   
+
+    public virtual Status Execute(TargetingSystem target_system,
                                            EnemyTaskDirector task_director
                                            )
     {
         Debug.Log("TaskBase::Execute call");
+        return Status.Failed;
     }
 
     public virtual void Enter(TargetingSystem target_system,
@@ -35,12 +46,17 @@ public class TaskBase : MonoBehaviour {
 
     public float EvalutionScore(
         TargetingSystem current_target_info,
-        EnemyTaskDirector director,
-        ViewMessageWrapper.MessageType message_type,
-        GameObject evalution_object,
-        string evalution_tag
+        EnemyTaskDirector director
         )
     {
-       return m_rater.Execute(current_target_info, director,message_type,evalution_object,evalution_tag);
+       return m_rater.Execute(current_target_info, director);
+    }
+
+    public virtual void Initialize(GameObject owner)
+    {
+        m_owner_object = owner;
+        m_rater = GetComponent<TaskEvaluationBase>();
+        if (!m_rater)
+            Debug.Log("this task not attach evalution object !!");
     }
 }
