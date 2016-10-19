@@ -34,7 +34,7 @@ public class TPS_Enemy : MonoBehaviour {
 			if (hpBar != null)
 			{
 				hpBar.SetParent(null);
-				Destroy(hpBar.gameObject, 1.0f);
+				Destroy(hpBar.gameObject, 0.5f);
 			}
 
             EnemyKillCounter.killCount++;
