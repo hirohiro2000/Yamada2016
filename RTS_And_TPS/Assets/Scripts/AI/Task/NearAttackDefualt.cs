@@ -17,6 +17,7 @@ public class NearAttackDefualt : TaskBase {
         Debug.Log("Attack !!");
         flg = false;
         timer = 120;
+        task_director.m_anime_controller.SetTrigger("ToNearAttack");
     }
 
     public override TaskBase.Status Execute(TargetingSystem target_system, EnemyTaskDirector task_director)

@@ -8,12 +8,13 @@ public class EnemyTaskDirector : MonoBehaviour {
 
     //MovingTarget                   m_move_state;  //とりあえず
     TaskBase                           m_current_task;
-    [SerializeField, HeaderAttribute("このキャラクターが使用できるタスクの一覧")]
-    private GameObject[]       available_task_array;
+   // [SerializeField, HeaderAttribute("このキャラクターが使用できるタスクの一覧")]
+   // private GameObject[]       available_task_array;
 
-    private List<TaskBase>     m_task_array;    
+    private List<TaskBase>       m_task_array;    
     GameObject                      m_task_folder;
-    public GameObject           m_owner { get; private set; }
+    public GameObject            m_owner { get; private set; }
+    public AnimationController m_anime_controller { get; private set; }
 
     void Awake()
     {
@@ -23,11 +24,11 @@ public class EnemyTaskDirector : MonoBehaviour {
     void InitializeTaskArray()
     {
         m_task_array = new List<TaskBase>();
-        foreach(var task in available_task_array)
+        for(int i = 0; i < m_task_folder.transform.childCount; i++)
         {
-            GameObject temp = Instantiate(task);
-            temp.transform.parent = m_task_folder.transform;
-            var insert_task = task.GetComponent<TaskBase>();
+            GameObject temp = m_task_folder.transform.GetChild(i).gameObject;
+            //temp.transform.parent = m_task_folder.transform;
+            var insert_task = temp.GetComponent<TaskBase>();
             insert_task.Initialize(gameObject);
             m_task_array.Add(insert_task);
             
@@ -39,7 +40,8 @@ public class EnemyTaskDirector : MonoBehaviour {
     {
         //test
         m_task_folder = transform.FindChild("TaskHolder").gameObject;
-       // var temp = GameObject.Instantiate((GameObject)Resources.Load("AI\\MoveTargetDefault"));
+        m_anime_controller = GetComponent<AnimationController>();
+        // var temp = GameObject.Instantiate((GameObject)Resources.Load("AI\\MoveTargetDefault"));
         // m_move_state = temp.GetComponent<MovingTarget>();
         //temp.transform.parent = m_task_folder.transform;
         m_owner = gameObject;

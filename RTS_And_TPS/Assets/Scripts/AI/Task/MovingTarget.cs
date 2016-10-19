@@ -79,13 +79,15 @@ public class MovingTarget : TaskBase
         m_coroutine_flg = true;
         m_last_path_update_time = Time.realtimeSinceStartup;
         m_navmesh_accessor.Resume();
+        task_director.m_anime_controller.SetTrigger("ToMoveTarget");
     }
 
     public override TaskBase.Status Execute(TargetingSystem target_system, EnemyTaskDirector task_director)
     {
-        var path_status = m_navmesh_accessor.pathStatus;
-        Debug.Log("path is " + path_status);
+        //var path_status = m_navmesh_accessor.pathStatus;
+        //Debug.Log("path is " + path_status);
 
+        task_director.m_anime_controller.SetFloat("MoveSpeed", m_navmesh_accessor.velocity.sqrMagnitude);
         UpdateGoalPoint();
         if (IsReachingGoalPoint())
         {

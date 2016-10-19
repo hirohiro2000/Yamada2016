@@ -192,7 +192,7 @@ GameObject:
   - 4: {fileID: 440770}
   - 95: {fileID: 9500624}
   m_Layer: 0
-  m_Name: SD_unitychan_generic
+  m_Name: ModelRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1701,6 +1701,7 @@ GameObject:
   - 114: {fileID: 11426580}
   - 114: {fileID: 11453570}
   - 114: {fileID: 11491724}
+  - 114: {fileID: 11498554}
   m_Layer: 0
   m_Name: EnemyTest
   m_TagString: Enemy
@@ -3072,7 +3073,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 177802}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 33.1, y: 0.5, z: -17.55}
+  m_LocalPosition: {x: 6.7915688, y: 0.5, z: 47.263466}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -4020,7 +4021,7 @@ Animator:
   m_GameObject: {fileID: 107192}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 29032ffe50eebbd41b9e5c4017762813, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8905c314534071d45ae558c30c70ef63, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -4039,8 +4040,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1866b74a4f2b47647ad8ab1c6a0a545d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  robo_priority: 0.5
-  girl_priority: 0.5
+  robo_priority: 0.87
+  girl_priority: 3.53
   defense_base_priority: 0.5
   obstacle_priority: 0.5
 --- !u!114 &11426580
@@ -4079,9 +4080,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2da69f97077b3343acd2b495aa57aba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  available_task_array:
-  - {fileID: 118088, guid: aedfa229c52b5774292f752946c83698, type: 2}
-  - {fileID: 194588, guid: f8f367180ae6fbe49b13401b11dd7c85, type: 2}
 --- !u!114 &11491724
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4094,6 +4092,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_update_intarval_socond: 0.5
+--- !u!114 &11498554
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 177802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbaf5aa4dbdf1dd49834a576bc521b4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &13626830
 CapsuleCollider:
   m_ObjectHideFlags: 1
