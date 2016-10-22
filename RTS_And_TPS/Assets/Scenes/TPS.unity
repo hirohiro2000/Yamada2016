@@ -466,6 +466,9 @@ GameObject:
   - 224: {fileID: 190033738}
   - 222: {fileID: 190033740}
   - 114: {fileID: 190033739}
+  - 114: {fileID: 190033741}
+  - 223: {fileID: 190033743}
+  - 114: {fileID: 190033742}
   m_Layer: 5
   m_Name: CoolDownTime
   m_TagString: Untagged
@@ -489,7 +492,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 236.7, y: -0.24998856}
-  m_SizeDelta: {x: -162.1, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.0000010766089, y: 0.49999955}
 --- !u!114 &190033739
 MonoBehaviour:
@@ -512,9 +515,9 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 18
+    m_FontSize: 23
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 8
     m_MaxSize: 300
     m_Alignment: 0
@@ -522,7 +525,7 @@ MonoBehaviour:
     m_RichText: 0
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
-    m_LineSpacing: 2.09
+    m_LineSpacing: 0
   m_Text: '28
 
 '
@@ -532,6 +535,59 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 190033737}
+--- !u!114 &190033741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 190033737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1741964061, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 2
+--- !u!114 &190033742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 190033737}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1980459831, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+--- !u!223 &190033743
+Canvas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 190033737}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &253329644
 GameObject:
   m_ObjectHideFlags: 0
@@ -888,18 +944,6 @@ Prefab:
     - target: {fileID: 122602, guid: eff7cc2bc3b2fdb40a218273d996b422, type: 2}
       propertyPath: m_Name
       value: TPSPlayer
-      objectReference: {fileID: 0}
-    - target: {fileID: 11497160, guid: eff7cc2bc3b2fdb40a218273d996b422, type: 2}
-      propertyPath: shotDistance
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 11421856, guid: eff7cc2bc3b2fdb40a218273d996b422, type: 2}
-      propertyPath: HoverPower
-      value: 1.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 11421856, guid: eff7cc2bc3b2fdb40a218273d996b422, type: 2}
-      propertyPath: maxHoverTime
-      value: 1.05
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: eff7cc2bc3b2fdb40a218273d996b422, type: 2}
@@ -1944,7 +1988,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 18
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 8
     m_MaxSize: 300
     m_Alignment: 2
@@ -2075,13 +2119,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHp: 100
-  text: 'BaseHP:'
+  text: 4261736548503a
   rect:
     serializedVersion: 2
-    x: 0.1
-    y: 0.8
-    width: 0.5
-    height: 0.2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!54 &1591550507
 Rigidbody:
   m_ObjectHideFlags: 0

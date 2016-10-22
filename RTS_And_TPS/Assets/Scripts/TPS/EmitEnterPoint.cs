@@ -4,10 +4,10 @@ using System.Collections;
 public class EmitEnterPoint : MonoBehaviour {
 
 	[SerializeField]
-	int startLevel;
+	int startLevel = 0;
 
 	[SerializeField]
-	bool[] emitFlag;
+	bool[] emitFlag = null;
 
 	public bool IsActiveEmit(int curLevel)
 	{

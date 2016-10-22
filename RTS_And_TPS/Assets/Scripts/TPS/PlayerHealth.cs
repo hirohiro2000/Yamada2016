@@ -4,14 +4,14 @@ using System.Collections;
 public class PlayerHealth : MonoBehaviour
 {
 	[SerializeField]
-	float maxHp;
+	float maxHp = 0;
 
 	float hp;
 
 	bool isDeath;
 
 	[SerializeField]
-	string text;
+	string text = null;
 
 	[SerializeField]
 	Rect rect;

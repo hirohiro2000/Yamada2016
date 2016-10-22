@@ -11,28 +11,28 @@ public class EnemyDifficulter : MonoBehaviour {
 
 
 	[SerializeField]
-	AnimationCurve enemyHealthMultiple;
+	AnimationCurve enemyHealthMultiple = null;
 
 	[SerializeField]
-	AnimationCurve enemyAttackMultiple;
+	AnimationCurve enemyAttackMultiple = null;
 
 	[SerializeField]
-	AnimationCurve enemyEmitNum;
+	AnimationCurve enemyEmitNum = null;
 
 	[SerializeField]
-	AnimationCurve enemySpeedMultiple;
+	AnimationCurve enemySpeedMultiple = null;
 
 	[SerializeField]
-	Transform emitEnterPoints;
+	Transform emitEnterPoints = null;
 
 	[SerializeField]
-	float nextLevelCooldownTime;
+	float nextLevelCooldownTime = .0f;
 
 	[SerializeField]
-	Text textCurLevel;
+	Text textCurLevel = null;
 
 	[SerializeField]
-	Text textCntNextLevelCooldownTime;
+	Text textCntNextLevelCooldownTime = null;
 
 	int cntEmitEnterPointNum;
 	EmitEnterPoint cntEmitEnterPoint;
@@ -113,7 +113,7 @@ public class EnemyDifficulter : MonoBehaviour {
 		else
 		{
 			textCntNextLevelCooldownTime.transform.parent.gameObject.SetActive(true);
-			textCntNextLevelCooldownTime.text = cntNextLevelCooldownTime.ToString();
+			textCntNextLevelCooldownTime.text = cntNextLevelCooldownTime.ToString("f1") + "秒";
 
 		}
 	}

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class AutoDestroyParticle : MonoBehaviour {
 	[SerializeField]
-	ParticleSystem destroyParticle;
+	ParticleSystem destroyParticle = null;
 	// Use this for initialization
 	void Start () {
 		Destroy(this.gameObject,destroyParticle.duration);

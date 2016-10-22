@@ -5,10 +5,10 @@ using System.Collections;
 [CustomPropertyDrawer(typeof(MultiToggleAttribute))]
 public class MultiToggleDrawer : PropertyDrawer
 {
-	bool init = false;
+	//bool init = false;
 	public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 	{
-		MultiToggleAttribute multiToggleAttribute = (MultiToggleAttribute)attribute;
+		//MultiToggleAttribute multiToggleAttribute = (MultiToggleAttribute)attribute;
 
 		//if(init == false)
 		//{

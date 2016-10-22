@@ -4,7 +4,7 @@ using System.Collections;
 public class EnemyAtkTargetManager : MonoBehaviour {
 
 	[SerializeField]
-	Transform[] targets;
+	Transform[] targets = null;
 
 	// Use this for initialization
 	void Start () {

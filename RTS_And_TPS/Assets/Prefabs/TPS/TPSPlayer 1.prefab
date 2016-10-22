@@ -396,6 +396,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &193266
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 472702}
+  m_Layer: 10
+  m_Name: Weapons
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &194368
 GameObject:
   m_ObjectHideFlags: 1
@@ -414,6 +429,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!1 &194616
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 412378}
+  - 114: {fileID: 11431914}
+  m_Layer: 10
+  m_Name: NormalGun
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &195496
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,6 +507,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 468826}
   m_RootOrder: 1
+--- !u!4 &412378
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 194616}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 472702}
+  m_RootOrder: 0
 --- !u!4 &414812
 Transform:
   m_ObjectHideFlags: 1
@@ -683,6 +727,7 @@ Transform:
   - {fileID: 468826}
   - {fileID: 454480}
   - {fileID: 488088}
+  - {fileID: 472702}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &463196
@@ -727,6 +772,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 449456}
   m_RootOrder: 0
+--- !u!4 &472702
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 193266}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 412378}
+  m_Father: {fileID: 461896}
+  m_RootOrder: 3
 --- !u!4 &474404
 Transform:
   m_ObjectHideFlags: 1
@@ -1550,6 +1609,27 @@ MonoBehaviour:
   landingChecker: {fileID: 11410424}
   Power: 0.6
   maxEnableTime: 0.1
+  maxHoverTime: 1.05
+  HoverPower: 1.25
+--- !u!114 &11431914
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 194616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c02ef3b53bb608948823135cdeab04f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firePoints:
+  - {fileID: 461844}
+  - {fileID: 459764}
+  emitter: {fileID: 102464, guid: b99fe1000ac85ba4a9ce9923ef0f4b00, type: 2}
+  shotCooldown: 0.05
+  shotDistance: 25
+  singleRecoil: 1
+  tpsRotationController: {fileID: 11433240}
 --- !u!114 &11433240
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1565,6 +1645,10 @@ MonoBehaviour:
   XAxisRotater: {fileID: 481694}
   YAxisRotSpeed: 5
   XAxisRotSpeed: 5
+  XAxisMaxangle: 70
+  XaxisMinAngle: -70
+  RecoilDampRate: 10
+  MaxRecoil: 30
 --- !u!114 &11439580
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1614,7 +1698,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 122602}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c02ef3b53bb608948823135cdeab04f5, type: 3}
   m_Name: 
@@ -1624,7 +1708,9 @@ MonoBehaviour:
   - {fileID: 459764}
   emitter: {fileID: 102464, guid: b99fe1000ac85ba4a9ce9923ef0f4b00, type: 2}
   shotCooldown: 0.05
-  shotDistance: 24.97
+  shotDistance: 25
+  singleRecoil: 0.2
+  tpsRotationController: {fileID: 0}
 --- !u!124 &12452290
 Behaviour:
   m_ObjectHideFlags: 1

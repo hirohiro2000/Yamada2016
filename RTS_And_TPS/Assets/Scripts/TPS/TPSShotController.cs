@@ -18,9 +18,15 @@ public class TPSShotController : MonoBehaviour {
 	[SerializeField]
 	float shotDistance;
 
+	[SerializeField]
+	float singleRecoil = 0.2f;
+
 	//bool Targeted;
 
 	float AimDistance;
+
+	[SerializeField]
+	TPSRotationController tpsRotationController;
 
 	// Use this for initialization
 	void Start () {
@@ -89,7 +95,9 @@ public class TPSShotController : MonoBehaviour {
 		//距離に合わせて寿命を設定
 		emit.GetComponent<TPSNormalGun>().Shot_Start(shotDistance / speed);
 
-	}
+		//リコイル処理
+		tpsRotationController.Recoil(singleRecoil);
+    }
 
 	void OnGUI()
 	{
