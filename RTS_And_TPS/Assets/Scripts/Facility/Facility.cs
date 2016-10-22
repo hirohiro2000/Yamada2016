@@ -26,7 +26,6 @@ public class Facility : MonoBehaviour
     private     bool    m_isInit = false;
     private     bool    m_isActive = false;
 
-
     private void Update()
     {
         if (m_isInit == false)
@@ -48,16 +47,21 @@ public class Facility : MonoBehaviour
             if (m_isActive)
             {
                 Execute();
-            }
-            if (m_isRepeated)
-            {
-                m_collisionParam.m_level = 1;
-                m_isActive = false;
+                if (m_isRepeated)
+                {
+                    m_collisionParam.m_level = 1;
+                    m_isActive = false;
+                }
+                else // 仮
+                {
+                    GetComponent<ResourceParam>().m_createCost = int.MaxValue;
+                }
             }
         }
                 
     }
 
+    public      bool    isActive { get { return m_isActive; } }
     protected virtual void Execute() { }
     
 }
