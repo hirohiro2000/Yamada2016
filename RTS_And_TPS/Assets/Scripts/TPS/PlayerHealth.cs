@@ -40,6 +40,14 @@ public class PlayerHealth : MonoBehaviour
 		if (hp <= .0f)
 		{
 			isDeath = true;
+			//ゲームオーバー
+			GameSystemManager systemManager = FindObjectOfType<GameSystemManager>();
+			if(systemManager != null)
+			{
+				systemManager.BeginGameOver();
+
+			}
+
 			Time.timeScale = .0f;
 		}
 	}
