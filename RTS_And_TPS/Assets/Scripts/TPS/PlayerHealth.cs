@@ -4,14 +4,14 @@ using System.Collections;
 public class PlayerHealth : MonoBehaviour
 {
 	[SerializeField]
-	float maxHp;
+	float maxHp = 0;
 
 	float hp;
 
 	bool isDeath;
 
 	[SerializeField]
-	string text;
+	string text = null;
 
 	[SerializeField]
 	Rect rect;
@@ -40,6 +40,14 @@ public class PlayerHealth : MonoBehaviour
 		if (hp <= .0f)
 		{
 			isDeath = true;
+			//ゲームオーバー
+			GameSystemManager systemManager = FindObjectOfType<GameSystemManager>();
+			if(systemManager != null)
+			{
+				systemManager.BeginGameOver();
+
+			}
+
 			Time.timeScale = .0f;
 		}
 	}
