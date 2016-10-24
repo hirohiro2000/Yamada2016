@@ -75,9 +75,9 @@ public class VisibilitySystem : MonoBehaviour {
      //   StartCoroutine(UpdateVisibilityData());
 
         //tst
-        near_range_text = GameObject.Find("InNearText").GetComponent<Text>();
-        visibility_range_text = GameObject.Find("InVisibilityRange").GetComponent<Text>();
-        can_visibility_text = GameObject.Find("CanVisibility").GetComponent<Text>();
+        //near_range_text = GameObject.Find("InNearText").GetComponent<Text>();
+       // visibility_range_text = GameObject.Find("InVisibilityRange").GetComponent<Text>();
+       // can_visibility_text = GameObject.Find("CanVisibility").GetComponent<Text>();
 
     }
 	
@@ -110,7 +110,7 @@ public class VisibilitySystem : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        DebugLog();
+       // DebugLog();
     }
 
     private bool IsUnconditionalObject(ViewCandidateData check_object)

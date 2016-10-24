@@ -1,11 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 
 /**
  *@note そのうちState関連はMonoBehaviorから外す可能性あり
  */
 public class MovingTarget : TaskBase
 {
+    private readonly float m_normal_cost = 1.0f;
+    private readonly float m_detor_cost = 5.0f;
+
     private NavMeshAgent m_navmesh_accessor;
 
     //private GameObject m_target_object;
@@ -16,12 +22,17 @@ public class MovingTarget : TaskBase
 
     private float m_path_update_interval = 0.35f;
     private bool m_coroutine_flg = false;
-    Vector3 m_target_point;
+    Vector3 m_target_point;    
 
     TargetingSystem m_target_director;
 
 
     LineRenderer m_path_renderer;
+
+    [SerializeField, HeaderAttribute("このキャラクターが通ることのできるルート一覧")]
+    private string[] m_can_passing_route;
+
+    private Dictionary<string, float> m_navmesh_cost_dictionary;
 
  //   GameObject target_point_object;
 
@@ -29,11 +40,35 @@ public class MovingTarget : TaskBase
 
     void Awake()
     {
+        m_navmesh_cost_dictionary = new Dictionary<string, float>();
+        NavMesh.pathfindingIterationsPerFrame = 500;
+    }
+
+    void InitializeCostArray()
+    {
+        var component = transform.root.GetComponent<CostNameContainer>();
+        var layer_name_array = component.GetLayerNameArray();
+
+        //通過できる場所だけNormalCostを挿入
+       foreach(var name in layer_name_array)
+        {
+            if(Array.IndexOf(m_can_passing_route,name) != -1)
+            {
+                m_navmesh_cost_dictionary.Add(name, m_normal_cost);
+            }
+            else
+            {
+                m_navmesh_cost_dictionary.Add(name, m_detor_cost);
+            }
+        }
+
+
     }
 
     void Start()
     {
-
+        InitializeCostArray();
+        m_path_update_interval += UnityEngine.Random.Range(.0f, 0.23f);
     }
 
     /**
@@ -54,6 +89,12 @@ public class MovingTarget : TaskBase
         {
             Debug.Log("Target lost");
         }
+        foreach(var it in m_navmesh_cost_dictionary)
+        {
+            NavMesh.SetAreaCost(NavMesh.GetAreaFromName(it.Key), it.Value);
+        }
+               
+
         m_navmesh_accessor.SetDestination(m_target_point);
         m_path_renderer.SetVertexCount(m_navmesh_accessor.path.corners.Length);
         m_path_renderer.SetPositions(m_navmesh_accessor.path.corners);
