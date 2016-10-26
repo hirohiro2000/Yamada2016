@@ -13,6 +13,16 @@ public class VisibilitySystem : MonoBehaviour {
         public string sender_tag;
         public GameObject sender_object;
         public VisibilityChecker visibility_checker;
+        public bool is_static;
+
+        public ViewCandidateData(ViewMessageWrapper init_data)
+        {
+            this.message_type = init_data.message_type;
+            this.sender_object = init_data.sender_object;
+            this.sender_tag = init_data.sender_tag;
+            this.visibility_checker = init_data.visibility_checker;
+            this.is_static = init_data.is_static_object;
+        }
     }
 
     public class VisibilityData
@@ -20,14 +30,15 @@ public class VisibilitySystem : MonoBehaviour {
         public ViewMessageWrapper.MessageType message_type;
         public string sender_tag;
         public GameObject sender_object;
-        public float dist;
-
+        public float dist;  //現在未使用
+        public bool is_static;
+  
         public VisibilityData(ViewCandidateData init_data)
         {
             this.message_type = init_data.message_type;
             this.sender_object = init_data.sender_object;
             this.sender_tag = init_data.sender_tag;
-
+            this.is_static = init_data.is_static;
         }
         
     }
@@ -202,11 +213,11 @@ public class VisibilitySystem : MonoBehaviour {
 
     private void InVisibility(ViewMessageWrapper msg)
     {
-        ViewCandidateData insert = new ViewCandidateData();
-        insert.message_type = ViewMessageWrapper.MessageType.InVisibilityRange;
-        insert.sender_object = msg.sender_object;
-        insert.sender_tag = msg.sender_tag;
-        insert.visibility_checker = msg.visibility_checker;
+        ViewCandidateData insert = new ViewCandidateData(msg);
+        //insert.message_type = ViewMessageWrapper.MessageType.InVisibilityRange;
+        //insert.sender_object = msg.sender_object;
+        //insert.sender_tag = msg.sender_tag;
+        //insert.visibility_checker = msg.visibility_checker;
         m_candicate_list.Add(insert);
     }
 

@@ -9,7 +9,8 @@ public class VisibilityChecker : MonoBehaviour
 
     public GameObject m_owner_object { get; private set; }
 
-    // Use this for initialization
+    [SerializeField, HeaderAttribute("このオブジェクトは動き回らないかどうか（Trueで動かない）")]
+    private bool IsStaticObject;
 
     void Awake()
     {
@@ -26,6 +27,11 @@ public class VisibilityChecker : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public bool IsStatic()
+    {
+        return IsStaticObject;
     }
 
     public bool IsInsight(ref Vector3 eye_position)

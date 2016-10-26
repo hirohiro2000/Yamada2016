@@ -6,8 +6,10 @@ using System.Linq;
 public class TargetingSystem : MonoBehaviour {
 
     public GameObject                                          m_current_target { get; private set; }
-    public  float                                                     m_score { get; private set; }
-    public ViewMessageWrapper.MessageType   m_message_type { get; private set; }
+    public  float                                                    m_score { get; private set; }
+    public ViewMessageWrapper.MessageType      m_message_type { get; private set; }
+    public bool                                                     m_is_static{ get; private set; }
+    public string                                                   m_target_tag { get; private set; }
     private TargetingParam                                   m_param;
     private readonly float                                      m_base_score = 100.0f;
 
@@ -56,7 +58,9 @@ public class TargetingSystem : MonoBehaviour {
     void ChangeTarget(
         GameObject next_target,
         ViewMessageWrapper.MessageType message_type,
-        float score)
+        float score,
+        bool is_static,
+        string target_tag)
     {
         if (m_current_target)
         {
@@ -66,7 +70,8 @@ public class TargetingSystem : MonoBehaviour {
         m_current_target = next_target;
         m_message_type = message_type;
         m_score = score;
-
+        m_is_static = is_static;
+        m_target_tag = target_tag;
         var render_switch = m_current_target.GetComponent<RendererSwitch>();
         render_switch.Activate();
     }
@@ -104,7 +109,12 @@ public class TargetingSystem : MonoBehaviour {
 
         if(ComparisonCurrentTarget(most_candidate,max_score))
         {
-            ChangeTarget(most_candidate.sender_object, most_candidate.message_type, max_score);
+            ChangeTarget(
+                most_candidate.sender_object,
+                most_candidate.message_type, 
+                max_score,
+                most_candidate.is_static,
+                most_candidate.sender_tag);
             return true;
         }
 
