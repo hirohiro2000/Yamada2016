@@ -14,6 +14,9 @@ public class TPS_Enemy : MonoBehaviour {
 	void Start () {
 		if (healthBar3D != null)
 			healthBar3D.setValue(1.0f);
+
+            UIRadar.AddEnemy(this.gameObject);
+
     }
 	
 	// Update is called once per frame
@@ -38,6 +41,8 @@ public class TPS_Enemy : MonoBehaviour {
 			}
 
             EnemyKillCounter.killCount++;
+
+            UIRadar.Remove(this.gameObject);
 			Destroy(this.gameObject);
 		}
     }

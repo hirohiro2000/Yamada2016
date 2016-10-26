@@ -29,6 +29,7 @@ public class TPS_Generator : MonoBehaviour {
 			else
 				new_object.transform.position = resporn_object.position;
 			new_object.transform.rotation = resporn_object.rotation;
+
 			yield return new WaitForSeconds(m_resporn_interval_second);
 
 		}

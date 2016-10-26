@@ -51,7 +51,7 @@ public class PlayerHealth : MonoBehaviour
 			Time.timeScale = .0f;
 		}
 	}
-
+    public bool flg = false;
 	void OnCollisionEnter(Collision collision)
 	{
 		Debug.Log(gameObject.name);
@@ -59,7 +59,12 @@ public class PlayerHealth : MonoBehaviour
 		if (source != null)
 		{
 			GiveDamage(source.damage);
-		}
+
+            // 
+            if(flg)
+            GuideHitEffect.Add(source.user);
+
+        }
 	}
 
 	public void OnGUI()
