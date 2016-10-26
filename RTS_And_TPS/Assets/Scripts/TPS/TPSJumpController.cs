@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
 public class TPSJumpController : MonoBehaviour {
+
+    private NetworkIdentity m_rIdentity =   null;
 
 	[SerializeField]
 	TPSLandingChecker landingChecker;
@@ -71,12 +74,15 @@ public class TPSJumpController : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
-	
+	void    Start()
+    {
+	    m_rIdentity =   GetComponent< NetworkIdentity >();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        //  自分のキャラクター以外は処理を行わない
+        if( !m_rIdentity.isLocalPlayer )    return;
 
 		cntEnableTime -= Time.deltaTime;
 		if(cntEnableTime < .0f)
@@ -144,6 +150,9 @@ public class TPSJumpController : MonoBehaviour {
 
 	void OnGUI()
 	{
+        //  自分のキャラクター以外は処理を行わない
+        if( !m_rIdentity.isLocalPlayer )    return;
+
 		GUI.Label(new Rect(0, 0, Screen.width, Screen.height), "fallPower:" + fallPower);
 	}
 

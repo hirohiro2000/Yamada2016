@@ -9,13 +9,16 @@ GameObject:
   m_Component:
   - 4: {fileID: 414236}
   - 33: {fileID: 3383752}
-  - 65: {fileID: 6570168}
+  - 136: {fileID: 13692622}
   - 54: {fileID: 5444910}
   - 195: {fileID: 19520356}
   - 23: {fileID: 2307954}
   - 114: {fileID: 11403794}
   - 114: {fileID: 11448442}
   - 114: {fileID: 11434878}
+  - 114: {fileID: 11486132}
+  - 114: {fileID: 11472962}
+  - 114: {fileID: 11484674}
   m_Layer: 0
   m_Name: RTSEnemy
   m_TagString: RTSEnemy
@@ -31,7 +34,7 @@ Transform:
   m_GameObject: {fileID: 136810}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 2, z: 1}
+  m_LocalScale: {x: 0.8, y: 1.7, z: 0.8}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
@@ -46,7 +49,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 823ce566e1ce97943aaa7761dba31cbb, type: 2}
+  - {fileID: 2100000, guid: 1f20ea26ff8e4e44196b3cd582286b89, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -76,26 +79,14 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 136810}
   serializedVersion: 2
-  m_Mass: 5
-  m_Drag: 0.1
-  m_AngularDrag: 0.1
-  m_UseGravity: 1
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
---- !u!65 &6570168
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 136810}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &11403794
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -140,6 +131,75 @@ MonoBehaviour:
   m_attackUp: 0
   m_defenseUp: 0
   m_hpUp: 0
+--- !u!114 &11472962
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 136810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7abb80eea5d03b0428742ed3d8792ffb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_LerpRatio: 0.05
+--- !u!114 &11484674
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 136810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb47158745b96e84cbfa87b78dca164b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_LerpRatio: 0.1
+--- !u!114 &11486132
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 136810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 214
+    i1: 107
+    i2: 115
+    i3: 157
+    i4: 4
+    i5: 200
+    i6: 72
+    i7: 20
+    i8: 42
+    i9: 232
+    i10: 14
+    i11: 255
+    i12: 77
+    i13: 56
+    i14: 138
+    i15: 255
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
+--- !u!136 &13692622
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 136810}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.4
+  m_Height: 1.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!195 &19520356
 NavMeshAgent:
   m_ObjectHideFlags: 1
@@ -147,16 +207,16 @@ NavMeshAgent:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 136810}
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Speed: 5
+  m_Radius: 0.8
+  m_Speed: 1
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
-  m_Height: 2
+  m_Height: 1.7
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4

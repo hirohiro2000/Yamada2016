@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -29,6 +31,10 @@ public class TPS_Generator : MonoBehaviour {
 			else
 				new_object.transform.position = resporn_object.position;
 			new_object.transform.rotation = resporn_object.rotation;
+
+            //  ネットワーク上で生成
+            NetworkServer.Spawn( new_object );
+
 			yield return new WaitForSeconds(m_resporn_interval_second);
 
 		}

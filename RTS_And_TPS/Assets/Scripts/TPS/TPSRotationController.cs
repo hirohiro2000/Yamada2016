@@ -1,5 +1,10 @@
-﻿using UnityEngine;
+﻿
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
+
+using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
 public class TPSRotationController : MonoBehaviour
@@ -32,11 +37,12 @@ public class TPSRotationController : MonoBehaviour
 
 	float xAxisAngle = .0f;
 
+    private NetworkIdentity m_rIdentity =   null;
 
 	// Use this for initialization
 	void Start()
 	{
-
+        m_rIdentity =   GetComponent< NetworkIdentity >();
 	}
 
 	void XAxisRotate(float radius)
@@ -62,6 +68,9 @@ public class TPSRotationController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+        //  自分のキャラクター以外は処理を行わない
+        if( !m_rIdentity.isLocalPlayer )    return;
+
 		if(Time.timeScale != .0f)
 		{
 			XAxisRotate(Input.GetAxis("Mouse Y") * XAxisRotSpeed);

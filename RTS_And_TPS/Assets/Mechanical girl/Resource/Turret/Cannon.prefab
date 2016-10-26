@@ -51,7 +51,7 @@ Transform:
   m_GameObject: {fileID: 171300}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 448240}
@@ -80,7 +80,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: e462e41882cb32c418178a4c9f44fa4f, type: 2}
+  - {fileID: 2100000, guid: 7ad86f36eddb03a4ca9d35ef2ebc488d, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -106,7 +106,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: e462e41882cb32c418178a4c9f44fa4f, type: 2}
+  - {fileID: 2100000, guid: 7ad86f36eddb03a4ca9d35ef2ebc488d, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -176,8 +176,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2431673fe0b48374cb46c0752fc3b183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_forcusRange: 30
-  m_targettingSpeed: 0.1
+  m_forcusRange: 12
+  m_targettingSpeed: 5
 --- !u!114 &11448322
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -190,7 +190,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_createCost: 50
-  m_createTime: 3
+  m_breakCost: 40
+  m_levelUpCost: 50
+  m_effectiveRange: 12
 --- !u!114 &11460566
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -203,8 +205,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bullet: {fileID: 180896, guid: 96c12297e05f0cc4695f884bff8928fc, type: 2}
-  m_fireInterval: 150
-  m_bulletSpeed: 40
+  m_fireInterval: 2
+  m_fireRange: 12
+  m_bulletSpeed: 30
 --- !u!114 &11461076
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
-public class TPSShotController : MonoBehaviour {
+public class TPSShotController : NetworkBehaviour {
 
 	[SerializeField]
 	Transform[] firePoints;
@@ -28,13 +30,26 @@ public class TPSShotController : MonoBehaviour {
 	[SerializeField]
 	TPSRotationController tpsRotationController;
 
+    //  親へのアクセス
+    private NetworkIdentity     m_rParentIdentity   =   null;
+    private NetPlayer_Control   m_rNPControl        =   null;
+    //  外部へのアクセス
+    private LinkManager         m_rLinkManager      =   null;
+
 	// Use this for initialization
-	void Start () {
-	
+	void    Start()
+    {
+        //  アクセスの取得
+	    m_rParentIdentity   =   transform.parent.parent.GetComponent< NetworkIdentity >();
+        m_rNPControl        =   transform.parent.parent.GetComponent< NetPlayer_Control >();
+        m_rLinkManager      =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void    Update () {
+        //  自分のキャラクター以外は処理を行わない
+        if( !m_rParentIdentity.isLocalPlayer )  return;
+
 		cntCoolDown -= Time.deltaTime;
 		//そのままの前方向
 		Transform firePoint = firePoints[fireCnt];
@@ -45,6 +60,7 @@ public class TPSShotController : MonoBehaviour {
 			Vector3 shotPointNear, shotPointFar;
 
 			//発射点の画面震度を取得
+            if( !Camera.main )   return;
             float worldnearZ = Camera.main.WorldToViewportPoint(firePoint.position).z;
 
 			//画面右上 = (1,1)
@@ -72,7 +88,7 @@ public class TPSShotController : MonoBehaviour {
 			{
 				cntCoolDown = shotCooldown;
 				
-				Shot(firePoint, targetPoint);
+				Shot( firePoint.position, targetPoint );
 				fireCnt++;
 				if(firePoints.Length <= fireCnt)
 				{
@@ -84,23 +100,48 @@ public class TPSShotController : MonoBehaviour {
 	
 	}
 
-	void Shot(Transform firePoint,Vector3 target)
+    void    Shot( Vector3 firePoint, Vector3 target )
 	{
 		Vector3 forward;
-		forward = (target - firePoint.position).normalized;
-		GameObject emit = Instantiate(emitter, firePoint.position, Quaternion.LookRotation(forward)) as GameObject;
+		forward = (target - firePoint).normalized;
+		GameObject emit = Instantiate(emitter, firePoint, Quaternion.LookRotation(forward)) as GameObject;
 		float speed = 200.0f;
 		emit.GetComponent<Rigidbody>().velocity = forward * speed;
 
 		//距離に合わせて寿命を設定
 		emit.GetComponent<TPSNormalGun>().Shot_Start(shotDistance / speed);
 
+        //  所属設定
+        TPSNormalGun    rGun    =   emit.GetComponent< TPSNormalGun >();
+        rGun.c_ShooterID    =   m_rLinkManager.m_LocalPlayerID;
+
 		//リコイル処理
 		tpsRotationController.Recoil(singleRecoil);
+
+        //  他のクライアントでも発射
+        m_rNPControl.CmdFire_Client( firePoint, target, m_rLinkManager.m_LocalPlayerID );
+    }
+    public  void    Shot_ByRequest( Vector3 firePoint, Vector3 target, int _ShooterID )
+    {
+        Vector3 forward;
+		forward = (target - firePoint).normalized;
+		GameObject emit = Instantiate(emitter, firePoint, Quaternion.LookRotation(forward)) as GameObject;
+		float speed = 200.0f;
+		emit.GetComponent<Rigidbody>().velocity = forward * speed;
+
+		//距離に合わせて寿命を設定
+		emit.GetComponent<TPSNormalGun>().Shot_Start(shotDistance / speed);
+
+        //  所属設定
+        TPSNormalGun    rGun    =   emit.GetComponent< TPSNormalGun >();
+        rGun.c_ShooterID    =   _ShooterID;
     }
 
 	void OnGUI()
 	{
+        //  自分のキャラクター以外は処理を行わない
+        if( !m_rParentIdentity.isLocalPlayer )  return;
+
 		//照準の描画
 		GUIStyle style = new GUIStyle();
 		if(AimDistance <= shotDistance)

@@ -23,6 +23,8 @@ public class HealthBar3D : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if( !Camera.main )  return;
+
 		transform.rotation = Camera.main.transform.rotation;
     }
 

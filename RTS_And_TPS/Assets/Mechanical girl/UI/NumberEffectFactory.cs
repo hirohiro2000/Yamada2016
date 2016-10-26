@@ -36,7 +36,7 @@ public class NumberEffectFactory : MonoBehaviour
 			else
 			{
 				Vector3 c = m_data[i].obj.transform.position;
-				m_data[i].obj.transform.position = new Vector3( c.x, c.y+m_numUpDpeed, c.z );
+				m_data[i].obj.transform.position = new Vector3( c.x, c.y+m_numUpDpeed*Time.deltaTime, c.z );
 			}
 		}
 	}

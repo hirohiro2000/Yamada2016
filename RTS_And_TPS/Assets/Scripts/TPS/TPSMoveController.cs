@@ -1,8 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿
+using   UnityEngine;
+using   UnityEngine.Networking;
+using   System.Collections;
 
 public class TPSMoveController : MonoBehaviour
 {
+    private NetworkIdentity m_rIdentity =   null;
 
 	[SerializeField]
 	float speed;
@@ -56,12 +59,14 @@ public class TPSMoveController : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-
+        m_rIdentity =   GetComponent< NetworkIdentity >();
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
+        //  自分のキャラクター以外は処理を行わない
+        if( !m_rIdentity.isLocalPlayer )    return;
 
 		Vector3 forward = transform.forward;
 		forward.y = .0f;

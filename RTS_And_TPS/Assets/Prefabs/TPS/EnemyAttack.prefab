@@ -14,6 +14,8 @@ GameObject:
   - 54: {fileID: 5409420}
   - 114: {fileID: 11458078}
   - 114: {fileID: 11423242}
+  - 114: {fileID: 11461088}
+  - 114: {fileID: 11423152}
   m_Layer: 9
   m_Name: EnemyAttack
   m_TagString: Untagged
@@ -82,6 +84,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &11423152
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 123582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 3
+  m_SendInterval: 0
+  m_SyncRotationAxis: 0
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &11423242
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -93,6 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f25afd9c1ced10e4c937ebf8a6b10a27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_ShooterID: 0
   particle: {fileID: 175374, guid: 8931ad398a75c2c4c8b694f005800976, type: 2}
 --- !u!114 &11458078
 MonoBehaviour:
@@ -106,6 +129,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
+--- !u!114 &11461088
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 123582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 107
+    i1: 242
+    i2: 69
+    i3: 94
+    i4: 239
+    i5: 140
+    i6: 109
+    i7: 228
+    i8: 219
+    i9: 76
+    i10: 25
+    i11: 95
+    i12: 51
+    i13: 222
+    i14: 237
+    i15: 233
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!135 &13593008
 SphereCollider:
   m_ObjectHideFlags: 1
