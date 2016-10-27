@@ -67,7 +67,6 @@ public class PlayerHealth : NetworkBehaviour
 			//Time.timeScale = .0f;
 		}
 	}
-    public bool flg = false;
 	void OnCollisionEnter(Collision collision)
 	{
 		Debug.Log(gameObject.name);
@@ -76,9 +75,8 @@ public class PlayerHealth : NetworkBehaviour
 		{
 			GiveDamage(source.damage);
 
-            // 
-            if(flg)
-            GuideHitEffect.Add(source.user);
+            
+            // GuideHitEffect.Add(source.user);
 
         }
 	}

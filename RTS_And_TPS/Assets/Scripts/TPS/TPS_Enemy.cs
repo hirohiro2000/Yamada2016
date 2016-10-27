@@ -24,7 +24,7 @@ public class TPS_Enemy : NetworkBehaviour {
 		if (healthBar3D != null)
 			healthBar3D.setValue(1.0f);
 
-            UIRadar.AddEnemy(this.gameObject);
+//            UIRadar.AddEnemy(this.gameObject);
 
     }
 	
