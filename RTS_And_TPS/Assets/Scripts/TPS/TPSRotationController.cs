@@ -49,8 +49,6 @@ public class TPSRotationController : MonoBehaviour
 
 		if (xAxisAngle < XaxisMinAngle)
 			xAxisAngle = XaxisMinAngle;
-
-
 	}
 
 	void YAxisRotate(float radius)
