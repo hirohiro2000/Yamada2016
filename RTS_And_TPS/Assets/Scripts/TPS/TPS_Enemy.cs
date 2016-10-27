@@ -26,6 +26,7 @@ public class TPS_Enemy : NetworkBehaviour {
 
 //            UIRadar.AddEnemy(this.gameObject);
 
+        m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
     }
 	
 	// Update is called once per frame
@@ -57,7 +58,7 @@ public class TPS_Enemy : NetworkBehaviour {
 
             EnemyKillCounter.killCount++;
 
-            UIRadar.Remove(this.gameObject);
+//            UIRadar.Remove(this.gameObject);
 			Destroy(this.gameObject);
 		}
     }

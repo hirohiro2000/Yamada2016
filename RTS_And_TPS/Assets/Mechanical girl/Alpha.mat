@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Alpha
-  m_Shader: {fileID: 4800000, guid: 68034f42c713aa94ea435f78577e350f, type: 3}
+  m_Shader: {fileID: 4800000, guid: 78126245387450349a98d5161921cea4, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: 2000
@@ -25,6 +25,13 @@ Material:
       data:
         first:
           name: _BumpMap
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _NormalMap
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
@@ -78,6 +85,27 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _SmoothMap
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _MetalMap
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _RSRM
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
     m_Floats:
       data:
         first:
@@ -91,6 +119,10 @@ Material:
         first:
           name: _Cutoff
         second: 0.5
+      data:
+        first:
+          name: _Smoothness
+        second: 2
       data:
         first:
           name: _Parallax
@@ -139,6 +171,22 @@ Material:
         first:
           name: _isXRay
         second: 0.5
+      data:
+        first:
+          name: _Metallicity
+        second: 0
+      data:
+        first:
+          name: _Wrap
+        second: 0.25
+      data:
+        first:
+          name: _BumpDepth
+        second: 1
+      data:
+        first:
+          name: _OutlineWidth
+        second: 0.05
     m_Colors:
       data:
         first:
@@ -152,3 +200,11 @@ Material:
         first:
           name: _ShadeColor
         second: {r: 0.48965502, g: 1, b: 0, a: 1}
+      data:
+        first:
+          name: _MainColor
+        second: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+      data:
+        first:
+          name: _OutlineColor
+        second: {r: 0, g: 0, b: 0, a: 1}
