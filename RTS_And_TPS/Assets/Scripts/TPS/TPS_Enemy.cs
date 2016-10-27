@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
-public class TPS_Enemy : MonoBehaviour {
-	[SerializeField]
+public class TPS_Enemy : NetworkBehaviour {
+	[ SerializeField, SyncVar ]
 	float hp;
 
 	[SerializeField]
@@ -10,15 +12,36 @@ public class TPS_Enemy : MonoBehaviour {
 
 	[SerializeField]
 	Transform hpBar;
+
+
+    //  外部へのアクセス
+    private LinkManager m_rLinkManager  =   null;
+
+
 	// Use this for initialization
-	void Start () {
+	void    Start()
+    {
 		if (healthBar3D != null)
 			healthBar3D.setValue(1.0f);
+
+        //  アクセスの取得
+        m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+
+        //  クライアントではナビメッシュを使用しない
+        if( !isServer ){
+            GetComponent< NavMeshAgent >().enabled  =   false;
+        }
     }
 	
 	// Update is called once per frame
-	void Update () {
-	
+	void    Update()
+    {
+	    //  ゲージ更新
+        {
+            if( healthBar3D ){
+			    healthBar3D.setValue( hp / 20.0f );
+            }
+        }
 	}
 
 	public void GiveDamage(float damage)
@@ -42,13 +65,18 @@ public class TPS_Enemy : MonoBehaviour {
 		}
     }
 
-	void OnCollisionEnter(Collision collision)
+	void    OnCollisionEnter( Collision collision )
 	{
+        GameObject      rObj        =   collision.gameObject;
+        TPSNormalGun    rGunControl =   rObj.GetComponent< TPSNormalGun >();
+        if( !rGunControl )                                              return;
+        //  発射したプレイヤーのクライアントでのみ処理を行う
+        if( rGunControl.c_ShooterID != m_rLinkManager.m_LocalPlayerID ) return;
 
 		DamageSource source = collision.gameObject.GetComponentInParent<DamageSource>();
 		if (source != null)
 		{
-			//一番倍率の高い衝突を探す
+			//  一番倍率の高い衝突を探す
 			float maxDamageMultiple = .0f;
 
 			foreach ( ContactPoint colider in collision.contacts)
@@ -67,8 +95,10 @@ public class TPS_Enemy : MonoBehaviour {
 			}
 
 
-			GiveDamage(maxDamageMultiple * source.damage);
-
+			//GiveDamage(maxDamageMultiple * source.damage);
+            //  プレイヤーを介してサーバーにダメージを送信
+            NetPlayer_Control   rNPControl  =   m_rLinkManager.m_rLocalPlayer.GetComponent< NetPlayer_Control >();
+            rNPControl.CmdSendDamageEnemy( netId, maxDamageMultiple * source.damage );
 		}
 	
 	}

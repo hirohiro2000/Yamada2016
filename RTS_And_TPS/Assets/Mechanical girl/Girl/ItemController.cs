@@ -1,21 +1,26 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ItemController : MonoBehaviour
+public class ItemController : NetworkBehaviour
 {
-	public	GameObject			m_frame			= null;
+	public	GameObject			m_itemFrame				= null;
+	public  int					m_resourcePoint			= 100;
 
-	private Transform			m_resourceInformation;
-	private	List<GameObject>	m_frameList		= null;
-	private int					m_kindMax		= 0;
-	private int					m_curForcus		= 0;
-	public  int					m_resourcePoint = 100;
+	private Transform			m_resourceInformation	= null;
+	private	List<GameObject>	m_frameList				= null;
+	private int					m_kindMax				= 0;
+	private int					m_curForcus				= 0;
 
 	// Use this for initialization
 	void Start ()
 	{
+        //  自分のキャラクターの場合のみ処理を行う
+        if( !isLocalPlayer ) return;
+
 		m_resourceInformation	= GameObject.Find("ResourceInformation").transform;
 		m_kindMax				= m_resourceInformation.childCount;
 
@@ -23,79 +28,78 @@ public class ItemController : MonoBehaviour
 
 		for( int i=0; i<m_kindMax; ++i )
 		{
-			GameObject add			= Instantiate( m_frame );
+			GameObject  add			= Instantiate( m_itemFrame );
+            float       screenRatio = Screen.width / 1280.0f;
 			add.transform.SetParent( GameObject.Find("Canvas").transform );
-			add.transform.position	= new Vector3( i*50 + 100, 50, 0 );
-			add.transform.GetChild(0).GetComponent<Text>().text = "0";
+			add.transform.position	= new Vector3( ( i*80 + 72 ) * screenRatio, 130 * screenRatio, 0 );
+			add.transform.GetChild(0).GetComponent<Text>().text = "";//"0";
 
 			m_frameList.Add( add );
 		}
 	}
-	
+	void OnDestroy()
+	{
+        for( int i = 0; i < m_frameList.Count; i++ ){
+            Destroy( m_frameList[ i ].gameObject );
+        }
+	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		UpdateScale();
-		UpdateForcus();
-	}
-	void UpdateForcus()
-	{
-		m_curForcus = GetComponent<GirlController>().GetItemFocus();
-	}
-	void UpdateScale ()
-	{
-		const float forcus	= 1.1f;
-		const float basic	= 0.8f;
-		
-		for( int i=0; i<m_kindMax; ++i )
+        //  自分のキャラクターの場合のみ処理を行う
+        if( !isLocalPlayer ) return;
+
 		{
-			m_frameList[i].transform.localScale = ( m_curForcus==i )? new Vector3( forcus,forcus,forcus ):new Vector3( basic,basic,basic );
+			const float forcus	= 1.1f;
+			const float basic	= 0.8f;
+		
+			for( int i=0; i<m_kindMax; ++i )
+			{
+				m_frameList[i].transform.localScale = ( m_curForcus==i )? new Vector3( forcus,forcus,forcus ):new Vector3( basic,basic,basic );
+			}
+		}
+		{
+			if( Input.GetKeyDown( KeyCode.Space ) )
+			{
+				m_curForcus++;
+				m_curForcus %= m_kindMax;
+			}
+		}
+		{
+			var cr = GameObject.Find("Canvas");
+			var tx = GameObjectExtension.GetComponentInParentAndChildren<Text>( cr );
+			tx.text = "Resource  " + m_resourcePoint.ToString();
 		}
 	}
+	
 
-
-	//
+	//------------------------------------------------------------
+	//	get
+	//------------------------------------------------------------
 	public int GetHaveCost()
 	{
 		return m_resourcePoint;
 	}
+	public int GetForcus()
+	{
+		return m_curForcus;
+	}
+	public ResourceParam GetForcusResourceParam()
+	{
+		return m_resourceInformation.GetChild( m_curForcus ).GetComponent<ResourceParam>();
+	}
+	public bool CheckWhetherTheCostIsEnough()
+	{
+		return m_resourcePoint >= GetForcusResourceParam().m_createCost;
+	}
+
+
+	//------------------------------------------------------------
+	//	set
+	//------------------------------------------------------------	
 	public void AddResourceCost( int cost )
 	{
 		m_resourcePoint += cost;
 	}
-	public void UseResourceCost()
-	{
-		m_resourcePoint -= m_resourceInformation.GetChild( m_curForcus ).GetComponent<ResourceParam>().m_createCost;
-	}
-	public bool CheckWhetherTheCostIsEnough()
-	{
-		return m_resourcePoint >= m_resourceInformation.GetChild( m_curForcus ).GetComponent<ResourceParam>().m_createCost;
-	}
-
-
-	//
-	void OnGUI ()
-	{
-		Transform		g = GameObject.Find("ResourceInformation").transform.GetChild( m_curForcus );
-		ResourceParam	b = g.GetComponent<ResourceParam>();
-
-		GUIStyle		style = new GUIStyle();
-		style.alignment = TextAnchor.MiddleLeft;
-
-		GUIStyleState	state = new GUIStyleState();
-		state.textColor = new Color( 1,1,1,1 );
-		
-		style.normal = state;
-		
-		GUI.Label ( new Rect (700,400,200,100), 
-			"",
-			"box");
-
-        GUI.TextArea ( new Rect (700,400,200,100), 
-			"　資源残量　" + m_resourcePoint.ToString() +
-			"\n　作成費用　" + b.m_createCost.ToString() +
-			"\n　作成時間　" + b.m_createTime.ToString() + "秒",
-			style );
-    }
 }

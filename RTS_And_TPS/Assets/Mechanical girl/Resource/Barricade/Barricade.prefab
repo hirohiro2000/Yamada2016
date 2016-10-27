@@ -16,6 +16,8 @@ GameObject:
   - 114: {fileID: 11459258}
   - 114: {fileID: 11485322}
   - 114: {fileID: 11410666}
+  - 114: {fileID: 11458394}
+  - 114: {fileID: 11475464}
   m_Layer: 0
   m_Name: Barricade
   m_TagString: Untagged
@@ -31,7 +33,7 @@ Transform:
   m_GameObject: {fileID: 116518}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 2, z: 0.5}
+  m_LocalScale: {x: 5, y: 2, z: 0.3}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
@@ -114,6 +116,38 @@ MonoBehaviour:
   m_attackUp: 0
   m_defenseUp: 1
   m_hpUp: 800
+--- !u!114 &11458394
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 116518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 135
+    i1: 240
+    i2: 83
+    i3: 72
+    i4: 225
+    i5: 249
+    i6: 56
+    i7: 36
+    i8: 26
+    i9: 201
+    i10: 62
+    i11: 216
+    i12: 13
+    i13: 190
+    i14: 95
+    i15: 193
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &11459258
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -125,6 +159,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9340b9eaf15ea0d4bb1788d6fad667f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11475464
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 116518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 0
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &11479182
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -136,8 +190,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dafe97c5f27a52a4282bde65345ac642, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_createCost: 20
-  m_createTime: 2
+  m_createCost: 10
+  m_breakCost: 10
+  m_levelUpCost: 30
+  m_effectiveRange: 0
 --- !u!114 &11485322
 MonoBehaviour:
   m_ObjectHideFlags: 1

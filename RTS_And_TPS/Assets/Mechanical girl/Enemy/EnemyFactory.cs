@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Networking;
 using System.Collections;
 
-public class EnemyFactory : MonoBehaviour
+public class EnemyFactory : NetworkBehaviour
 {
 	public	GameObject	m_enemy;
 	public	int			m_max			= 1;
@@ -10,30 +12,38 @@ public class EnemyFactory : MonoBehaviour
 
 	private bool		m_running		= false;
 	private	float		m_waveCounter	= 0.0f;
+
+    [ SyncVar ]
 	private int			m_curWave		= 0;
 
 	// Use this for initialization
 	void Start ()
 	{
-		StartCoroutine( Spawn() );
+        if( isServer ){
+		    StartCoroutine( Spawn() );
+        }
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		m_waveCounter += Time.deltaTime;
+        if( isServer ){
+		    m_waveCounter += Time.deltaTime;
 
-		if( m_waveCounter > m_waveInterval )
-		{
-			m_running		= !m_running;
-			m_waveCounter	= 0;
+		    if( m_waveCounter > m_waveInterval )
+		    {
+			    m_running		= !m_running;
+			    m_waveCounter	= 0;
 
-			//	up wave
-			if( m_running )
-			{
-				m_curWave++;
-			}
-		}
+			    //	up wave
+			    if( m_running )
+			    {
+				    m_curWave++;
+			    }
+		    }
+        }
+
+		GameObject.Find("Canvas").transform.FindChild("Column_Wave").GetChild(0).GetComponent<Text>().text = "Wave  " + m_curWave.ToString();
 	}
 
 	IEnumerator Spawn()
@@ -58,31 +68,81 @@ public class EnemyFactory : MonoBehaviour
 
 				e.transform.parent		= transform;
 				e.transform.position	= new Vector3( rnd.x, 0.0f, rnd.y );
+
+                //  ネットワーク上で生成
+                NetworkServer.Spawn( e );
 			}
            
             yield return new WaitForSeconds( m_eachInterval );
         }     
     }
 
+	public bool IsExistEnemy()
+	{
+		return transform.childCount > 0;
+	}
+	public bool CheckWhetherWithinTheRange( Vector3 target, float rangeDist )
+	{
+		float	near	= rangeDist*rangeDist;
+
+		for( int i=0; i<transform.childCount; ++i )
+		{
+			Vector3 pos		= transform.GetChild(i).transform.position;
+			float	dist	= ( target - pos ).sqrMagnitude;
+
+			if( dist < near )
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+	public bool GetNearEnemyTransform( ref Transform trans, Vector3 target, float maxDist )
+	{
+		int		nearID	= -1;
+		float	near	= maxDist*maxDist;
+
+		for( int i=0; i<transform.childCount; ++i )
+		{
+			Vector3 pos		= transform.GetChild(i).transform.position;
+			float	dist	= ( target - pos ).sqrMagnitude;
+
+			if( dist < near )
+			{
+				near	= dist;
+				nearID	= i;
+			}
+		}
+
+		if( nearID != -1 )
+		{
+			trans = transform.GetChild( nearID ).transform;
+			return true;
+		}
+
+		trans = null;
+		return false;
+	}
 
 	void OnGUI ()
 	{
-		GUIStyle		style = new GUIStyle();
-		style.alignment = TextAnchor.MiddleLeft;
+		//GUIStyle		style = new GUIStyle();
+		//style.alignment = TextAnchor.MiddleLeft;
 
-		GUIStyleState	state = new GUIStyleState();
-		state.textColor = new Color( 1,1,1,1 );
+		//GUIStyleState	state = new GUIStyleState();
+		//state.textColor = new Color( 1,1,1,1 );
 		
-		style.normal = state;
+		//style.normal = state;
 		
-		GUI.Label ( new Rect (700,200,200,100), 
-			"",
-			"box");
+		//GUI.Label ( new Rect (700,200,200,100), 
+		//	"",
+		//	"box");
 
-        GUI.TextArea ( new Rect (700,200,200,100), 
-			"　ウェーブレベル　" + m_curWave.ToString() +
-			"\n　稼働　　　　　　" + m_running.ToString() +
-			"\n　タイマー　　　　" + (m_waveInterval-m_waveCounter).ToString() + "秒",
-			style );
+  //      GUI.TextArea ( new Rect (700,200,200,100), 
+		//	"　ウェーブレベル　" + m_curWave.ToString() +
+		//	"\n　稼働　　　　　　" + m_running.ToString() +
+		//	"\n　タイマー　　　　" + (m_waveInterval-m_waveCounter).ToString() + "秒",
+		//	style );
     }
 }

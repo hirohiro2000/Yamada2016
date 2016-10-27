@@ -64,6 +64,7 @@ GameObject:
   - 114: {fileID: 11435494}
   - 114: {fileID: 11405782}
   - 114: {fileID: 11443016}
+  - 114: {fileID: 11408906}
   m_Layer: 0
   m_Name: TPSPlayer
   m_TagString: Untagged
@@ -1533,6 +1534,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   sensitivity: 1
+--- !u!114 &11408906
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 112006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 200
+    i1: 152
+    i2: 134
+    i3: 237
+    i4: 44
+    i5: 88
+    i6: 67
+    i7: 196
+    i8: 25
+    i9: 205
+    i10: 47
+    i11: 103
+    i12: 52
+    i13: 84
+    i14: 233
+    i15: 216
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &11435494
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1548,6 +1581,10 @@ MonoBehaviour:
   XAxisRotater: {fileID: 482310}
   YAxisRotSpeed: 10
   XAxisRotSpeed: 10
+  XAxisMaxangle: 70
+  XaxisMinAngle: -70
+  RecoilDampRate: 5
+  MaxRecoil: 10
 --- !u!114 &11437104
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1574,6 +1611,8 @@ MonoBehaviour:
   landingChecker: {fileID: 11437104}
   Power: 5
   maxEnableTime: 0.1
+  maxHoverTime: 0.1
+  HoverPower: 0.1
 --- !u!124 &12408958
 Behaviour:
   m_ObjectHideFlags: 1

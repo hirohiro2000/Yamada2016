@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 180896}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
@@ -42,7 +42,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 180c9e6974a4b24458df6b49029f264b, type: 2}
+  - {fileID: 2100000, guid: c0da1f2f2da8c824ea4723c80d8af554, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -76,7 +76,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f8ae2196153d2429fb02a5c9c6f054, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_lifespan: 10
+  m_lifespan: 5
+  m_chaseSpeed: 20
 --- !u!135 &13530356
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -84,7 +85,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 180896}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5

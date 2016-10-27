@@ -1,11 +1,18 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
-public class CollisionParam : MonoBehaviour
+public class CollisionParam : NetworkBehaviour
 {
+    [ SyncVar ]
 	public int	m_level			= 1;
+
+    [ SyncVar ]
 	public int	m_attack		= 0;
+    [ SyncVar ]
 	public int	m_defense		= 0;
+
+    [ SyncVar ]
 	public int	m_hp			= 0;
 
 	public int	m_attackUp		= 0;
@@ -14,6 +21,8 @@ public class CollisionParam : MonoBehaviour
 
 	private int m_initAttack	= 0;
 	private int m_initDefense	= 0;
+
+    [ SyncVar ]
 	private int m_initHp		= 0;
 
 	// Use this for initialization
@@ -45,7 +54,7 @@ public class CollisionParam : MonoBehaviour
 		m_initHp		= hp;
 
 		m_attack		= attack;
-		m_defense		= defense;
+		m_defense		= defense; 
 		m_hp			= hp;
 	}
 

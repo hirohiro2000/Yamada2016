@@ -1,13 +1,21 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿
+using   UnityEngine;
+using   UnityEngine.Networking;
+using   System.Collections;
 
-public class TPSNormalGun : MonoBehaviour
+public class TPSNormalGun : NetworkBehaviour
 {
+    [ SyncVar ]
+    public  int     c_ShooterID =   0;
+
 	[SerializeField]
 	GameObject particle;
 
 	float cntTime;
 	float destroyTime;
+
+    //  外部へのアクセス
+    private LinkManager m_rLinkManager  =   null;
 
 	public void Shot_Start(float time)
 	{
@@ -15,9 +23,9 @@ public class TPSNormalGun : MonoBehaviour
 	}
 
 	// Use this for initialization
-	void Start()
+	void    Start()
 	{
-
+        m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
 	}
 
 	// Update is called once per frame
@@ -31,10 +39,13 @@ public class TPSNormalGun : MonoBehaviour
 		}
 	}
 
-	public void OnCollisionEnter(Collision collision)
+	public  void    OnCollisionEnter( Collision collision )
 	{
-		if(particle != null)
-			Instantiate(particle, transform.position, transform.rotation * Quaternion.AngleAxis(180, Vector3.right));
-		Destroy(this.gameObject);
+        //  ヒットエフェクト
+		if( particle != null )
+			Instantiate( particle, transform.position, transform.rotation * Quaternion.AngleAxis( 180, Vector3.right ) );
+        
+        //  オブジェクト破棄
+		Destroy( this.gameObject );
 	}
 }

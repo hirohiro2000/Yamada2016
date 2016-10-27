@@ -1,8 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿
+using   UnityEngine;
+using   UnityEngine.Networking;
+using   System.Collections;
 
 public class CharacterMover : MonoBehaviour {
 
+    private NetworkIdentity m_rIdentity =   null;
 
 	CharacterController _characterController;
 	CharacterController characterController
@@ -19,8 +22,9 @@ public class CharacterMover : MonoBehaviour {
 
 	Vector3 totalSpeed;
 	// Use this for initialization
-	void Start () {
-	
+	void    Start()
+    {
+	    m_rIdentity =   GetComponent< NetworkIdentity >();   
 	}
 
 
@@ -31,6 +35,9 @@ public class CharacterMover : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
+        //  自分のキャラクター以外は処理を行わない
+        if( !m_rIdentity.isLocalPlayer )    return;
+
 		characterController.Move(totalSpeed * Time.deltaTime);
 		totalSpeed = Vector3.zero;
     }

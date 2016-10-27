@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
-public class TPS_EnemyAttacker : MonoBehaviour {
+public class TPS_EnemyAttacker : NetworkBehaviour {
 	public float coolDown;
 	float cntCooldown;
 
@@ -43,17 +45,21 @@ public class TPS_EnemyAttacker : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        //  サーバーでのみ処理を行う
+        if( !isServer ) return;
+
 		isAttack = false;
 		cntCooldown -= Time.deltaTime;
-		Transform target = enemyAtkTargetManager.getNearestTarget(transform.position, searchRadius, false);
+		Transform   target      =   enemyAtkTargetManager.getNearestTarget(transform.position, searchRadius, false);
 		if(target != null)
 		{
 			isAttack = true;
 
 			if(rotatePoint != null)
 			{
-				Vector3 direction = target.position - rotatePoint.position;
-				Vector3 direction2D = direction;
+                Vector3     targetPos   =   target.position + Vector3.up * 1.0f;
+				Vector3     direction   =   targetPos - rotatePoint.position;
+				Vector3     direction2D =   direction;
                 direction2D.y = .0f;
 				direction2D.Normalize();
 
@@ -94,6 +100,8 @@ public class TPS_EnemyAttacker : MonoBehaviour {
 					//自動消去設定
 					Destroy(emit, 10.0f);
 
+                    //  ネットワーク上で共有
+                    NetworkServer.Spawn( emit );
 				}
 			}
 		}

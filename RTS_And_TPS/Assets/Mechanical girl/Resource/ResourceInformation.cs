@@ -1,52 +1,117 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
+using System;
 
-public class ResourceInformation : MonoBehaviour
+public class ResourceInformation : NetworkBehaviour
 {
 	public  GameObject		m_gridSplitSpacePlane					= null;
 	public	Transform		m_gridSplitSpacePlaneTargetTransform	= null;
 
 	public	float			m_gridSplitSpaceScale					= 10.0f;
+    public  Vector3         m_GridOffset                            = Vector3.zero;
+
 	private	const int		m_gridSplitNum							= 100;
+
+    //  作成済みリソースへのアクセス
+    private Transform       m_rFieldResources                       =   null;
 
 	struct GridInformation
 	{
-		public bool			exist;
-		public GameObject	resource;
+		public  bool        exist;
+		public  GameObject	resource;
+        public  GridInformation( bool _Exsit, GameObject _rObj ){
+            exist       =   _Exsit;
+            resource    =   _rObj;
+        }
 	}
-	private GridInformation[,]	m_fieldResourceInformations		= null;
+	//private GridInformation[,]	m_fieldResourceInformations		= null;
 
+    //  同期用
+    [ System.Serializable ]
+    public  struct  GridInfo_Net{
+        public  int                 x, y;
+        public  NetworkInstanceId   netId;
+        public  GridInfo_Net( int _X, int _Y, NetworkInstanceId _NetID ){
+            x       =   _X;
+            y       =   _Y;
+            netId   =   _NetID;
+        }
+    }
+    public  class   SyncListGridInfo    :   SyncListStruct< GridInfo_Net >{
+
+    }
+    public  SyncListGridInfo    m_rGridInfo     =   new SyncListGridInfo();
 
 	// Use this for initialization
 	void Start ()
 	{
-		m_gridSplitSpacePlane	= Instantiate( m_gridSplitSpacePlane );
-		m_gridSplitSpacePlane.transform.localScale = new Vector3( m_gridSplitSpaceScale*0.1f, 1.0f, m_gridSplitSpaceScale*0.1f );
+        m_rFieldResources       =   GameObject.Find( "FieldResources" ).transform;
 
-		m_fieldResourceInformations = new GridInformation[ m_gridSplitNum, m_gridSplitNum ];
-		for( int i=0; i<m_gridSplitNum; ++i )
-		{
-			for( int j=0; j<m_gridSplitNum; ++j )
-			{
-				m_fieldResourceInformations[i,j].exist		= false;
-				m_fieldResourceInformations[i,j].resource	= null;
-			}
-		}
+		m_gridSplitSpacePlane	= Instantiate( m_gridSplitSpacePlane );
+		m_gridSplitSpacePlane.transform.localScale = new Vector3( m_gridSplitSpaceScale*0.1f, 1.0f, m_gridSplitSpaceScale*0.1f );//test
+
+        //  非表示
+        m_gridSplitSpacePlane.GetComponent< MeshRenderer >().enabled    =   false;
 	}
 
 	
 	// Update is called once per frame
 	void Update ()
 	{
+        //  
+        if( !m_gridSplitSpacePlaneTargetTransform ) return;
+
 		m_gridSplitSpacePlane.transform.position = ComputeGridPosition( m_gridSplitSpacePlaneTargetTransform.position );
-		m_gridSplitSpacePlane.transform.position += new Vector3( 0, -m_gridSplitSpacePlaneTargetTransform.transform.localScale.y*0.5f+0.1f, 0 );
+		m_gridSplitSpacePlane.transform.position += new Vector3( 0, 0.04f, 0 );
 	}
 
+    //---------------------------------------------------------------------
+	//      グリッド関係の操作
+	//---------------------------------------------------------------------
+    GridInfo_Net    GetGridInfo( int _X, int _Y )
+    {
+        for( int i = 0; i < m_rGridInfo.Count; i++ ){
+            if( m_rGridInfo[ i ].x != _X )  continue;
+            if( m_rGridInfo[ i ].y != _Y )  continue;
+
+            return  m_rGridInfo[ i ];
+        }
+
+        //  項目が見つからない場合は何も置かれていないので、空のデータを返す
+        return  new GridInfo_Net( _X, _Y, NetworkInstanceId.Invalid );
+    }
+    void            AddGridInfo( GridInfo_Net _GridInfo )
+    {
+        m_rGridInfo.Add( _GridInfo );
+    }
+    void            RemoveGridInfo( int _X, int _Y )
+    {
+        for( int i = 0; i < m_rGridInfo.Count; i++ ){
+            if( m_rGridInfo[ i ].x != _X )  continue;
+            if( m_rGridInfo[ i ].y != _Y )  continue;
+
+            m_rGridInfo.RemoveAt( i );
+        }
+    }
+
+    GameObject      FindResourceAtNetID( NetworkInstanceId _NetID )
+    {
+        for( int i = 0; i < m_rFieldResources.childCount; i++ ){
+            Transform       rTrans      =   m_rFieldResources.GetChild( i );
+            NetworkIdentity rIdentity   =   rTrans.GetComponent< NetworkIdentity >();
+
+            if( rIdentity.netId == _NetID ) return  rIdentity.gameObject;
+        }
+
+        return  null;
+    }
 
 	//---------------------------------------------------------------------
 	//  
 	//---------------------------------------------------------------------
-	public int LevelUpResource( Vector3 pos )
+	public void LevelUpResource( Vector3 pos )
     {
 		var gi = ComputeGridResource( pos );
 
@@ -56,10 +121,7 @@ public class ResourceInformation : MonoBehaviour
 			var rp = gi.resource.GetComponent<ResourceParam>();
 
 			cp.LevelUp();
-			return rp.m_createCost;
 		}
-
-		return 0;
 	}
 
 
@@ -81,7 +143,20 @@ public class ResourceInformation : MonoBehaviour
 	{
 		int x,y;
 		ComputeGridResourceExistentID( pos, out x, out y );
-		return m_fieldResourceInformations[x,y];
+
+        GridInformation gridInfo;
+        GridInfo_Net    rGINet      =   GetGridInfo( x, y );
+
+        //  使用されていない場合は検索せずに返す
+        if( rGINet.netId == NetworkInstanceId.Invalid ){
+            return  new GridInformation( false, null );
+        }
+
+        //  ネットワークＩＤからオブジェクトを検索して返す
+        gridInfo.exist      =   true;
+        gridInfo.resource   =   FindResourceAtNetID( rGINet.netId );
+                
+        return  gridInfo;
 	}
 	public Vector3 ComputeGridPosition( Vector3 pos )
 	{
@@ -89,7 +164,7 @@ public class ResourceInformation : MonoBehaviour
 		int splitScaleX = (int)(( pos.x / m_gridSplitSpaceScale ) + ( Mathf.Sign( pos.x )>0? 0.5f:-0.5f ));
 		int splitScaleZ = (int)(( pos.z / m_gridSplitSpaceScale ) + ( Mathf.Sign( pos.z )>0? 0.5f:-0.5f ));
 
-		return new Vector3( splitScaleX*m_gridSplitSpaceScale, pos.y, splitScaleZ*m_gridSplitSpaceScale );
+		return new Vector3( splitScaleX*m_gridSplitSpaceScale, pos.y, splitScaleZ*m_gridSplitSpaceScale ) + m_GridOffset;
 	}
 
 
@@ -108,11 +183,15 @@ public class ResourceInformation : MonoBehaviour
 		if( gi.resource == null )
 			return false;
 
-		return haveCost >= gi.resource.GetComponent<ResourceParam>().m_createCost;
+		return haveCost >= gi.resource.GetComponent<ResourceParam>().m_levelUpCost;
 	}
 	public ResourceParam GetResourceParamFromPosition( Vector3 pos )
 	{
-		return ComputeGridResource( pos ).resource.GetComponent<ResourceParam>();
+        GridInformation rGridInfo   =   ComputeGridResource( pos );
+        GameObject      rObj        =   rGridInfo.resource;
+
+        if( !rObj )     return  null;
+        else		    return  rObj.GetComponent< ResourceParam >();
 	}
 
 	
@@ -127,13 +206,15 @@ public class ResourceInformation : MonoBehaviour
 		
 		if( enable )
 		{
-			m_fieldResourceInformations[x,y].resource	= game;
-			m_fieldResourceInformations[x,y].exist		= true;
+            AddGridInfo( new GridInfo_Net( x, y, game.GetComponent< NetworkIdentity >().netId ) );
 		}
 		else
 		{
-			Destroy( m_fieldResourceInformations[x,y].resource );
-			m_fieldResourceInformations[x,y].exist = false;
+            GridInfo_Net    rGINet      =   GetGridInfo( x, y );
+            GameObject      rObj        =   FindResourceAtNetID( rGINet.netId );
+
+            Destroy( rObj );
+            RemoveGridInfo( x, y );
 		}
 	}
 }
