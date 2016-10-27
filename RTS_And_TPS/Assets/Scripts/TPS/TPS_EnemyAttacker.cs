@@ -97,9 +97,10 @@ public class TPS_EnemyAttacker : NetworkBehaviour {
 				{
 					GameObject emit = Instantiate(bullet, firePoint.position, Quaternion.LookRotation(firePoint.forward)) as GameObject;
 					emit.GetComponent<Rigidbody>().velocity = firePoint.forward * ShotSpeed;
+                    emit.GetComponent<PlayerDamageSource>().user = gameObject;
+
 					//自動消去設定
 					Destroy(emit, 10.0f);
-
                     //  ネットワーク上で共有
                     NetworkServer.Spawn( emit );
 				}

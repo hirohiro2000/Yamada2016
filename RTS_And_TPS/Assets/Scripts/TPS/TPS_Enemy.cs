@@ -24,13 +24,8 @@ public class TPS_Enemy : NetworkBehaviour {
 		if (healthBar3D != null)
 			healthBar3D.setValue(1.0f);
 
-        //  アクセスの取得
-        m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+            UIRadar.AddEnemy(this.gameObject);
 
-        //  クライアントではナビメッシュを使用しない
-        if( !isServer ){
-            GetComponent< NavMeshAgent >().enabled  =   false;
-        }
     }
 	
 	// Update is called once per frame
@@ -61,6 +56,8 @@ public class TPS_Enemy : NetworkBehaviour {
 			}
 
             EnemyKillCounter.killCount++;
+
+            UIRadar.Remove(this.gameObject);
 			Destroy(this.gameObject);
 		}
     }

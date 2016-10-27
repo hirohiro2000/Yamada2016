@@ -4,7 +4,9 @@ using System.Collections;
 public class PlayerDamageSource : MonoBehaviour {
 
 	public float damage;
-	// Use this for initialization
+	public GameObject user;
+    
+    // Use this for initialization
 	void Start()
 	{
 
