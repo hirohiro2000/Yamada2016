@@ -3623,8 +3623,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1551213989}
-  - 114: {fileID: 1551213988}
   - 114: {fileID: 1551213987}
+  - 114: {fileID: 1551213990}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -3640,22 +3640,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1551213986}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 227461547, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  manager: {fileID: 0}
-  showGUI: 1
-  offsetX: 0
-  offsetY: 0
---- !u!114 &1551213988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1551213986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -822479833, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Script: {fileID: 11500000, guid: 24929d8821aac47499a99f75b81a4a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_NetworkPort: 7777
@@ -3674,14 +3659,14 @@ MonoBehaviour:
   m_OnlineScene: NetworkTPS
   m_SpawnPrefabs:
   - {fileID: 139324, guid: fc8b7118c882faf409d4543710b92ff2, type: 2}
+  - {fileID: 185506, guid: ef62698dc89114541a6189b4ec9fc0a9, type: 2}
   - {fileID: 157942, guid: db874c3afb464df4da0c95ca97388354, type: 2}
   - {fileID: 123582, guid: 6bf2455eef8c6de4db4c195f33deede9, type: 2}
-  - {fileID: 185506, guid: ef62698dc89114541a6189b4ec9fc0a9, type: 2}
+  - {fileID: 136810, guid: d66b739d04c848142ae80eff4d388aff, type: 2}
   - {fileID: 125984, guid: a7d6a9ae7b64c0544b94f04510acf9d2, type: 2}
   - {fileID: 184110, guid: 08babea6d8cb694438e0412678bd0bcd, type: 2}
   - {fileID: 110918, guid: 9cd012300182dd548a3852445238cec5, type: 2}
   - {fileID: 152886, guid: bd5ad4d648073fe40a17d34abab4c63f, type: 2}
-  - {fileID: 136810, guid: d66b739d04c848142ae80eff4d388aff, type: 2}
   - {fileID: 0}
   m_CustomConfig: 0
   m_MaxConnections: 4
@@ -3735,6 +3720,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &1551213990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1551213986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f58eece28be7074da28c12e7ada3068, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_rNetworkManager: {fileID: 0}
+  m_MatchSize: 20
+  showGUI: 1
 --- !u!4 &1552963142 stripped
 Transform:
   m_PrefabParentObject: {fileID: 479142, guid: a7d6a9ae7b64c0544b94f04510acf9d2, type: 2}
