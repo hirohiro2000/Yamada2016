@@ -83,24 +83,6 @@ public class FunctionManager : MonoBehaviour {
         BOTTOM_LEFT,
         BOTTOM_RIGHT,
     }
-    //  旧
-    public  static  Rect    AdjustRectCanvasToGUI( AR_TYPE_X _TypeX, AR_TYPE_Y _TypeY, Vector2 _Pivot, Rect _Rect )
-    {
-        switch( _TypeX ){
-            case    AR_TYPE_X.LEFT:     _Rect.x =   _Rect.x - _Rect.width * _Pivot.x + Screen.width * 0.0f;     break;
-            case    AR_TYPE_X.CENTER:   _Rect.x =   _Rect.x - _Rect.width * _Pivot.x + Screen.width * 0.5f;     break;
-            case    AR_TYPE_X.RIGHT:    _Rect.x =   _Rect.x - _Rect.width * _Pivot.x + Screen.width * 1.0f;     break;
-        }
-        switch( _TypeY ){
-            case    AR_TYPE_Y.TOP:      _Rect.y =   Screen.height * 0.5f -_Rect.height * ( 0.5f - ( _Pivot.y - 0.5f ) ) - Screen.height * 0.5f - _Rect.y; break;
-            case    AR_TYPE_Y.MIDDLE:   _Rect.y =   Screen.height * 0.5f -_Rect.height * ( 0.5f - ( _Pivot.y - 0.5f ) ) + Screen.height * 0.0f - _Rect.y; break;
-            case    AR_TYPE_Y.BOTTOM:   _Rect.y =   Screen.height * 0.5f -_Rect.height * ( 0.5f - ( _Pivot.y - 0.5f ) ) + Screen.height * 0.5f - _Rect.y; break;
-        }
-
-        return  _Rect;
-    }
-
-    //  新
     public  static  Rect    AdjustRectCanvasToGUI( AR_TYPE _Type, Rect _Rect )
     {
         return  AdjustRectCanvasToGUI( _Type, _Rect, new Vector2( 0.5f, 0.5f ), new Vector2( Screen.width, Screen.height ) );
