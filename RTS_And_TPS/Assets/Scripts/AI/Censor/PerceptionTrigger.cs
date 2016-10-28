@@ -14,10 +14,10 @@ public class PerceptionTrigger : MonoBehaviour {
     void Awake()
     {
         m_owner = transform.parent.GetComponent<VisibilityChecker>();
-        if(m_trigger_enter_message_type == ViewMessageWrapper.MessageType.Error)
-        {
-            Debug.Log("PerceptionTrigger message_type is error !!");
-        }
+        //if(m_trigger_enter_message_type == ViewMessageWrapper.MessageType.Error)
+        //{
+        //    Debug.Log("PerceptionTrigger message_type is error !!");
+        //}
 
         m_trigger_out_message_type =
             (m_trigger_enter_message_type == ViewMessageWrapper.MessageType.InVisibilityRange) ?

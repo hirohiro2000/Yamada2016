@@ -21,7 +21,7 @@ public class EnemyBaseWalker : NetworkBehaviour {
 
 		attacker = GetComponent<TPS_EnemyAttacker>();
 		agent = GetComponent<NavMeshAgent>();
-		basePoint = GameObject.Find("Base").transform;
+		basePoint = GameObject.Find("Homebase").transform;
 
         agent.SetDestination( basePoint.position );
     }
