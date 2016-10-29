@@ -6,7 +6,7 @@ public class AttackPointList : MonoBehaviour {
 	public float baseAttackPoint;
 
 	[SerializeField, ReorderableList(new int[] { 100, 100 })]
-	WeakPointParamReorderableList attack_list = null;
+	public WeakPointParamReorderableList attack_list = null;
 
 	[SerializeField]
 	Transform autoDestroyObject = null;
@@ -18,17 +18,26 @@ public class AttackPointList : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		Collider collider = GetComponent<Collider>();
+		if(collider.enabled == true)
+		{
+			collider.enabled = false;
+			collider.enabled = true;
+		}
 	}
 
 	void OnTriggerEnter(Collider collider)
 	{	
-		for (int i = 0; i < attack_list.Length; i++)
+		//for (int i = 0; i < attack_list.Length; i++)
+		//{
+		//	float damage = baseAttackPoint * attack_list[i].multiple;
+		//	Debug.Log("Damage:" + damage + "(" + attack_list[i].type.ToString() + ")");
+		//}
+		DamageBank damageBank = collider.GetComponentInParent<DamageBank>();
+		if (damageBank != null)
 		{
-			float damage = baseAttackPoint * attack_list[i].multiple;
-			Debug.Log("Damage:" + damage + "(" + attack_list[i].type.ToString() + ")");
+			damageBank.RecieveDamage(this,collider);
 		}
-		collider.attachedRigidbody.GetComponent<DamageBank>().SendDamege(this,collider);
     }
 
 	public void CallDestroy()

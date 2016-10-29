@@ -3,14 +3,25 @@ using System.Collections;
 
 
 
-public enum WeakPointType
+public enum WeakPointType//最大値 = 
 {
+	ATTACK_PLAYER_TYPE = 0,
 	TPSAttack,
 	RTSAttack,
+	ATTACK_PLAYER_END = 50,
+
+	ATTACK_ATTRIBUTE_TYPE,
 	Fire,
 	Ice,
 	Explosion,
 	Arrow,
+	ATTACK_ATTRIBUTE_END = ATTACK_PLAYER_END + 100,
+
+	SPECIAL_EFFECT_TYPE,
+	Recovery,
+	Slow,
+	Stop,
+	SPECIAL_EFFECT_END = ATTACK_ATTRIBUTE_END + 100,
 };
 
 [System.Serializable]
