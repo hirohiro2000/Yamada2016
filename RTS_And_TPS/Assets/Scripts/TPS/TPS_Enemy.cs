@@ -8,10 +8,10 @@ public class TPS_Enemy : NetworkBehaviour {
 	float hp;
 
 	[SerializeField]
-	HealthBar3D healthBar3D;
+	HealthBar3D healthBar3D = null;
 
 	[SerializeField]
-	Transform hpBar;
+	Transform hpBar = null;
 
 
     //  外部へのアクセス

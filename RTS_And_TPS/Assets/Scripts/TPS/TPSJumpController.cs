@@ -6,14 +6,14 @@ public class TPSJumpController : MonoBehaviour {
 
     private NetworkIdentity m_rIdentity =   null;
 
-	[SerializeField]
-	TPSLandingChecker landingChecker;
+	//[SerializeField]
+	//TPSLandingChecker landingChecker;
 
 	[SerializeField]
-	float Power;
+	float Power = .0f;
 
-	[SerializeField]
-	float maxEnableTime = 0.1f;
+	//[SerializeField]
+	//float maxEnableTime = 0.1f;
 
 	[SerializeField]
 	float maxHoverTime = 0.1f;

@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 public class DamageResult
 {
-	float damage;
-	AttackPointList attackPointList;
+	//float damage;
+	//AttackPointList attackPointList;
 }
 [RequireComponent(typeof(Rigidbody))]
 public class DamageBank : MonoBehaviour {
 
-	public List<DamageResult> damageList;
+	//public List<DamageResult> damageList;
 	// Use this for initialization
 	void Start () {
 	
@@ -19,15 +19,6 @@ public class DamageBank : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
-	}
-	void OnCollisionStay(Collision collision)
-	{
-		int i = 0;
-	}
-
-	void OnTriggerStay(Collider collision)
-	{
-		int i = 0;
 	}
 
 	public void SendDamege(AttackPointList atk ,Collider damagedCollider)

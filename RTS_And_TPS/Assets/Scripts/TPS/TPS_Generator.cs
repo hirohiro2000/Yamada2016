@@ -10,7 +10,7 @@ public class TPS_Generator : MonoBehaviour {
 	private float m_resporn_interval_second = 2.0f;
 
 	[SerializeField]
-	private GameObject m_generate_object;
+	private GameObject m_generate_object = null;
 
 	// Use this for initialization
 	void Start()
@@ -32,8 +32,17 @@ public class TPS_Generator : MonoBehaviour {
 				new_object.transform.position = resporn_object.position;
 			new_object.transform.rotation = resporn_object.rotation;
 
-            //  ネットワーク上で生成
-            NetworkServer.Spawn( new_object );
+			//cloneをまとめる
+			string parentName = new_object.name + "s";
+			GameObject parent = GameObject.Find(parentName);
+			if (parent == null)
+			{
+				parent = new GameObject(parentName);
+			}
+			new_object.transform.parent = parent.transform;
+
+			//  ネットワーク上で生成
+			NetworkServer.Spawn( new_object );
 
 			yield return new WaitForSeconds(m_resporn_interval_second);
 
