@@ -14,6 +14,7 @@ public class GirlController : NetworkBehaviour
 	private ResourceInformation	m_resourceInformation;
 	private ResourceCreator		m_resourceCreator;
 	private ItemController		m_itemCntroller;
+    private Rigidbody           m_rRigid                    = null;
 
 	private const KeyCode		m_okKey						= KeyCode.J;
 	private const KeyCode		m_cancelKey					= KeyCode.L;
@@ -22,6 +23,7 @@ public class GirlController : NetworkBehaviour
 	private int					m_itemKindMax				= 0;
 
 	public float				m_moveSpeed					= 1.0f;
+    public float                m_LiftingForce              = 1.0f;
 	public float				m_itemEventSpeed			= 1.0f;
 
 	private enum ActionState
@@ -44,8 +46,10 @@ public class GirlController : NetworkBehaviour
 		m_resourceInformation			= GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
 		m_resourceCreator				= GetComponent<ResourceCreator>();
 		m_itemCntroller					= GetComponent<ItemController>();
+        m_rRigid                        = GetComponent< Rigidbody >();
 
 		m_itemKindMax					= GameObject.Find("ResourceInformation").transform.childCount;
+
 	}
 
 	//	Write to the FixedUpdate if including physical behavior
@@ -53,6 +57,11 @@ public class GirlController : NetworkBehaviour
 	{
         //  自分のキャラクターの場合のみ処理を行う
         if( !isLocalPlayer ) return;
+
+        //  座標調整（いまだけ）
+        if( Input.GetKey( KeyCode.M ) ){
+            m_rRigid.AddForce( Vector3.up * m_LiftingForce );
+        }
 
 		switch( m_actionState )
 		{
@@ -217,6 +226,13 @@ public class GirlController : NetworkBehaviour
 
 		return -1;
 	}
+    public  void    SetActiveButton( bool _IsActive )
+    {
+        m_buttonOk.SetActive( _IsActive );
+        m_buttonCancel.SetActive( _IsActive );
+        m_buttonLevel.SetActive( _IsActive );
+        m_buttonBreak.SetActive( _IsActive );
+    }
 
     //---------------------------------------------------------------------
 	//      コマンド

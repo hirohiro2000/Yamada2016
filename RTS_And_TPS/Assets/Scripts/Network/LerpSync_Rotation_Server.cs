@@ -29,9 +29,6 @@ public class LerpSync_Rotation_Server : NetworkBehaviour {
         }
         //  他人のキャラなら共有座標を適用
         else{
-            //  反映を少し遅らせる
-            transform.rotation  =   Quaternion.Lerp( transform.rotation, m_SyncPose, c_LerpRatio );
-
             //  開始時はぴったり合わせる
             if( m_SyncState == SyncState.StartOK ){
                 transform.rotation  =   m_SyncPose;

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using System.Collections;
 
 public class TurretBullet : MonoBehaviour
@@ -7,14 +8,16 @@ public class TurretBullet : MonoBehaviour
 	public float		m_lifespan		= 3.0f;
 	public float		m_chaseSpeed	= 1.0f;
 
-	private EnemyFactory	m_factory;
-	private Transform		m_target;
+	private EnemyShell_Control  m_rEnemyShell   =   null;
+    private LinkManager         m_rLinkManager  =   null;
+	private Transform		    m_target        =   null;
 
 	// Use this for initialization
 	void Start ()
 	{
-		m_factory = GameObject.Find("EnemyFactory").GetComponent<EnemyFactory>();
-		m_factory.GetNearEnemyTransform( ref m_target, transform.position, float.MaxValue );
+		m_rEnemyShell   =   GameObject.Find( "Enemy_Shell" ).GetComponent< EnemyShell_Control >();
+        m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+		m_rEnemyShell.GetNearEnemyTransform( ref m_target, transform.position, float.MaxValue );
 	}
 	
 	// Update is called once per frame
@@ -47,12 +50,25 @@ public class TurretBullet : MonoBehaviour
 		m_speed				= speed;
 	}
 
-	void OnCollisionEnter( Collision collision )
+	void    OnTriggerEnter( Collider _Collider )
 	{
-		Destroy( gameObject );
+        Transform   rTrans  =   _Collider.transform;
+        if( rTrans.tag != "Enemy" )     return;
+
+        TPS_Enemy   rEnemy  =   rTrans.GetComponent< TPS_Enemy >();
+        if( !rEnemy )   rEnemy  =   rTrans.GetComponentInParent< TPS_Enemy >();
+        if( !rEnemy )                   return;
+
+        CollisionParam  rParam  =   GetComponent< CollisionParam >();
+        if( !rParam )                   return;
+
+        //  ダメージを与える（サーバーのみ）
+        if( m_rLinkManager.isServer ){
+            rEnemy.GiveDamage( rParam.m_attack );
+        }
+
+        //  オブジェクトを破棄
+        Destroy( gameObject );
 	}
-	void OnTriggerEnter( Collider collision )
-	{
-		Destroy( gameObject );
-	}
+
 }

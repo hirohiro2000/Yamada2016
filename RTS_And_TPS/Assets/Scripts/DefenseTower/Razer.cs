@@ -9,24 +9,23 @@ public class Razer : NetworkBehaviour
     public  float   m_fireRange =   30.0f;
 	private int		m_lazerID	=   1;
 
-    private EnemyFactory	m_rFactory			=   null;
-    private Tragetor        m_rTragetor         =   null;
-    private float           m_IntervalTimer     =   0.0f;
-    private float           m_RazerTimer        =   0.0f;
+    private EnemyShell_Control  m_rEnemyShell		=   null;
+    private Tragetor            m_rTragetor         =   null;
+    private float               m_IntervalTimer     =   0.0f;
+    private float               m_RazerTimer        =   0.0f;
 
 	// Use this for initialization
 	void Start ()
-	{	
-		//StartCoroutine( ChangeOnOff() );
-
-        m_rFactory  =   GameObject.Find( "EnemyFactory" ).GetComponent< EnemyFactory >();
-        m_rTragetor =   GetComponent< Tragetor >();
+	{
+        m_rEnemyShell   =   GameObject.Find( "Enemy_Shell" ).GetComponent< EnemyShell_Control >();
+        m_rTragetor     =   GetComponent< Tragetor >();
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-        GameObject  rRazer  =   transform.GetChild( m_lazerID ).gameObject;
+        Transform   rRazerTrans =   transform.GetChild( m_lazerID );
+        GameObject  rRazer      =   rRazerTrans.gameObject;
 
         //  タイマー更新
         {
@@ -34,12 +33,17 @@ public class Razer : NetworkBehaviour
             else                        m_RazerTimer    =   Mathf.Max( m_RazerTimer    - Time.deltaTime, 0.0f );
         }
 
+        //  当たり判定を行うのは１フレームだけ
+        rRazer.GetComponent< Collider >().enabled   =   false;
+
+        //  当たり判定
         if( isServer
         &&  m_IntervalTimer <= 0.0f
-        &&  m_rFactory.IsExistEnemy() && m_rFactory.CheckWhetherWithinTheRange( transform.position, m_fireRange ) ){
+        &&  m_rEnemyShell.IsExistEnemy() && m_rEnemyShell.CheckWhetherWithinTheRange( transform.position, m_fireRange ) ){
             m_rTragetor.UpdateRotation();
 
             rRazer.SetActive( true );
+            rRazer.GetComponent< Collider >().enabled   =   true;
 
             m_IntervalTimer =   m_interval;
             m_RazerTimer    =   m_RazerTime;
@@ -47,20 +51,11 @@ public class Razer : NetworkBehaviour
             //  クライアント側でも処理
             RpcSpawnRazer( transform.rotation );
         }
+        //  放射終了
         if( m_RazerTimer <= 0.0f ){
             rRazer.SetActive( false );
         }
 	}
-
-	IEnumerator ChangeOnOff()
-    {
-        while( true )
-        {
-			var g = transform.GetChild( m_lazerID ).gameObject;
-           	g.SetActive( !g.activeInHierarchy );
-            yield return new WaitForSeconds( m_interval );
-        }     
-    }
 
     //  リクエスト
     [ ClientRpc ]

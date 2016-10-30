@@ -28,6 +28,14 @@ public class TPS_Enemy : NetworkBehaviour {
 
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
     }
+    public  override    void    OnStartServer()
+    {
+        transform.parent    =   GameObject.Find( "Enemy_Shell" ).transform;
+    }
+    public  override    void    OnStartClient()
+    {
+        transform.parent    =   GameObject.Find( "Enemy_Shell" ).transform;
+    }
 	
 	// Update is called once per frame
 	void    Update()
@@ -92,8 +100,6 @@ public class TPS_Enemy : NetworkBehaviour {
 				}
 			}
 
-
-			//GiveDamage(maxDamageMultiple * source.damage);
             //  プレイヤーを介してサーバーにダメージを送信
             NetPlayer_Control   rNPControl  =   m_rLinkManager.m_rLocalPlayer.GetComponent< NetPlayer_Control >();
             rNPControl.CmdSendDamageEnemy( netId, maxDamageMultiple * source.damage );

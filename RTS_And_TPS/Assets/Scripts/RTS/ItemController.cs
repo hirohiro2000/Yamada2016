@@ -37,8 +37,11 @@ public class ItemController : NetworkBehaviour
 			m_frameList.Add( add );
 		}
 	}
-	void OnDestroy()
+	public  override    void    OnNetworkDestroy()
 	{
+        base.OnNetworkDestroy();
+
+        if( m_frameList == null )   return;
         for( int i = 0; i < m_frameList.Count; i++ ){
             Destroy( m_frameList[ i ].gameObject );
         }

@@ -4,9 +4,9 @@ using System.Collections;
 
 public class Tragetor : NetworkBehaviour
 {
-	private EnemyFactory	m_enemyFactory;
-	public	float			m_forcusRange		= 30.0f;
-	public	float			m_targettingSpeed	= 0.5f;
+	private EnemyShell_Control  m_rEnemyShell       =   null;
+	public	float			    m_forcusRange		=   30.0f;
+	public	float			    m_targettingSpeed	=   0.5f;
 
 	// Use this for initialization
 	void Start()
@@ -14,7 +14,7 @@ public class Tragetor : NetworkBehaviour
         //  サーバーでのみ処理を行う
         if( !isServer ) return;
 
-		m_enemyFactory = GameObject.Find("EnemyFactory").GetComponent<EnemyFactory>();
+		m_rEnemyShell   =   GameObject.Find( "Enemy_Shell" ).GetComponent< EnemyShell_Control >();
 	}
 	
 	// Update is called once per frame
@@ -36,9 +36,11 @@ public class Tragetor : NetworkBehaviour
     public  void    UpdateRotation()
     {
         Transform trs = null;
-        if( m_enemyFactory.GetNearEnemyTransform( ref trs, transform.position, m_forcusRange ) )
+        if( m_rEnemyShell.GetNearEnemyTransform( ref trs, transform.position, m_forcusRange ) )
         {
             Vector3 forward = trs.position - transform.position;
+
+            forward.y   =   0.0f;
             forward.Normalize();
         
             transform.rotation  =   Quaternion.LookRotation( forward );

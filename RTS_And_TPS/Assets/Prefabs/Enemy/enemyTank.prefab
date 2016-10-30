@@ -12,7 +12,7 @@ GameObject:
   - 23: {fileID: 2363958}
   m_Layer: 0
   m_Name: _1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +30,7 @@ GameObject:
   - 114: {fileID: 11413116}
   m_Layer: 0
   m_Name: Tank
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -130,7 +130,7 @@ GameObject:
   - 114: {fileID: 11420560}
   m_Layer: 0
   m_Name: _2
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -155,7 +155,7 @@ GameObject:
   - 114: {fileID: 11427568}
   m_Layer: 0
   m_Name: enemyTank
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 5228209130450103505, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -330,8 +330,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 157942}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 15.128366, y: 15.128363, z: 15.128363}
+  m_LocalPosition: {x: 5.67963, y: 0.00044816732, z: 19.115566}
+  m_LocalScale: {x: 23, y: 23, z: 23}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 492230}
@@ -694,7 +694,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f104f1c0fd9203149ad194ced92f44fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 1.3
+  walkSpeed: 4
   isStopToAttack: 1
 --- !u!114 &11462726
 MonoBehaviour:
@@ -754,7 +754,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb47158745b96e84cbfa87b78dca164b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_LerpRatio: 0.1
+  c_LerpRatio: 0.05
 --- !u!114 &11488444
 MonoBehaviour:
   m_ObjectHideFlags: 1

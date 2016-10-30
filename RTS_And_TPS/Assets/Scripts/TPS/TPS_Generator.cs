@@ -22,22 +22,52 @@ public class TPS_Generator : MonoBehaviour {
 	{
 		while (true)
 		{
-			//子供のPosと向き配置します
-			var new_object = Instantiate(m_generate_object);
-			var resporn_object = transform.GetChild(Random.Range(0, transform.childCount));
-			var agent = new_object.GetComponent<NavMeshAgent>();
-			if (agent != null)
-				agent.Warp(resporn_object.position);
-			else
-				new_object.transform.position = resporn_object.position;
-			new_object.transform.rotation = resporn_object.rotation;
+            int activeCount =   CheckActiveChildCount();
+            if( activeCount > 0 ){
+                int useSpawnID  =   Random.Range( 0, activeCount );
 
-            //  ネットワーク上で生成
-            NetworkServer.Spawn( new_object );
+			    //子供のPosと向き配置します
+			    var new_object = Instantiate(m_generate_object);
+			    var resporn_object = GetTransformInActiveChild( useSpawnID );
+			    var agent = new_object.GetComponent<NavMeshAgent>();
+			    if (agent != null)
+				    agent.Warp(resporn_object.position);
+			    else
+				    new_object.transform.position = resporn_object.position;
+			    new_object.transform.rotation = resporn_object.rotation;
+
+                //  ネットワーク上で生成
+                NetworkServer.Spawn( new_object );
+            }
 
 			yield return new WaitForSeconds(m_resporn_interval_second);
 
 		}
 
 	}
+    int         CheckActiveChildCount()
+    {
+        int activeCount =   0;
+        for( int i = 0; i < transform.childCount; i++ ){
+            Transform   rTrans  =   transform.GetChild( i );
+            if( rTrans.gameObject.activeInHierarchy == false )  continue;
+
+             ++activeCount;
+        }
+
+        return  activeCount;
+    }
+    Transform   GetTransformInActiveChild( int _ID )
+    {
+        int activeCount =   0;
+        for( int i = 0; i < transform.childCount; i++ ){
+            Transform   rTrans  =   transform.GetChild( i );
+            if( rTrans.gameObject.activeInHierarchy == false )  continue;
+            if( activeCount == _ID )                            return  rTrans;
+
+            ++activeCount;
+        }
+
+        return  null;
+    }
 }

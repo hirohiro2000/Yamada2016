@@ -27,7 +27,10 @@ public class RTSCamera : MonoBehaviour
 			return;
 		}
 
-		transform.position	= m_target.position + dir;
-		transform.LookAt( m_target.position );
+        Vector3 targetPos   =   m_target.position;
+                //targetPos.y =   0.0f;
+
+		transform.position	=   targetPos + dir;
+		transform.LookAt( targetPos );
 	}
 }

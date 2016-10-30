@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Alpha 1
+  m_Name: TurretBullet_Material
   m_Shader: {fileID: 4800000, guid: 3a895f5d9dfbe754bb2028858743a963, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
@@ -25,6 +25,13 @@ Material:
       data:
         first:
           name: _BumpMap
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _NormalMap
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
@@ -78,6 +85,27 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _SmoothMap
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _MetalMap
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _RSRM
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
     m_Floats:
       data:
         first:
@@ -91,6 +119,10 @@ Material:
         first:
           name: _Cutoff
         second: 0.5
+      data:
+        first:
+          name: _Smoothness
+        second: 2
       data:
         first:
           name: _Parallax
@@ -126,7 +158,7 @@ Material:
       data:
         first:
           name: _Metallic
-        second: 0
+        second: 0.1
       data:
         first:
           name: _Gloss
@@ -139,6 +171,22 @@ Material:
         first:
           name: _isXRay
         second: 0.5
+      data:
+        first:
+          name: _Metallicity
+        second: 0
+      data:
+        first:
+          name: _Wrap
+        second: 0.25
+      data:
+        first:
+          name: _BumpDepth
+        second: 1
+      data:
+        first:
+          name: _OutlineWidth
+        second: 0.05
     m_Colors:
       data:
         first:
@@ -147,8 +195,16 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 1, g: 0.59050983, b: 0.09803921, a: 1}
+        second: {r: 1, g: 0.66852367, b: 0, a: 1}
       data:
         first:
           name: _ShadeColor
-        second: {r: 0.15361726, g: 0.3137255, b: 0, a: 1}
+        second: {r: 0, g: 1, b: 0.0055708885, a: 1}
+      data:
+        first:
+          name: _MainColor
+        second: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+      data:
+        first:
+          name: _OutlineColor
+        second: {r: 0, g: 0, b: 0, a: 1}

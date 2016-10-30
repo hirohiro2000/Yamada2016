@@ -44,41 +44,36 @@ public class BaseHealth : NetworkBehaviour {
 		if (hp <= .0f)
 		{
 			isDeath = true;
-
-			//ゲームオーバー
-            //GameSystemManager systemManager = FindObjectOfType<GameSystemManager>();
-            //if(systemManager != null)
-            //{
-            //    systemManager.BeginGameOver();
-
-            //}
-
-			//Time.timeScale = .0f;
 		}
 	}
 
 	void OnCollisionEnter(Collision collision)
 	{
-		Debug.Log(gameObject.name);
 		PlayerDamageSource source = collision.gameObject.GetComponentInParent<PlayerDamageSource>();
 		if (source != null)
 		{
 			GiveDamage(source.damage);
 		}
 	}
+    void    OnTriggerEnter( Collider _rCollider )
+    {
+        //  サーバーでのみ処理を行う
+        if( !isServer ) return;
+
+        //  突っ込んできたのがエネミーかどうかチェック
+        TPS_Enemy       rEnemy  =   _rCollider.GetComponent< TPS_Enemy >();
+        if( !rEnemy )   rEnemy  =   _rCollider.transform.GetComponentInParent< TPS_Enemy >();
+        if( !rEnemy )   return;
+
+        //  ダメージを受ける
+        hp  =   Mathf.Max( --hp, 0 );
+
+        //  エネミーを破棄
+        Destroy( rEnemy.gameObject );
+    }
 
 	public void OnGUI()
 	{
-        //if(IsDeath())
-        //{
-        //    GUIStyle style = new GUIStyle();
-        //    style.normal.textColor = Color.white;
-        //    style.fontSize = (int)(Screen.height * 0.1f);
-        //    style.alignment = TextAnchor.MiddleCenter;
-
-        //    GUI.Label(new Rect(
-        //        .0f, .0f, Screen.width, Screen.height),"GAME OVER", style);
-        //}
         GUIStyle style2 = new GUIStyle();
         style2.normal.textColor = Color.white;
         style2.fontSize = (int)(Screen.height * 0.03f);

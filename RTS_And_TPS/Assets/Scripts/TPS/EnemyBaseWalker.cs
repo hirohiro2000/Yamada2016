@@ -17,7 +17,10 @@ public class EnemyBaseWalker : NetworkBehaviour {
 	// Use this for initialization
 	void Start () {
         //  サーバーでのみ処理を行う
-        if( !isServer ) return;
+        if( !isServer ){
+            GetComponent< NavMeshAgent >().enabled  =   false;
+            return;
+        }
 
 		attacker = GetComponent<TPS_EnemyAttacker>();
 		agent = GetComponent<NavMeshAgent>();

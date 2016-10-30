@@ -89,6 +89,8 @@ public class RTSPlayer_Control : NetworkBehaviour {
         if( rSplitGuide ){
             rSplitGuide.GetComponent< MeshRenderer >().enabled  =   false;
         }
+        //  ボタンを非表示
+        GetComponent< GirlController >().SetActiveButton( false );
     }
 
     //  コマンダーに戻る

@@ -55,6 +55,14 @@ public class ResourceCreator : NetworkBehaviour
         UpdateGuide();
 		UpdateGuideAngle();
     }
+    public  override    void    OnNetworkDestroy()
+    {
+        base.OnNetworkDestroy();
+
+        if( m_resourceRangeGuideRef ){
+            Destroy( m_resourceRangeGuideRef );
+        }
+    }
 
 
 	//---------------------------------------------------------------------
