@@ -8,6 +8,7 @@ public enum WeakPointType//最大値 =
 	ATTACK_PLAYER_TYPE = 0,
 	TPSAttack,
 	RTSAttack,
+	EnemyAttack,
 	ATTACK_PLAYER_END = 50,
 
 	ATTACK_ATTRIBUTE_TYPE,
@@ -28,7 +29,7 @@ public enum WeakPointType//最大値 =
 public class WeakPointParam
 {
 	public WeakPointType type;
-	public float multiple;
+	public float multiple = 1.0f;
 }
 
 [System.Serializable]

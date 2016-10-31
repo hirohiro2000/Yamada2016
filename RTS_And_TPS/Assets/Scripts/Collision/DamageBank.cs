@@ -24,6 +24,8 @@ using System.Collections.Generic;
 
 	ダメージバンク(rigidbodyと同じオブジェクトにアタッチ)
 	ダメージをため込みます
+
+	DamageResultに含まれたAttackPointListはnullが返ってくる可能性があります
  */
 
 
@@ -138,15 +140,24 @@ public class DamageBank : MonoBehaviour {
 		{
 			//Debug.Log("damaged:" + searchTransform.gameObject.name + "   attacked:" + atk.gameObject.name);
 
+			//衝突を取得しなかった場合、非衝突とみなす
+			bool isHit = false;
+
 			foreach(WeakPointList weak  in weaks)
 			{
 				//ダメージを取得(衝突扱いでなければ取得できない)
 				DamageResult damageResult = GetDamageResult(atk, weak);
 				if(damageResult != null)
 				{
+					isHit = true;
 					damageList.Add(damageResult);
 				}
+			}
 
+			//衝突していたら攻撃スクリプトに破壊命令を出す
+			if(isHit == true)
+			{
+				atk.CallDestroy();
 			}
 		}
 

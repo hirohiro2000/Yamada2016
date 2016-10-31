@@ -3,7 +3,7 @@ using System.Collections;
 
 public class AttackPointList : MonoBehaviour {
 
-	public float baseAttackPoint;
+	public float baseAttackPoint = 1.0f;
 
 	[SerializeField, ReorderableList(new int[] { 100, 100 })]
 	public WeakPointParamReorderableList attack_list = null;
