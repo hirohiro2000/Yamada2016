@@ -5,12 +5,12 @@ public class VisibilityChecker : MonoBehaviour
 {
 
     [SerializeField, HeaderAttribute("視界判定を行う際のターゲットとなる場所")]
-    Transform[] m_raycast_target;
+    Transform[] m_raycast_target = new Transform[1];
 
     public GameObject m_owner_object { get; private set; }
 
     [SerializeField, HeaderAttribute("このオブジェクトは動き回らないかどうか（Trueで動かない）")]
-    private bool IsStaticObject;
+    private bool IsStaticObject = false;
 
     void Awake()
     {

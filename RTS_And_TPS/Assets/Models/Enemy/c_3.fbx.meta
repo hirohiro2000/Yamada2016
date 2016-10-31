@@ -1,0 +1,369 @@
+fileFormatVersion: 2
+guid: 94e250fa037fc1a48953df7f226b18b8
+timeCreated: 1477899621
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: bone
+    100002: bone1
+    100004: bone1_NeutralPose
+    100006: bone2
+    100008: bone3
+    100010: bone4
+    100012: bone_NeutralPose
+    100014: //RootNode
+    100016: cylinder
+    100018: cylinder3
+    100020: eff
+    100022: eff1
+    100024: eff2
+    100026: eff3
+    100028: eff4
+    100030: null1
+    100032: null1_NeutralPose
+    100034: polymsh
+    100036: polymsh1
+    100038: polymsh2
+    100040: root
+    100042: root1
+    100044: root2
+    100046: root3
+    100048: root4
+    400000: bone
+    400002: bone1
+    400004: bone1_NeutralPose
+    400006: bone2
+    400008: bone3
+    400010: bone4
+    400012: bone_NeutralPose
+    400014: //RootNode
+    400016: cylinder
+    400018: cylinder3
+    400020: eff
+    400022: eff1
+    400024: eff2
+    400026: eff3
+    400028: eff4
+    400030: null1
+    400032: null1_NeutralPose
+    400034: polymsh
+    400036: polymsh1
+    400038: polymsh2
+    400040: root
+    400042: root1
+    400044: root2
+    400046: root3
+    400048: root4
+    4300000: cylinder
+    4300002: cylinder3
+    4300004: polymsh
+    4300006: polymsh1
+    4300008: polymsh2
+    7400000: Wait
+    7400002: Run
+    7400004: NearAttack
+    9500000: //RootNode
+    13700000: cylinder
+    13700002: cylinder3
+    13700004: polymsh
+    13700006: polymsh1
+    13700008: polymsh2
+  materials:
+    importMaterials: 1
+    materialName: 2
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Wait
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 50
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: cylinder
+        weight: 1
+      - path: cylinder3
+        weight: 1
+      - path: null1_NeutralPose
+        weight: 1
+      - path: null1_NeutralPose/null1
+        weight: 1
+      - path: null1_NeutralPose/null1/root
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1/bone1_NeutralPose
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1/bone1_NeutralPose/bone1
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1/bone1_NeutralPose/bone1/eff1
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1/bone1_NeutralPose/bone1/eff1/root2
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1/bone1_NeutralPose/bone1/eff1/root2/bone2
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1/bone1_NeutralPose/bone1/eff1/root2/bone2/eff2
+        weight: 1
+      - path: null1_NeutralPose/null1/root3
+        weight: 1
+      - path: null1_NeutralPose/null1/root3/bone3
+        weight: 1
+      - path: null1_NeutralPose/null1/root3/bone3/eff3
+        weight: 1
+      - path: null1_NeutralPose/null1/root4
+        weight: 1
+      - path: null1_NeutralPose/null1/root4/bone4
+        weight: 1
+      - path: null1_NeutralPose/null1/root4/bone4/eff4
+        weight: 1
+      - path: polymsh
+        weight: 1
+      - path: polymsh1
+        weight: 1
+      - path: polymsh2
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    - serializedVersion: 16
+      name: Run
+      takeName: Take 001
+      firstFrame: 50
+      lastFrame: 100
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: cylinder
+        weight: 1
+      - path: cylinder3
+        weight: 1
+      - path: null1_NeutralPose
+        weight: 1
+      - path: null1_NeutralPose/null1
+        weight: 1
+      - path: null1_NeutralPose/null1/root
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1/bone1_NeutralPose
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1/bone1_NeutralPose/bone1
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1/bone1_NeutralPose/bone1/eff1
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1/bone1_NeutralPose/bone1/eff1/root2
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1/bone1_NeutralPose/bone1/eff1/root2/bone2
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1/bone1_NeutralPose/bone1/eff1/root2/bone2/eff2
+        weight: 1
+      - path: null1_NeutralPose/null1/root3
+        weight: 1
+      - path: null1_NeutralPose/null1/root3/bone3
+        weight: 1
+      - path: null1_NeutralPose/null1/root3/bone3/eff3
+        weight: 1
+      - path: null1_NeutralPose/null1/root4
+        weight: 1
+      - path: null1_NeutralPose/null1/root4/bone4
+        weight: 1
+      - path: null1_NeutralPose/null1/root4/bone4/eff4
+        weight: 1
+      - path: polymsh
+        weight: 1
+      - path: polymsh1
+        weight: 1
+      - path: polymsh2
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    - serializedVersion: 16
+      name: NearAttack
+      takeName: Take 001
+      firstFrame: 100
+      lastFrame: 150
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: cylinder
+        weight: 1
+      - path: cylinder3
+        weight: 1
+      - path: null1_NeutralPose
+        weight: 1
+      - path: null1_NeutralPose/null1
+        weight: 1
+      - path: null1_NeutralPose/null1/root
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1/bone1_NeutralPose
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1/bone1_NeutralPose/bone1
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1/bone1_NeutralPose/bone1/eff1
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1/bone1_NeutralPose/bone1/eff1/root2
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1/bone1_NeutralPose/bone1/eff1/root2/bone2
+        weight: 1
+      - path: null1_NeutralPose/null1/root/bone_NeutralPose/bone/eff/root1/bone1_NeutralPose/bone1/eff1/root2/bone2/eff2
+        weight: 1
+      - path: null1_NeutralPose/null1/root3
+        weight: 1
+      - path: null1_NeutralPose/null1/root3/bone3
+        weight: 1
+      - path: null1_NeutralPose/null1/root3/bone3/eff3
+        weight: 1
+      - path: null1_NeutralPose/null1/root4
+        weight: 1
+      - path: null1_NeutralPose/null1/root4/bone4
+        weight: 1
+      - path: null1_NeutralPose/null1/root4/bone4/eff4
+        weight: 1
+      - path: polymsh
+        weight: 1
+      - path: polymsh1
+        weight: 1
+      - path: polymsh2
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 10
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

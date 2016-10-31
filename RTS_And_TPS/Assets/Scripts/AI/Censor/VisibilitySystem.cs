@@ -58,9 +58,9 @@ public class VisibilitySystem : MonoBehaviour {
     
 
     //debug
-    Text visibility_range_text;
-    Text near_range_text;
-    Text can_visibility_text;
+    Text visibility_range_text = null;
+    Text near_range_text = null;
+    Text can_visibility_text = null;
     private string visibility_text;
     private int can_visibility = 0;
 

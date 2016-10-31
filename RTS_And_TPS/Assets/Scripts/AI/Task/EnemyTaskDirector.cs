@@ -79,7 +79,8 @@ public class EnemyTaskDirector : MonoBehaviour {
     {
         if (m_current_task)
         {
-            Debug.Log("exit_task is " + m_current_task.name);
+            
+            //Debug.Log("exit_task is " + m_current_task.name);
             m_current_task.Exit(target_director, this);
         }
         m_current_task = new_task;

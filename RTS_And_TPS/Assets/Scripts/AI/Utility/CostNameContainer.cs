@@ -9,7 +9,7 @@ public class CostNameContainer : MonoBehaviour {
 
 
     [SerializeField]
-    private string[] LayerNameArray;
+    private string[] LayerNameArray = new string[1];
 
     private List<Text> text_list;
 
