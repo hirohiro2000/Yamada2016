@@ -5,10 +5,11 @@ using   System.Collections;
 
 public class LinkManager : NetworkBehaviour {
 
-    public  int             m_LocalPlayerID     =   0;
-    public  GameObject      m_rLocalPlayer      =   null;
+    public  int                 m_LocalPlayerID     =   0;
+    public  GameObject          m_rLocalPlayer      =   null;
+    public  NetPlayer_Control   m_rLocalNPControl   =   null;
 
-    private NetworkManager  m_rNetManager       =   null;
+    private NetworkManager      m_rNetManager       =   null;
 
 	// Use this for initialization
 	void    Start()

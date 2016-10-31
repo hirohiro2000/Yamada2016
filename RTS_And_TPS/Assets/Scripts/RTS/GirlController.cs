@@ -59,9 +59,17 @@ public class GirlController : NetworkBehaviour
         if( !isLocalPlayer ) return;
 
         //  座標調整（いまだけ）
-        if( Input.GetKey( KeyCode.M ) ){
-            m_rRigid.AddForce( Vector3.up * m_LiftingForce );
+        {
+            //  飛ぶ
+            if( Input.GetKey( KeyCode.M ) ){
+                m_rRigid.AddForce( Vector3.up * m_LiftingForce );
+            }
+            //  浮いてる間はグリッドを表示しない
+            if( Mathf.Abs( m_rRigid.velocity.y ) > 0.01f )  m_resourceInformation.m_gridSplitSpacePlane.SetActive( false );
+            else                                            m_resourceInformation.m_gridSplitSpacePlane.SetActive( true );
         }
+        
+
 
 		switch( m_actionState )
 		{

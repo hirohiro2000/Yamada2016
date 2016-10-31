@@ -19,46 +19,28 @@ public class BaseHealth : NetworkBehaviour {
 	[SerializeField]
 	Rect rect;
 
+    //  外部へのアクセス
+    private GameManager     m_rGameManager  =   null;
 
 	// Use this for initialization
-	void Start()
+	void    Start()
 	{
-		hp = maxHp;
+		hp  =   maxHp;
 
+        //  アクセス取得
+        m_rGameManager  =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
 	}
 
 	// Update is called once per frame
-	void Update()
+	void    Update()
 	{
 
 	}
 
-	public bool IsDeath()
-	{
-		return isDeath;
-	}
-
-	public void GiveDamage(float damage)
-	{
-		hp -= damage;
-		if (hp <= .0f)
-		{
-			isDeath = true;
-		}
-	}
-
-	void OnCollisionEnter(Collision collision)
-	{
-		PlayerDamageSource source = collision.gameObject.GetComponentInParent<PlayerDamageSource>();
-		if (source != null)
-		{
-			GiveDamage(source.damage);
-		}
-	}
     void    OnTriggerEnter( Collider _rCollider )
     {
         //  サーバーでのみ処理を行う
-        if( !isServer ) return;
+        if( !isServer )                                             return;
 
         //  突っ込んできたのがエネミーかどうかチェック
         TPS_Enemy       rEnemy  =   _rCollider.GetComponent< TPS_Enemy >();
@@ -67,6 +49,24 @@ public class BaseHealth : NetworkBehaviour {
 
         //  ダメージを受ける
         hp  =   Mathf.Max( --hp, 0 );
+        if( hp == 5 ){
+            m_rGameManager.RpcMainMessage( "拠点が深刻な被害を受けています", 2.7f, 0.0f );
+        }
+
+        //  ゲームオーバー処理（ゲーム中のみ）
+        if( hp <= 0.0f
+        &&  m_rGameManager.GetState() == GameManager.State.InGame ){
+            //  ゲームオーバー
+            m_rGameManager.GameOver();
+
+            //  メッシュを非アクティブ化
+            Transform   rCylinder   =   transform.FindChild( "Cylinder" );
+            GameObject  rObj        =   rCylinder.gameObject;
+            rObj.SetActive( false );
+
+            //  クライアント側でも非表示にする
+            RpcDisableCylinder();
+        }
 
         //  エネミーを破棄
         Destroy( rEnemy.gameObject );
@@ -85,4 +85,16 @@ public class BaseHealth : NetworkBehaviour {
 
 
 	}
+
+    //  リクエスト
+    [ ClientRpc ]
+    void    RpcDisableCylinder()
+    {
+        if( isServer )  return;
+
+        //  メッシュを非アクティブ化
+        Transform   rCylinder   =   transform.FindChild( "Cylinder" );
+        GameObject  rObj        =   rCylinder.gameObject;
+        rObj.SetActive( false );
+    }
 }

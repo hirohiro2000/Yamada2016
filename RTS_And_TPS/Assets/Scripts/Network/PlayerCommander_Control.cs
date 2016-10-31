@@ -5,12 +5,16 @@ using   System.Collections;
 
 public class PlayerCommander_Control : NetworkBehaviour {
 
-    public  GameObject  c_TPSPlayer =   null;
-    public  GameObject  c_RTSPlayer =   null;
+    public  GameObject  c_TPSPlayer     =   null;
+    public  GameObject  c_RTSPlayer     =   null;
+
+    private GameManager m_rGameManager  =   null;
 
 	// Use this for initialization
 	void    Start()
     {
+        m_rGameManager      =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
+
         if( isLocalPlayer ){
             //  カーソルを戻す
             Cursor.lockState    =   CursorLockMode.None;
@@ -33,7 +37,6 @@ public class PlayerCommander_Control : NetworkBehaviour {
 
         //  プレイヤータイプ選択
         if( GUI.Button( new Rect( 58, 240, 100, 20 ), "ロボット" ) ){
-            Camera.main.GetComponent< Camera >().enabled    =   false;
             //  ロボットに変身
             CmdLunchTPSPlayer();
         }
@@ -47,6 +50,9 @@ public class PlayerCommander_Control : NetworkBehaviour {
     [ Command ]
     public  void    CmdLunchTPSPlayer()
     {
+        //  カウントダウン開始
+        m_rGameManager.StartCountDown();
+
         //  新しいプレイヤーオブジェクト生成
         GameObject  newPlayer   =   Instantiate( c_TPSPlayer );
 
@@ -64,6 +70,9 @@ public class PlayerCommander_Control : NetworkBehaviour {
     [ Command ]
     public  void    CmdLunchRTSPlayer()
     {
+        //  カウントダウン開始
+        m_rGameManager.StartCountDown();
+
         //  新しいプレイヤーオブジェクト生成
         GameObject  newPlayer   =   Instantiate( c_RTSPlayer );
 

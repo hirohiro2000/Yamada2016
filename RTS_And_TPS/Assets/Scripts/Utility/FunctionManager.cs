@@ -70,8 +70,6 @@ public class FunctionManager : MonoBehaviour {
     //**************************************************************************************************
     //      矩形計算（CanvasのRectTransformからOnGUIへの変換用）
     //**************************************************************************************************
-    public  enum    AR_TYPE_X{  LEFT,   CENTER,     RIGHT,    }
-    public  enum    AR_TYPE_Y{  TOP,    MIDDLE,     BOTTOM,   }
     public  enum    AR_TYPE{
         TOP_CENTER,
         TOP_LEFT,

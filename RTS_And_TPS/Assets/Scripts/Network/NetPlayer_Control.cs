@@ -10,6 +10,7 @@ public class NetPlayer_Control : NetworkBehaviour {
     public  bool        c_IsMe          =   false;
 
     private LinkManager m_rLinkManager  =   null;
+    private GameManager m_rGameManager  =   null;
 
 	// Use this for initialization
 	void    Start()
@@ -17,6 +18,7 @@ public class NetPlayer_Control : NetworkBehaviour {
 	    c_IsMe          =   isLocalPlayer;
 
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+        m_rGameManager  =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
         if( m_rLinkManager ){
             m_rLinkManager.m_LocalPlayerID  =   c_ClientID;
         }
@@ -38,8 +40,9 @@ public class NetPlayer_Control : NetworkBehaviour {
         if( !m_rLinkManager )   return;
 
         if( isLocalPlayer ){
-            m_rLinkManager.m_LocalPlayerID  =   c_ClientID;
-            m_rLinkManager.m_rLocalPlayer   =   gameObject;
+            m_rLinkManager.m_LocalPlayerID      =   c_ClientID;
+            m_rLinkManager.m_rLocalPlayer       =   gameObject;
+            m_rLinkManager.m_rLocalNPControl    =   this;
         }
 	}
 
@@ -84,6 +87,18 @@ public class NetPlayer_Control : NetworkBehaviour {
     public  void    CmdFire_Client( Vector3 _Position, Vector3 _Target, int _ShooterID )
     {
         RpcFire_Client( _Position, _Target, _ShooterID );
+    }
+    //  データ更新
+    [ Command ]
+    public  void    CmdSend_GMIsReady( bool _IsReady )
+    {
+        m_rGameManager.SetIsReady( connectionToClient.connectionId, _IsReady );
+    }
+    //  ゲームスピード更新
+    [ Command ]
+    public  void    CmdChange_GameSpeed( float _GameSpeed )
+    {
+        m_rGameManager.m_GameSpeed  =   _GameSpeed;
     }
 //*********************************************************************************
 //      リクエスト

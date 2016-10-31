@@ -694,7 +694,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f104f1c0fd9203149ad194ced92f44fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 4
+  walkSpeed: 6
   isStopToAttack: 1
 --- !u!114 &11462726
 MonoBehaviour:
@@ -785,7 +785,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcc8044bd646471469838e9a5382132c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 20
+  m_MaxHP: 10
+  hp: 10
   healthBar3D: {fileID: 11401770}
   hpBar: {fileID: 492230}
 --- !u!114 &11490960

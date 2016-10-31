@@ -2270,7 +2270,7 @@ AudioListener:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 229628371}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!92 &229628374
 Behaviour:
   m_ObjectHideFlags: 0
@@ -2491,7 +2491,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &269523365
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2770,6 +2770,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e121861b3bc54d9449433852c1666b87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_Font: {fileID: 12800000, guid: 277513cdc6cb369499683a94d1762948, type: 3}
 --- !u!4 &420201046
 Transform:
   m_ObjectHideFlags: 0
@@ -5029,7 +5030,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &1151935425
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5653,6 +5654,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LocalPlayerID: 0
   m_rLocalPlayer: {fileID: 0}
+  m_rLocalNPControl: {fileID: 0}
 --- !u!4 &1341312726
 Transform:
   m_ObjectHideFlags: 0
@@ -6028,7 +6030,7 @@ GameObject:
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1528458108
 Transform:
   m_ObjectHideFlags: 0
@@ -6098,7 +6100,7 @@ MonoBehaviour:
   m_PlayerPrefab: {fileID: 126756, guid: 00d6b3f93bb911943a0e36c9cdd64019, type: 2}
   m_AutoCreatePlayer: 1
   m_PlayerSpawnMethod: 0
-  m_OfflineScene: NetworkTPS_Offline
+  m_OfflineScene: NetworkTPS
   m_OnlineScene: NetworkTPS
   m_SpawnPrefabs:
   - {fileID: 139324, guid: fc8b7118c882faf409d4543710b92ff2, type: 2}
@@ -6538,7 +6540,7 @@ GameObject:
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1624297457
 Transform:
   m_ObjectHideFlags: 0
@@ -6966,7 +6968,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1876105975}
-  - 114: {fileID: 1876105974}
+  - 114: {fileID: 1876105977}
   - 114: {fileID: 1876105976}
   m_Layer: 0
   m_Name: EnemySpornRoot
@@ -6975,19 +6977,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1876105974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1876105973}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2aeeeecf0899b754c821c72415351cd2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_resporn_interval_second: 2
-  m_generate_object: {fileID: 157942, guid: db874c3afb464df4da0c95ca97388354, type: 2}
 --- !u!4 &1876105975
 Transform:
   m_ObjectHideFlags: 0
@@ -7036,6 +7025,19 @@ MonoBehaviour:
     i15: 0
   m_ServerOnly: 1
   m_LocalPlayerAuthority: 0
+--- !u!114 &1876105977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1876105973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e17b9fcf7a47b944a941ced90c32f755, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_EnemyPrefab:
+  - {fileID: 157942, guid: db874c3afb464df4da0c95ca97388354, type: 2}
 --- !u!1 &1883956868 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100240, guid: 7024580966065ba45862bfdc1de1dc1b, type: 3}

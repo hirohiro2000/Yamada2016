@@ -4,8 +4,10 @@ using UnityEngine.Networking;
 using System.Collections;
 
 public class TPS_Enemy : NetworkBehaviour {
+    [ SyncVar ]
+    public  float   m_MaxHP     =   1.0f;
 	[ SerializeField, SyncVar ]
-	float hp;
+	public  float   hp          =   0.0f;
 
 	[SerializeField]
 	HealthBar3D healthBar3D;
@@ -27,6 +29,9 @@ public class TPS_Enemy : NetworkBehaviour {
 //            UIRadar.AddEnemy(this.gameObject);
 
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+
+        //  パラメータ初期化
+        hp  =   m_MaxHP;
     }
     public  override    void    OnStartServer()
     {
@@ -43,7 +48,7 @@ public class TPS_Enemy : NetworkBehaviour {
 	    //  ゲージ更新
         {
             if( healthBar3D ){
-			    healthBar3D.setValue( hp / 20.0f );
+			    healthBar3D.setValue( hp / m_MaxHP );
             }
         }
 	}
@@ -55,7 +60,7 @@ public class TPS_Enemy : NetworkBehaviour {
 
 		hp -= damage;
 		if (healthBar3D != null)
-			healthBar3D.setValue(hp / 20.0f);
+			healthBar3D.setValue(hp / m_MaxHP);
 		if (hp <= .0f)
 		{
 			if (hpBar != null)
