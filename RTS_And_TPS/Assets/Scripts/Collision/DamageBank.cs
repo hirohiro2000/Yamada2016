@@ -108,16 +108,22 @@ public class DamageBank : MonoBehaviour {
 	void Start () {
 	
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
+	void Update()
+	{
 		//foreach (DamageResult result in damageList)
 		//{
-		//	Debug.Log(result.ToString() + result.GetTotalDamage());
+		//	GetElementDamageResult getElementDamageResult = new GetElementDamageResult;
+		//	getElementDamageResult(result);
 		//}
 		//現在自動消去
 		damageList.Clear();
 	}
+
+	public delegate void Damaged(DamageResult damageResult);
+
+	public Damaged DamagedCallback = null;
 
 	public void RecieveDamage(AttackPointList atk ,Collider damagedCollider)
 	{
@@ -151,6 +157,8 @@ public class DamageBank : MonoBehaviour {
 				{
 					isHit = true;
 					damageList.Add(damageResult);
+					if(DamagedCallback != null)
+						DamagedCallback(damageResult);
 				}
 			}
 
