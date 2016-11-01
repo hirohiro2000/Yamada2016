@@ -26,9 +26,10 @@ public class TPS_Enemy : NetworkBehaviour {
 		if (healthBar3D != null)
 			healthBar3D.setValue(1.0f);
 
-//            UIRadar.AddEnemy(this.gameObject);
-
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+
+        UIRadar.AddEnemy(this.gameObject);
+
 
         //  パラメータ初期化
         hp  =   m_MaxHP;
@@ -70,8 +71,7 @@ public class TPS_Enemy : NetworkBehaviour {
 			}
 
             EnemyKillCounter.killCount++;
-
-//            UIRadar.Remove(this.gameObject);
+                        
 			Destroy(this.gameObject);
 		}
     }
@@ -111,4 +111,10 @@ public class TPS_Enemy : NetworkBehaviour {
 		}
 	
 	}
+
+    void    OnDestroy()
+    {
+        UIRadar.Remove(this.gameObject);
+    }
+
 }

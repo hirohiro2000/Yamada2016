@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+// 使用しないでください
+// [SoundController]を使用してください
 public class SoundManager : MonoBehaviour
 {
     // member

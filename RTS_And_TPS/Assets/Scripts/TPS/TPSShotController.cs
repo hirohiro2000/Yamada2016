@@ -36,6 +36,9 @@ public class TPSShotController : NetworkBehaviour {
     //  外部へのアクセス
     private LinkManager         m_rLinkManager      =   null;
 
+    // サウンド
+    private SoundController     m_seShot            =   null;
+
 	// Use this for initialization
 	void    Start()
     {
@@ -43,7 +46,11 @@ public class TPSShotController : NetworkBehaviour {
 	    m_rParentIdentity   =   transform.parent.parent.GetComponent< NetworkIdentity >();
         m_rNPControl        =   transform.parent.parent.GetComponent< NetPlayer_Control >();
         m_rLinkManager      =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
-	}
+
+        TPSWeaponBar.Initialize(100);
+        m_seShot            =   SoundController.CreateShotController(transform);
+
+    }
 	
 	// Update is called once per frame
 	void    Update () {
@@ -95,9 +102,11 @@ public class TPSShotController : NetworkBehaviour {
 					fireCnt = 0;
                 }
 
+                TPSWeaponBar.Consumption(1.0f);
+                // 発砲音
+                // m_seShot.PlayOneShot();
             }
-		}
-	
+		}    
 	}
 
     void    Shot( Vector3 firePoint, Vector3 target )

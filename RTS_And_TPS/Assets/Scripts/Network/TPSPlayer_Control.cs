@@ -64,6 +64,10 @@ public class TPSPlayer_Control : NetworkBehaviour {
         GameObject  rMainCamera =   GameObject.Find( "Main Camera" );
         rMainCamera.GetComponent< Camera >().enabled            =   false;
         rMainCamera.GetComponent< AudioListener >().enabled     =   false;
+        
+        // UI系初期化
+        GameObject.Find("TPS_HUD").SetActive(true);
+        UIRadar.SetPlayer(gameObject);
     }
     //  終了処理
     void    EndProc()

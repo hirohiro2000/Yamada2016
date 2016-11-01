@@ -46,6 +46,24 @@ public class GuideHitEffect : MonoBehaviour
         }
 
     }
+    void OnEnable()
+    {
+        instance = GetComponent<GuideHitEffect>();
+        m_guides = new List<DATA>();
+
+        RectTransform rt = GetComponent<RectTransform>();
+        m_parentTrans = rt.parent.GetComponent<RectTransform>();
+
+        Canvas[] canvasArr = GetComponentsInParent<Canvas>();
+        for (int i = 0; i < canvasArr.Length; i++)
+        {
+            if (canvasArr[i].isRootCanvas)
+            {
+                m_uiCamera = canvasArr[i].worldCamera;
+            }
+        }
+
+    }
 
     void Update()
     {

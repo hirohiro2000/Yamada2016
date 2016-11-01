@@ -28,6 +28,8 @@ public class PlayerHealth : NetworkBehaviour
 	{
 		hp = maxHp;
 
+        TPSHpBar.Initialize(maxHp);
+
         m_rIdentity     =   GetComponent< NetworkIdentity >();
         m_rTPSControl   =   GetComponent< TPSPlayer_Control >();
 	}
@@ -75,9 +77,9 @@ public class PlayerHealth : NetworkBehaviour
 		{
 			GiveDamage(source.damage);
 
-            
-            // GuideHitEffect.Add(source.user);
+            TPSHpBar.SetHP(hp);
 
+            GuideHitEffect.Add(source.user);
         }
 	}
 

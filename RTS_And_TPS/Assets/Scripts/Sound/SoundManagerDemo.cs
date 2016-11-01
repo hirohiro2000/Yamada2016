@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// 使用しないでください
 public class SoundManagerDemo : MonoBehaviour {
 
     GameObject go;
