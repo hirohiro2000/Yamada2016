@@ -28,7 +28,7 @@ public class MovingTarget : TaskBase
     private float m_adjust_max_steering_radius = 2.0f;
 
     private float m_path_update_interval;
-    private bool m_coroutine_flg = false;
+    //private bool m_coroutine_flg = false;
     Vector3 m_target_point;    
 
     TargetingSystem m_target_director;
@@ -37,7 +37,7 @@ public class MovingTarget : TaskBase
     LineRenderer m_path_renderer;
 
     [SerializeField, HeaderAttribute("このキャラクターが通ることのできるルート一覧(対防衛拠点)")]
-    private string[] m_can_passing_route;
+    private string[] m_can_passing_route = null;
 
     private Dictionary<string, float> m_navmesh_cost_dictionary;
 
@@ -156,7 +156,7 @@ public class MovingTarget : TaskBase
 
         m_target_director = target_system;
         m_target_point = target_system.m_current_target.transform.position;
-        m_coroutine_flg = true;
+        //m_coroutine_flg = true;
         m_last_path_update_time = Time.realtimeSinceStartup;
         m_navmesh_accessor.Resume();
         task_director.m_anime_controller.SetTrigger("ToMoveTarget");

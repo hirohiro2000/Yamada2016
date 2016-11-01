@@ -6,11 +6,11 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: toumei
-  m_Shader: {fileID: 4800000, guid: 877d0d29e56c68745870b4f0e6e01347, type: 3}
+  m_Name: robo_1028-Main_Body
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   m_SavedProperties:
     serializedVersion: 2
@@ -31,35 +31,7 @@ Material:
           m_Offset: {x: 0, y: 0}
       data:
         first:
-          name: _NormalMap
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
           name: _DetailNormalMap
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _SmoothMap
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _MetalMap
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _RSRM
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
@@ -121,42 +93,6 @@ Material:
         second: 0.5
       data:
         first:
-          name: _Smoothness
-        second: 2
-      data:
-        first:
-          name: _Metallic
-        second: 0
-      data:
-        first:
-          name: _Gloss
-        second: 0.745
-      data:
-        first:
-          name: _VisibleRange
-        second: 0.757
-      data:
-        first:
-          name: _isXRay
-        second: 0.505
-      data:
-        first:
-          name: _Metallicity
-        second: 0
-      data:
-        first:
-          name: _Wrap
-        second: 0.25
-      data:
-        first:
-          name: _BumpDepth
-        second: 1
-      data:
-        first:
-          name: _OutlineWidth
-        second: 0.05
-      data:
-        first:
           name: _Parallax
         second: 0.02
       data:
@@ -187,6 +123,10 @@ Material:
         first:
           name: _Mode
         second: 0
+      data:
+        first:
+          name: _Metallic
+        second: 0
     m_Colors:
       data:
         first:
@@ -195,16 +135,4 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
-      data:
-        first:
-          name: _ShadeColor
-        second: {r: 1, g: 0.375, b: 0.375, a: 1}
-      data:
-        first:
-          name: _MainColor
-        second: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
-      data:
-        first:
-          name: _OutlineColor
-        second: {r: 0, g: 0, b: 0, a: 1}
+        second: {r: 0.7, g: 0.7, b: 0.7, a: 1}

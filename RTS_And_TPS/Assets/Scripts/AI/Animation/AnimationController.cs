@@ -39,4 +39,9 @@ public class AnimationController : MonoBehaviour {
         m_animator.SetTrigger(trigger_name);
     }
 
+    public AnimatorStateInfo GetCurrentAnimatorStateInfo()
+    {
+        return m_animator.GetCurrentAnimatorStateInfo(0);
+    }
+
 }

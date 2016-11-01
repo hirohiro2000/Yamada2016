@@ -11,7 +11,7 @@ public class EnemyGenerator : MonoBehaviour {
     private float m_resporn_interval_second = 2.0f;
 
     [SerializeField]
-    private GameObject m_generate_object;
+    private GameObject m_generate_object = null;
 
 	// Use this for initialization
 	void Start ()

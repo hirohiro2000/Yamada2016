@@ -72,8 +72,8 @@ public class TargetingSystem : MonoBehaviour {
         m_score = score;
         m_is_static = is_static;
         m_target_tag = target_tag;
-        var render_switch = m_current_target.GetComponent<RendererSwitch>();
-        render_switch.Activate();
+        //var render_switch = m_current_target.GetComponent<RendererSwitch>();
+       // render_switch.Activate();
     }
         
 

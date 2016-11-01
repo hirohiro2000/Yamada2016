@@ -4,7 +4,7 @@ using System.Collections;
 public class RendererSwitch : MonoBehaviour {
 
     [SerializeField]
-    private MeshRenderer renderer;
+    private MeshRenderer renderer = null;
 
     bool enable_switch;
 
