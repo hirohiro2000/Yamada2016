@@ -125,18 +125,6 @@ Material:
         second: 2
       data:
         first:
-          name: _Metallicity
-        second: 0
-      data:
-        first:
-          name: _Wrap
-        second: 0.25
-      data:
-        first:
-          name: _BumpDepth
-        second: 1
-      data:
-        first:
           name: _Metallic
         second: 0
       data:
@@ -151,6 +139,18 @@ Material:
         first:
           name: _isXRay
         second: 0.505
+      data:
+        first:
+          name: _Metallicity
+        second: 0
+      data:
+        first:
+          name: _Wrap
+        second: 0.25
+      data:
+        first:
+          name: _BumpDepth
+        second: 1
       data:
         first:
           name: _OutlineWidth
@@ -198,12 +198,12 @@ Material:
         second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:
-          name: _MainColor
-        second: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
-      data:
-        first:
           name: _ShadeColor
         second: {r: 1, g: 0.375, b: 0.375, a: 1}
+      data:
+        first:
+          name: _MainColor
+        second: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
       data:
         first:
           name: _OutlineColor
