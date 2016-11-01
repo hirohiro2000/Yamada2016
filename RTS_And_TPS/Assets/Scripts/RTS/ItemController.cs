@@ -30,6 +30,7 @@ public class ItemController : NetworkBehaviour
 		{
 			GameObject  add			= Instantiate( m_itemFrame );
             float       screenRatio = Screen.width / 1280.0f;
+
 			add.transform.SetParent( GameObject.Find("Canvas").transform );
 			add.transform.position	= new Vector3( ( i*80 + 72 ) * screenRatio, 130 * screenRatio, 0 );
 			add.transform.GetChild(0).GetComponent<Text>().text = "";//"0";

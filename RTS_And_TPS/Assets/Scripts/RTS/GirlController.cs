@@ -20,7 +20,7 @@ public class GirlController : NetworkBehaviour
 	private const KeyCode		m_cancelKey					= KeyCode.L;
 	private const KeyCode		m_breakKey					= KeyCode.K;
 
-	private int					m_itemKindMax				= 0;
+	//private int					m_itemKindMax				= 0;
 
 	public float				m_moveSpeed					= 1.0f;
     public float                m_LiftingForce              = 1.0f;
@@ -48,8 +48,7 @@ public class GirlController : NetworkBehaviour
 		m_itemCntroller					= GetComponent<ItemController>();
         m_rRigid                        = GetComponent< Rigidbody >();
 
-		m_itemKindMax					= GameObject.Find("ResourceInformation").transform.childCount;
-
+		//m_itemKindMax					= GameObject.Find("ResourceInformation").transform.childCount;
 	}
 
 	//	Write to the FixedUpdate if including physical behavior
@@ -90,7 +89,9 @@ public class GirlController : NetworkBehaviour
 	}
 
 
-	//
+	//---------------------------------------------------------------------
+	//      すてーと
+	//---------------------------------------------------------------------   	
 	void MovedByKey()
 	{		
 		//	move
@@ -203,30 +204,11 @@ public class GirlController : NetworkBehaviour
 			return;
 		}
 	}
-	//void LevelUpResource()
-	//{
-	//	m_varSlider.m_pos = transform.position;
-	//	m_varSlider.m_cur += m_itemEventSpeed * Time.deltaTime;
-
-	//	//	change state
-	//	if( m_varSlider.GetRate() >= 1.0f )
-	//	{
-	//		m_actionState = ActionState.Common;
-	//		int cost = m_resourceInformation.LevelUpResource( transform.position );
-	//		m_itemCntroller.AddResourceCost( -cost );
-	//		ChangeActionBarState( false );
-	//		return;
-	//	}
-	//	if( Input.GetKeyUp( m_levelUpKey ) )
-	//	{
-	//		m_actionState = ActionState.Common;
-	//		ChangeActionBarState( false );
-	//		return;
-	//	}
-	//}
 
 
-	//
+	//---------------------------------------------------------------------
+	//      アクセサ
+	//---------------------------------------------------------------------   
 	public int GetItemFocus()
 	{
 		if( m_actionState == ActionState.CreateResource )
@@ -241,6 +223,7 @@ public class GirlController : NetworkBehaviour
         m_buttonLevel.SetActive( _IsActive );
         m_buttonBreak.SetActive( _IsActive );
     }
+
 
     //---------------------------------------------------------------------
 	//      コマンド
