@@ -123,7 +123,7 @@ public class DamageBank : MonoBehaviour {
 
 	public delegate void Damaged(DamageResult damageResult);
 
-	public Damaged DamagedCallback = null;
+	public event Damaged DamagedCallback = null;
 
 	public void RecieveDamage(AttackPointList atk ,Collider damagedCollider)
 	{
