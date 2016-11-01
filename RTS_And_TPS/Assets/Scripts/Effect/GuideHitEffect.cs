@@ -110,7 +110,7 @@ public class GuideHitEffect : MonoBehaviour
         }
 
         GameObject dst = Instantiate(instance.m_guideOriginal);
-        dst.transform.parent = instance.transform;
+        dst.transform.SetParent( instance.transform );
         dst.transform.localScale = Vector3.one;
         dst.SetActive(true);
 

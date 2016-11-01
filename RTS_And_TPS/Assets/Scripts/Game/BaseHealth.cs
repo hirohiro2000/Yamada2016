@@ -11,7 +11,7 @@ public class BaseHealth : NetworkBehaviour {
     [ SyncVar ]
 	float hp;
 
-	bool isDeath;
+	//bool isDeath;
 
 	[SerializeField]
 	string text = null;

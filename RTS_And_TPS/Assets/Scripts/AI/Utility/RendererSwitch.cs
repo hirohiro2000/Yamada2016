@@ -4,7 +4,7 @@ using System.Collections;
 public class RendererSwitch : MonoBehaviour {
 
     [SerializeField]
-    private MeshRenderer renderer = null;
+    private MeshRenderer mesh_renderer = null;
 
     bool enable_switch;
 
@@ -14,18 +14,19 @@ public class RendererSwitch : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        if(!renderer)
-            renderer = GetComponent<MeshRenderer>();
+        if(!mesh_renderer)
+            mesh_renderer = GetComponent<MeshRenderer>();
         //StartCoroutine(SwitchLoop());
         //Activate();
 	}
 	
     IEnumerator SwitchLoop()
     {
-        while(is_enable)
+		
+        while (is_enable)
         {
             enable_switch = !enable_switch;
-            renderer.enabled = enable_switch;
+            mesh_renderer.enabled = enable_switch;
             yield return new WaitForSeconds(switch_second);
         }
     }
@@ -38,7 +39,7 @@ public class RendererSwitch : MonoBehaviour {
 
     public void Disable()
     {
-        renderer.enabled = true;
+        mesh_renderer.enabled = true;
         is_enable = false;
     }
         
@@ -51,12 +52,12 @@ public class RendererSwitch : MonoBehaviour {
 
     public void ReturnColor()
     {
-        renderer.material.color = Color.white;
+        mesh_renderer.material.color = Color.white;
     }
 
     public void ChangeColor(Color col)
     {
-        renderer.material.color = col;
+        mesh_renderer.material.color = col;
     }
 
 

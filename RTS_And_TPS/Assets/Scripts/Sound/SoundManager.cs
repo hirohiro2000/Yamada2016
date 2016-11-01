@@ -10,7 +10,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     private List<AudioClip>     m_clip   = null;
 
-    private List<AudioSource>   m_sounds = null;
+    //private List<AudioSource>   m_sounds = null;
 
     private static SoundManager instance = null;
 

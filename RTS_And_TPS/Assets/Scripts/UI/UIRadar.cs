@@ -6,8 +6,8 @@ public class UIRadar : MonoBehaviour {
 
     [SerializeField]
     private GameObject m_player         = null;
-    [SerializeField]
-    private GameObject m_ownFighter      = null;
+    //[SerializeField]
+    //private GameObject m_ownFighter      = null;
     [SerializeField]
     private GameObject m_enemyFighter    = null;
     [SerializeField]
@@ -48,7 +48,8 @@ public class UIRadar : MonoBehaviour {
             RectTransform rt = item.dst.GetComponent<RectTransform>();
 
             Vector3 relativePosition = worldToLocalMatrix.MultiplyPoint(item.reference.transform.position);
-            item.dst.transform.parent = transform;
+
+			item.dst.transform.SetParent( transform );
 
             Vector3 rtPosition = relativePosition / m_searchRange;
 
@@ -73,7 +74,7 @@ public class UIRadar : MonoBehaviour {
         DATA data = new DATA();
         data.reference = src;
         data.dst = Instantiate(instance.m_enemyFighter);
-        data.dst.transform.parent = instance.transform;
+        data.dst.transform.SetParent( instance.transform );
 
         data.dst.SetActive(true);
 

@@ -81,6 +81,20 @@ public class EnemyDifficulter : MonoBehaviour {
 		return cntEnemyEmitNum > 0;
     }
 
+	public float GetHealthMultiple()
+	{
+		return enemyHealthMultiple.Evaluate((int)Level);
+	}
+	public float GetAttackMultiple()
+	{
+		return enemyAttackMultiple.Evaluate((int)Level);
+	}
+	public float GetSpeedMultiple()
+	{
+		return enemySpeedMultiple.Evaluate((int)Level);
+	}
+
+
 
 	void NextLevel()
 	{

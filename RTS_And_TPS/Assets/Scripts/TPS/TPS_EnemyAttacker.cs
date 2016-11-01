@@ -14,16 +14,16 @@ public class TPS_EnemyAttacker : NetworkBehaviour {
 	public bool isAttack;
 
 	[SerializeField]
-	GameObject bullet;
+	GameObject bullet = null;
 
 	[SerializeField]
-	Transform[] attackPoint;
+	Transform[] attackPoint = null;
 
 	[SerializeField]
-	Transform rotatePoint;
+	Transform rotatePoint = null;
 
 	[SerializeField]
-	Transform rotatePointY;
+	Transform rotatePointY = null;
 
 	EnemyAtkTargetManager _enemyAtkTargetManager;
 	EnemyAtkTargetManager enemyAtkTargetManager

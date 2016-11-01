@@ -8,10 +8,10 @@ public class TPSMoveController : MonoBehaviour
     private NetworkIdentity m_rIdentity =   null;
 
 	[SerializeField]
-	float speed;
+	float speed = .0f;
 
-	[SerializeField, Range(0.1f, 1.0f)]
-	float sensitivity;
+	//[SerializeField, Range(0.1f, 1.0f)]
+	//float sensitivity = 0.1f;
 
 	Vector3 inputDir;
 

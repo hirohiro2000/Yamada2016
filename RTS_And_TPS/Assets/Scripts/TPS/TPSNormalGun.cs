@@ -9,7 +9,7 @@ public class TPSNormalGun : NetworkBehaviour
     public  int     c_ShooterID =   0;
 
 	[SerializeField]
-	GameObject particle;
+	GameObject particle = null;
 
 	float cntTime;
 	float destroyTime;
@@ -43,7 +43,19 @@ public class TPSNormalGun : NetworkBehaviour
 	{
         //  ヒットエフェクト
 		if( particle != null )
-			Instantiate( particle, transform.position, transform.rotation * Quaternion.AngleAxis( 180, Vector3.right ) );
+		{
+			GameObject emit = (GameObject)Instantiate( particle, transform.position, transform.rotation * Quaternion.AngleAxis( 180, Vector3.right ) );
+
+			//cloneをまとめる
+			string parentName = emit.name + "s";
+			GameObject parent = GameObject.Find(parentName);
+			if(parent == null)
+			{
+				parent = new GameObject(parentName);
+			}
+			emit.transform.parent = parent.transform;
+
+		}
         
         //  オブジェクト破棄
 		Destroy( this.gameObject );

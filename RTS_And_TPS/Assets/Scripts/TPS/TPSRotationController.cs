@@ -10,16 +10,16 @@ using System.Collections;
 public class TPSRotationController : MonoBehaviour
 {
 	[SerializeField]
-	Transform YAxisRotater;
+	Transform YAxisRotater = null;
 
 	[SerializeField]
-	Transform XAxisRotater;
+	Transform XAxisRotater = null;
 
 	[SerializeField, Range(1.0f, 100.0f)]
-	float YAxisRotSpeed;
+	float YAxisRotSpeed = 50.0f;
 
 	[SerializeField, Range(1.0f, 100.0f)]
-	float XAxisRotSpeed;
+	float XAxisRotSpeed = 50.0f;
 
 	[SerializeField]
 	float XAxisMaxangle = 70.0f;

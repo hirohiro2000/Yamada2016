@@ -6,19 +6,19 @@ using System.Collections;
 public class TPSShotController : NetworkBehaviour {
 
 	[SerializeField]
-	Transform[] firePoints;
+	Transform[] firePoints = null;
 
 	[SerializeField]
-	GameObject emitter;
+	GameObject emitter = null;
 
 	[SerializeField]
-	float shotCooldown;
+	float shotCooldown =.0f;
 
 	int fireCnt;
 	float cntCoolDown;
 
 	[SerializeField]
-	float shotDistance;
+	float shotDistance = 100.0f;
 
 	[SerializeField]
 	float singleRecoil = 0.2f;
@@ -28,7 +28,7 @@ public class TPSShotController : NetworkBehaviour {
 	float AimDistance;
 
 	[SerializeField]
-	TPSRotationController tpsRotationController;
+	TPSRotationController tpsRotationController = null;
 
     //  親へのアクセス
     private NetworkIdentity     m_rParentIdentity   =   null;

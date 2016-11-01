@@ -6,6 +6,26 @@ using System.Collections.Generic;
 public class ReorderableList<type>
 {
 	public List<type> list;
+	public type this[int index]
+	{
+		get
+		{
+			return list.ToArray()[index];
+		}
+		set
+		{
+			list.ToArray()[index] = value;
+		}
+	}
+
+	public int Length
+	{
+		get
+		{
+			return list.Count;
+		}
+	}
+
 }
 
 /*
