@@ -9,16 +9,25 @@ public class TestHealth : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		damageBank = GetComponent<DamageBank>();
-		damageBank.DamagedCallback += (damageResult) =>
+		damageBank.DamagedCallback += (damage) =>
 		{
 			//ダメージ
-			health -= damageResult.GetTotalDamage();
+			health -= damage;
+            Debug.Log("Damaged: " + damage.ToString());
 
 			//0なら死ね
 			if(health <= .0f)
 			{
 				Destroy(gameObject);
 			}
+
+		};
+
+		damageBank.AdvancedDamagedCallback += (DamageResult, contactPoint) =>
+		{
+			//ダメージ部分に丸を出す
+			(Instantiate(GameObject.CreatePrimitive(PrimitiveType.Sphere), contactPoint, Quaternion
+				.identity) as GameObject).transform.localScale *=0.2f;
 
 		};
 	}

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AttackPointList : MonoBehaviour {
 
@@ -10,6 +11,13 @@ public class AttackPointList : MonoBehaviour {
 
 	[SerializeField]
 	Transform autoDestroyObject = null;
+
+	public AttackPointList(AttackPointList atk)
+	{
+		baseAttackPoint = atk.baseAttackPoint;
+		attack_list = new WeakPointParamReorderableList();
+        attack_list.list = new List<WeakPointParam>(atk.attack_list.list);
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -39,6 +47,21 @@ public class AttackPointList : MonoBehaviour {
 			damageBank.RecieveDamage(this,collider);
 		}
     }
+
+	public delegate void AttackPointParamChange(ref AttackPointList atk, Vector3 damagedPostion);
+
+	//ダメージ計算・衝突判定前に呼び出します(計算後に破棄されます)
+	public AttackPointParamChange BeforeCalcDamegeCallBack = null;
+
+	//衝突判定をした後に呼び出します(計算された値は継続しています)
+	public AttackPointParamChange HitedCallBack = null;
+
+	public delegate void DamageBankParamChange(ref DamageBank damaged, DamageResult result);
+
+	//ダメージを与えた後に呼び出します(ダメージ量が0でも)
+	public DamageBankParamChange GiveDamagedCallBack = null;
+
+
 
 	public void CallDestroy()
 	{

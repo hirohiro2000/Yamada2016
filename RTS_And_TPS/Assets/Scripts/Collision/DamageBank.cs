@@ -121,7 +121,11 @@ public class DamageBank : MonoBehaviour {
 		damageList.Clear();
 	}
 
-	public delegate void Damaged(DamageResult damageResult);
+	public delegate void AdvancedDamaged(DamageResult damageResult,Vector3 contactPoint);
+
+	public event AdvancedDamaged AdvancedDamagedCallback = null;
+
+	public delegate void Damaged(float damage);
 
 	public event Damaged DamagedCallback = null;
 
@@ -149,22 +153,68 @@ public class DamageBank : MonoBehaviour {
 			//衝突を取得しなかった場合、非衝突とみなす
 			bool isHit = false;
 
+			//ダメージ計算前にデリゲートします
+			AttackPointList copyAtk;
+			if(atk.BeforeCalcDamegeCallBack != null)
+			{
+				//設定していたら複製
+				copyAtk = new AttackPointList(atk);
+				atk.BeforeCalcDamegeCallBack(ref copyAtk, damagedCollider.transform.position);
+            }
+			else
+			{
+				copyAtk = atk;
+            }
+
 			foreach(WeakPointList weak  in weaks)
 			{
+				//ダメージ計算前にデリゲートします
+				WeakPointList copyWeak;
+				if (weak.BeforeCalcDamegeCallBack != null)
+				{
+					//設定していたら複製
+					copyWeak = new WeakPointList(weak);
+					weak.BeforeCalcDamegeCallBack(ref copyWeak, damagedCollider.transform.position);
+				}
+				else
+				{
+					copyWeak = weak;
+				}
 				//ダメージを取得(衝突扱いでなければ取得できない)
-				DamageResult damageResult = GetDamageResult(atk, weak);
+				DamageResult damageResult = GetDamageResult(copyAtk, copyWeak);
 				if(damageResult != null)
 				{
 					isHit = true;
 					damageList.Add(damageResult);
-					if(DamagedCallback != null)
-						DamagedCallback(damageResult);
+					if(AdvancedDamagedCallback != null)
+						AdvancedDamagedCallback(damageResult,damagedCollider.ClosestPointOnBounds(atk.transform.position));
+					if (DamagedCallback != null)
+						DamagedCallback(damageResult.GetTotalDamage());
+					if (atk.GiveDamagedCallBack != null)
+					{
+						//エラー回避
+						DamageBank i = this;
+                        atk.GiveDamagedCallBack(ref i, damageResult);
+					}
+
+					if (weak.HitedCallBack != null)
+					{
+						//エラー回避
+						WeakPointList temp = weak;
+						temp.HitedCallBack(ref temp, damagedCollider.transform.position);
+                    }
 				}
 			}
 
+
 			//衝突していたら攻撃スクリプトに破壊命令を出す
-			if(isHit == true)
+			if (isHit == true)
 			{
+				if(atk.HitedCallBack != null)
+					atk.HitedCallBack(ref atk, damagedCollider.transform.position);
+
+
+
 				atk.CallDestroy();
 			}
 		}
