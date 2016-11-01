@@ -10,6 +10,8 @@ public class UIRadar : MonoBehaviour {
     private GameObject m_ownFighter      = null;
     [SerializeField]
     private GameObject m_enemyFighter    = null;
+    [SerializeField]
+    private GameObject m_backGround    = null;
 
     [SerializeField]
     private float     m_searchRange      = 50.0f;
@@ -29,22 +31,41 @@ public class UIRadar : MonoBehaviour {
 
         m_uiSymbolList = new List<DATA>();
     }
+    void OnEnable()
+    {
+        instance = GetComponent<UIRadar>();
+
+        m_uiSymbolList = new List<DATA>();
+    }
 
     void Update()
     {
+        if (m_player == null) return;
 
+        Matrix4x4 worldToLocalMatrix = m_player.transform.worldToLocalMatrix;
         foreach (var item in m_uiSymbolList)
         {
             RectTransform rt = item.dst.GetComponent<RectTransform>();
 
-            Vector3 relativePosition = m_player.transform.worldToLocalMatrix.MultiplyPoint( item.reference.transform.position );
+            Vector3 relativePosition = worldToLocalMatrix.MultiplyPoint(item.reference.transform.position);
+            item.dst.transform.parent = transform;
+
             Vector3 rtPosition = relativePosition / m_searchRange;
-            
-            rt.localPosition = new Vector3( rtPosition.x, rtPosition.z, 0.0f ) * 50.0f;
 
-            item.dst.SetActive( rtPosition.sqrMagnitude < 1.0f );
+            rt.localPosition = new Vector3(rtPosition.x, rtPosition.z, 0.0f) * 50.0f;
 
+            item.dst.SetActive(rtPosition.sqrMagnitude < 1.0f);
         }
+        {
+            RectTransform rt = m_backGround.GetComponent<RectTransform>();
+            rt.eulerAngles = new Vector3(rt.eulerAngles.x, rt.eulerAngles.y, m_player.transform.eulerAngles.y);
+        }
+
+    }
+
+    static public void SetPlayer(GameObject player)
+    {
+        instance.m_player = player;
     }
 
     static public void Add(GameObject src, Color rgba)
@@ -53,10 +74,6 @@ public class UIRadar : MonoBehaviour {
         data.reference = src;
         data.dst = Instantiate(instance.m_enemyFighter);
         data.dst.transform.parent = instance.transform;
-
-        RectTransform rt = data.dst.GetComponent<RectTransform>();
-        rt.position = src.transform.position - instance.m_player.transform.position;
-        rt.position /= 100.0f;
 
         data.dst.SetActive(true);
 
