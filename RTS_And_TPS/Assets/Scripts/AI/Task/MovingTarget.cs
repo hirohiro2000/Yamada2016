@@ -11,7 +11,7 @@ public class MovingTarget : TaskBase
 {
     //private readonly float one_frame = 1.0f / 60.0f;
     private readonly float m_normal_cost = 1.0f;
-    private readonly float m_detor_cost = 5.0f;
+    private readonly float m_detor_cost = 10.0f;
     //ここからゴール更新間隔に関するparameter
     private readonly float m_update_adjust_static_object_min = 0.9f;
     private readonly float m_update_adjust_static_object_max = 2.0f;

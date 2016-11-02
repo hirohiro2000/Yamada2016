@@ -62,11 +62,11 @@ public class TargetingSystem : MonoBehaviour {
         bool is_static,
         string target_tag)
     {
-        if (m_current_target)
-        {
-            var temp = m_current_target.GetComponent<RendererSwitch>();
-            temp.Disable();
-        }
+       // if (m_current_target)
+       // {
+         //   var temp = m_current_target.GetComponent<RendererSwitch>();
+         //   temp.Disable();
+        //}
         m_current_target = next_target;
         m_message_type = message_type;
         m_score = score;

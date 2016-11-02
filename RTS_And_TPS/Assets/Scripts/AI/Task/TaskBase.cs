@@ -26,7 +26,7 @@ public class TaskBase : MonoBehaviour {
                                            EnemyTaskDirector task_director
                                            )
     {
-        Debug.Log("TaskBase::Execute call");
+        UserLog.Terauchi("TaskBase::Execute call");
         return Status.Failed;
     }
 
@@ -34,14 +34,14 @@ public class TaskBase : MonoBehaviour {
                                        EnemyTaskDirector task_director
                                        )
     {
-        Debug.Log("TaskBase::Enter call");
+        //Debug.Log("TaskBase::Enter call");
     }
 
     public virtual void Exit(TargetingSystem target_system,
                                        EnemyTaskDirector task_director
                                        )
     {
-        Debug.Log("TaskBase::Exit call");
+      //  Debug.Log("TaskBase::Exit call");
     }
 
     public float EvalutionScore(

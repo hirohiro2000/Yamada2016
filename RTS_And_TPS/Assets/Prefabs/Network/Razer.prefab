@@ -37,6 +37,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!1 &150836
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 475524}
+  - 135: {fileID: 13572038}
+  - 114: {fileID: 11417074}
+  m_Layer: 2
+  m_Name: VisibiligyRange
+  m_TagString: Obstacle
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &152886
 GameObject:
   m_ObjectHideFlags: 0
@@ -59,7 +76,55 @@ GameObject:
   - 114: {fileID: 11487222}
   m_Layer: 0
   m_Name: Razer
-  m_TagString: Untagged
+  m_TagString: Obstacle
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &157072
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 452420}
+  - 135: {fileID: 13548150}
+  - 114: {fileID: 11427246}
+  m_Layer: 2
+  m_Name: NearRange
+  m_TagString: Obstacle
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &163902
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 438656}
+  - 114: {fileID: 11478886}
+  m_Layer: 0
+  m_Name: VisibilityChecker
+  m_TagString: Obstacle
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &181762
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 454630}
+  m_Layer: 0
+  m_Name: RaycastTarget
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -77,8 +142,25 @@ Transform:
   m_Children:
   - {fileID: 479856}
   - {fileID: 444954}
+  - {fileID: 438656}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!4 &438656
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 163902}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1.5, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 454630}
+  - {fileID: 475524}
+  - {fileID: 452420}
+  m_Father: {fileID: 400054}
+  m_RootOrder: 2
 --- !u!4 &444954
 Transform:
   m_ObjectHideFlags: 1
@@ -91,6 +173,45 @@ Transform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 400054}
+  m_RootOrder: 1
+--- !u!4 &452420
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 157072}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 438656}
+  m_RootOrder: 2
+--- !u!4 &454630
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 181762}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.03, y: 0.789, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 438656}
+  m_RootOrder: 0
+--- !u!4 &475524
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 150836}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 438656}
   m_RootOrder: 1
 --- !u!4 &479856
 Transform:
@@ -262,8 +383,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2431673fe0b48374cb46c0752fc3b183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_forcusRange: 10
-  m_targettingSpeed: 8
+--- !u!114 &11417074
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 150836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3b04315213844940844535b837bea56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_trigger_enter_message_type: 0
+--- !u!114 &11427246
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 157072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3b04315213844940844535b837bea56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_trigger_enter_message_type: 1
 --- !u!114 &11438178
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -312,9 +455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcbc13d1b7d6b0e42ad4342b27793e98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_interval: 2
   m_RazerTime: 0.5
-  m_fireRange: 10
 --- !u!114 &11460776
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -358,6 +499,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9340b9eaf15ea0d4bb1788d6fad667f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11478886
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 163902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cf439437769c024b9a49420f86a21ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_raycast_target:
+  - {fileID: 454630}
+  IsStaticObject: 0
 --- !u!114 &11487222
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -376,16 +531,19 @@ MonoBehaviour:
   m_levelInformations:
     list:
     - hp: 10
-      power: 1
+      power: 5
       range: 6
+      interval: 1
       upCost: 30
     - hp: 10
-      power: 1
+      power: 7
       range: 8
+      interval: 0.9
       upCost: 50
     - hp: 10
-      power: 2
+      power: 10
       range: 10
+      interval: 0.8
       upCost: -1
 --- !u!114 &11499632
 MonoBehaviour:
@@ -407,6 +565,30 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!135 &13548150
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 157072}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.81
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &13572038
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 150836}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.3
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

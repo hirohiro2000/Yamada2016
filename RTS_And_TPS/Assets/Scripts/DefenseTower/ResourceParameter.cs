@@ -9,6 +9,7 @@ public class LevelParam
 	public int			hp			= 0;
 	public int			power		= 0;
 	public float		range		= 1.0f;
+	public float		interval	= 0;
 	public int			upCost		= 0;
 }
 
@@ -30,7 +31,7 @@ public class ResourceParameter : MonoBehaviour
 	[HideInInspector]
 	public int			m_curHp				= 0;
 
-	[ ReorderableList( new int[]{ 100, 100, 100, 100 }), HeaderAttribute ("体力ー火力ー範囲ーレベルアップ費用")]
+	[ ReorderableList( new int[]{ 50, 50, 50, 50, 50 }), HeaderAttribute ("体力ー火力ー射程[radius]ー発射間隔[sec]ーレベルアップ費用")]
 	public LevelUpParamReorderableList m_levelInformations = null;
 
 

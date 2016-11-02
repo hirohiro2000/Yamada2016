@@ -114,7 +114,8 @@ public class ResourceCreator : NetworkBehaviour
 
 		for (int i = 0; i < obj.transform.childCount; ++i)
 		{
-			obj.transform.GetChild(i).GetComponent<Collider>().enabled = ena;
+			if( obj.transform.GetChild(i).GetComponent<Collider>())
+				obj.transform.GetChild(i).GetComponent<Collider>().enabled = ena;
 		}
 	}
 
