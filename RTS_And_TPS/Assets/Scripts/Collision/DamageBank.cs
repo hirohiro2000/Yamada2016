@@ -129,6 +129,12 @@ public class DamageBank : MonoBehaviour {
 
 	public event Damaged DamagedCallback = null;
 
+	public delegate void DamagedCollider(Collider collider);
+
+	public event DamagedCollider OnceDamagedCollierCallback = null;
+
+
+
 	public void RecieveDamage(AttackPointList atk ,Collider damagedCollider)
 	{
 		WeakPointList[] weaks;
@@ -138,7 +144,7 @@ public class DamageBank : MonoBehaviour {
         while(true)
 		{
 			weaks = searchTransform.GetComponents<WeakPointList>();
-			if (weaks != null)
+			if (weaks.Length > 0)
 				break;
 			if (searchTransform.parent == null)
 				break;
@@ -186,15 +192,21 @@ public class DamageBank : MonoBehaviour {
 				{
 					isHit = true;
 					damageList.Add(damageResult);
+
 					if(AdvancedDamagedCallback != null)
 						AdvancedDamagedCallback(damageResult,damagedCollider.ClosestPointOnBounds(atk.transform.position));
+
 					if (DamagedCallback != null)
 						DamagedCallback(damageResult.GetTotalDamage());
+
+
+					Debug.Log("Damage:" + damageResult.GetTotalDamage());
+
 					if (atk.GiveDamagedCallBack != null)
 					{
 						//エラー回避
-						DamageBank i = this;
-                        atk.GiveDamagedCallBack(ref i, damageResult);
+						DamageBank temp = this;
+                        atk.GiveDamagedCallBack(ref temp, damageResult);
 					}
 
 					if (weak.HitedCallBack != null)
@@ -207,14 +219,17 @@ public class DamageBank : MonoBehaviour {
 			}
 
 
-			//衝突していたら攻撃スクリプトに破壊命令を出す
+			//衝突していたら攻撃スクリプトに生成・破壊命令を出す
 			if (isHit == true)
 			{
 				if(atk.HitedCallBack != null)
 					atk.HitedCallBack(ref atk, damagedCollider.transform.position);
 
+				if (OnceDamagedCollierCallback != null)
+					OnceDamagedCollierCallback(damagedCollider);
 
-
+				atk.CallEmitObjectOnMyPosition();
+				atk.CallEmitObjectOnHitPoint(damagedCollider.ClosestPointOnBounds(atk.transform.position));
 				atk.CallDestroy();
 			}
 		}
