@@ -10,7 +10,7 @@ public class ItemController : NetworkBehaviour
 	public	GameObject			m_itemFrame				= null;
 	public  int					m_resourcePoint			= 100;
 
-	private Transform			m_resourceInformation	= null;
+	private ResourceCreator		m_resourceCreator		= null;
 	private	List<GameObject>	m_frameList				= null;
 	private int					m_kindMax				= 0;
 	private int					m_curForcus				= 0;
@@ -21,8 +21,8 @@ public class ItemController : NetworkBehaviour
         //  自分のキャラクターの場合のみ処理を行う
         if( !isLocalPlayer ) return;
 
-		m_resourceInformation	= GameObject.Find("ResourceInformation").transform;
-		m_kindMax				= m_resourceInformation.childCount;
+		m_resourceCreator		= GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
+		m_kindMax				= m_resourceCreator.m_resources.Length;
 
 		m_frameList = new List<GameObject>();
 
@@ -89,9 +89,9 @@ public class ItemController : NetworkBehaviour
 	{
 		return m_curForcus;
 	}
-	public ResourceParam GetForcusResourceParam()
+	public ResourceParameter GetForcusResourceParam()
 	{
-		return m_resourceInformation.GetChild( m_curForcus ).GetComponent<ResourceParam>();
+		return m_resourceCreator.m_resources[ m_curForcus ].GetComponent<ResourceParameter>();
 	}
 	public bool CheckWhetherTheCostIsEnough()
 	{

@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(ResourceParam))]
-[RequireComponent(typeof(CollisionParam))]
+[RequireComponent(typeof(ResourceParameter))]
 public class ResourceFacility : Facility
 {
     public int   m_addResourceCost = 2;
@@ -14,7 +13,7 @@ public class ResourceFacility : Facility
 
     IEnumerator AddResourceCost()
     {
-        CollisionParam collisionParam = GetComponent<CollisionParam>();
+        ResourceParameter collisionParam = GetComponent<ResourceParameter>();
 
         while (true)
         {

@@ -11,7 +11,7 @@ public class Turret : NetworkBehaviour
 
 	private float			    m_initFireInterval	= 0;
 
-	private CollisionParam	    m_param				= null;
+	private ResourceParameter	m_param				= null;
 	private EnemyShell_Control  m_rEnemySehll		= null;
     private Tragetor            m_rTragetor         = null;
 
@@ -21,7 +21,7 @@ public class Turret : NetworkBehaviour
 	void Start ()
 	{
 		m_initFireInterval	= m_fireInterval;
-		m_param				= GetComponent<CollisionParam>();
+		m_param				= GetComponent<ResourceParameter>();
         m_rTragetor         = GetComponent<Tragetor>();
 
 		m_rEnemySehll       = GameObject.Find( "Enemy_Shell" ).GetComponent< EnemyShell_Control >();
@@ -33,7 +33,6 @@ public class Turret : NetworkBehaviour
         //  サーバーでのみ処理を行う
         if( !isServer ) return;
 
-		m_fireInterval = m_initFireInterval / m_param.m_level;
 
         //  タイマー更新
         m_IntervalTimer +=  Time.deltaTime;
@@ -47,7 +46,7 @@ public class Turret : NetworkBehaviour
 				GameObject g			= Instantiate( m_bullet );
 				g.transform.position	= transform.position;
 				g.GetComponent<TurretBullet>().Set( transform.rotation, m_bulletSpeed );
-				g.AddComponent<CollisionParam>().Copy( m_param );
+				g.AddComponent<ResourceParameter>().Copy( m_param );
 
                 //  クライアントでも弾が見えるようにする
                 RpcSpawnBullet( transform.rotation, transform.position, m_bulletSpeed );
@@ -69,6 +68,6 @@ public class Turret : NetworkBehaviour
         GameObject  g			= Instantiate( m_bullet );
 		g.transform.position	= _Position;
 		g.GetComponent<TurretBullet>().Set( _Rotation, _BulletSpeed );
-		g.AddComponent<CollisionParam>().Copy( m_param );
+		g.AddComponent<ResourceParameter>().Copy( m_param );
     }
 }

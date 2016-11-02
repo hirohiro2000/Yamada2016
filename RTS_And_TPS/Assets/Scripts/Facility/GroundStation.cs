@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(ResourceParam))]
-[RequireComponent(typeof(CollisionParam))]
+[RequireComponent(typeof(ResourceParameter))]
 public class GroundStation : Facility
 {
     protected override void Execute()

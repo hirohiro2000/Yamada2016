@@ -11,8 +11,6 @@ GameObject:
   - 33: {fileID: 3351524}
   - 135: {fileID: 13512602}
   - 23: {fileID: 2320542}
-  - 114: {fileID: 11405192}
-  - 114: {fileID: 11471630}
   - 114: {fileID: 11433770}
   - 114: {fileID: 11488816}
   - 114: {fileID: 11439906}
@@ -21,6 +19,7 @@ GameObject:
   - 114: {fileID: 11485726}
   - 114: {fileID: 11418942}
   - 114: {fileID: 11473638}
+  - 114: {fileID: 11446444}
   m_Layer: 0
   m_Name: Cannon
   m_TagString: Untagged
@@ -139,21 +138,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 110918}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &11405192
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 110918}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dafe97c5f27a52a4282bde65345ac642, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_createCost: 50
-  m_breakCost: 40
-  m_levelUpCost: 50
-  m_effectiveRange: 12
 --- !u!114 &11418942
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -219,7 +203,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_forcusRange: 30
   m_targettingSpeed: 0.5
---- !u!114 &11471630
+--- !u!114 &11446444
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -227,16 +211,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 110918}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f4a4e17161730449955bb2aa3c12f45, type: 3}
+  m_Script: {fileID: 11500000, guid: 002d41c214277184fae0483bea09af24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_level: 1
-  m_attack: 20
-  m_defense: 0
-  m_hp: 100
-  m_attackUp: 20
-  m_defenseUp: 1
-  m_hpUp: 0
+  m_createCost: 50
+  m_breakCost: 30
+  m_level: 0
+  m_curHp: 0
+  m_levelInformations:
+    list:
+    - hp: 50
+      power: 10
+      range: 5
+      upCost: 60
+    - hp: 50
+      power: 15
+      range: 8
+      upCost: 40
+    - hp: 50
+      power: 20
+      range: 10
+      upCost: -1
 --- !u!114 &11473638
 MonoBehaviour:
   m_ObjectHideFlags: 1

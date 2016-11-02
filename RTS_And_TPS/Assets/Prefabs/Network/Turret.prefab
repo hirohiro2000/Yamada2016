@@ -29,8 +29,6 @@ GameObject:
   - 33: {fileID: 3377156}
   - 135: {fileID: 13526796}
   - 23: {fileID: 2356278}
-  - 114: {fileID: 11401774}
-  - 114: {fileID: 11403040}
   - 114: {fileID: 11473440}
   - 114: {fileID: 11462550}
   - 114: {fileID: 11466024}
@@ -39,6 +37,7 @@ GameObject:
   - 114: {fileID: 11407870}
   - 114: {fileID: 11487960}
   - 114: {fileID: 11402372}
+  - 114: {fileID: 11444070}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -139,21 +138,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 184110}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &11401774
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 184110}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dafe97c5f27a52a4282bde65345ac642, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_createCost: 50
-  m_breakCost: 30
-  m_levelUpCost: 30
-  m_effectiveRange: 10
 --- !u!114 &11402372
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -174,24 +158,6 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
---- !u!114 &11403040
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 184110}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f4a4e17161730449955bb2aa3c12f45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_level: 1
-  m_attack: 10
-  m_defense: 0
-  m_hp: 50
-  m_attackUp: 7
-  m_defenseUp: 1
-  m_hpUp: 0
 --- !u!114 &11407870
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -239,6 +205,35 @@ MonoBehaviour:
   m_sliderColor: {r: 0, g: 1, b: 1, a: 1}
   m_levelTextEnable: 1
   m_levelText: {fileID: 184810, guid: 3fa5ce17d7cae9048a3543dfe7aee321, type: 2}
+--- !u!114 &11444070
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 184110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 002d41c214277184fae0483bea09af24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_createCost: 50
+  m_breakCost: 30
+  m_level: 0
+  m_curHp: 0
+  m_levelInformations:
+    list:
+    - hp: 50
+      power: 5
+      range: 5
+      upCost: 30
+    - hp: 50
+      power: 8
+      range: 8
+      upCost: 50
+    - hp: 50
+      power: 12
+      range: 10
+      upCost: -1
 --- !u!114 &11462550
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -59,12 +59,12 @@ public class TurretBullet : MonoBehaviour
         if( !rEnemy )   rEnemy  =   rTrans.GetComponentInParent< TPS_Enemy >();
         if( !rEnemy )                   return;
 
-        CollisionParam  rParam  =   GetComponent< CollisionParam >();
+        ResourceParameter  rParam  =   GetComponent< ResourceParameter >();
         if( !rParam )                   return;
 
         //  ダメージを与える（サーバーのみ）
         if( m_rLinkManager.isServer ){
-            rEnemy.GiveDamage( rParam.m_attack );
+            rEnemy.GiveDamage( rParam.GetCurLevelParam().power );
         }
 
         //  オブジェクトを破棄

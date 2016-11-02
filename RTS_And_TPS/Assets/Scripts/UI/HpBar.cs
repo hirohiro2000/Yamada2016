@@ -13,7 +13,7 @@ public class HpBar : MonoBehaviour
 	private GameObject		m_textRef			= null;
 
 	private	ValueSlider		m_valueSliderCom	= null;
-	private CollisionParam	m_param				= null;
+	private ResourceParameter	m_param				= null;
 
 	// Use this for initialization
 	void Start ()
@@ -25,7 +25,7 @@ public class HpBar : MonoBehaviour
 		m_textRef.transform.SetParent( GameObject.Find("Canvas").transform );
 		m_textRef.GetComponent<Text>().color = Color.white;
 
-		m_param				= GetComponent<CollisionParam>();
+		m_param				= GetComponent<ResourceParameter>();
 		m_valueSliderCom	= m_valueSliderRef.GetComponent<ValueSlider>();
 	}
 

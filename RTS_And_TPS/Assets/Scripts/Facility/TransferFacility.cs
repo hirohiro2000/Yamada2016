@@ -2,8 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(ResourceParam))]
-[RequireComponent(typeof(CollisionParam))]
+[RequireComponent(typeof(ResourceParameter))]
 public class TransferFacility : Facility
 {
 	private	List<GameObject>	m_gateList		= null;
@@ -20,7 +19,7 @@ public class TransferFacility : Facility
                 TransferGate    gate  = trans.GetComponent<TransferGate>();
                 if (gate != null)
                 {                    
-                    GetComponent<ResourceParam>().m_createCost = int.MaxValue;  //　仮
+                    GetComponent<ResourceParameter>().m_createCost = int.MaxValue;  //　仮
                     m_gateList.Add(trans.gameObject);
                 }
             }

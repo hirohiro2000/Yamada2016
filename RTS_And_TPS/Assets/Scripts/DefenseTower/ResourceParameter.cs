@@ -24,29 +24,36 @@ public class ResourceParameter : MonoBehaviour
 	public int			m_createCost		= 0;
 	public int			m_breakCost			= 0;
 
-	private int			m_level				= 0;
-	private int			m_curHp				= 0;
+	[HideInInspector]
+	public int			m_level				= 0;
 
-	[ ReorderableList( new int[] { 100, 100 }), HeaderAttribute ("体力ー火力ー範囲ーレベルアップ費用")]
-	public LevelUpParamReorderableList m_levelInformations;
+	[HideInInspector]
+	public int			m_curHp				= 0;
+
+	[ ReorderableList( new int[]{ 100, 100, 100, 100 }), HeaderAttribute ("体力ー火力ー範囲ーレベルアップ費用")]
+	public LevelUpParamReorderableList m_levelInformations = null;
 
 
-	void Awake()
+	void Start()
 	{
-		m_curHp = GetCurLevel().hp;
+		m_curHp = GetCurLevelParam().hp;
 	}
 
 
 	//-------------------------------------------------------------
 	//	get
 	//-------------------------------------------------------------
-	public LevelParam GetCurLevel()
+	public LevelParam GetCurLevelParam()
 	{
 		return m_levelInformations[ m_level ];
 	}
 	public float GetRate()
 	{
-		return (float)m_curHp / (float)GetCurLevel().hp;
+		return (float)m_curHp / (float)GetCurLevelParam().hp;
+	}
+	public bool CheckWhetherCanUpALevel()
+	{
+		return m_levelInformations.Length-1 > m_level;
 	}
 	
 	
@@ -55,11 +62,27 @@ public class ResourceParameter : MonoBehaviour
 	//-------------------------------------------------------------
 	public void LevelUp()
 	{
+		if( m_levelInformations.Length <= m_level+1 )
+			return;
+
 		m_level++;
-		m_curHp = GetCurLevel().hp;
+		m_curHp = GetCurLevelParam().hp;
 	}
 	public void GiveDamage( int damage )
 	{
 		m_curHp -= damage;
+	}
+	public void Copy( ResourceParameter param )
+	{
+		m_curHp = param.m_curHp;
+		m_level = param.m_level;
+
+		m_levelInformations			= new LevelUpParamReorderableList();
+		m_levelInformations.list	= new List<LevelParam>();
+
+		for( int i=0; i<param.m_levelInformations.Length; ++i )
+		{
+			m_levelInformations.list.Add( param.m_levelInformations[i] );
+		}
 	}
 }

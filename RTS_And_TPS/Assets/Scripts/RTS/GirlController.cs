@@ -20,8 +20,6 @@ public class GirlController : NetworkBehaviour
 	private const KeyCode		m_cancelKey					= KeyCode.L;
 	private const KeyCode		m_breakKey					= KeyCode.K;
 
-	//private int					m_itemKindMax				= 0;
-
 	public float				m_moveSpeed					= 1.0f;
     public float                m_LiftingForce              = 1.0f;
 	public float				m_itemEventSpeed			= 1.0f;
@@ -44,11 +42,9 @@ public class GirlController : NetworkBehaviour
 		m_buttonBreak					= GameObject.Find("Canvas").transform.FindChild("Button_Break").gameObject;
 
 		m_resourceInformation			= GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
-		m_resourceCreator				= GetComponent<ResourceCreator>();
+		m_resourceCreator				= GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
 		m_itemCntroller					= GetComponent<ItemController>();
         m_rRigid                        = GetComponent< Rigidbody >();
-
-		//m_itemKindMax					= GameObject.Find("ResourceInformation").transform.childCount;
 	}
 
 	//	Write to the FixedUpdate if including physical behavior
@@ -119,6 +115,12 @@ public class GirlController : NetworkBehaviour
 	}
 	void UpdateCommon()
 	{
+		m_buttonOk.SetActive(false);
+		m_buttonLevel.SetActive(false);
+		m_buttonBreak.SetActive(false);
+		m_buttonCancel.SetActive(false);
+		m_resourceCreator.SetGuideVisibleDisable();
+
 		//	change state
 		if( !Input.GetKeyDown( m_okKey ))
 			return;
@@ -132,29 +134,31 @@ public class GirlController : NetworkBehaviour
 		}
 		else
 		{
-			m_buttonOk.SetActive(true);
-			m_buttonCancel.SetActive(true);
+			m_buttonOk.SetActive( true );
+			m_buttonCancel.SetActive( true );
 			m_actionState = ActionState.CreateResource;
 		}
 	}
 	void CreateResource()
 	{
+		//	リソースのUI設定
 		m_buttonOk.transform.FindChild("Point").GetComponent<Text>().text = "-" + m_itemCntroller.GetForcusResourceParam().m_createCost.ToString();
 
+		//	リソースの範囲表示更新
+		m_resourceCreator.UpdateGuideResource( m_itemCntroller.GetForcus(), transform.position );
+		m_resourceCreator.UpdateGuideRange( m_itemCntroller.GetForcus(), transform.position );
+
+		//	ステート更新
 		if( Input.GetKeyDown( m_okKey )&&
 			m_itemCntroller.CheckWhetherTheCostIsEnough() )
 		{
-			m_buttonOk.SetActive(false);
-			m_buttonCancel.SetActive(false);
-			m_resourceCreator.AddResource();
+			m_resourceCreator.AddResource( m_itemCntroller.GetForcus() );
 			m_itemCntroller.AddResourceCost( -m_itemCntroller.GetForcusResourceParam().m_createCost );
 			m_actionState = ActionState.Common;
 			return;
 		}
 		if( Input.GetKeyDown( m_cancelKey ) )
 		{
-			m_buttonOk.SetActive(false);
-			m_buttonCancel.SetActive(false);
 			m_actionState = ActionState.Common;
 			return;
 		}
@@ -167,40 +171,34 @@ public class GirlController : NetworkBehaviour
             return;
         }
 
-		m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.m_levelUpCost.ToString();
+		//	リソースのUI設定
+		m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().upCost.ToString();
 		m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.m_breakCost.ToString();
 
+		//	リソースの範囲表示更新
+		m_resourceCreator.UpdateGuideRange( m_itemCntroller.GetForcus(), transform.position );
+
+		//	ステート更新
 		if( Input.GetKeyDown( m_okKey ) &&
 			m_resourceInformation.CheckIfCanUpALevel( transform.position, m_itemCntroller.GetHaveCost() ))
 		{
-			m_buttonLevel.SetActive(false);
-			m_buttonBreak.SetActive(false);
-			m_buttonCancel.SetActive(false);
 			m_actionState = ActionState.Common;
 
-			//m_resourceInformation.LevelUpResource( transform.position );
-            CmdLevelUpResource( transform.position );
-			m_itemCntroller.AddResourceCost( -param.m_levelUpCost );
+    		m_itemCntroller.AddResourceCost( -param.GetCurLevelParam().upCost );
+			CmdLevelUpResource( transform.position );
 			return;
 		}
 		if ( Input.GetKeyDown( m_cancelKey ))
 		{
-			m_buttonLevel.SetActive(false);
-			m_buttonBreak.SetActive(false);
-			m_buttonCancel.SetActive(false);
 			m_actionState = ActionState.Common;
 			return;
 		}
 		if( Input.GetKeyDown( m_breakKey ))
 		{
-			m_buttonLevel.SetActive(false);
-			m_buttonBreak.SetActive(false);
-			m_buttonCancel.SetActive(false);
 			m_actionState = ActionState.Common;
 
 			m_itemCntroller.AddResourceCost( m_itemCntroller.GetForcusResourceParam().m_breakCost );
             CmdBreakResource( transform.position );
-			//m_resourceInformation.SetGridInformation( null, transform.position, false );
 			return;
 		}
 	}
@@ -209,14 +207,7 @@ public class GirlController : NetworkBehaviour
 	//---------------------------------------------------------------------
 	//      アクセサ
 	//---------------------------------------------------------------------   
-	public int GetItemFocus()
-	{
-		if( m_actionState == ActionState.CreateResource )
-			return m_itemCntroller.GetForcus();
-
-		return -1;
-	}
-    public  void    SetActiveButton( bool _IsActive )
+	public  void    SetActiveButton( bool _IsActive )
     {
         m_buttonOk.SetActive( _IsActive );
         m_buttonCancel.SetActive( _IsActive );

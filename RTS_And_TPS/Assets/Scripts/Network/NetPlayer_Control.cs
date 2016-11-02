@@ -67,20 +67,20 @@ public class NetPlayer_Control : NetworkBehaviour {
     [ Command ]
     public  void    CmdSendDamageEnemy_RTS( NetworkInstanceId _NetID, float _Damage )
     {
-        //  対象オブジェクトを探す
-        NetworkIdentity rIdentity   =   FunctionManager.FindIdentityAtNetID( _NetID );
-        if( !rIdentity )    return;
+        ////  対象オブジェクトを探す
+        //NetworkIdentity rIdentity   =   FunctionManager.FindIdentityAtNetID( _NetID );
+        //if( !rIdentity )    return;
 
-        //  コンポーネント取得
-        CollisionParam  rParam  =   rIdentity.GetComponent< CollisionParam >();
-        if( !rParam )   return;
+        ////  コンポーネント取得
+        //ResourceParameter  rParam  =   rIdentity.GetComponent< ResourceParameter >();
+        //if( !rParam )   return;
 
-        //  ダメージを与える
-        rParam.m_hp     -=  ( int )_Damage;
-        if( rParam.m_hp <= 0.0f ){
-            RTSEnemy    rRTSEnemy   =   rParam.GetComponent< RTSEnemy >();
-            rRTSEnemy.Death_Proc();
-        }
+        ////  ダメージを与える
+        //rParam.m_curHp     -=  ( int )_Damage;
+        //if( rParam.m_curHp <= 0.0f ){
+        //    RTSEnemy    rRTSEnemy   =   rParam.GetComponent< RTSEnemy >();
+        //    rRTSEnemy.Death_Proc();
+        //}
     }
     //  発射コマンドを送信
     [ Command ]

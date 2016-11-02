@@ -12,8 +12,7 @@ using System.Collections;
 //  そうすると起動させるクラスに特別な処理を追記する必要がある
 //  だから、[m_collisionParam.m_level]をbool値のように使っています
 //
-[RequireComponent(typeof(ResourceParam))]
-[RequireComponent(typeof(CollisionParam))]
+[RequireComponent(typeof(ResourceParameter))]
 public class Facility : MonoBehaviour
 {
     public      float   m_lifespan  = 1.0f;
@@ -21,7 +20,7 @@ public class Facility : MonoBehaviour
 
     protected   ResourceInformation m_resourceInfo = null;
     protected   ItemController      m_itemController = null;
-    protected   CollisionParam      m_collisionParam = null;
+    protected   ResourceParameter   m_collisionParam = null;
 
     private     bool    m_isInit = false;
     private     bool    m_isActive = false;
@@ -32,7 +31,7 @@ public class Facility : MonoBehaviour
         {
             m_resourceInfo = GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
             m_itemController = GameObject.Find("MechanicalGirl").GetComponent<ItemController>();
-            m_collisionParam = gameObject.GetComponent<CollisionParam>();
+            m_collisionParam = gameObject.GetComponent<ResourceParameter>();
 
             transform.position = m_resourceInfo.ComputeGridPosition(transform.position);
             m_resourceInfo.SetGridInformation(gameObject, transform.position, true);
@@ -54,7 +53,7 @@ public class Facility : MonoBehaviour
                 }
                 else // 仮
                 {
-                    GetComponent<ResourceParam>().m_createCost = int.MaxValue;
+                    GetComponent<ResourceParameter>().m_createCost = int.MaxValue;
                 }
             }
         }

@@ -117,10 +117,7 @@ public class ResourceInformation : NetworkBehaviour
 
 		if( gi.resource != null )
 		{
-			var cp = gi.resource.GetComponent<CollisionParam>();
-			var rp = gi.resource.GetComponent<ResourceParam>();
-
-			cp.LevelUp();
+			gi.resource.GetComponent<ResourceParameter>().LevelUp();
 		}
 	}
 
@@ -179,19 +176,22 @@ public class ResourceInformation : NetworkBehaviour
 	public bool CheckIfCanUpALevel( Vector3 pos, int haveCost )
 	{
 		var gi = ComputeGridResource( pos );
-
-		if( gi.resource == null )
+		if ( gi.resource == null )
 			return false;
 
-		return haveCost >= gi.resource.GetComponent<ResourceParam>().m_levelUpCost;
+		var param = gi.resource.GetComponent<ResourceParameter>();
+		if( !param.CheckWhetherCanUpALevel() )
+			return false;
+
+		return haveCost >= param.GetCurLevelParam().upCost;
 	}
-	public ResourceParam GetResourceParamFromPosition( Vector3 pos )
+	public ResourceParameter GetResourceParamFromPosition( Vector3 pos )
 	{
         GridInformation rGridInfo   =   ComputeGridResource( pos );
         GameObject      rObj        =   rGridInfo.resource;
 
         if( !rObj )     return  null;
-        else		    return  rObj.GetComponent< ResourceParam >();
+        else		    return  rObj.GetComponent< ResourceParameter >();
 	}
 
 	

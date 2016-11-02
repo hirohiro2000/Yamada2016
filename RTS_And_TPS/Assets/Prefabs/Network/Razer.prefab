@@ -51,13 +51,12 @@ GameObject:
   - 114: {fileID: 11444782}
   - 114: {fileID: 11410164}
   - 114: {fileID: 11467612}
-  - 114: {fileID: 11472938}
-  - 114: {fileID: 11471794}
   - 114: {fileID: 11439118}
   - 114: {fileID: 11443128}
   - 114: {fileID: 11460776}
   - 114: {fileID: 11400268}
   - 114: {fileID: 11499632}
+  - 114: {fileID: 11487222}
   m_Layer: 0
   m_Name: Razer
   m_TagString: Untagged
@@ -359,7 +358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9340b9eaf15ea0d4bb1788d6fad667f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11471794
+--- !u!114 &11487222
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -367,31 +366,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 152886}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f4a4e17161730449955bb2aa3c12f45, type: 3}
+  m_Script: {fileID: 11500000, guid: 002d41c214277184fae0483bea09af24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_level: 1
-  m_attack: 5
-  m_defense: 0
-  m_hp: 100
-  m_attackUp: 10
-  m_defenseUp: 0
-  m_hpUp: 0
---- !u!114 &11472938
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 152886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dafe97c5f27a52a4282bde65345ac642, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_createCost: 70
-  m_breakCost: 30
-  m_levelUpCost: 50
-  m_effectiveRange: 10
+  m_createCost: 30
+  m_breakCost: 10
+  m_level: 0
+  m_curHp: 0
+  m_levelInformations:
+    list:
+    - hp: 10
+      power: 1
+      range: 6
+      upCost: 30
+    - hp: 10
+      power: 1
+      range: 8
+      upCost: 50
+    - hp: 10
+      power: 2
+      range: 10
+      upCost: -1
 --- !u!114 &11499632
 MonoBehaviour:
   m_ObjectHideFlags: 1
