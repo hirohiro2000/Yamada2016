@@ -6,6 +6,7 @@ public class TestHealth : MonoBehaviour {
 
 	DamageBank damageBank = null;
 	public float health = 3.0f;
+
 	// Use this for initialization
 	void Start () {
 		damageBank = GetComponent<DamageBank>();
@@ -23,13 +24,18 @@ public class TestHealth : MonoBehaviour {
 
 		};
 
-		damageBank.AdvancedDamagedCallback += (DamageResult, contactPoint) =>
+		damageBank.OnceDamagedCollierCallback += (damagedCollider) =>
 		{
-			//ダメージ部分に丸を出す
-			(Instantiate(GameObject.CreatePrimitive(PrimitiveType.Sphere), contactPoint, Quaternion
-				.identity) as GameObject).transform.localScale *=0.2f;
 
-		};
+        };
+
+		//	damageBank.AdvancedDamagedCallback += (DamageResult, contactPoint) =>
+		//{
+		//	//ダメージ部分に丸を出す
+		//	(Instantiate(GameObject.CreatePrimitive(PrimitiveType.Sphere), contactPoint, Quaternion
+		//		.identity) as GameObject).transform.localScale *=0.2f;
+
+		//};
 	}
 	
 	// Update is called once per frame

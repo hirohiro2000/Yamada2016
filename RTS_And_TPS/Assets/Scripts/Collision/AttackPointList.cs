@@ -9,8 +9,17 @@ public class AttackPointList : MonoBehaviour {
 	[SerializeField, ReorderableList(new int[] { 100, 100 })]
 	public WeakPointParamReorderableList attack_list = null;
 
+	//衝突後に自動的に消去するオブジェクト
 	[SerializeField]
 	Transform autoDestroyObject = null;
+
+	//衝突後に自動的に自身の原点に出現するオブジェクト
+	[SerializeField]
+	Transform autoEmitObjectOnMyPosition = null;
+
+	//衝突後に自動的に衝突点に出現するオブジェクト
+	[SerializeField]
+	Transform autoEmitObjectOnHitPoint = null;
 
 	public AttackPointList(AttackPointList atk)
 	{
@@ -70,4 +79,22 @@ public class AttackPointList : MonoBehaviour {
 			Destroy(autoDestroyObject.gameObject);
 		}
 	}
+
+	public void CallEmitObjectOnMyPosition()
+	{
+		if (autoEmitObjectOnMyPosition != null)
+		{
+			Instantiate(autoEmitObjectOnMyPosition.gameObject,transform.position, transform.rotation);
+		}
+	}
+
+
+	public void CallEmitObjectOnHitPoint(Vector3 hitPoint)
+	{
+		if (autoEmitObjectOnHitPoint != null)
+		{
+			Instantiate(autoEmitObjectOnHitPoint.gameObject, hitPoint, transform.rotation);
+		}
+	}
+
 }
