@@ -22,7 +22,6 @@ public class GirlController : NetworkBehaviour
 
 	public float				m_moveSpeed					= 1.0f;
     public float                m_LiftingForce              = 1.0f;
-	public float				m_itemEventSpeed			= 1.0f;
 
 	private enum ActionState
 	{

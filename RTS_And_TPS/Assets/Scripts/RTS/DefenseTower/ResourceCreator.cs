@@ -16,7 +16,6 @@ public class ResourceCreator : NetworkBehaviour
 	private	GameObject				m_resourceRangeGuideRef		= null;
 
 	private float					m_rotateAngle				= 0;
-	public	float					m_guideResourceHeight		= 2.0f;
 
 	// Use this for initialization
 	void Start()
@@ -79,7 +78,6 @@ public class ResourceCreator : NetworkBehaviour
 
 		Transform guide = m_staticResources.transform.GetChild( resourceID );
 		Vector3 gridPos = m_resourcesInformation.ComputeGridPosition( pos );
-		gridPos += new Vector3( 0, m_guideResourceHeight, 0 );
 
 		guide.position = gridPos;
 		guide.rotation = Quaternion.AngleAxis( m_rotateAngle, Vector3.up );
@@ -89,7 +87,7 @@ public class ResourceCreator : NetworkBehaviour
 		//	ガイドリソースの範囲の更新
 		Transform	guide	= m_staticResources.transform.GetChild( resourceID );
 		Vector3		gridPos = m_resourcesInformation.ComputeGridPosition( pos );
-		gridPos += new Vector3( 0, m_guideResourceHeight, 0 );
+		gridPos += new Vector3( 0, 0.1f, 0 );
 
 
 		float planeAdjust	= 0.2f * 1.3f; //	板＊テクスチャ

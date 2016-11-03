@@ -200,7 +200,14 @@ public class ResourceInformation : NetworkBehaviour
 	//---------------------------------------------------------------------
 	public void SetGridInformation( GameObject game, Vector3 pos, bool enable )
 	{
-		//i don't know how to get reference
+		//	多重操作確認
+		if( CheckExistResourceFromPosition( pos ) == enable )
+		{
+			return;
+		}
+
+
+		//
 		int x,y;
 		ComputeGridResourceExistentID( pos, out x, out y );
 		
