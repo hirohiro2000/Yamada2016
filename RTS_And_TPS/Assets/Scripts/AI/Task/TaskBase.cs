@@ -57,6 +57,6 @@ public class TaskBase : MonoBehaviour {
         m_owner_object = owner;
         m_rater = GetComponent<TaskEvaluationBase>();
         if (!m_rater)
-            Debug.Log("this task not attach evalution object !!");
+            UserLog.Terauchi(gameObject.name +  "not attach task evalution object !!");
     }
 }

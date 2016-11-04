@@ -200,7 +200,7 @@ public class DamageBank : MonoBehaviour {
 						DamagedCallback(damageResult.GetTotalDamage());
 
 
-					Debug.Log("Damage:" + damageResult.GetTotalDamage());
+					UserLog.Nakano("Damage:" + damageResult.GetTotalDamage());
 
 					if (atk.GiveDamagedCallBack != null)
 					{

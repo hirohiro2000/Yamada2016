@@ -27,7 +27,7 @@ public class UserLog
 	static public void Nakano(object message)
 	{
 #if DEBUGLOG_ON
-		Debug.Log(message);
+		//Debug.Log(message);
 #endif
 	}
 

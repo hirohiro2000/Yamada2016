@@ -14,6 +14,7 @@ GameObject:
   - 54: {fileID: 5450944}
   - 114: {fileID: 11445088}
   - 114: {fileID: 11428444}
+  - 114: {fileID: 11403016}
   m_Layer: 12
   m_Name: PlayerGun
   m_TagString: Player_Attack
@@ -82,6 +83,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &11403016
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 102464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a55cf9a709e8fec4ca7e5e0a27eb9ba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseAttackPoint: 0
+  attack_list:
+    list:
+    - type: 1
+      multiple: 1
+    - type: 2
+      multiple: 1
+    - type: 3
+      multiple: 1
+  autoDestroyObject: {fileID: 0}
+  autoEmitObjectOnMyPosition: {fileID: 0}
+  autoEmitObjectOnHitPoint: {fileID: 0}
 --- !u!114 &11428444
 MonoBehaviour:
   m_ObjectHideFlags: 1

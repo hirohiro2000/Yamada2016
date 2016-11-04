@@ -83,7 +83,7 @@ public class MovingTarget : TaskBase
     }
 
     /**
-    *@breif このオブジェクトはコルーチン使えないので
+    *@breif そのうちコルーチンにもどす
     */
     void UpdateGoalPoint()
     {
@@ -160,7 +160,7 @@ public class MovingTarget : TaskBase
         m_last_path_update_time = Time.realtimeSinceStartup;
         m_navmesh_accessor.Resume();
         task_director.m_anime_controller.SetTrigger("ToMoveTarget");
-        if (target_system.m_target_tag =="DefenseBase")
+        if (target_system.m_target_tag == PerceiveTag.HomeBase)
         {
             m_cost_function = RouteCost;
         }

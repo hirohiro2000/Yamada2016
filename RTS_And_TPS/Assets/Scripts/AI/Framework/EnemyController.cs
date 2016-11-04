@@ -61,6 +61,15 @@ public class EnemyController : MonoBehaviour {
     // Update is called once per frame
     void Update ()
     {
+        //ターゲットが生きているかどうかを確認する
+        if(!m_target_director.IsTargetArive())
+        {
+            m_target_director.TargetClear();
+            UpdateCensor();
+            m_target_director.EvalutionTargetCandidate(m_visibility_censor);
+            m_task_director.PlanningTask(m_target_director);
+        }
+
          var status =  m_task_director.UpdateTask(m_target_director);
         if(status != TaskBase.Status.Active)
         {

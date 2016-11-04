@@ -13,7 +13,7 @@ public class ViewMessageWrapper
     }
 
     public MessageType                      message_type;
-    public string                                  sender_tag;
+    public PerceiveTag                         sender_tag;
     public GameObject                        sender_object;
     public VisibilityChecker                   visibility_checker;
     public bool                                   is_static_object;     //動き回るオブジェクトかどうか

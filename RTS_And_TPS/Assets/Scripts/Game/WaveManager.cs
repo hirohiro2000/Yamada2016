@@ -164,6 +164,8 @@ public class WaveManager : MonoBehaviour {
         GameObject  rObj        =   Instantiate( c_EnemyPrefab[ _EnemyID ] );
         Transform   rTrans      =   rObj.transform;
 
+        rObj.transform.parent = transform;
+
         //  配置設定
         {
             //  座標

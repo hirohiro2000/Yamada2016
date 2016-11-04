@@ -3,14 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+
+/**
+*@brief 敵の行動管理を管理しているクラス
+*@network メンバ関数はおそらくサーバーだけうごかせばOK
+*/
 public class EnemyTaskDirector : MonoBehaviour {
    
 
-    //MovingTarget                   m_move_state;  //とりあえず
-    TaskBase                           m_current_task;
-   // [SerializeField, HeaderAttribute("このキャラクターが使用できるタスクの一覧")]
-   // private GameObject[]       available_task_array;
-
+   
+    private TaskBase                m_current_task;
     private List<TaskBase>       m_task_array;    
     GameObject                      m_task_folder;
     public GameObject            m_owner { get; private set; }
@@ -18,7 +20,10 @@ public class EnemyTaskDirector : MonoBehaviour {
 
     void Awake()
     {
-        //m_targeting_system = GetComponent<TargetingSystem>();
+        m_task_folder = transform.FindChild("TaskHolder").gameObject;
+        m_anime_controller = GetComponent<AnimationController>();
+        m_owner = gameObject;
+        InitializeTaskArray();
     }
 
     void InitializeTaskArray()
@@ -35,22 +40,19 @@ public class EnemyTaskDirector : MonoBehaviour {
         }
     }
 
-	// Use this for initialization
+	// なぜかEnemyController::Updateが先に呼ばれている現象が発生
 	void Start ()
     {
-        //test
-        m_task_folder = transform.FindChild("TaskHolder").gameObject;
-        m_anime_controller = GetComponent<AnimationController>();
-        // var temp = GameObject.Instantiate((GameObject)Resources.Load("AI\\MoveTargetDefault"));
-        // m_move_state = temp.GetComponent<MovingTarget>();
-        //temp.transform.parent = m_task_folder.transform;
-        m_owner = gameObject;
-        InitializeTaskArray();
+        //m_task_folder = transform.FindChild("TaskHolder").gameObject;
+        //m_anime_controller = GetComponent<AnimationController>();
+        //m_owner = gameObject;
+        //InitializeTaskArray();
        
     }
 
     /**
     *@brief 保持している全タスクを評価してタスクを決定する
+    *@network おそらくここはサーバーだけ動かしておけばOK
     */
     public void PlanningTask(TargetingSystem target_director)
     {
@@ -58,6 +60,11 @@ public class EnemyTaskDirector : MonoBehaviour {
         float max_score = .0f;
         TaskBase candidate_task = null;
         
+        if(target_director.m_current_target == null)
+        {
+            UserLog.Terauchi("target is null");
+        }
+
         foreach(var task in m_task_array)
         {
             float score = task.EvalutionScore(target_director, this);
@@ -88,6 +95,10 @@ public class EnemyTaskDirector : MonoBehaviour {
         //Debug.Log("new_task is " + m_current_task.name);
     }
 
+    /**
+    *@breif      現在のタスクを実行する
+    *@network 
+    */
     public TaskBase.Status UpdateTask(TargetingSystem target_director)
     {
         TaskBase.Status current_status = TaskBase.Status.Active;

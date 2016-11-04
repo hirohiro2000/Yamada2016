@@ -54,7 +54,7 @@ public class NearAttackDefualt : TaskBase {
 
     public override void Exit(TargetingSystem target_system, EnemyTaskDirector task_director)
     {
-        base.Exit(target_system, task_director);
+       // base.Exit(target_system, task_director);
         m_damage_object.SetActive(false);
     }
 }

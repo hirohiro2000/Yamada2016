@@ -71,7 +71,7 @@ public class PlayerHealth : NetworkBehaviour
 	}
 	void OnCollisionEnter(Collision collision)
 	{
-		Debug.Log(gameObject.name);
+		//Debug.Log(gameObject.name);
 		PlayerDamageSource source = collision.gameObject.GetComponentInParent<PlayerDamageSource>();
 		if (source != null)
 		{
@@ -83,7 +83,21 @@ public class PlayerHealth : NetworkBehaviour
         }
 	}
 
-	public void OnGUI()
+    void OnTriggerEnter(Collider collision)
+    {
+       // Debug.Log(gameObject.name);
+        PlayerDamageSource source = collision.gameObject.GetComponentInParent<PlayerDamageSource>();
+        if (source != null)
+        {
+            GiveDamage(source.damage);
+
+            TPSHpBar.SetHP(hp);
+
+            GuideHitEffect.Add(source.user);
+        }
+    }
+
+    public void OnGUI()
 	{
         if( !m_rIdentity.isLocalPlayer )    return;
 
