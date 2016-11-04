@@ -134,7 +134,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 6595954, guid: db874c3afb464df4da0c95ca97388354, type: 2}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6511850, guid: db874c3afb464df4da0c95ca97388354, type: 2}
       propertyPath: m_Enabled
@@ -142,11 +142,39 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 6511850, guid: db874c3afb464df4da0c95ca97388354, type: 2}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6567574, guid: db874c3afb464df4da0c95ca97388354, type: 2}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 108660, guid: db874c3afb464df4da0c95ca97388354, type: 2}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 116678, guid: db874c3afb464df4da0c95ca97388354, type: 2}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 140904, guid: db874c3afb464df4da0c95ca97388354, type: 2}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 157484, guid: db874c3afb464df4da0c95ca97388354, type: 2}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 124352, guid: db874c3afb464df4da0c95ca97388354, type: 2}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 125324, guid: db874c3afb464df4da0c95ca97388354, type: 2}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 116242, guid: db874c3afb464df4da0c95ca97388354, type: 2}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11420560, guid: db874c3afb464df4da0c95ca97388354, type: 2}
@@ -1102,6 +1130,8 @@ MonoBehaviour:
     list:
     - type: 1
       multiple: 1
+    - type: 155
+      multiple: 0
   autoDestroyObject: {fileID: 1216661763}
   autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 490204, guid: 8931ad398a75c2c4c8b694f005800976,

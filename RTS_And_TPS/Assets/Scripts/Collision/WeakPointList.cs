@@ -21,6 +21,7 @@ public enum WeakPointType//最大値 =
 	Recovery,
 	Slow,
 	Stop,
+	isWallHit,
 	SPECIAL_EFFECT_END = ATTACK_ATTRIBUTE_END + 100,
 };
 
