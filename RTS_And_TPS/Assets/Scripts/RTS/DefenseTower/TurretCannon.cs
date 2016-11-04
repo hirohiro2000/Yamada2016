@@ -4,9 +4,10 @@ using System.Collections.Generic;
 
 public class TurretCannon : MonoBehaviour
 {
-	public float				m_bulletSpeed	= 1.0f;
-	public float				m_chaseSpeed	= 1.0f;
-	public float				m_explodeRange	= 1.0f;
+	public float				m_bulletSpeed		= 1.0f;
+	public float				m_chaseSpeed		= 1.0f;
+	public float				m_explodeRange		= 1.0f;
+	public GameObject			m_explosionEffect	= null;
 
 	private EnemyShell_Control  m_rEnemyShell   = null;
     private LinkManager         m_rLinkManager  = null;
@@ -63,6 +64,8 @@ public class TurretCannon : MonoBehaviour
 
 		//	爆発エフェクト
 		{
+			var explosion = Instantiate( m_explosionEffect );
+			explosion.transform.position = transform.position;
 		}
 
         //  オブジェクトを破棄
