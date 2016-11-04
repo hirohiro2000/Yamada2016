@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class ResourceCreator : NetworkBehaviour
 {
 	public	GameObject[]			m_resources					= null;
+	public	GameObject[]			m_textures					= null;
 
 	private ResourceInformation		m_resourcesInformation		= null;
 	private GameObject				m_fieldResources			= null;

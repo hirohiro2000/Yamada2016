@@ -12,6 +12,7 @@ public class ItemController : NetworkBehaviour
 
 	private ResourceCreator		m_resourceCreator		= null;
 	private	List<GameObject>	m_frameList				= null;
+	private	List<GameObject>	m_imageList				= null;
 	private int					m_kindMax				= 0;
 	private int					m_curForcus				= 0;
 
@@ -25,6 +26,7 @@ public class ItemController : NetworkBehaviour
 		m_kindMax				= m_resourceCreator.m_resources.Length;
 
 		m_frameList = new List<GameObject>();
+		m_imageList = new List<GameObject>();
 
 		for( int i=0; i<m_kindMax; ++i )
 		{
@@ -33,9 +35,16 @@ public class ItemController : NetworkBehaviour
 
 			add.transform.SetParent( GameObject.Find("Canvas").transform );
 			add.transform.position	= new Vector3( ( i*80 + 72 ) * screenRatio, 130 * screenRatio, 0 );
-			add.transform.GetChild(0).GetComponent<Text>().text = "";//"0";
+			add.transform.GetChild(0).GetComponent<Text>().text = m_resourceCreator.m_resources[i].GetComponent<ResourceParameter>().m_createCost.ToString();
 
 			m_frameList.Add( add );
+
+
+			GameObject  image		= Instantiate( m_resourceCreator.m_textures[i] );
+			image.transform.SetParent( GameObject.Find("Canvas").transform );
+			image.transform.position = new Vector3( ( i*80 + 72 ) * screenRatio, 130 * screenRatio, 0 );
+
+			m_imageList.Add( image );
 		}
 	}
 	public  override    void    OnNetworkDestroy()
@@ -61,6 +70,7 @@ public class ItemController : NetworkBehaviour
 			for( int i=0; i<m_kindMax; ++i )
 			{
 				m_frameList[i].transform.localScale = ( m_curForcus==i )? new Vector3( forcus,forcus,forcus ):new Vector3( basic,basic,basic );
+				m_imageList[i].transform.localScale = ( m_curForcus==i )? new Vector3( forcus,forcus,forcus ):new Vector3( basic,basic,basic );
 			}
 		}
 		{
