@@ -52,8 +52,8 @@ public class FiringDevice : NetworkBehaviour
 	//
 	void UpdateRotation()
     {
-        Transform trs = null;
-        if( m_rEnemyShell.GetNearEnemyTransform( ref trs, transform.position, m_resourceParam.GetCurLevelParam().range ) )
+        Transform trs = m_rEnemyShell.GetNearEnemyTransform( transform.position, m_resourceParam.GetCurLevelParam().range );
+        if( trs )
         {
             Vector3 forward = trs.position - transform.position;
 
