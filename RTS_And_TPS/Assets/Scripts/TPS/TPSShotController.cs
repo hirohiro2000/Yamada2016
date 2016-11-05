@@ -170,15 +170,40 @@ public class TPSShotController : NetworkBehaviour {
 		{
 			style.normal.textColor = Color.white;
 		}
-		style.fontSize =(int)( Screen.height * 0.05f);
+		style.fontSize =(int)( Screen.height * 0.03f);
 		style.alignment = TextAnchor.MiddleCenter;
 
-		GUI.Label(new Rect(.0f, .0f, Screen.width, Screen.height), "+", style);
+		//GUI.Label(new Rect(.0f, .0f, Screen.width, Screen.height), "・", style);
 		style.fontSize = (int)(Screen.height * 0.02f);
 		style.alignment = TextAnchor.MiddleLeft;
 		GUI.Label(new Rect(Screen.height * 0.02f + Screen.width  * 0.5f  , Screen.height * 0.02f, Screen.width, Screen.height), AimDistance.ToString(), style);
 
+		//レティクルの描画
+		float reticle = playerRecoil.GetReticle();
+		style.fontSize = (int)(Screen.height * 0.015f);
+		style.fontStyle = FontStyle.Bold;
+		style.alignment = TextAnchor.MiddleCenter;
 
+		for (int i = 0; i < 4; i++)
+		{
+			Rect rect;
+			int mul;
+			if (i % 2 == 0)
+				mul = 1;
+			else
+				mul = -1;
+			if(i / 2 == 0)
+			{
+				rect = new Rect((reticle + 1) * mul * Screen.height * 0.006f, - Screen.height * 0.001f, Screen.width, Screen.height);
+				GUI.Label(rect, "―" ,style);
+
+			}
+			else
+			{
+				rect = new Rect(.0f, (reticle + 1) * mul * Screen.height * 0.006f, Screen.width, Screen.height);
+				GUI.Label(rect, "|", style);
+			}
+		}
 	}
 
 }

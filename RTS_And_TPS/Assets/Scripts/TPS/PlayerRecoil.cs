@@ -148,11 +148,7 @@ public class PlayerRecoil : MonoBehaviour {
 
 	public Vector3 GetReticleVector(Vector3 forward)
 	{
-		//発射前にレティクルを取得
-		float reticleMultiple = cntReticleMultiple;
-		float reticle = holdingWeapon.baseReticle[0];
-
-		reticle = reticle + reticle * 0.3f * reticleMultiple + reticleMultiple;
+		float reticle = GetReticle();
 
 		//レティクルをベクトルに変換
 		int loop = 3;
@@ -167,6 +163,16 @@ public class PlayerRecoil : MonoBehaviour {
 		Vector3 reticleVector =  Quaternion.Euler(reticleVector2.x, reticleVector2.y, .0f) * Vector3.forward;
 
 		return Quaternion.LookRotation(forward) * reticleVector;
+	}
+
+	public float GetReticle()
+	{
+		//発射前にレティクルを取得
+		float reticleMultiple = cntReticleMultiple;
+		float reticle = holdingWeapon.baseReticle[0];
+
+		return reticle + reticle * 0.3f * reticleMultiple + reticleMultiple;
+
 	}
 
 }
