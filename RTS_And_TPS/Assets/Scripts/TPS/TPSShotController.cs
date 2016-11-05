@@ -27,11 +27,15 @@ public class TPSShotController : NetworkBehaviour {
 
 	float AimDistance;
 
-	[SerializeField]
-	TPSRotationController tpsRotationController = null;
+	//[SerializeField]
+	//TPSRotationController tpsRotationController = null;
 
-    //  親へのアクセス
-    private NetworkIdentity     m_rParentIdentity   =   null;
+	[SerializeField]
+	PlayerRecoil playerRecoil = null;
+
+
+	//  親へのアクセス
+	private NetworkIdentity     m_rParentIdentity   =   null;
     private NetPlayer_Control   m_rNPControl        =   null;
     //  外部へのアクセス
     private LinkManager         m_rLinkManager      =   null;
@@ -111,8 +115,13 @@ public class TPSShotController : NetworkBehaviour {
 
     void    Shot( Vector3 firePoint, Vector3 target )
 	{
+
 		Vector3 forward;
 		forward = (target - firePoint).normalized;
+
+		//レティクルをクォータニオンに変換して回転
+		forward = playerRecoil.GetReticleVector(forward);
+
 		GameObject emit = Instantiate(emitter, firePoint, Quaternion.LookRotation(forward)) as GameObject;
 		float speed = 200.0f;
 		emit.GetComponent<Rigidbody>().velocity = forward * speed;
@@ -125,7 +134,7 @@ public class TPSShotController : NetworkBehaviour {
         rGun.c_ShooterID    =   m_rLinkManager.m_LocalPlayerID;
 
 		//リコイル処理
-		tpsRotationController.Recoil(singleRecoil);
+		playerRecoil.Shot();
 
         //  他のクライアントでも発射
         m_rNPControl.CmdFire_Client( firePoint, target, m_rLinkManager.m_LocalPlayerID );

@@ -29,7 +29,7 @@ using System.Collections.Generic;
  */
 
 
-public class DamageParam
+public struct DamageParam
 {
 	public WeakPointType type;
 	public float damage;
@@ -45,12 +45,19 @@ public class DamageResult
 {
 	float baseDamage = .0f;
 	AttackPointList attackedObject;
+	WeakPointList weak;
 	List<DamageParam> damageParamList = new List<DamageParam>();
 
 	public DamageResult(AttackPointList attackedObject)
 	{
 		this.baseDamage = attackedObject.baseAttackPoint;
 		this.attackedObject = attackedObject;
+	}
+
+	public DamageResult(AttackPointList copyedAtk,WeakPointList damagedWeak)
+	{
+		this.baseDamage = copyedAtk.baseAttackPoint;
+		this.weak = damagedWeak;
 	}
 
 	public List<DamageParam> GetDamageParamList()
@@ -79,22 +86,28 @@ public class DamageResult
 	}
 
 	//攻撃者をDestroyします(設定されていれば)
-	public void AttackedObject_SendDestroy()
-	{
-		if(attackedObject != null)
-		{
-			attackedObject.CallDestroy();
-		}
-	}
+	//public void AttackedObject_SendDestroy()
+	//{
+	//	if(attackedObject != null)
+	//	{
+	//		attackedObject.CallDestroy();
+	//	}
+	//}
 
-	public AttackPointList GetAttackedObject()
-	{
-		return attackedObject;
-	}
+	//public AttackPointList GetAttackedObject()
+	//{
+	//	return attackedObject;
+	//}
 
 
 }
 
+
+public class DamageResults
+{
+	public AttackPointList atk;
+	public DamageResult[] results;
+}
 
 
 
