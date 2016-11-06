@@ -162,9 +162,6 @@ GameObject:
   - 114: {fileID: 11472984}
   - 114: {fileID: 11416114}
   - 54: {fileID: 5429714}
-  - 114: {fileID: 11447920}
-  - 114: {fileID: 11429618}
-  - 114: {fileID: 11429168}
   m_Layer: 0
   m_Name: 'HeavyEnemy '
   m_TagString: Enemy
@@ -1056,13 +1053,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_adjust_max_steering_radius: 0.63
-  m_can_passing_route:
-  - CommonRoot
-  - Root1
-  - Root2
-  - Root3
-  - Root4
-  - Root5
 --- !u!114 &11412696
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1096,7 +1086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96db7186b325d394182c084eb35ba915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 10
+  HP: 100
 --- !u!114 &11420870
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1152,67 +1142,6 @@ MonoBehaviour:
     i14: 185
     i15: 164
   m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
---- !u!114 &11429168
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 140160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96db7186b325d394182c084eb35ba915, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HP: 100
---- !u!114 &11429618
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 140160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20f2b746cf0bd614cad2d1d3e93f74ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weak_lists:
-    list:
-    - type: 1
-      multiple: 1
-    - type: 2
-      multiple: 1
---- !u!114 &11447920
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 140160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 50
-    i1: 175
-    i2: 37
-    i3: 173
-    i4: 167
-    i5: 241
-    i6: 88
-    i7: 148
-    i8: 153
-    i9: 249
-    i10: 129
-    i11: 66
-    i12: 71
-    i13: 235
-    i14: 185
-    i15: 164
-  m_ServerOnly: 1
   m_LocalPlayerAuthority: 0
 --- !u!114 &11452224
 MonoBehaviour:

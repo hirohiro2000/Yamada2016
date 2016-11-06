@@ -36,17 +36,15 @@ public class MovingTarget : TaskBase
 
     LineRenderer m_path_renderer;
 
-    [SerializeField, HeaderAttribute("このキャラクターが通ることのできるルート一覧(対防衛拠点)")]
-    private string[] m_can_passing_route = null;
+    //[SerializeField, HeaderAttribute("このキャラクターが通ることのできるルート一覧(対防衛拠点)")]
+    private StringList m_can_passing_route = new StringList();
 
     private Dictionary<string, float> m_navmesh_cost_dictionary;
 
- //   GameObject target_point_object;
-
     private float m_last_path_update_time;
 
-    delegate void CostFunction();
 
+    delegate void CostFunction();
     private CostFunction m_cost_function;
 
     void Awake()
@@ -61,9 +59,9 @@ public class MovingTarget : TaskBase
         var layer_name_array = component.GetLayerNameArray();
 
         //通過できる場所だけNormalCostを挿入
-       foreach(var name in layer_name_array)
+       foreach(var name in layer_name_array.data)
         {
-            if(Array.IndexOf(m_can_passing_route,name) != -1)
+            if(m_can_passing_route.data.Contains(name))
             {
                 m_navmesh_cost_dictionary.Add(name, m_normal_cost);
             }
@@ -71,15 +69,22 @@ public class MovingTarget : TaskBase
             {
                 m_navmesh_cost_dictionary.Add(name, m_detor_cost);
             }
-        }
 
-
+        }//name
     }
 
     void Start()
     {
         InitializeCostArray();
         m_path_update_interval += UnityEngine.Random.Range(.0f, 0.23f);
+    }
+
+    public void SetPassingRoute(StringList route_list)
+    {
+        foreach(var name in route_list.data)
+        {
+            m_can_passing_route.data.Add(name);
+        }
     }
 
     /**
@@ -98,7 +103,7 @@ public class MovingTarget : TaskBase
         }
         else
         {
-            Debug.Log("Target lost");
+            UserLog.Terauchi("Target lost");
         }
         foreach(var it in m_navmesh_cost_dictionary)
         {

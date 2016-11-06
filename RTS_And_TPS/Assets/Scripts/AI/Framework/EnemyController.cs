@@ -10,8 +10,22 @@ public class EnemyController : MonoBehaviour {
     private EnemyTaskDirector  m_task_director;
     private VisibilitySystem       m_visibility_censor;
     private TargetingSystem     m_target_director;
-    private bool                        m_coroutine_flg;
-    
+    private bool                      m_coroutine_flg;
+    public delegate void          Deadlistener();
+    private Deadlistener           m_dead_callback;   //死んだときにEnemyGeneratorに通知するためのコールバック
+
+    public void SetRouteData(StringList route_data)
+    {
+        var move_target = GetComponentInChildren<MovingTarget>();
+        if (!move_target)
+            return;
+        move_target.SetPassingRoute(route_data);
+    }
+
+    public void SetDeadListener(Deadlistener callback_function)
+    {
+        m_dead_callback = callback_function;
+    }
 
     void Awake()
     {
@@ -56,6 +70,7 @@ public class EnemyController : MonoBehaviour {
     void OnDestroy()
     {
         m_coroutine_flg = false;
+        m_dead_callback();
     }
 
     // Update is called once per frame

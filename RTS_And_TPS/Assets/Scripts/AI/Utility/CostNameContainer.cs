@@ -8,12 +8,15 @@ using System.Collections.Generic;
 public class CostNameContainer : MonoBehaviour {
 
 
+    //[SerializeField]
+    //private string[] LayerNameArray = new string[1];
+
     [SerializeField]
-    private string[] LayerNameArray = new string[1];
+    private StringList LayerNameArray = new StringList();
 
     //private List<Text> text_list;
 
-    public string[] GetLayerNameArray()
+    public StringList GetLayerNameArray()
     {
         return LayerNameArray;
     }

@@ -41,15 +41,22 @@ public class UserLog
 	static public void Terauchi(object message)
 	{
 #if DEBUGLOG_ON
-		Debug.Log(message);
+		Debug.Log("tera : " + message);
 #endif
 	}
 
-	/// <summary>
-	/// ここからWarningLog
-	/// </summary>
+    static public void ErrorTerauchi(object msg)
+    {
+#if DEBUGLOG_ON
+        Debug.LogError("tera : " +  msg);
+#endif
+    }
 
-	static public void NakanoWarning(object message)
+    /// <summary>
+    /// ここからWarningLog
+    /// </summary>
+
+    static public void NakanoWarning(object message)
 	{
 #if DEBUGLOG_ON
 		Debug.LogWarning(message);

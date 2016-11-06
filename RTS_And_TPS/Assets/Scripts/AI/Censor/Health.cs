@@ -24,7 +24,6 @@ public class Health : MonoBehaviour {
 	void Update () {
 	
 	}
- 
 
     void RecieveDamage(float total_damage)
     {
@@ -33,5 +32,10 @@ public class Health : MonoBehaviour {
         {
             Destroy(this.gameObject);
         }
+    }
+
+    public void CorrectionHP(int level,float correcion_rate)
+    {
+        HP = HP * level * correcion_rate;
     }
 }

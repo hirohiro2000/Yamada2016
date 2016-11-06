@@ -20,10 +20,7 @@ public class EnemyTaskDirector : MonoBehaviour {
 
     void Awake()
     {
-        m_task_folder = transform.FindChild("TaskHolder").gameObject;
-        m_anime_controller = GetComponent<AnimationController>();
-        m_owner = gameObject;
-        InitializeTaskArray();
+
     }
 
     void InitializeTaskArray()
@@ -43,11 +40,15 @@ public class EnemyTaskDirector : MonoBehaviour {
 	// なぜかEnemyController::Updateが先に呼ばれている現象が発生
 	void Start ()
     {
+        m_task_folder = transform.FindChild("TaskHolder").gameObject;
+        m_anime_controller = GetComponent<AnimationController>();
+        m_owner = gameObject;
+        InitializeTaskArray();
         //m_task_folder = transform.FindChild("TaskHolder").gameObject;
         //m_anime_controller = GetComponent<AnimationController>();
         //m_owner = gameObject;
         //InitializeTaskArray();
-       
+
     }
 
     /**

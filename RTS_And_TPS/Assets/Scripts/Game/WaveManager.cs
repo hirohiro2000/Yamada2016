@@ -72,16 +72,18 @@ public class WaveManager : MonoBehaviour {
     //  関連アクセス
     private EnemyShell_Control  m_rEnemyShell   =   null;
 
-    //  外部へのアクセス
+    //  外部へのアクセスr
     private GameManager         m_rGameManager  =   null;
+    private EnemyGenerator       m_ganerator = null;
 
-	// Use this for initialization
-	void    Start()
+    // Use this for initialization
+    void    Start()
     {
         //  アクセスを取得
 	    m_rGameManager  =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
         m_rEnemyShell   =   FunctionManager.GetAccessComponent< EnemyShell_Control >( "Enemy_Shell" );
-
+        m_ganerator = GetComponent<EnemyGenerator>();
+        
         //  スポーナー初期化
         for( int i = 0; i < m_rSpawner.Length; i++ ){
             m_rSpawner[ i ]             =   new EnemySpawner();
@@ -99,13 +101,13 @@ public class WaveManager : MonoBehaviour {
         if( m_rGameManager.GetState() != GameManager.State.InGame ) return;
 
         //  スポーナー更新
-        for( int i = 0; i < m_rSpawner.Length; i++ ){
-            m_rSpawner[ i ].Update( this );
-        }
+        //for( int i = 0; i < m_rSpawner.Length; i++ ){
+        //    m_rSpawner[ i ].Update( this );
+        //}
 
         //  すべての配置が終わったら全滅するまで待機
         if( CheckWhetherEmptyAllSpawner()
-        &&  m_rEnemyShell.transform.childCount == 0 ){
+        && m_ganerator.GetCurrentAliveEnemyCount() <= 0 ){
             //  次のウェーブを用意
             StandbyWave();
             //  ウェーブクリア
@@ -117,13 +119,10 @@ public class WaveManager : MonoBehaviour {
 	}
 
     //  生成器が全て空になったかどうかチェック
-    bool        CheckWhetherEmptyAllSpawner()
+    bool CheckWhetherEmptyAllSpawner()
     {
-        for( int i = 0; i < m_rSpawner.Length; i++ ){
-            if( !m_rSpawner[ i ].IsEmpty() )    return  false;
-        }
-
-        return  true;
+        return !m_ganerator.IsGeneratingEnemy();
+       // return  true;
     }
 
     //  配置情報を準備
@@ -143,19 +142,20 @@ public class WaveManager : MonoBehaviour {
             numPop  *=  2;
         }
 
+        m_ganerator.BeginGenerate(m_WaveLevel, numPop,30.0f);
         //  配置
-        for( int i = 0; i < numPop; i++ ){
-            //  配置情報設定
-            SpawnData   rData   =   new SpawnData();
-            rData.enemyID       =   0;
-            rData.level         =   Random.Range( 0, m_WaveLevel );
+        //for( int i = 0; i < numPop; i++ ){
+        //    //  配置情報設定
+        //    SpawnData   rData   =   new SpawnData();
+        //    rData.enemyID       =   0;
+        //    rData.level         =   Random.Range( 0, m_WaveLevel );
 
-            //  配置場所決定
-            int useSpanerID     =   Random.Range( 0, ( isPeak )? 3 : 2 );
+        //    //  配置場所決定
+        //    int useSpanerID     =   Random.Range( 0, ( isPeak )? 3 : 2 );
 
-            //  配置情報セット
-            m_rSpawner[ useSpanerID ].AddSpawnData( rData );
-        }
+        //    //  配置情報セット
+        //    m_rSpawner[ useSpanerID ].AddSpawnData( rData );
+        //}
     }
     //  エネミー配置
     void        PopEnemy( int _SpawnPointID, int _EnemyID, int _Level )
