@@ -468,7 +468,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002d41c214277184fae0483bea09af24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_createCost: 50
+  m_name: "\u30EC\u30FC\u30B6\u30FC"
+  m_summary: "\u6575\u3092\u8CAB\u901A\u3059\u308B"
+  m_createCost: 90
   m_breakCost: 50
   m_level: 0
   m_curHp: 0
@@ -476,8 +478,18 @@ MonoBehaviour:
     list:
     - hp: 1
       power: 5
-      range: 8
+      range: 15
       interval: 1
+      upCost: 10
+    - hp: 1
+      power: 8
+      range: 20
+      interval: 0.8
+      upCost: 10
+    - hp: 1
+      power: 15
+      range: 25
+      interval: 0.6
       upCost: 0
 --- !u!135 &13538262
 SphereCollider:

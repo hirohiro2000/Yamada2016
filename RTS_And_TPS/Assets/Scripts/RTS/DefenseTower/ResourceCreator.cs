@@ -85,15 +85,25 @@ public class ResourceCreator : NetworkBehaviour
 	}
 	public void UpdateGuideRange( int resourceID, Vector3 pos )
 	{
+		var guideParam = m_staticResources.transform.GetChild( resourceID ).GetComponent<ResourceParameter>();
+		UpdateGuideRange( pos, guideParam.GetCurLevelParam().range );
+	}
+	public void UpdateGuideRange( Vector3 pos )
+	{
+		var gridParam = m_resourcesInformation.GetResourceParamFromPosition( pos );
+		UpdateGuideRange( pos, gridParam.GetCurLevelParam().range );
+	}
+	private void UpdateGuideRange( Vector3 pos, float range )
+	{
 		//	ガイドリソースの範囲の更新
-		Transform	guide	= m_staticResources.transform.GetChild( resourceID );
-		Vector3		gridPos = m_resourcesInformation.ComputeGridPosition( pos );
-		gridPos += new Vector3( 0, 0.1f, 0 );
+		Vector3		gridPos		= m_resourcesInformation.ComputeGridPosition( pos );
+		gridPos					+= new Vector3( 0, 0.1f, 0 );
 
+		//	板＊テクスチャ
+		float planeAdjust	= 0.2f * 1.3f; 
+		range				*= planeAdjust;
 
-		float planeAdjust	= 0.2f * 1.3f; //	板＊テクスチャ
-		float range			= guide.GetComponent<ResourceParameter>().GetCurLevelParam().range * planeAdjust;
-
+		//
 		m_resourceRangeGuideRef.SetActive( true );
 		m_resourceRangeGuideRef.transform.position		= gridPos;
 		m_resourceRangeGuideRef.transform.localScale	= new Vector3( range, 0, range );

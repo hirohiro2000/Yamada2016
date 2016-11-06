@@ -51,10 +51,17 @@ public class ItemController : NetworkBehaviour
 	{
         base.OnNetworkDestroy();
 
-        if( m_frameList == null )   return;
-        for( int i = 0; i < m_frameList.Count; i++ ){
-            Destroy( m_frameList[ i ].gameObject );
-        }
+        if( m_frameList != null )
+		{
+			for( int i = 0; i < m_frameList.Count; i++ )
+				Destroy( m_frameList[ i ].gameObject );
+		}
+
+		 if( m_imageList != null )
+		{
+			for( int i = 0; i < m_imageList.Count; i++ )
+				Destroy( m_imageList[ i ].gameObject );
+		}
 	}
 
 	// Update is called once per frame

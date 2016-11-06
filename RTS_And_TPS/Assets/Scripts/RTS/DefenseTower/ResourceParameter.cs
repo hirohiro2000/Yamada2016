@@ -22,6 +22,9 @@ public class LevelUpParamReorderableList : ReorderableList<LevelParam>
 
 public class ResourceParameter : MonoBehaviour
 {
+	public string		m_name;
+	public string		m_summary;
+
 	public int			m_createCost		= 0;
 	public int			m_breakCost			= 0;
 
@@ -44,6 +47,10 @@ public class ResourceParameter : MonoBehaviour
 	//-------------------------------------------------------------
 	//	get
 	//-------------------------------------------------------------
+	public LevelParam GetLevelParam( int level )
+	{
+		return m_levelInformations[ level ];
+	}
 	public LevelParam GetCurLevelParam()
 	{
 		return m_levelInformations[ m_level ];
