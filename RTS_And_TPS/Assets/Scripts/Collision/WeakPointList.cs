@@ -8,6 +8,7 @@ public enum WeakPointType//最大値 =
 	TPSAttack,
 	RTSAttack,
 	EnemyAttack,
+	TPSRangeAttack,
 	ATTACK_PLAYER_END = 50,
 
 	ATTACK_ATTRIBUTE_TYPE,
