@@ -48,13 +48,15 @@ public class WeakPointList : MonoBehaviour
 		weak_lists.list = new List<WeakPointParam>(weak.weak_lists.list);
 	}
 
-	public delegate void WeakPointParamChange(ref WeakPointList weak, Vector3 attackedPostion);
+	public delegate void WeakPointParamChange(ref WeakPointList weak, CollisionInfo info);
+
+	public delegate void WeakPointParamChangeAfterDamaged(ref WeakPointList weak, DamageResult result, CollisionInfo info);
 
 	//ダメージ計算・衝突判定前に呼び出します(計算後に破棄されます)
 	public WeakPointParamChange BeforeCalcDamegeCallBack = null;
 
 	//衝突判定をした後に呼び出します(計算された値は継続しています)
-	public WeakPointParamChange HitedCallBack = null;
+	public WeakPointParamChangeAfterDamaged HitedCallBack = null;
 
 
 }

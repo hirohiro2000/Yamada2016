@@ -25,7 +25,6 @@ using System.Collections.Generic;
 	ダメージバンク(rigidbodyと同じオブジェクトにアタッチ)
 	ダメージをため込みます
 
-	DamageResultに含まれたAttackPointListはnullが返ってくる可能性があります
  */
 
 
@@ -39,8 +38,68 @@ public struct DamageParam
 		this.damage = damage;
 		this.type = type;
 	}
-}					   
+}		
 
+//衝突時の情報
+public class CollisionInfo
+{
+	Transform _attackedObject;  //攻撃スクリプトを持つオブジェクト
+	Transform _damagedObject;	//DamageBankを持つオブジェクト
+
+	Transform _weakObject;		//弱点スクリプトを持つオブジェクト
+	Collider _damagedCollider;	//ダメージを受けたコライダー
+	Vector3 _contactPoint;      //衝突点
+
+	public Transform attackedObject
+	{
+		get
+		{
+			return _attackedObject;
+		}
+	}
+
+	public Transform damagedObject
+	{
+		get
+		{
+			return _damagedObject;
+		}
+	}
+
+	public Transform weakObject
+	{
+		get
+		{
+			return _weakObject;
+		}
+	}
+
+	public Collider damagedCollider
+	{
+		get
+		{
+			return _damagedCollider;
+		}
+	}
+
+	public Vector3 contactPoint
+	{
+		get
+		{
+			return _contactPoint;
+		}
+	}
+
+
+	public CollisionInfo(WorkDamageResults workDamageResults, Transform damagedObject)
+	{
+		_attackedObject = workDamageResults.atk.transform;
+		_damagedObject = damagedObject;
+		_weakObject = workDamageResults.weaksObject;     
+		_damagedCollider = workDamageResults.damagedCollider;
+		_contactPoint = workDamageResults.damagedCollider.ClosestPointOnBounds(_attackedObject.position);
+	}
+}
 //外部公開用クラス
 public class DamageResult
 {
@@ -109,17 +168,19 @@ public class WorkDamageResult : DamageResult
 	{
 
 	}
-	WeakPointList weak;
+	public WeakPointList weak;
 }
 
 
 
 public class WorkDamageResults
 {
-	public WorkDamageResults(AttackPointList atk, Transform weaksObject)
+	public WorkDamageResults(AttackPointList atk, Transform weaksObject,Collider damagedCollider,Transform damagedObject)
 	{
 		this.atk = atk;
 		this.weaksObject = weaksObject;
+		this.damagedCollider = damagedCollider;
+		info = new CollisionInfo(this, damagedObject);
 	}
 
 	public bool IsSame(WorkDamageResults target)
@@ -140,7 +201,9 @@ public class WorkDamageResults
 	public AttackPointList atk = null;
 	public Transform weaksObject = null; //weakを持つオブジェクト
 	public List<WorkDamageResult> results = new List<WorkDamageResult>();
+	public Collider damagedCollider = null;
 	public bool	isDelete = false; //削除フラグ
+	public CollisionInfo info = null;
 }
 
 
@@ -158,10 +221,11 @@ public class DamageBank : MonoBehaviour {
 		LowestTotalDamage,   //最も低い合計ダメージ
 	};
 
-	public List<DamageResult> damageList = new List<DamageResult>();
 	List<WorkDamageResults> workDamageList = new List<WorkDamageResults>();
 
 	public RecieveDamageType recieveDamageType = RecieveDamageType.Default;
+
+	bool ListClearRequest = false; //リストの削除を要求
 
 	//FixedUpdateで検査されたリストの数
 	int CheckedListNum = 0;
@@ -173,30 +237,17 @@ public class DamageBank : MonoBehaviour {
 	// Update is called once per frame
 	void Update()
 	{
-		//foreach (DamageResult result in damageList)
-		//{
-		//	GetElementDamageResult getElementDamageResult = new GetElementDamageResult;
-		//	getElementDamageResult(result);
-		//}
 		//現在自動消去
-		if(workDamageList.Count != 0)
-			UserLog.Nakano("獲得したダメージ: " + workDamageList.Count);
-		CheckedListNum = 0;
-		damageList.Clear();
-		workDamageList.Clear();
+		ListClearRequest = true;
 	}
 
-	//public delegate void AdvancedDamaged(DamageResult damageResult,Vector3 contactPoint);
+	public delegate void AdvancedDamaged(DamageResult damageResult,CollisionInfo info);
 
-	//public event AdvancedDamaged AdvancedDamagedCallback = null;
+	public event AdvancedDamaged AdvancedDamagedCallback = null;
 
 	public delegate void Damaged(float damage);
 
 	public event Damaged DamagedCallback = null;
-
-	//public delegate void DamagedCollider(Collider collider);
-
-	//public event DamagedCollider OnceDamagedCollierCallback = null;
 
 	delegate bool LeaveDamageCheck(WorkDamageResults leave, WorkDamageResults compare);
 
@@ -221,15 +272,14 @@ public class DamageBank : MonoBehaviour {
 		if(weaks.Length > 0)
 		{
 			//弱点スクリプトが見つかった時点でWorkDamageResultsを作成
-			WorkDamageResults workDamageResults = new WorkDamageResults(atk, searchTransform);
+			WorkDamageResults workDamageResults = new WorkDamageResults(atk, searchTransform,damagedCollider,transform);
 
 
-			//TODO:かぶっていなければとりあえずすぐリストに放り込む
-			if(IsAttackAvaliable(workDamageResults))
+			//かぶっていれば無効
+			if(IsAttackAvaliable(workDamageResults) == false)
 			{
-				workDamageList.Add(workDamageResults);
+				return;
 			}
-			//Debug.Log("damaged:" + searchTransform.gameObject.name + "   attacked:" + atk.gameObject.name);
 
 			//衝突を取得しなかった場合、非衝突とみなす
 			bool isHit = false;
@@ -240,7 +290,7 @@ public class DamageBank : MonoBehaviour {
 			{
 				//設定していたら複製
 				copyAtk = new AttackPointList(atk);
-				atk.BeforeCalcDamegeCallBack(ref copyAtk, damagedCollider.transform.position);
+				atk.BeforeCalcDamegeCallBack(ref copyAtk, workDamageResults.info);
             }
 			else
 			{
@@ -255,57 +305,28 @@ public class DamageBank : MonoBehaviour {
 				{
 					//設定していたら複製
 					copyWeak = new WeakPointList(weak);
-					weak.BeforeCalcDamegeCallBack(ref copyWeak, damagedCollider.transform.position);
+					weak.BeforeCalcDamegeCallBack(ref copyWeak, workDamageResults.info);
 				}
 				else
 				{
 					copyWeak = weak;
 				}
 				//ダメージを取得(衝突扱いでなければ取得できない)
-				DamageResult damageResult = GetDamageResult(copyAtk, copyWeak);
+				WorkDamageResult damageResult = GetDamageResult(copyAtk, copyWeak);
 				if(damageResult != null)
 				{
 					isHit = true;
-					damageList.Add(damageResult);
-
-					//if(AdvancedDamagedCallback != null)
-					//	AdvancedDamagedCallback(damageResult,damagedCollider.ClosestPointOnBounds(atk.transform.position));
-
-					if (DamagedCallback != null)
-						DamagedCallback(damageResult.GetTotalDamage());
-
-
-					Debug.Log("Damage:" + damageResult.GetTotalDamage());
-
-					if (atk.GiveDamagedCallBack != null)
-					{
-						//エラー回避
-						DamageBank temp = this;
-                        atk.GiveDamagedCallBack(ref temp, damageResult);
-					}
-
-					if (weak.HitedCallBack != null)
-					{
-						//エラー回避
-						WeakPointList temp = weak;
-						temp.HitedCallBack(ref temp, damagedCollider.transform.position);
-                    }
+					//作業用としてweakを代入
+					damageResult.weak = weak;
+					workDamageResults.results.Add(damageResult);
 				}
 			}
 
 
-			//衝突していたら攻撃スクリプトに生成・破壊命令を出す
+			//衝突していたらリストに追加する
 			if (isHit == true)
 			{
-				if(atk.HitedCallBack != null)
-					atk.HitedCallBack(ref atk, damagedCollider.transform.position);
-
-				//if (OnceDamagedCollierCallback != null)
-				//	OnceDamagedCollierCallback(damagedCollider);
-
-				atk.CallEmitObjectOnMyPosition();
-				atk.CallEmitObjectOnHitPoint(damagedCollider.ClosestPointOnBounds(atk.transform.position));
-				atk.CallDestroy();
+				workDamageList.Add(workDamageResults);
 			}
 		}
 
@@ -336,6 +357,13 @@ public class DamageBank : MonoBehaviour {
 	void FixedUpdate()
 	{
 		DamageListCheckAndExecute();
+
+		if(ListClearRequest == true) //要求を受け入れる
+		{
+			ListClearRequest = false;
+			CheckedListNum = 0;
+			workDamageList.Clear();
+		}
 	}
 
 	//目的
@@ -425,13 +453,28 @@ public class DamageBank : MonoBehaviour {
 		//すべての検査が終了したのでここからコールバック関数を実行する
 		for (int i = CheckedListNum; i < workDamageList.Count; i++)
 		{//階層atk
-			foreach(DamageResult result in workDamageList[i].results)
+
+			WorkDamageResults workDamageResults = workDamageList[i];
+
+			foreach (WorkDamageResult result in workDamageResults.results)
 			{//階層weak
 
-				//試しにDamagedCallbackのみ
-				DamagedCallback(result.GetTotalDamage());
+				if( DamagedCallback != null )
+					DamagedCallback(result.GetTotalDamage());
+				if (AdvancedDamagedCallback != null)
+					AdvancedDamagedCallback(result, workDamageResults.info);
+
+				if (result.weak.HitedCallBack != null)
+				{
+					result.weak.HitedCallBack(ref result.weak, result,workDamageResults.info);
+				}
 
 			}
+			if (workDamageResults.atk.HitedCallBack != null)
+				workDamageResults.atk.HitedCallBack(ref workDamageResults.atk,  workDamageResults.info);
+			workDamageResults.atk.CallEmitObjectOnMyPosition();
+			workDamageResults.atk.CallEmitObjectOnHitPoint(workDamageResults.info.contactPoint);
+			workDamageResults.atk.CallDestroy();
 		}
 		//検査済みとして値を更新
 		CheckedListNum = workDamageList.Count;
@@ -444,14 +487,14 @@ public class DamageBank : MonoBehaviour {
 
 	LeaveDamageCheck CheckHighestTotalDamage = (WorkDamageResults leave, WorkDamageResults compare) =>
 	{
-		return (leave.GetAllTotalDamage() > compare.GetAllTotalDamage());
+		return (leave.GetAllTotalDamage() < compare.GetAllTotalDamage());
 	};
 
 
-	DamageResult GetDamageResult(AttackPointList atk, WeakPointList weak)
+	WorkDamageResult GetDamageResult(AttackPointList atk, WeakPointList weak)
 	{
 		bool isHit = false;
-		DamageResult damageResult = new DamageResult(atk);
+		WorkDamageResult damageResult = new WorkDamageResult(atk);
 		foreach (WeakPointParam weakParam in weak.weak_lists.list)
 		{
 			//検索するタイプを決定
