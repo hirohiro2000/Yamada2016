@@ -19,7 +19,7 @@ public class MovingTarget : TaskBase
     private readonly float m_update_adjust_move_object_max = 0.6f;
     private readonly float m_default_update_interval = 0.1f;
 
-    private NavMeshAgent m_navmesh_accessor;
+    private NavMeshAgent m_navmesh_accessor = null;
 
     //private GameObject m_target_object;
     private float m_default_steering_radius = 0.8f;
@@ -33,7 +33,6 @@ public class MovingTarget : TaskBase
 
     TargetingSystem m_target_director;
 
-
     LineRenderer m_path_renderer;
 
     //[SerializeField, HeaderAttribute("このキャラクターが通ることのできるルート一覧(対防衛拠点)")]
@@ -42,7 +41,6 @@ public class MovingTarget : TaskBase
     private Dictionary<string, float> m_navmesh_cost_dictionary;
 
     private float m_last_path_update_time;
-
 
     delegate void CostFunction();
     private CostFunction m_cost_function;
@@ -157,7 +155,7 @@ public class MovingTarget : TaskBase
 
     public override void Enter(TargetingSystem target_system, EnemyTaskDirector task_director)
     {
-        var renderer_switch = target_system.m_current_target;
+      //  var renderer_switch = target_system.m_current_target;
 
         m_target_director = target_system;
         m_target_point = target_system.m_current_target.transform.position;

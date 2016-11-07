@@ -20,8 +20,6 @@ public class TaskBase : MonoBehaviour {
       
     }
     
-   
-
     public virtual Status Execute(TargetingSystem target_system,
                                            EnemyTaskDirector task_director
                                            )

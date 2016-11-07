@@ -34,8 +34,8 @@ public class EnemyGenerator : MonoBehaviour
     [SerializeField, HeaderAttribute("体力補正値 : HP=BaseHp×HPCorrectionRate×Level")]
     private float HPCorrectionRate = 1.5f;
 
-    [SerializeField, HeaderAttribute("攻撃力補正値 : Attack=BaseHp×AttackCorrectionRate×Level")]
-    private float AttackCorrectionRate = 1.01f;
+    //[SerializeField, HeaderAttribute("攻撃力補正値 : Attack=BaseHp×AttackCorrectionRate×Level")]
+    //private float AttackCorrectionRate = 1.01f;
 
     [SerializeField, HeaderAttribute("生成する敵Prefab")]
     private GameObject[] GenerateEnemyList = new GameObject[1] { null };

@@ -30,6 +30,7 @@ public class WaveManager : MonoBehaviour {
 
         //  更新
         public  void    Update( WaveManager _rWManager ){
+            return;
             //  未配置のエネミーがいなければ処理は行わない
             if( m_rWaveQueue.Count == 0 )   return;
             
@@ -142,7 +143,7 @@ public class WaveManager : MonoBehaviour {
             numPop  *=  2;
         }
 
-        m_ganerator.BeginGenerate(m_WaveLevel, numPop,30.0f);
+        m_ganerator.BeginGenerate(m_WaveLevel, numPop,10.0f);
         //  配置
         //for( int i = 0; i < numPop; i++ ){
         //    //  配置情報設定
@@ -160,33 +161,33 @@ public class WaveManager : MonoBehaviour {
     //  エネミー配置
     void        PopEnemy( int _SpawnPointID, int _EnemyID, int _Level )
     {
-        Transform   rSpawnPoint =   GetTransformInActiveChild( _SpawnPointID );
-        GameObject  rObj        =   Instantiate( c_EnemyPrefab[ _EnemyID ] );
-        Transform   rTrans      =   rObj.transform;
+        //Transform   rSpawnPoint =   GetTransformInActiveChild( _SpawnPointID );
+        //GameObject  rObj        =   Instantiate( c_EnemyPrefab[ _EnemyID ] );
+        //Transform   rTrans      =   rObj.transform;
 
-        rObj.transform.parent = transform;
+        //rObj.transform.parent = transform;
 
-        //  配置設定
-        {
-            //  座標
-            NavMeshAgent    rAgent  =   rObj.GetComponent< NavMeshAgent >();
-            if( rAgent )    rAgent.Warp( rSpawnPoint.position );
-            else            rTrans.position =   rSpawnPoint.position;
+        ////  配置設定
+        //{
+        //    //  座標
+        //    NavMeshAgent    rAgent  =   rObj.GetComponent< NavMeshAgent >();
+        //    if( rAgent )    rAgent.Warp( rSpawnPoint.position );
+        //    else            rTrans.position =   rSpawnPoint.position;
 
-            //  向き
-            rTrans.rotation     =   rSpawnPoint.rotation;
-        }
+        //    //  向き
+        //    rTrans.rotation     =   rSpawnPoint.rotation;
+        //}
 
-        //  パラメータ設定
-        {
-            TPS_Enemy   rTPSEnemy   =   rObj.GetComponent< TPS_Enemy >();
-            if( rTPSEnemy ){
-                rTPSEnemy.m_MaxHP   =   rTPSEnemy.m_MaxHP * Mathf.Max( 1, _Level * 1.5f );
-            }
-        }
+        ////  パラメータ設定
+        //{
+        //    TPS_Enemy   rTPSEnemy   =   rObj.GetComponent< TPS_Enemy >();
+        //    if( rTPSEnemy ){
+        //        rTPSEnemy.m_MaxHP   =   rTPSEnemy.m_MaxHP * Mathf.Max( 1, _Level * 1.5f );
+        //    }
+        //}
         
-        //  ネットワーク上で生成
-        NetworkServer.Spawn( rObj );
+        ////  ネットワーク上で生成
+        //NetworkServer.Spawn( rObj );
     }
 
     //  アクティブな子の数を取得
