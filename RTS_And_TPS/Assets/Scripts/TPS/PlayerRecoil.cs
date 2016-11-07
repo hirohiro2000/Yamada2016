@@ -175,4 +175,9 @@ public class PlayerRecoil : MonoBehaviour {
 
 	}
 
+	void OnGUI()
+	{
+
+	}
+
 }

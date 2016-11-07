@@ -24,10 +24,10 @@ public class TestHealth : MonoBehaviour {
 
 		};
 
-		damageBank.OnceDamagedCollierCallback += (damagedCollider) =>
-		{
+		//damageBank.OnceDamagedCollierCallback += (damagedCollider) =>
+		//{
 
-        };
+  //      };
 
 		//	damageBank.AdvancedDamagedCallback += (DamageResult, contactPoint) =>
 		//{
