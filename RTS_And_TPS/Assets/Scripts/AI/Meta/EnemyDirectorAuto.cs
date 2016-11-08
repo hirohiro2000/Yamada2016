@@ -7,7 +7,7 @@ public class EnemyDirectorAuto : EnemyDirectorBase {
     {
         return new EnemyGenerator.EnemyData(
             UnityEngine.Random.Range(0, 3),
-            /*UnityEngine.Random.Range(0, 3)*/0,
+            UnityEngine.Random.Range(0, 3),
             UnityEngine.Random.Range(0, 2));
     }
 

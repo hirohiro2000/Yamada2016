@@ -27,7 +27,7 @@ public class ShootAndMove : TaskBase {
 
     void Awake()
     {
-        m_navmesh_accessor = transform.root.GetComponent<NavMeshAgent>();
+      //  m_navmesh_accessor = transform.root.GetComponent<NavMeshAgent>();
         m_shoot_object = transform.FindChild("ShootObject");
     }
 
@@ -48,7 +48,11 @@ public class ShootAndMove : TaskBase {
             yield return new WaitForSeconds(ShotIntarvalSecond);
 
             GameObject shot_object = Instantiate(BulletObject);
-            Vector3 vec = (target_system.m_current_target.transform.position - shot_object.transform.position).normalized * ShotPower;
+            shot_object.transform.position = m_shoot_object.transform.position;
+            Vector3 target_position = target_system.m_current_target.transform.position;
+            //とりあえずちょっと上にあげる
+            target_position += new Vector3(.0f, 0.3f, .0f);
+            Vector3 vec = (target_position - shot_object.transform.position).normalized * ShotPower;
             var rigid_body = shot_object.GetComponent<Rigidbody>();
             if(rigid_body)
             {
@@ -62,10 +66,16 @@ public class ShootAndMove : TaskBase {
         }
     }
 
+    public float GetShotRange()
+    {
+        return ShotRange;
+    }
+
     public override void Initialize(GameObject owner)
     {
         base.Initialize(owner);
         m_home_base = transform.root.GetComponent<ReferenceWrapper>().m_home_base;
+        m_navmesh_accessor = owner.GetComponent<NavMeshAgent>();
     }
 
     public override void Enter(TargetingSystem target_system, EnemyTaskDirector task_director)

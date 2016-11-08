@@ -41,6 +41,7 @@ public class EnemyController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        UIRadar.AddEnemy(gameObject);
         StartCoroutine(UpdateFramework());
 	}
 
@@ -57,6 +58,8 @@ public class EnemyController : MonoBehaviour {
             {
                 m_task_director.PlanningTask(m_target_director);
             }
+            //割り込みtaskを更新する
+            m_task_director.EvalutionInterruptTask(m_target_director);
         }
 
     }
@@ -69,6 +72,7 @@ public class EnemyController : MonoBehaviour {
 
     void OnDestroy()
     {
+        UIRadar.Remove(gameObject);
         m_coroutine_flg = false;
         m_dead_callback();
     }

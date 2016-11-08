@@ -30,6 +30,7 @@ public class WaveManager : MonoBehaviour {
 
         //  更新
         public  void    Update( WaveManager _rWManager ){
+
             return;
             //  未配置のエネミーがいなければ処理は行わない
             if( m_rWaveQueue.Count == 0 )   return;

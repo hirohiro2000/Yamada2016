@@ -162,7 +162,8 @@ public class EnemyGenerator : MonoBehaviour
         
         GameObject ret_object = Instantiate(GenerateEnemyList[data.type]);
         Transform respawn_point = m_navigation_data_list[data.respawn_point_index].transform;
-        ret_object.transform.position = respawn_point.position;
+        ret_object.GetComponent<NavMeshAgent>().Warp(respawn_point.position);
+        // ret_object.transform.position = respawn_point.position;
         //座標はちょっとだけばらつき入れておく
         ret_object.transform.position += new Vector3(UnityEngine.Random.Range(-0.5f, 0.5f), .0f, UnityEngine.Random.Range(-0.5f, 0.5f));
 

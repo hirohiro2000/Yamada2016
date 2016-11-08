@@ -49,7 +49,7 @@ public class VisibilitySystem : MonoBehaviour {
     [SerializeField, HeaderAttribute("無条件に視認させるオブジェクト(防衛拠点など)必ず1つ以上設定する")]
     private PerceiveTag[] m_always_perception_tag = new PerceiveTag[1] { PerceiveTag.HomeBase };
 
-    [SerializeField, Range(.0f, 90.0f),HeaderAttribute("視野角")]
+    [SerializeField, Range(.0f, 180.0f),HeaderAttribute("視野角")]
     private float m_fav = 45.0f;
 
     private List<ViewCandidateData> m_candicate_list;

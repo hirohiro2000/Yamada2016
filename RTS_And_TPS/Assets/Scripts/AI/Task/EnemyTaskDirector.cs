@@ -3,14 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+using UnityEngine.UI;
 
 /**
 *@brief 敵の行動管理を管理しているクラス
 *@network メンバ関数はおそらくサーバーだけうごかせばOK
 */
 public class EnemyTaskDirector : MonoBehaviour {
-   
 
+
+    [SerializeField, HeaderAttribute("視界更新時に常に評価するタスク列")]
+    List<TaskBase> AlwaysEvalutionTask = new List<TaskBase>();
    
     private TaskBase                m_current_task;
     private List<TaskBase>       m_task_array;    
@@ -18,9 +21,13 @@ public class EnemyTaskDirector : MonoBehaviour {
     public GameObject            m_owner { get; private set; }
     public AnimationController m_anime_controller { get; private set; }
 
+    Text test_text = null;
+    Text task_text = null;
+
     void Awake()
     {
-
+        test_text = GameObject.Find("TargetText").GetComponent<Text>();
+        task_text = GameObject.Find("TaskText").GetComponent<Text>();
     }
 
     void InitializeTaskArray()
@@ -77,7 +84,7 @@ public class EnemyTaskDirector : MonoBehaviour {
         }
         if(!candidate_task)
         {
-            Debug.Log("PlanningTaskでタスクが見つかりませんでした。");
+            UserLog.Terauchi(m_owner.name +  "のPlanningTaskでタスクが見つかりませんでした。");
             return;
         }
         ChangeTask(candidate_task, target_director);
@@ -102,6 +109,9 @@ public class EnemyTaskDirector : MonoBehaviour {
     */
     public TaskBase.Status UpdateTask(TargetingSystem target_director)
     {
+        test_text.text = target_director.m_current_target.name;
+        task_text.text = m_current_task.name;
+
         TaskBase.Status current_status = TaskBase.Status.Active;
         if (m_current_task)
             current_status = m_current_task.Execute(target_director, this);
@@ -110,5 +120,34 @@ public class EnemyTaskDirector : MonoBehaviour {
 
         return current_status;
     }
-        
+
+    /**
+    *@brief 割り込みする可能性のあるタスクを更新する
+    *@note 敵のタスクの切り替わりは基本的にターゲットが変わったとき
+    *           VisibilityのRangeが切り替わった時しか行わないため視界更新時に評価したいタスクはここで評価される
+    */
+    public void EvalutionInterruptTask(TargetingSystem target_system)
+    {
+        float max_score = .0f;
+        TaskBase most_candicade_task = null;
+        foreach(var evalute_task in AlwaysEvalutionTask)
+        {
+            float score = evalute_task.EvalutionScore(target_system, this);
+
+            if(score > max_score)
+            {
+                most_candicade_task = evalute_task;
+                max_score = score;
+            }
+        }
+
+        if(most_candicade_task != m_current_task &&
+            most_candicade_task != null)
+        {
+            ChangeTask(most_candicade_task, target_system);
+        }
+       
+    }
+
+
 }
