@@ -299,6 +299,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &150852
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 445962}
+  - 114: {fileID: 11421296}
+  m_Layer: 10
+  m_Name: LeftAttack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &152972
 GameObject:
   m_ObjectHideFlags: 1
@@ -342,7 +358,7 @@ GameObject:
   - 4: {fileID: 482148}
   - 114: {fileID: 11403114}
   m_Layer: 10
-  m_Name: NormalGun
+  m_Name: RightAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1008,6 +1024,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 421142}
   m_RootOrder: 3
+--- !u!4 &445962
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 150852}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 451268}
+  m_RootOrder: 0
 --- !u!4 &447646
 Transform:
   m_ObjectHideFlags: 1
@@ -1059,6 +1088,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 445962}
   - {fileID: 482148}
   m_Father: {fileID: 491384}
   m_RootOrder: 3
@@ -1236,7 +1266,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 451268}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!4 &491384
 Transform:
   m_ObjectHideFlags: 1
@@ -2448,16 +2478,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firePoints:
   - {fileID: 400556}
-  - {fileID: 455154}
   emitter: {fileID: 102464, guid: b99fe1000ac85ba4a9ce9923ef0f4b00, type: 2}
   shotCooldown: 0.05
   shotDistance: 200
   singleRecoil: 1
-  weaponChangeKey: 49
-  shotKey: 323
+  weaponChangeKey: 50
+  shotKey: 324
   weapons:
     list:
-    - value: {fileID: 494120, guid: b99fe1000ac85ba4a9ce9923ef0f4b00, type: 2}
     - value: {fileID: 493186, guid: 3e56443d03e1e354c877fd5b215e7df6, type: 2}
   playerRecoil: {fileID: 11456446}
 --- !u!114 &11410464
@@ -2497,6 +2525,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLanding: 0
+--- !u!114 &11421296
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 150852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c02ef3b53bb608948823135cdeab04f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firePoints:
+  - {fileID: 455154}
+  emitter: {fileID: 102464, guid: b99fe1000ac85ba4a9ce9923ef0f4b00, type: 2}
+  shotCooldown: 0.05
+  shotDistance: 200
+  singleRecoil: 1
+  weaponChangeKey: 49
+  shotKey: 323
+  weapons:
+    list:
+    - value: {fileID: 494120, guid: b99fe1000ac85ba4a9ce9923ef0f4b00, type: 2}
+    - value: {fileID: 455538, guid: 28bf1086f5201d0409607a16e581115d, type: 2}
+  playerRecoil: {fileID: 11456446}
 --- !u!114 &11432250
 MonoBehaviour:
   m_ObjectHideFlags: 1

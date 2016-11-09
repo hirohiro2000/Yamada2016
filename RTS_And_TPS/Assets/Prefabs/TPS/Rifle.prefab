@@ -1,36 +1,34 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &102464
+--- !u!1 &166188
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 494120}
-  - 33: {fileID: 3362278}
-  - 135: {fileID: 13560222}
-  - 23: {fileID: 2362308}
-  - 54: {fileID: 5450944}
-  - 114: {fileID: 11445088}
-  - 114: {fileID: 11428444}
-  - 114: {fileID: 11463520}
-  - 114: {fileID: 11453622}
-  - 114: {fileID: 11425642}
-  - 114: {fileID: 11478656}
+  - 4: {fileID: 455538}
+  - 33: {fileID: 3341652}
+  - 135: {fileID: 13597176}
+  - 23: {fileID: 2366106}
+  - 54: {fileID: 5454132}
+  - 114: {fileID: 11453132}
+  - 114: {fileID: 11478388}
+  - 114: {fileID: 11460164}
+  - 114: {fileID: 11472370}
   m_Layer: 12
-  m_Name: PlayerGun
+  m_Name: Rifle
   m_TagString: Player_Attack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &494120
+--- !u!4 &455538
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102464}
+  m_GameObject: {fileID: 166188}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.09, y: 34.2, z: 17.76}
   m_LocalScale: {x: 0.19397569, y: 0.19397569, z: 0.19397569}
@@ -38,12 +36,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!23 &2362308
+--- !u!23 &2366106
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102464}
+  m_GameObject: {fileID: 166188}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -64,19 +62,19 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!33 &3362278
+--- !u!33 &3341652
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102464}
+  m_GameObject: {fileID: 166188}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &5450944
+--- !u!54 &5454132
 Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102464}
+  m_GameObject: {fileID: 166188}
   serializedVersion: 2
   m_Mass: 0.0000001
   m_Drag: 0
@@ -86,50 +84,65 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &11425642
+--- !u!114 &11453132
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102464}
+  m_GameObject: {fileID: 166188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd00001f855ac274c8a122f54eae2b55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armCriticalRateIncrement: 50
+  baseReticle:
+  - 0.1
+  baseRecoil: 10
+  recoveryTimeWithRecoil: 3
+  maxValueWithUpperRecoil: 12
+  maxValueWithHorizontalRecoil: 12
+--- !u!114 &11460164
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166188}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 422a9e5a638cf004d8fdb61362aeb3a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: {x: 0, y: 0, z: 200}
+  velocity: {x: 0, y: 0, z: 400}
   isWorldSpace: 0
---- !u!114 &11428444
+--- !u!114 &11472370
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102464}
+  m_GameObject: {fileID: 166188}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c104d232c316b6c43b47f1c76eee5337, type: 3}
+  m_Script: {fileID: 11500000, guid: a55cf9a709e8fec4ca7e5e0a27eb9ba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
---- !u!114 &11445088
+  baseAttackPoint: 10
+  attack_list:
+    list:
+    - type: 1
+      multiple: 1
+    - type: 155
+      multiple: 0
+  autoDestroyObject: {fileID: 455538}
+  autoEmitObjectOnMyPosition: {fileID: 0}
+  autoEmitObjectOnHitPoint: {fileID: 490204, guid: 8931ad398a75c2c4c8b694f005800976,
+    type: 2}
+--- !u!114 &11478388
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f25afd9c1ced10e4c937ebf8a6b10a27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  c_ShooterID: 0
-  particle: {fileID: 175374, guid: 8931ad398a75c2c4c8b694f005800976, type: 2}
---- !u!114 &11453622
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102464}
+  m_GameObject: {fileID: 166188}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d981c2a930215e643ad6a35b460850d4, type: 3}
@@ -142,53 +155,13 @@ MonoBehaviour:
   shot_info_values:
     list:
     - type: 0
-      value: 0.05
---- !u!114 &11463520
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd00001f855ac274c8a122f54eae2b55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  armCriticalRateIncrement: 25
-  baseReticle:
-  - 1
-  baseRecoil: 0.3
-  recoveryTimeWithRecoil: 2
-  maxValueWithUpperRecoil: 12
-  maxValueWithHorizontalRecoil: 12
---- !u!114 &11478656
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a55cf9a709e8fec4ca7e5e0a27eb9ba0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseAttackPoint: 1
-  attack_list:
-    list:
-    - type: 1
-      multiple: 1
-    - type: 155
-      multiple: 0
-  autoDestroyObject: {fileID: 494120}
-  autoEmitObjectOnMyPosition: {fileID: 0}
-  autoEmitObjectOnHitPoint: {fileID: 490204, guid: 8931ad398a75c2c4c8b694f005800976,
-    type: 2}
---- !u!135 &13560222
+      value: 2
+--- !u!135 &13597176
 SphereCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102464}
+  m_GameObject: {fileID: 166188}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
@@ -204,5 +177,5 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 102464}
+  m_RootGameObject: {fileID: 166188}
   m_IsPrefabParent: 1
