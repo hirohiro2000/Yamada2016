@@ -1078,7 +1078,7 @@ RectTransform:
   - {fileID: 1613040392}
   - {fileID: 823582553}
   - {fileID: 1649446071}
-  - {fileID: 762075656}
+  - {fileID: 1944641331}
   - {fileID: 1434785996}
   - {fileID: 186478331}
   m_Father: {fileID: 0}
@@ -2912,11 +2912,6 @@ MeshCollider:
   serializedVersion: 2
   m_Convex: 0
   m_Mesh: {fileID: 4300034, guid: 7024580966065ba45862bfdc1de1dc1b, type: 3}
---- !u!224 &762075656 stripped
-RectTransform:
-  m_PrefabParentObject: {fileID: 22438986, guid: 496f924f0f51ca746bcfd875f7676781,
-    type: 2}
-  m_PrefabInternal: {fileID: 11107865}
 --- !u!1 &762642093 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100090, guid: 7024580966065ba45862bfdc1de1dc1b, type: 3}
@@ -3764,7 +3759,7 @@ MonoBehaviour:
   GenerateType: 0
   HPCorrectionRate: 1.5
   GenerateEnemyList:
-  - {fileID: 140160, guid: 32af25ada7f1589499f9814247ebb9a4, type: 2}
+  - {fileID: 138538, guid: b17116332797adf418629c3d6e648e7e, type: 2}
   - {fileID: 109252, guid: e1d173af6d18d3946a25bbede42ca9d2, type: 2}
   m_num_spawn_one_frame: 4
 --- !u!114 &970143235
@@ -7033,6 +7028,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_Font: {fileID: 12800000, guid: 277513cdc6cb369499683a94d1762948, type: 3}
+  c_LaunchPos: {x: 0, y: 0, z: 0}
+  c_LaunchPose: {x: 0, y: 0, z: 0, w: 1}
   m_GameSpeed: 1
 --- !u!4 &1650390383
 Transform:
@@ -7724,6 +7721,11 @@ MeshCollider:
   serializedVersion: 2
   m_Convex: 0
   m_Mesh: {fileID: 4300264, guid: 7024580966065ba45862bfdc1de1dc1b, type: 3}
+--- !u!224 &1944641331 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 22418884, guid: 496f924f0f51ca746bcfd875f7676781,
+    type: 2}
+  m_PrefabInternal: {fileID: 11107865}
 --- !u!1 &1978132412 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100040, guid: 7024580966065ba45862bfdc1de1dc1b, type: 3}

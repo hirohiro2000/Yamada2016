@@ -11,7 +11,7 @@ public class EnemyController : MonoBehaviour {
     private VisibilitySystem       m_visibility_censor;
     private TargetingSystem     m_target_director;
     private bool                      m_coroutine_flg;
-    public delegate void          Deadlistener();
+    public delegate void          Deadlistener(GameObject dead_enemy);
     private Deadlistener           m_dead_callback;   //死んだときにEnemyGeneratorに通知するためのコールバック
 
     public void SetRouteData(StringList route_data)
@@ -74,7 +74,7 @@ public class EnemyController : MonoBehaviour {
     {
         UIRadar.Remove(gameObject);
         m_coroutine_flg = false;
-        m_dead_callback();
+        m_dead_callback(gameObject);
     }
 
     // Update is called once per frame
