@@ -11,6 +11,10 @@ public class TPS_CameraController : MonoBehaviour
     private Vector3   m_camLookAt           = Vector3.zero;
     private Vector3   m_camTarget           = Vector3.zero;
 
+    private Vector3   m_camPolar            = Vector3.zero;
+
+    private bool      m_isInvert            = false;
+
     //
     void Start()
     {
@@ -21,9 +25,12 @@ public class TPS_CameraController : MonoBehaviour
 
         Vector3 targetPosition = m_target.transform.position + new Vector3(0.0f, m_cameraHeight, 0.0f);
 
+        m_camPolar = ToPolar( ( transform.position - targetPosition ) );
+
         m_camLookAt = targetPosition;
         m_camTarget = targetPosition;
 
+        transform.parent = null;
 
     }
 
@@ -35,24 +42,35 @@ public class TPS_CameraController : MonoBehaviour
             return;
         }
 
-        Vector3 position = m_camPosition;
+        Vector3 position = transform.position;
         Vector3 lookAt   = m_camLookAt;
 
 
         {
             Vector3 targetPosition = m_target.transform.position + new Vector3(0.0f, m_cameraHeight, 0.0f);
-            lookAt = Vector3.Lerp( lookAt, targetPosition, 0.1f );
+            lookAt = Vector3.Lerp( lookAt, targetPosition, 0.25f );
         }
 
+        {
+			float inputH = Input.GetAxis("Mouse X") * 0.1f;
+			float inputV = Input.GetAxis("Mouse Y") * 0.1f;
+            
+            m_camPolar.x += inputH;
+            if (m_isInvert)
+            {
+                m_camPolar.y += inputV;
+            }
+            else
+            {
+                m_camPolar.y -= inputV;
+            }
 
-		{
-            transform.localPosition = m_idenLocalPosition;
-            position = Vector3.Slerp( position, transform.position, 0.15f );
+            Vector3 p = lookAt + ToVector( m_camPolar.x, m_camPolar.y, m_camPolar.z );
+            position = Vector3.Slerp( position, p, 0.1f );
         }
 
-        m_camPosition = position;
         m_camLookAt = lookAt;
-        transform.position = m_camPosition;
+        transform.position = position;
         transform.LookAt( m_camLookAt );
         
     }

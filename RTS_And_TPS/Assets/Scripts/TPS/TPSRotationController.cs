@@ -71,15 +71,15 @@ public class TPSRotationController : MonoBehaviour
 
 		if(Time.timeScale != .0f)
 		{
-			XAxisRotate(Input.GetAxis("Mouse Y") * XAxisRotSpeed);
-
-			YAxisRotate(Input.GetAxis("Mouse X") * YAxisRotSpeed);
-
-			cntRecoil -= Time.deltaTime * RecoilDampRate;
-			if (cntRecoil < .0f)
-				cntRecoil = .0f;
-
-			XAxisRotater.localRotation = Quaternion.AngleAxis (xAxisAngle + cntRecoil,Vector3.left); 
+//			XAxisRotate(Input.GetAxis("Mouse Y") * XAxisRotSpeed);
+//
+//			YAxisRotate(Input.GetAxis("Mouse X") * YAxisRotSpeed);
+//
+//			cntRecoil -= Time.deltaTime * RecoilDampRate;
+//			if (cntRecoil < .0f)
+//				cntRecoil = .0f;
+//
+//			XAxisRotater.localRotation = Quaternion.AngleAxis (xAxisAngle + cntRecoil,Vector3.left); 
 
 
         }
