@@ -77,10 +77,12 @@ public class TPSJumpController : MonoBehaviour {
 	void    Start()
     {
 	    m_rIdentity =   GetComponent< NetworkIdentity >();
+        cntHoverTime = maxHoverTime;
+//        TPSBoosterBar.Initialize(maxHoverTime);
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update() {
         //  自分のキャラクター以外は処理を行わない
         if( !m_rIdentity.isLocalPlayer )    return;
 
@@ -99,7 +101,7 @@ public class TPSJumpController : MonoBehaviour {
 		{
 			fallPower += Time.deltaTime;
         }
-		
+
         if (Input.GetButtonDown("Jump"))
 		{
 			//cntEnableTime = maxEnableTime;
@@ -116,28 +118,46 @@ public class TPSJumpController : MonoBehaviour {
 			isCanHover = true;
         }
 
+        if (Input.GetButton("Jump") == false)
+        {
+            //　エネルギー回復
+            if (cntHoverTime < maxHoverTime)
+            {
+                float next = cntHoverTime + Time.deltaTime;
+                if (next > maxHoverTime)
+                {
+                    next = maxHoverTime;
+                }
+                float d = next - cntHoverTime;
+                cntHoverTime = next;
+ 
+                // UI更新                
+//                TPSBoosterBar.Storage(d);
+            }
+        } 
+ 
 		if (Input.GetButton("Jump") == true && characterController.isGrounded == false && isCanHover == true)
 		{
 			if(cntHoverTime > .0f)
 			{
 				cntHoverTime -= Time.deltaTime;
 				fallPower -= Time.deltaTime * HoverPower;
+//                TPSBoosterBar.Consumption(Time.deltaTime);
             }
 
 		}
 
-		//if(cntEnableTime > .0f)
-		//{
+        //if(cntEnableTime > .0f)
+        //{
+        //          if (landingChecker.isLanding == true)
+        //	{
+        //		rigidBody.velocity = Vector3.up * Power;
+        //		cntEnableTime = .0f;
+        //          }
+        //}
+        //characterController.Move(Physics.gravity * fallPower * Time.deltaTime);
 
-		//          if (landingChecker.isLanding == true)
-		//	{
-		//		rigidBody.velocity = Vector3.up * Power;
-		//		cntEnableTime = .0f;
-		//          }
-		//}
-
-		//characterController.Move(Physics.gravity * fallPower * Time.deltaTime);
-		characterMover.AddSpeed(Physics.gravity * fallPower);
+        characterMover.AddSpeed(Physics.gravity * fallPower);
 
 		if ((characterController.isGrounded == false) && (beforeIsGrounded == true) && isJumped == false)
 		{
@@ -145,6 +165,7 @@ public class TPSJumpController : MonoBehaviour {
 			characterMover.AddSpeed(Vector3.up * 2.0f);
 		}
 		beforeIsGrounded = characterController.isGrounded || (characterController.collisionFlags & CollisionFlags.Below) != 0;
+
     }
 
 
