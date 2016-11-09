@@ -37,6 +37,11 @@ public class VisibilityChecker : MonoBehaviour
         RaycastHit result = new RaycastHit();
         for (int target_i = 0; target_i < m_raycast_target.Length; target_i++)
         {
+			var temp = m_raycast_target[target_i];
+			if(temp ==null)
+			{
+				UserLog.ErrorTerauchi(m_owner_object.name + "no attach raycast target !!");
+			}
             var target_pos = m_raycast_target[target_i].position;
             var ray_vec = target_pos - eye_position;
             float dist = ray_vec.magnitude;
