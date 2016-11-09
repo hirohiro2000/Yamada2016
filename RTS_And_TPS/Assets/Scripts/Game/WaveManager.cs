@@ -5,71 +5,9 @@ using   System.Collections;
 using   System.Collections.Generic;
 
 public class WaveManager : MonoBehaviour {
-
-    //  生成情報
-    class   SpawnData{
-        public  int enemyID;
-        public  int level;
-        public  SpawnData(){
-            enemyID =   0;
-            level   =   0;
-        }
-        public  SpawnData( int _EnemyID, int _Level ){
-            enemyID =   _EnemyID;
-            level   =   _Level;
-        }
-    }
-    //  生成クラス
-    class   EnemySpawner{
-        public  int                 c_SpawnerID     =   0;
-
-        private float               c_PopInterval   =   1.0f;
-
-        private Queue< SpawnData >  m_rWaveQueue    =   new Queue< SpawnData >();
-        private float               m_IntervalTimer =   0;
-
-        //  更新
-        public  void    Update( WaveManager _rWManager ){
-
-            return;
-            //  未配置のエネミーがいなければ処理は行わない
-            if( m_rWaveQueue.Count == 0 )   return;
-            
-            //  タイマー更新
-            m_IntervalTimer =   Mathf.Max( m_IntervalTimer - Time.deltaTime, 0.0f );
-            //  次の配置時間までスキップ
-            if( m_IntervalTimer > 0.0f )    return;
-
-            //  配置処理
-            {
-                //  配置
-                SpawnData   rData       =   m_rWaveQueue.Peek();
-                _rWManager.PopEnemy( c_SpawnerID, rData.enemyID, rData.level );
-
-                //  配置情報削除
-                m_rWaveQueue.Dequeue();
-
-                //  インターバルリセット
-                m_IntervalTimer =   c_PopInterval;
-            }
-        }
-
-        //  配置情報追加
-        public  void    AddSpawnData( SpawnData _rData ){
-            m_rWaveQueue.Enqueue( _rData );
-        }
-        //  全て吐き出したかどうかチェック
-        public  bool    IsEmpty(){
-            return  m_rWaveQueue.Count == 0;
-        }
-    }
-
-    //  公開パラメータ
-	public  GameObject[]        c_EnemyPrefab   =   null;
-
+    
     //  内部パラメータ
     private int                 m_WaveLevel     =   0;
-    private EnemySpawner[]      m_rSpawner      =   new EnemySpawner[ 3 ];
 
     //  関連アクセス
     private EnemyShell_Control  m_rEnemyShell   =   null;
@@ -85,12 +23,6 @@ public class WaveManager : MonoBehaviour {
 	    m_rGameManager  =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
         m_rEnemyShell   =   FunctionManager.GetAccessComponent< EnemyShell_Control >( "Enemy_Shell" );
         m_ganerator = GetComponent<EnemyGenerator>();
-        
-        //  スポーナー初期化
-        for( int i = 0; i < m_rSpawner.Length; i++ ){
-            m_rSpawner[ i ]             =   new EnemySpawner();
-            m_rSpawner[ i ].c_SpawnerID =   i;
-        }
 
         //  ウェーブ情報用意
         StandbyWave();
@@ -101,11 +33,6 @@ public class WaveManager : MonoBehaviour {
     {
 	    //  ゲーム中のみ処理を行う
         if( m_rGameManager.GetState() != GameManager.State.InGame ) return;
-
-        //  スポーナー更新
-        //for( int i = 0; i < m_rSpawner.Length; i++ ){
-        //    m_rSpawner[ i ].Update( this );
-        //}
 
         //  すべての配置が終わったら全滅するまで待機
         if( CheckWhetherEmptyAllSpawner()
@@ -124,7 +51,6 @@ public class WaveManager : MonoBehaviour {
     bool CheckWhetherEmptyAllSpawner()
     {
         return !m_ganerator.IsGeneratingEnemy();
-       // return  true;
     }
 
     //  配置情報を準備
@@ -144,8 +70,7 @@ public class WaveManager : MonoBehaviour {
             numPop  *=  2;
         }
 
-        m_ganerator.BeginGenerate(m_WaveLevel, numPop,10.0f);
-        //m_ganerator.BeginGenerate(m_WaveLevel, 1, 3.0f);
+        m_ganerator.BeginGenerate( m_WaveLevel, numPop, 10.0f - 6.0f );
 
     }
     //  エネミー配置

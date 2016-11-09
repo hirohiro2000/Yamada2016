@@ -1372,7 +1372,7 @@ public class EditManager : MonoBehaviour {
         m_GridAccessTimer   =   0.1f;
     }
 
-    //  オブジェクトのアクセスを更新
+    //  オブジェクトのアクセスを更新 
     void    UpdateGridObjectAccess()
     {
         for( int z = 0; z < m_MapDepth;  z++ ){

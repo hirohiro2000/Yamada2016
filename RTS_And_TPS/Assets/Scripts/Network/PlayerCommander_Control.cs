@@ -61,7 +61,7 @@ public class PlayerCommander_Control : NetworkBehaviour {
         newPlayer.transform.rotation    =   Quaternion.Euler( 0.0f, 180.0f, 0.0f );
         if( m_rGameManager ){
             newPlayer.transform.position    =   m_rGameManager.c_LaunchPos;
-            newPlayer.transform.rotation    =   m_rGameManager.c_LaunchPose;
+            newPlayer.transform.eulerAngles =   m_rGameManager.c_LaunchAngle;
         }
 
         //  変身
@@ -85,7 +85,7 @@ public class PlayerCommander_Control : NetworkBehaviour {
         newPlayer.transform.rotation    =   Quaternion.Euler( 0.0f, 180.0f, 0.0f );
         if( m_rGameManager ){
             newPlayer.transform.position    =   m_rGameManager.c_LaunchPos;
-            newPlayer.transform.rotation    =   m_rGameManager.c_LaunchPose;
+            newPlayer.transform.eulerAngles =   m_rGameManager.c_LaunchAngle;
         }
 
         //  変身

@@ -16,7 +16,7 @@ public class TransformReorderableList : ReorderableList<TransformList> { }
 
 
 public class TPSShotController : NetworkBehaviour {
-
+    
 	[SerializeField]
 	Transform[] firePoints = null;
 
@@ -113,6 +113,9 @@ public class TPSShotController : NetworkBehaviour {
     //  外部へのアクセス
     private LinkManager         m_rLinkManager      =   null;
 
+    //  内部パラメータ
+    private int                 m_MyChildID         =   0;
+
     // サウンド
 //    private SoundController     m_seShot            =   null;
 
@@ -123,6 +126,9 @@ public class TPSShotController : NetworkBehaviour {
 	    m_rParentIdentity   =   transform.parent.parent.GetComponent< NetworkIdentity >();
         m_rNPControl        =   transform.parent.parent.GetComponent< NetPlayer_Control >();
         m_rLinkManager      =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+
+        //  自分が何番目の子か調べる（他のクライアントで発射させるときにどこから発射されたかを識別するため）
+        m_MyChildID         =   CheckMyChildID();
 
 //        TPSWeaponBar.Initialize(100);
 //        m_seShot            =   SoundController.CreateShotController(transform);
@@ -232,31 +238,35 @@ public class TPSShotController : NetworkBehaviour {
 		}
 		emit.transform.parent = parent.transform;
 
+        //  所属を設定
+        TPSAttack_Net   rAttack =   emit.GetComponent< TPSAttack_Net >();
+        rAttack.c_AttackerID    =   m_rLinkManager.m_LocalPlayerID;
 
-		//距離に合わせて寿命を設定
-		//emit.GetComponent<TPSNormalGun>().Shot_Start(shotDistance / speed);
 		//リコイル処理
 		playerRecoil.Shot();
 
-
-
         //  他のクライアントでも発射
-        m_rNPControl.CmdFire_Client( firePoint, target, m_rLinkManager.m_LocalPlayerID );
+        m_rNPControl.CmdFire_Client( firePoint, target, m_rLinkManager.m_LocalPlayerID, cntWeaponIndex, m_MyChildID );
     }
-    public  void    Shot_ByRequest( Vector3 firePoint, Vector3 target, int _ShooterID )
+    public  void    Shot_ByRequest( Vector3 firePoint, Vector3 target, int _ShooterID, int _WeaponID )
     {
         Vector3 forward;
 		forward = (target - firePoint).normalized;
-		GameObject emit = Instantiate(emitter, firePoint, Quaternion.LookRotation(forward)) as GameObject;
-		float speed = 200.0f;
-		emit.GetComponent<Rigidbody>().velocity = forward * speed;
 
-		//距離に合わせて寿命を設定
-		emit.GetComponent<TPSNormalGun>().Shot_Start(shotDistance / speed);
+		GameObject  emit  = Instantiate( weapons[ _WeaponID ].value.gameObject, firePoint, Quaternion.LookRotation(forward)) as GameObject;
 
-        //  所属設定
-        TPSNormalGun    rGun    =   emit.GetComponent< TPSNormalGun >();
-        rGun.c_ShooterID    =   _ShooterID;
+		//cloneをまとめる
+        string parentName = emit.name + "s";
+		GameObject parent = GameObject.Find(parentName);
+		if (parent == null)
+		{
+			parent = new GameObject(parentName);
+		}
+		emit.transform.parent = parent.transform;
+
+        //  所属を設定
+        TPSAttack_Net   rAttack =   emit.GetComponent< TPSAttack_Net >();
+        rAttack.c_AttackerID    =   m_rLinkManager.m_LocalPlayerID;
     }
 
 	void WeaponChange()
@@ -323,4 +333,16 @@ public class TPSShotController : NetworkBehaviour {
 		}
 	}
 
+    //  自分が何番目の子かを調べる
+    int     CheckMyChildID()
+    {
+        int     numChild    =   transform.parent.childCount;
+        for( int i = 0; i < numChild; i++ ){
+            if( transform.parent.GetChild( i ) != transform )   continue;
+
+            return  i;
+        }
+
+        return  -1;
+    }
 }

@@ -265,16 +265,15 @@ GameObject:
   - 114: {fileID: 11490366}
   - 114: {fileID: 11496072}
   - 114: {fileID: 11410464}
-  - 114: {fileID: 11402144}
   - 114: {fileID: 11414424}
   - 114: {fileID: 11402086}
   - 114: {fileID: 11432250}
   - 114: {fileID: 11465514}
   - 114: {fileID: 11458006}
   - 114: {fileID: 11456446}
-  - 114: {fileID: 11440506}
   - 114: {fileID: 11417110}
   - 114: {fileID: 11487934}
+  - 114: {fileID: 11422488}
   m_Layer: 9
   m_Name: TPSPlayer_Net 1
   m_TagString: Player
@@ -2570,25 +2569,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_ClientID: 0
   c_IsMe: 0
---- !u!114 &11402144
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 139324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a55e8140ff4154644b33df62156dc0a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHp: 10
-  text: 'PlayerHP:'
-  rect:
-    serializedVersion: 2
-    x: 0.1
-    y: 0.75
-    width: 0.5
-    height: 0.2
 --- !u!114 &11403114
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2697,6 +2677,19 @@ MonoBehaviour:
     - value: {fileID: 494120, guid: b99fe1000ac85ba4a9ce9923ef0f4b00, type: 2}
     - value: {fileID: 455538, guid: 28bf1086f5201d0409607a16e581115d, type: 2}
   playerRecoil: {fileID: 11456446}
+--- !u!114 &11422488
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 139324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b12b2cc0a8ddf2d4b88a7e21dabafeb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MaxHP: 20
+  m_CurHP: 0
 --- !u!114 &11432250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2725,18 +2718,6 @@ MonoBehaviour:
   - {fileID: 401738}
   IsStaticObject: 0
   Tag: 1
---- !u!114 &11440506
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 139324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3809ce681c4348c42b4fa59c858597c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 10
 --- !u!114 &11456446
 MonoBehaviour:
   m_ObjectHideFlags: 1

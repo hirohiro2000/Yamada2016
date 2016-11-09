@@ -5,9 +5,6 @@ using   System.Collections;
 
 public class TPSNormalGun : NetworkBehaviour
 {
-    [ SyncVar ]
-    public  int     c_ShooterID =   0;
-
 	[SerializeField]
 	GameObject particle = null;
 

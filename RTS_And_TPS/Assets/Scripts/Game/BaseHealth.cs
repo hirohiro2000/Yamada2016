@@ -43,8 +43,8 @@ public class BaseHealth : NetworkBehaviour {
         if( !isServer )                                             return;
 
         //  突っ込んできたのがエネミーかどうかチェック
-        TPS_Enemy       rEnemy  =   _rCollider.GetComponent< TPS_Enemy >();
-        if( !rEnemy )   rEnemy  =   _rCollider.transform.GetComponentInParent< TPS_Enemy >();
+        Health          rEnemy  =   _rCollider.GetComponent< Health >();
+        if( !rEnemy )   rEnemy  =   _rCollider.transform.GetComponentInParent< Health >();
         if( !rEnemy )   return;
 
         //  ダメージを受ける
@@ -92,7 +92,7 @@ public class BaseHealth : NetworkBehaviour {
     {
         if( isServer )  return;
 
-        //  メッシュを非アクティブ化
+        //  メッシュを非アクティブ化 
         Transform   rCylinder   =   transform.FindChild( "Cylinder" );
         GameObject  rObj        =   rCylinder.gameObject;
         rObj.SetActive( false );

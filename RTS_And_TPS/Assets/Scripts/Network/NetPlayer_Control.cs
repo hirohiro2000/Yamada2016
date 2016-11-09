@@ -55,38 +55,20 @@ public class NetPlayer_Control : NetworkBehaviour {
     {
         //  対象オブジェクトを探す
         NetworkIdentity rIdentity   =   FunctionManager.FindIdentityAtNetID( _NetID );
-        if( !rIdentity )  return;
+        if( !rIdentity )    return;
 
         //  コンポーネント取得
-        TPS_Enemy       rEnemy      =   rIdentity.GetComponent< TPS_Enemy >();
-        if( !rEnemy )   return;
+        Health          rHaelth     =   rIdentity.GetComponent< Health >();
+        if( !rHaelth )      return;
 
         //  ダメージを与える
-        rEnemy.GiveDamage( _Damage );
-    }
-    [ Command ]
-    public  void    CmdSendDamageEnemy_RTS( NetworkInstanceId _NetID, float _Damage )
-    {
-        ////  対象オブジェクトを探す
-        //NetworkIdentity rIdentity   =   FunctionManager.FindIdentityAtNetID( _NetID );
-        //if( !rIdentity )    return;
-
-        ////  コンポーネント取得
-        //ResourceParameter  rParam  =   rIdentity.GetComponent< ResourceParameter >();
-        //if( !rParam )   return;
-
-        ////  ダメージを与える
-        //rParam.m_curHp     -=  ( int )_Damage;
-        //if( rParam.m_curHp <= 0.0f ){
-        //    RTSEnemy    rRTSEnemy   =   rParam.GetComponent< RTSEnemy >();
-        //    rRTSEnemy.Death_Proc();
-        //}
+        rHaelth.GiveDamage( _Damage );
     }
     //  発射コマンドを送信
     [ Command ]
-    public  void    CmdFire_Client( Vector3 _Position, Vector3 _Target, int _ShooterID )
+    public  void    CmdFire_Client( Vector3 _Position, Vector3 _Target, int _ShooterID, int _WeaponID, int _ChildID )
     {
-        RpcFire_Client( _Position, _Target, _ShooterID );
+        RpcFire_Client( _Position, _Target, _ShooterID, _WeaponID, _ChildID );
     }
     //  データ更新
     [ Command ]
@@ -105,16 +87,16 @@ public class NetPlayer_Control : NetworkBehaviour {
 //*********************************************************************************
     //  発射リクエスト
     [ ClientRpc ]
-    void    RpcFire_Client( Vector3 _Position, Vector3 _Target, int _ShooterID )
+    void    RpcFire_Client( Vector3 _Position, Vector3 _Target, int _ShooterID, int _WeaponID, int _ChildID )
     {
         //  発射元のクライアントでは発射しない
         if( _ShooterID == m_rLinkManager.m_LocalPlayerID )  return;
         
         //  アクセス取得
-        TPSShotController   rShot   =   transform.FindChild( "Weapons" ).FindChild( "NormalGun" ).GetComponent< TPSShotController >();
+        TPSShotController   rShot   =   transform.FindChild( "Weapons" ).GetChild( _ChildID ).GetComponent< TPSShotController >();
         if( !rShot )                                        return;
 
         //  発射
-        rShot.Shot_ByRequest( _Position, _Target, _ShooterID );
+        rShot.Shot_ByRequest( _Position, _Target, _ShooterID, _WeaponID );
     }
 }

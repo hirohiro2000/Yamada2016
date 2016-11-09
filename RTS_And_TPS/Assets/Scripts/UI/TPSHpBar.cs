@@ -4,19 +4,23 @@ using System.Collections;
 public class TPSHpBar : MonoBehaviour
 {
     [SerializeField]
-    private GameObject m_mainImage = null;
+    private GameObject  m_mainImage =   null;
+    
 
     float   m_hp;
     float   m_maxHP;
 
-    private static TPSHpBar instance = null;
+    private static  TPSHpBar        instance        =   null;
+    private static  RectTransform   m_rRectTrans    =   null;
     void Awake()
     {
-        instance = GetComponent<TPSHpBar>();
+        instance        =   GetComponent< TPSHpBar >();
+        m_rRectTrans    =   instance.m_mainImage.GetComponent< RectTransform >();
     }
     void OnEnable()
     {
-        instance = GetComponent<TPSHpBar>();
+        instance        =   GetComponent< TPSHpBar >();
+        m_rRectTrans    =   instance.m_mainImage.GetComponent< RectTransform >();
     }
 
     static public void Initialize(float maxHP)
@@ -33,14 +37,9 @@ public class TPSHpBar : MonoBehaviour
         float delta = hp - instance.m_hp;
         float rate = hp / instance.m_maxHP;
 
-        RectTransform rt = instance.m_mainImage.GetComponent<RectTransform>();
-        Vector3 scale = rt.localScale;
+        Vector3 scale = m_rRectTrans.localScale;
         scale.x = rate;
-        rt.localScale = scale;
-
-        Vector3 localPosition = rt.localPosition;
-        localPosition.x += rt.sizeDelta.x * delta / instance.m_maxHP * 0.5f;
-        rt.localPosition = localPosition;
+        m_rRectTrans.localScale = scale;
 
         instance.m_hp = hp;
 

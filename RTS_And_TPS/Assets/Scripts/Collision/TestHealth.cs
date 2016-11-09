@@ -16,7 +16,7 @@ public class TestHealth : MonoBehaviour {
 		{
 			//ダメージ
 			health -= damage;
-            UserLog.Nakano("Damaged: " + damage.ToString());
+            //UserLog.Nakano("Damaged: " + damage.ToString());
 
 			//0なら死ね
 			if(health <= .0f)
@@ -27,13 +27,13 @@ public class TestHealth : MonoBehaviour {
 		};
 
 
-		//damageBank.AdvancedDamagedCallback += (DamageResult, info) =>
-		//{
-		//	//ダメージ部分に丸を出す
-		//	(Instantiate(GameObject.CreatePrimitive(PrimitiveType.Sphere), info.contactPoint, Quaternion
-		//	.identity) as GameObject).transform.localScale *= 0.2f;
+		damageBank.AdvancedDamagedCallback += (DamageResult, info) =>
+		{
+			//ダメージ部分に丸を出す
+			(Instantiate(GameObject.CreatePrimitive(PrimitiveType.Sphere), info.contactPoint, Quaternion
+			.identity) as GameObject).transform.localScale *= 0.2f;
 
-		//};
+		};
 
 	}
 	

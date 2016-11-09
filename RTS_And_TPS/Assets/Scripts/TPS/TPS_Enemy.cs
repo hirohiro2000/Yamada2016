@@ -82,7 +82,7 @@ public class TPS_Enemy : NetworkBehaviour {
         TPSNormalGun    rGunControl =   rObj.GetComponent< TPSNormalGun >();
         if( !rGunControl )                                              return;
         //  発射したプレイヤーのクライアントでのみ処理を行う
-        if( rGunControl.c_ShooterID != m_rLinkManager.m_LocalPlayerID ) return;
+        //if( rGunControl.c_ShooterID != m_rLinkManager.m_LocalPlayerID ) return;
 
 		DamageSource source = collision.gameObject.GetComponentInParent<DamageSource>();
 		if (source != null)

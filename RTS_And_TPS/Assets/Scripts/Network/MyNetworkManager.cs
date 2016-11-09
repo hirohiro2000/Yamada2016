@@ -6,7 +6,7 @@ using System.Collections;
 
 public class MyNetworkManager : NetworkManager {
 
-	// Use this for initialization
+	// Use this for initialization 
 	void    Start()
     {
 	    

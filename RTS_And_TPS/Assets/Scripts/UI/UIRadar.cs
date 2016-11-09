@@ -71,6 +71,10 @@ public class UIRadar : MonoBehaviour {
 
     static public void Add(GameObject src, Color rgba)
     {
+        if( !instance )                                 return;
+        if( !instance.gameObject.activeInHierarchy )    return;
+        
+
         DATA data = new DATA();
         data.reference = src;
         data.dst = Instantiate(instance.m_enemyFighter);
@@ -82,6 +86,9 @@ public class UIRadar : MonoBehaviour {
     }
     static public void Remove(GameObject obj)
     {
+        if( !instance )                                 return;
+        if( !instance.gameObject.activeInHierarchy )    return;
+
         int numSymbols = instance.m_uiSymbolList.Count;
         for (int i = numSymbols - 1; i >= 0; --i)
         {

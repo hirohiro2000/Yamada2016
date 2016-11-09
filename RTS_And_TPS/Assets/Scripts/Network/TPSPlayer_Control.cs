@@ -12,12 +12,14 @@ public class TPSPlayer_Control : NetworkBehaviour {
 
     private bool            m_IsLock        =   true;
 
-    private SoundController m_bgm           = null;
+    private SoundController m_bgm           =   null;
+    private TPSPlayer_HP    m_rHP           =   null;
 
 	// Use this for initialization
 	void    Start()
     {
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+        m_rHP           =   GetComponent< TPSPlayer_HP >();
         
         //  自分のキャラクターのみ処理を行う
         if( isLocalPlayer ){
@@ -67,11 +69,12 @@ public class TPSPlayer_Control : NetworkBehaviour {
         rMainCamera.GetComponent< Camera >().enabled            =   false;
         rMainCamera.GetComponent< AudioListener >().enabled     =   false;
         
-        // UI系初期化
-        GameObject.Find("TPS_HUD").SetActive(true);
-        UIRadar.SetPlayer(gameObject);
+        //  UI系初期化
+        GameObject.Find( "Canvas" ).transform
+            .FindChild( "TPS_HUD" ).gameObject.SetActive( true );
+        UIRadar.SetPlayer( gameObject );
 
-        // カメラのスクリプト生成
+        //  カメラのスクリプト生成
         TPS_CameraController cam = c_rMyCamera.gameObject.AddComponent<TPS_CameraController>();
 
 //        // BGM再生
@@ -85,6 +88,10 @@ public class TPSPlayer_Control : NetworkBehaviour {
     //  終了処理
     void    EndProc()
     {
+        //  ＵＩ無効化
+        GameObject.Find( "Canvas" ).transform
+            .FindChild( "TPS_HUD" ).gameObject.SetActive( false );
+
         //  メインカメラを復旧
         GameObject  rMainCamera =   GameObject.Find( "Main Camera" );
         rMainCamera.GetComponent< Camera >().enabled            =   true;
@@ -96,7 +103,13 @@ public class TPSPlayer_Control : NetworkBehaviour {
             m_bgm.Stop();
         }
     }
-
+    //  ダメージ送信
+    [ Command ]
+    public  void    CmdSendDamage( float _Damage )
+    {
+        //  ダメージを受ける
+        m_rHP.SetDamage( _Damage );
+    }
     //  コマンダーに戻る
     [ ClientRpc ]
     public  void    RpcChangeToCommander( int _ClientID )
