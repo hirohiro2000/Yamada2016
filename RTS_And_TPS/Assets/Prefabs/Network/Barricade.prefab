@@ -359,20 +359,20 @@ MonoBehaviour:
   m_curHp: 0
   m_levelInformations:
     list:
-    - hp: 100
-      power: 0
-      range: 0
-      interval: 0
-      upCost: 20
-    - hp: 200
-      power: 0
-      range: 0
-      interval: 0
-      upCost: 30
-    - hp: 300
-      power: 0
-      range: 0
-      interval: 0
+    - hp: 50
+      power: 10
+      range: 5
+      interval: 1.25
+      upCost: 60
+    - hp: 50
+      power: 15
+      range: 8
+      interval: 1
+      upCost: 40
+    - hp: 50
+      power: 20
+      range: 10
+      interval: 0.75
       upCost: -1
 --- !u!135 &13513686
 SphereCollider:
