@@ -3,6 +3,18 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
 
+
+//Utilityに追加してもいいかも
+[System.Serializable]
+public class TransformList
+{
+	public Transform value;
+}
+
+[System.Serializable]
+public class TransformReorderableList : ReorderableList<TransformList> { }
+
+
 public class TPSShotController : NetworkBehaviour {
 
 	[SerializeField]
@@ -23,7 +35,68 @@ public class TPSShotController : NetworkBehaviour {
 	[SerializeField]
 	float singleRecoil = 0.2f;
 
-	//bool Targeted;
+
+	[SerializeField]
+	KeyCode weaponChangeKey = KeyCode.None;
+
+	[SerializeField]
+	KeyCode shotKey = KeyCode.None;
+
+	[SerializeField, ReorderableList(new int[] { 200 })]
+	TransformReorderableList weapons;
+	int cntWeaponIndex;
+
+	public class WeaponData
+	{
+
+		Transform _weapon = null;
+		bool[] shotInfoFlag = new bool[(int)ShotInfoFlag.FLAG_MAX];
+		float[] shotInfoValue = new float[(int)ShotInfoValue.VALUE_MAX];
+		WeaponRecoilData _weaponRecoilData = null;
+
+		public WeaponData(Transform weapon)
+		{
+			_weapon = weapon;
+			//ShotInfomationから情報をとる
+			ShotInfomation info = weapon.GetComponent<ShotInfomation>();
+			if(info != null)
+			{
+				foreach(ShotInfoFlagParam flag in info.shot_info_flags.list)
+				{
+					shotInfoFlag[(int)flag.type] = true;
+				}
+				foreach (ShotInfoValueParam value in info.shot_info_values.list)
+				{
+					shotInfoValue[(int)value.type] = value.value;
+				}
+
+			}
+
+			_weaponRecoilData = weapon.GetComponent<WeaponRecoilData>();
+		}
+
+		public bool GetInfoFlag (ShotInfoFlag type) { return shotInfoFlag[(int)type]; }
+		public float GetInfoValue(ShotInfoValue type) { return shotInfoValue[(int)type]; }
+		public Transform weapon
+		{
+			get
+			{
+				return _weapon;
+			}
+		}
+		public WeaponRecoilData weaponRecoilData
+		{
+			get
+			{
+				return _weaponRecoilData;
+			}
+		}
+
+
+
+	}
+	WeaponData cntWeaponData = null;
+
 
 	float AimDistance;
 
@@ -54,6 +127,7 @@ public class TPSShotController : NetworkBehaviour {
         TPSWeaponBar.Initialize(100);
         m_seShot            =   SoundController.CreateShotController(transform);
 
+		cntWeaponData = new WeaponData(weapons[0].value);
     }
 	
 	// Update is called once per frame
@@ -61,6 +135,10 @@ public class TPSShotController : NetworkBehaviour {
         //  自分のキャラクター以外は処理を行わない
         if( !m_rParentIdentity.isLocalPlayer )  return;
 
+		if(Input.GetKeyDown(weaponChangeKey))
+		{
+			WeaponChange();
+		}
 		cntCoolDown -= Time.deltaTime;
 		//そのままの前方向
 		Transform firePoint = firePoints[fireCnt];
@@ -92,12 +170,20 @@ public class TPSShotController : NetworkBehaviour {
 
             }
         }
+		//単発orフルオート
+		bool shotRequest = false;
+		if (Input.GetKey(shotKey) && cntWeaponData.GetInfoFlag(ShotInfoFlag.FullAutoShot))
+			shotRequest = true;
+		else if(Input.GetKeyDown(shotKey))
+			shotRequest = true;
 
-        if (Input.GetMouseButton(0))
+
+
+		if (shotRequest == true)
 		{
 			if(cntCoolDown < 0)
 			{
-				cntCoolDown = shotCooldown;
+				cntCoolDown = cntWeaponData.GetInfoValue(ShotInfoValue.CoolDownTime);
 				
 				Shot( firePoint.position, targetPoint );
 				fireCnt++;
@@ -115,6 +201,8 @@ public class TPSShotController : NetworkBehaviour {
 
     void    Shot( Vector3 firePoint, Vector3 target )
 	{
+		//リコイル再設定
+		playerRecoil.holdingWeapon = cntWeaponData.weaponRecoilData;
 
 		Vector3 forward;
 		forward = (target - firePoint).normalized;
@@ -122,19 +210,17 @@ public class TPSShotController : NetworkBehaviour {
 		//レティクルをクォータニオンに変換して回転
 		forward = playerRecoil.GetReticleVector(forward);
 
-		GameObject emit = Instantiate(emitter, firePoint, Quaternion.LookRotation(forward)) as GameObject;
-		float speed = 200.0f;
-		emit.GetComponent<Rigidbody>().velocity = forward * speed;
+		GameObject emit = Instantiate(cntWeaponData.weapon.gameObject, firePoint, Quaternion.LookRotation(forward)) as GameObject;
 
 		//距離に合わせて寿命を設定
-		emit.GetComponent<TPSNormalGun>().Shot_Start(shotDistance / speed);
+		//emit.GetComponent<TPSNormalGun>().Shot_Start(shotDistance / speed);
+		//リコイル処理
+		playerRecoil.Shot();
 
         //  所属設定
         TPSNormalGun    rGun    =   emit.GetComponent< TPSNormalGun >();
         rGun.c_ShooterID    =   m_rLinkManager.m_LocalPlayerID;
 
-		//リコイル処理
-		playerRecoil.Shot();
 
         //  他のクライアントでも発射
         m_rNPControl.CmdFire_Client( firePoint, target, m_rLinkManager.m_LocalPlayerID );
@@ -155,10 +241,23 @@ public class TPSShotController : NetworkBehaviour {
         rGun.c_ShooterID    =   _ShooterID;
     }
 
+	void WeaponChange()
+	{
+		cntWeaponIndex++;
+		if (weapons.Length <= cntWeaponIndex)
+			cntWeaponIndex = 0;
+		cntWeaponData = new WeaponData(weapons[cntWeaponIndex].value);
+
+		playerRecoil.holdingWeapon = cntWeaponData.weaponRecoilData;
+	}
+
 	void OnGUI()
 	{
         //  自分のキャラクター以外は処理を行わない
         if( !m_rParentIdentity.isLocalPlayer )  return;
+
+		if (playerRecoil.holdingWeapon == null) return;
+
 
 		//照準の描画
 		GUIStyle style = new GUIStyle();

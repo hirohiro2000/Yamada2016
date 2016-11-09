@@ -391,7 +391,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a55cf9a709e8fec4ca7e5e0a27eb9ba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseAttackPoint: 10
+  baseAttackPoint: 12
   attack_list:
     list:
     - type: 4
@@ -412,7 +412,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 039587c051912eb4ead9e58344c5f3ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  multiplier: 1
+  multiplier: 1.5
 --- !u!135 &13553820
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -423,7 +423,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 1.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!198 &19803160
 ParticleSystem:

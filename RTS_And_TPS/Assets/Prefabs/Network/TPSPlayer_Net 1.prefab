@@ -2453,6 +2453,12 @@ MonoBehaviour:
   shotCooldown: 0.05
   shotDistance: 200
   singleRecoil: 1
+  weaponChangeKey: 49
+  shotKey: 323
+  weapons:
+    list:
+    - value: {fileID: 494120, guid: b99fe1000ac85ba4a9ce9923ef0f4b00, type: 2}
+    - value: {fileID: 493186, guid: 3e56443d03e1e354c877fd5b215e7df6, type: 2}
   playerRecoil: {fileID: 11456446}
 --- !u!114 &11410464
 MonoBehaviour:

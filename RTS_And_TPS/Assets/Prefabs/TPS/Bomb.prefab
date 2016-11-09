@@ -13,6 +13,9 @@ GameObject:
   - 23: {fileID: 2393870}
   - 54: {fileID: 5438192}
   - 114: {fileID: 11437286}
+  - 114: {fileID: 11447414}
+  - 114: {fileID: 11413172}
+  - 114: {fileID: 11421978}
   m_Layer: 12
   m_Name: Bomb
   m_TagString: Player_Attack
@@ -81,6 +84,38 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &11413172
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 184498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d981c2a930215e643ad6a35b460850d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shot_info_flags:
+    list: []
+  shot_info_values:
+    list:
+    - type: 0
+      value: 1.5
+    - type: 1
+      value: 2000
+--- !u!114 &11421978
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 184498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 422a9e5a638cf004d8fdb61362aeb3a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  velocity: {x: 0, y: 0, z: 40}
+  isWorldSpace: 0
 --- !u!114 &11437286
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -103,6 +138,24 @@ MonoBehaviour:
   autoEmitObjectOnMyPosition: {fileID: 426434, guid: 073c9ebb652abdf4187690414a9e6e15,
     type: 2}
   autoEmitObjectOnHitPoint: {fileID: 0}
+--- !u!114 &11447414
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 184498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd00001f855ac274c8a122f54eae2b55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armCriticalRateIncrement: 1
+  baseReticle:
+  - 0
+  baseRecoil: 1.5
+  recoveryTimeWithRecoil: 1.5
+  maxValueWithUpperRecoil: 3
+  maxValueWithHorizontalRecoil: 0.1
 --- !u!135 &13578758
 SphereCollider:
   m_ObjectHideFlags: 1

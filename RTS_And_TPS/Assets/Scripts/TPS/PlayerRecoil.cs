@@ -62,9 +62,6 @@ public class PlayerRecoil : MonoBehaviour {
 
 		}
 
-		//テストで実行
-		if (Input.GetMouseButtonDown(0))
-			Shot();
 	}
 
 	public void Shot()
@@ -167,6 +164,8 @@ public class PlayerRecoil : MonoBehaviour {
 
 	public float GetReticle()
 	{
+		if (holdingWeapon == null)
+			return .0f;
 		//発射前にレティクルを取得
 		float reticleMultiple = cntReticleMultiple;
 		float reticle = holdingWeapon.baseReticle[0];
