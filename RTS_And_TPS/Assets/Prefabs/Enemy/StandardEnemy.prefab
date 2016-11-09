@@ -573,8 +573,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 109252}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.88, y: 0, z: -52.3}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.52854633, y: 0.08, z: -4.2331305}
+  m_LocalScale: {x: 2.4277558, y: 2.4277565, z: 2.4277565}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 412008}
@@ -676,8 +676,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 108744}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.76, z: 1.48}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.516, z: 0.966}
+  m_LocalScale: {x: 0.62036014, y: 0.62036014, z: 0.62036014}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 475576}
@@ -1052,9 +1052,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a55cf9a709e8fec4ca7e5e0a27eb9ba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseAttackPoint: 0
+  baseAttackPoint: 0.5
   attack_list:
-    list: []
+    list:
+    - type: 0
+      multiple: 1
+    - type: 0
+      multiple: 1
   autoDestroyObject: {fileID: 0}
   autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 490204, guid: 8931ad398a75c2c4c8b694f005800976,
@@ -1239,6 +1243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2da69f97077b3343acd2b495aa57aba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AlwaysEvalutionTask: []
 --- !u!114 &11482206
 MonoBehaviour:
   m_ObjectHideFlags: 1

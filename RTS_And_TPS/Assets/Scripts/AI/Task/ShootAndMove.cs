@@ -22,13 +22,21 @@ public class ShootAndMove : TaskBase {
     private NavMeshAgent m_navmesh_accessor = null;
     private bool m_is_active = false;
     private float m_navmesh_agent_stop_dist = 5.0f;
-    
+
+    private GameObject m_attack_object_root = null;
+
     private float m_shot_pos_update_intarval = 1.0f; 
 
     void Awake()
     {
       //  m_navmesh_accessor = transform.root.GetComponent<NavMeshAgent>();
         m_shoot_object = transform.FindChild("ShootObject");
+       
+    }
+
+    void Start()
+    {
+        m_attack_object_root = transform.root.GetComponent<ReferenceWrapper>().m_attack_object_root;
     }
 
     IEnumerator UpdateLookPoint(TargetingSystem target_system)
@@ -51,9 +59,10 @@ public class ShootAndMove : TaskBase {
             shot_object.transform.position = m_shoot_object.transform.position;
             Vector3 target_position = target_system.m_current_target.transform.position;
             //とりあえずちょっと上にあげる
-            target_position += new Vector3(.0f, 0.3f, .0f);
+            target_position += new Vector3(.0f, 0.7f, .0f);
             Vector3 vec = (target_position - shot_object.transform.position).normalized * ShotPower;
             var rigid_body = shot_object.GetComponent<Rigidbody>();
+            shot_object.transform.parent = m_attack_object_root.transform;
             if(rigid_body)
             {
                 rigid_body.AddForce(vec);

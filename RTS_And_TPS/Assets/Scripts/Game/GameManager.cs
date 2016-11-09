@@ -30,7 +30,7 @@ public class GameManager : NetworkBehaviour {
     public  Font                    c_Font          =   null;
 
     //  固定パラメータ
-    private float                   c_CountDownTime =   10.0f - 0.001f;
+    private float                   c_CountDownTime =   3.0f - 0.001f;
 
     //  内部パラメータ
     [ SyncVar ]

@@ -145,19 +145,8 @@ public class WaveManager : MonoBehaviour {
         }
 
         m_ganerator.BeginGenerate(m_WaveLevel, numPop,10.0f);
-        //  配置
-        //for( int i = 0; i < numPop; i++ ){
-        //    //  配置情報設定
-        //    SpawnData   rData   =   new SpawnData();
-        //    rData.enemyID       =   0;
-        //    rData.level         =   Random.Range( 0, m_WaveLevel );
+        //m_ganerator.BeginGenerate(m_WaveLevel, 1, 3.0f);
 
-        //    //  配置場所決定
-        //    int useSpanerID     =   Random.Range( 0, ( isPeak )? 3 : 2 );
-
-        //    //  配置情報セット
-        //    m_rSpawner[ useSpanerID ].AddSpawnData( rData );
-        //}
     }
     //  エネミー配置
     void        PopEnemy( int _SpawnPointID, int _EnemyID, int _Level )

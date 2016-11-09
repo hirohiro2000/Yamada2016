@@ -51,6 +51,16 @@ public class EnemyGenerator : MonoBehaviour
 
     private int m_current_alive_enemy_count = 0;
 
+    public int GetNumEnemyType()
+    {
+        return GenerateEnemyList.Length;
+    }
+
+    public int GetNumSpawnPointList()
+    {
+        return  m_navigation_data_list.Count;
+    }
+
     /**
     *@brief     敵の生成を開始する
     *@param  waveのレベル
