@@ -63,7 +63,7 @@ public class ResourceInformation : NetworkBehaviour
         //  
         if( !m_gridSplitSpacePlaneTargetTransform ) return;
 
-		m_gridSplitSpacePlane.transform.position = ComputeGridPosition( m_gridSplitSpacePlaneTargetTransform.position );
+		m_gridSplitSpacePlane.transform.position = ComputeGridPosition( m_gridSplitSpacePlaneTargetTransform.position);
 		m_gridSplitSpacePlane.transform.position += new Vector3( 0, 0.04f, 0 );
 	}
 
@@ -127,6 +127,8 @@ public class ResourceInformation : NetworkBehaviour
 	//---------------------------------------------------------------------
 	private void ComputeGridResourceExistentID( Vector3 pos, out int i, out int j )
 	{
+        pos -=  m_GridOffset;
+
 		float half = ( m_gridSplitSpaceScale * m_gridSplitNum * 0.5f ) + ( m_gridSplitSpaceScale * 0.5f );
 		i = (int)(( pos.x + half ) / m_gridSplitSpaceScale );
 		j = (int)(( pos.z + half ) / m_gridSplitSpaceScale );
@@ -157,6 +159,8 @@ public class ResourceInformation : NetworkBehaviour
 	}
 	public Vector3 ComputeGridPosition( Vector3 pos )
 	{
+        pos -=  m_GridOffset;
+
 		//	四捨五入
 		int splitScaleX = (int)(( pos.x / m_gridSplitSpaceScale ) + ( Mathf.Sign( pos.x )>0? 0.5f:-0.5f ));
 		int splitScaleZ = (int)(( pos.z / m_gridSplitSpaceScale ) + ( Mathf.Sign( pos.z )>0? 0.5f:-0.5f ));

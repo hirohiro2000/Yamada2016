@@ -132,6 +132,33 @@ public class FunctionManager : MonoBehaviour {
 
         return  _Rect;
     }
+
+    public  static  void    GUILabel( AR_TYPE _Type, Vector2 _Coord, string _Str )
+    {
+        GUIStyle    style   =   new GUIStyle( GUI.skin.label );
+        GUILabel( _Type, _Coord, _Str, new Vector2( 0.5f, 0.5f ), new Vector2( Screen.width, Screen.height ), style );
+    }
+    public  static  void    GUILabel( AR_TYPE _Type, Vector2 _Coord, string _Str, Vector2 _Pivot )
+    {
+        GUIStyle    style   =   new GUIStyle( GUI.skin.label );
+        GUILabel( _Type, _Coord, _Str, _Pivot, new Vector2( Screen.width, Screen.height ), style );
+    }
+    public  static  void    GUILabel( AR_TYPE _Type, Vector2 _Coord, string _Str, Vector2 _Pivot, Vector2 _ParentSize )
+    {
+        GUIStyle    style   =   new GUIStyle( GUI.skin.label );
+        GUILabel( _Type, _Coord, _Str, _Pivot, _ParentSize, style );
+    }
+    public  static  void    GUILabel( AR_TYPE _Type, Vector2 _Coord, string _Str, Vector2 _Pivot, Vector2 _ParentSize, GUIStyle _Style )
+    {
+        Vector2     size    =   _Style.CalcSize( new GUIContent( _Str ) );
+        Rect        rect    =   FunctionManager.AdjustRectCanvasToGUI(
+            FunctionManager.AR_TYPE.TOP_CENTER,
+            new Rect( _Coord.x, _Coord.y, size.x, size.y ),
+            _Pivot,
+            _ParentSize
+        );
+        GUI.Label( rect, _Str );
+    }
     //**************************************************************************************************
     //      コンポーネントへのアクセスを取得
     //**************************************************************************************************
@@ -160,6 +187,11 @@ public class FunctionManager : MonoBehaviour {
         return  rIdentity;
     }
     //**************************************************************************************************
-    //      コンポーネントへのアクセスを取得
+    //      マウス座標をGUI基準の座標に変換
     //**************************************************************************************************
+    public  static  Vector2 ScreenToGUI( Vector2 _ScreenPoint )
+    {
+        _ScreenPoint.y  =   Screen.height - _ScreenPoint.y;
+        return  _ScreenPoint;
+    }
 }

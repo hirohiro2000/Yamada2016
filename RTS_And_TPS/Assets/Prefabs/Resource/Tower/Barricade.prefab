@@ -63,8 +63,8 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 497112}
-  - 135: {fileID: 13576692}
   - 114: {fileID: 11457588}
+  - 135: {fileID: 13513686}
   m_Layer: 2
   m_Name: VisibiligyRange
   m_TagString: Girl
@@ -403,9 +403,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_raycast_target:
-  - {fileID: 428594}
-  IsStaticObject: 0
---- !u!135 &13576692
+  - {fileID: 0}
+  IsStaticObject: 1
+  Tag: 3
+--- !u!135 &13513686
 SphereCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

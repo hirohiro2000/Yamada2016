@@ -238,9 +238,6 @@ public class TPSShotController : NetworkBehaviour {
 		//リコイル処理
 		playerRecoil.Shot();
 
-        //  所属設定
-        TPSNormalGun    rGun    =   emit.GetComponent< TPSNormalGun >();
-        rGun.c_ShooterID    =   m_rLinkManager.m_LocalPlayerID;
 
 
         //  他のクライアントでも発射

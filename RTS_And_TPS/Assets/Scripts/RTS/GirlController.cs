@@ -59,7 +59,7 @@ public class GirlController : NetworkBehaviour
         {
             //  飛ぶ
             if( Input.GetKey( KeyCode.M ) ){
-                m_rRigid.AddForce( Vector3.up * m_LiftingForce );
+                m_rRigid.AddForce( Vector3.up * m_LiftingForce * Time.deltaTime * 60.0f );
             }
             //  浮いてる間はグリッドを表示しない
             if( Mathf.Abs( m_rRigid.velocity.y ) > 0.01f )  m_resourceInformation.m_gridSplitSpacePlane.SetActive( false );

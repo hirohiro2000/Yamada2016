@@ -59,6 +59,10 @@ public class PlayerCommander_Control : NetworkBehaviour {
         //  配置設定
         newPlayer.transform.position    =   new Vector3( 0.0f, 0.0f, 15.0f );
         newPlayer.transform.rotation    =   Quaternion.Euler( 0.0f, 180.0f, 0.0f );
+        if( m_rGameManager ){
+            newPlayer.transform.position    =   m_rGameManager.c_LaunchPos;
+            newPlayer.transform.rotation    =   m_rGameManager.c_LaunchPose;
+        }
 
         //  変身
         NetworkServer.ReplacePlayerForConnection( connectionToClient, newPlayer, 0 );
@@ -66,7 +70,7 @@ public class PlayerCommander_Control : NetworkBehaviour {
         //  オブジェクト破棄
         Destroy( gameObject );
     }
-    //  ＲＴＳプレイヤーで出撃
+    //  ＲＴＳプレイヤーで出撃 
     [ Command ]
     public  void    CmdLunchRTSPlayer()
     {
@@ -79,6 +83,10 @@ public class PlayerCommander_Control : NetworkBehaviour {
         //  配置設定
         newPlayer.transform.position    =   new Vector3( 0.0f, 0.0f, 15.0f );
         newPlayer.transform.rotation    =   Quaternion.Euler( 0.0f, 180.0f, 0.0f );
+        if( m_rGameManager ){
+            newPlayer.transform.position    =   m_rGameManager.c_LaunchPos;
+            newPlayer.transform.rotation    =   m_rGameManager.c_LaunchPose;
+        }
 
         //  変身
         NetworkServer.ReplacePlayerForConnection( connectionToClient, newPlayer, 0 );

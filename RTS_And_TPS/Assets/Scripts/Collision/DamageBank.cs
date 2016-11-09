@@ -472,9 +472,13 @@ public class DamageBank : MonoBehaviour {
 			}
 			if (workDamageResults.atk.HitedCallBack != null)
 				workDamageResults.atk.HitedCallBack(ref workDamageResults.atk,  workDamageResults.info);
-			workDamageResults.atk.CallEmitObjectOnMyPosition();
-			workDamageResults.atk.CallEmitObjectOnHitPoint(workDamageResults.info.contactPoint);
-			workDamageResults.atk.CallDestroy();
+			//その場しのぎ
+			if(workDamageResults.atk != null)
+			{
+				workDamageResults.atk.CallEmitObjectOnMyPosition();
+				workDamageResults.atk.CallEmitObjectOnHitPoint(workDamageResults.info.contactPoint);
+				workDamageResults.atk.CallDestroy();
+			}
 		}
 		//検査済みとして値を更新
 		CheckedListNum = workDamageList.Count;

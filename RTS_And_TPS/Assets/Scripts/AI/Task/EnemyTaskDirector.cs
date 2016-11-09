@@ -21,13 +21,13 @@ public class EnemyTaskDirector : MonoBehaviour {
     public GameObject            m_owner { get; private set; }
     public AnimationController m_anime_controller { get; private set; }
 
-    Text test_text = null;
-    Text task_text = null;
+   // Text test_text = null;
+    //Text task_text = null;
 
     void Awake()
     {
-        test_text = GameObject.Find("TargetText").GetComponent<Text>();
-        task_text = GameObject.Find("TaskText").GetComponent<Text>();
+        //test_text = GameObject.Find("TargetText").GetComponent<Text>();
+        //task_text = GameObject.Find("TaskText").GetComponent<Text>();
     }
 
     void InitializeTaskArray()
