@@ -16,7 +16,9 @@ GameObject:
   - 114: {fileID: 11423242}
   - 114: {fileID: 11461088}
   - 114: {fileID: 11423152}
-  m_Layer: 9
+  - 114: {fileID: 11455388}
+  - 114: {fileID: 11445310}
+  m_Layer: 12
   m_Name: EnemyAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,6 +119,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_ShooterID: 0
   particle: {fileID: 175374, guid: 8931ad398a75c2c4c8b694f005800976, type: 2}
+--- !u!114 &11445310
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 123582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43e7d831188778b4b906f45d73c6ff5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PowerlossCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: -0.041524533
+      outSlope: -0.041524533
+      tangentMode: 10
+    - time: 999.8911
+      value: -40.52001
+      inSlope: Infinity
+      outSlope: -0.041524533
+      tangentMode: 7
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+--- !u!114 &11455388
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 123582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a55cf9a709e8fec4ca7e5e0a27eb9ba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseAttackPoint: 1
+  attack_list:
+    list:
+    - type: 3
+      multiple: 1
+    - type: 155
+      multiple: 0
+  autoDestroyObject: {fileID: 485056}
+  autoEmitObjectOnMyPosition: {fileID: 0}
+  autoEmitObjectOnHitPoint: {fileID: 490204, guid: 8931ad398a75c2c4c8b694f005800976,
+    type: 2}
 --- !u!114 &11458078
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -129,6 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
+  user: {fileID: 0}
 --- !u!114 &11461088
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -168,7 +220,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 123582}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5

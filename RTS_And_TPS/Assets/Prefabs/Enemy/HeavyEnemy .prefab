@@ -159,9 +159,9 @@ GameObject:
   - 114: {fileID: 11412696}
   - 114: {fileID: 11426546}
   - 114: {fileID: 11427200}
-  - 114: {fileID: 11472984}
   - 114: {fileID: 11416114}
   - 54: {fileID: 5429714}
+  - 114: {fileID: 11413130}
   m_Layer: 0
   m_Name: 'HeavyEnemy '
   m_TagString: Enemy
@@ -179,6 +179,7 @@ GameObject:
   - 4: {fileID: 409178}
   - 136: {fileID: 13634980}
   - 114: {fileID: 11400146}
+  - 114: {fileID: 11452846}
   m_Layer: 0
   m_Name: AttackCollider
   m_TagString: Untagged
@@ -378,8 +379,7 @@ GameObject:
   - 4: {fileID: 408532}
   - 135: {fileID: 13557476}
   - 114: {fileID: 11487610}
-  - 114: {fileID: 11473248}
-  - 114: {fileID: 11452224}
+  - 114: {fileID: 11487560}
   m_Layer: 2
   m_Name: DamageObject
   m_TagString: Untagged
@@ -1030,6 +1030,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9176446f157e54791946adce78b8f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  recieveDamageType: 0
 --- !u!114 &11404558
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1065,6 +1066,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf5aa4dbdf1dd49834a576bc521b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11413130
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 140160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b9176446f157e54791946adce78b8f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recieveDamageType: 0
 --- !u!114 &11415446
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1144,19 +1157,25 @@ MonoBehaviour:
     i15: 164
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &11452224
+--- !u!114 &11452846
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 179216}
+  m_GameObject: {fileID: 144832}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45b1528da6c5df249843d0640be7c63b, type: 3}
+  m_Script: {fileID: 11500000, guid: 20f2b746cf0bd614cad2d1d3e93f74ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
-  user: {fileID: 0}
+  weak_lists:
+    list:
+    - type: 1
+      multiple: 1
+    - type: 2
+      multiple: 1
+    - type: 4
+      multiple: 1
 --- !u!114 &11455458
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1182,41 +1201,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_always_perception_tag: 00000000
   m_fav: 62.8
---- !u!114 &11472984
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 140160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20f2b746cf0bd614cad2d1d3e93f74ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weak_lists:
-    list:
-    - type: 1
-      multiple: 1
-    - type: 2
-      multiple: 1
---- !u!114 &11473248
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 179216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a55cf9a709e8fec4ca7e5e0a27eb9ba0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseAttackPoint: 0
-  attack_list:
-    list: []
-  autoDestroyObject: {fileID: 0}
-  autoEmitObjectOnMyPosition: {fileID: 0}
-  autoEmitObjectOnHitPoint: {fileID: 490204, guid: 8931ad398a75c2c4c8b694f005800976,
-    type: 2}
 --- !u!114 &11487008
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1233,6 +1217,17 @@ MonoBehaviour:
   defense_base_priority: 3.9
   obstacle_priority: 6.93
   attack_object_priority: 4.95
+--- !u!114 &11487560
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 179216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5904dfb8560f654fb306c0c74927c0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11487610
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1247,8 +1242,10 @@ MonoBehaviour:
   baseAttackPoint: 1
   attack_list:
     list:
-    - type: 0
+    - type: 3
       multiple: 1
+    - type: 155
+      multiple: 0
   autoDestroyObject: {fileID: 0}
   autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 490204, guid: 8931ad398a75c2c4c8b694f005800976,

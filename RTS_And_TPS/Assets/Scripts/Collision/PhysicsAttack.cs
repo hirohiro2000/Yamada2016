@@ -1,17 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+[RequireComponent(typeof(AttackPointList))]
 public class PhysicsAttack : MonoBehaviour {
 
-	public AttackPointList attackPointList;
+	AttackPointList attackPointList;
 
 	List<Transform> attackdObject = new List<Transform>();
 
 	
 	// Use this for initialization
 	void Awake () {
-		attackPointList.HitedCallBack += (ref AttackPointList atk, CollisionInfo info) =>
+		attackPointList = GetComponent<AttackPointList>();
+        attackPointList.HitedCallBack += (ref AttackPointList atk, CollisionInfo info) =>
 		 {
 			 //リストに追加
 			 attackdObject.Add(info.damagedObject);
@@ -31,7 +32,7 @@ public class PhysicsAttack : MonoBehaviour {
 		};
 	}
 	
-	public void ListClear()
+	public void BeginAttack()
 	{
 		attackdObject.Clear();
     }

@@ -110,8 +110,8 @@ public class MovingTarget : TaskBase
         //コスト設定を行った後、ゴールを更新する（経路探索が走る）
         m_cost_function();
         m_navmesh_accessor.SetDestination(m_target_point);
-        m_path_renderer.SetVertexCount(m_navmesh_accessor.path.corners.Length);
-        m_path_renderer.SetPositions(m_navmesh_accessor.path.corners);
+        //m_path_renderer.SetVertexCount(m_navmesh_accessor.path.corners.Length);
+        //m_path_renderer.SetPositions(m_navmesh_accessor.path.corners);
 
       //  target_point_object.transform.localPosition = m_target_point;
     }
@@ -123,6 +123,7 @@ public class MovingTarget : TaskBase
         m_default_steering_radius += UnityEngine.Random.Range(.0f, m_adjust_max_steering_radius);
         m_navmesh_accessor.radius = m_default_steering_radius;
         m_path_renderer = GetComponent<LineRenderer>();
+		m_path_renderer.enabled = false;
     }
 
     private void AllNormalCost()

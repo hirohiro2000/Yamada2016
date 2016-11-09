@@ -10,7 +10,7 @@ public class Health : MonoBehaviour {
 
     void Awake()
     {
-        m_damage_bank = transform.GetComponentInChildren<DamageBank>();
+        m_damage_bank = transform.GetComponent<DamageBank>();
         m_damage_bank.DamagedCallback += RecieveDamage;
     } 
        
@@ -27,7 +27,7 @@ public class Health : MonoBehaviour {
 
     void RecieveDamage(float total_damage)
     {
-        HP -= 1.0f;
+        HP -= total_damage;
         if(HP < .0f)
         {
             Destroy(this.gameObject);

@@ -88,8 +88,7 @@ GameObject:
   - 4: {fileID: 438564}
   - 135: {fileID: 13501248}
   - 114: {fileID: 11489704}
-  - 114: {fileID: 11413132}
-  - 114: {fileID: 11482206}
+  - 114: {fileID: 11494592}
   m_Layer: 2
   m_Name: DamageObject
   m_TagString: Untagged
@@ -114,9 +113,9 @@ GameObject:
   - 114: {fileID: 11404940}
   - 114: {fileID: 11400208}
   - 114: {fileID: 11439922}
-  - 114: {fileID: 11434012}
   - 114: {fileID: 11424662}
   - 54: {fileID: 5467332}
+  - 114: {fileID: 11418742}
   m_Layer: 0
   m_Name: StandardEnemy
   m_TagString: Enemy
@@ -450,8 +449,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 442544}
   - 136: {fileID: 13606470}
-  - 114: {fileID: 11453310}
-  m_Layer: 0
+  - 114: {fileID: 11497136}
+  m_Layer: 11
   m_Name: AttackCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1041,28 +1040,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf5aa4dbdf1dd49834a576bc521b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11413132
+--- !u!114 &11418742
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 108744}
+  m_GameObject: {fileID: 109252}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a55cf9a709e8fec4ca7e5e0a27eb9ba0, type: 3}
+  m_Script: {fileID: 11500000, guid: 5b9176446f157e54791946adce78b8f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseAttackPoint: 0.5
-  attack_list:
-    list:
-    - type: 0
-      multiple: 1
-    - type: 0
-      multiple: 1
-  autoDestroyObject: {fileID: 0}
-  autoEmitObjectOnMyPosition: {fileID: 0}
-  autoEmitObjectOnHitPoint: {fileID: 490204, guid: 8931ad398a75c2c4c8b694f005800976,
-    type: 2}
+  recieveDamageType: 0
 --- !u!114 &11424662
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1097,23 +1086,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14d6be84caae7e94a82b4a40d002ee9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11434012
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 109252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20f2b746cf0bd614cad2d1d3e93f74ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weak_lists:
-    list:
-    - type: 1
-      multiple: 1
-    - type: 2
-      multiple: 1
 --- !u!114 &11437032
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1182,17 +1154,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc1333636a4d4cd44bb0fa7268b103e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11453310
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 172328}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b9176446f157e54791946adce78b8f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11455092
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1244,19 +1205,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AlwaysEvalutionTask: []
---- !u!114 &11482206
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 108744}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45b1528da6c5df249843d0640be7c63b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 1
-  user: {fileID: 0}
 --- !u!114 &11484514
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1284,12 +1232,44 @@ MonoBehaviour:
   baseAttackPoint: 1
   attack_list:
     list:
-    - type: 0
+    - type: 3
       multiple: 1
+    - type: 155
+      multiple: 0
   autoDestroyObject: {fileID: 0}
   autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 490204, guid: 8931ad398a75c2c4c8b694f005800976,
     type: 2}
+--- !u!114 &11494592
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 108744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5904dfb8560f654fb306c0c74927c0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11497136
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 172328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20f2b746cf0bd614cad2d1d3e93f74ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weak_lists:
+    list:
+    - type: 1
+      multiple: 1
+    - type: 2
+      multiple: 1
+    - type: 4
+      multiple: 1
 --- !u!120 &12060040
 LineRenderer:
   m_ObjectHideFlags: 1

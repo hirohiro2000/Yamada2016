@@ -5,10 +5,12 @@ using System.Collections;
 public class TestHealth : MonoBehaviour {
 
 	DamageBank damageBank = null;
-	public float health = 3.0f;
+	public float maxHealth = 1.0f;
+	float health = 3.0f;
 
 	// Use this for initialization
 	void Start () {
+		health = maxHealth;
 		damageBank = GetComponent<DamageBank>();
 		damageBank.DamagedCallback += (damage) =>
 		{

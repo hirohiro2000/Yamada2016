@@ -14,12 +14,16 @@ public class NearAttackDefualt : TaskBase {
 
     private GameObject m_damage_object = null;
 
+
+	private PhysicsAttack m_attack_object = null;
+
     public override void Initialize(GameObject owner)
     {
         base.Initialize(owner);
         m_damage_object = transform.FindChild("DamageObject").gameObject;
-        m_damage_object.SetActive(false);
-
+		m_attack_object = transform.GetComponentInChildren<PhysicsAttack>();
+		m_damage_object.SetActive(false);
+		
                 
     }
 
@@ -39,7 +43,12 @@ public class NearAttackDefualt : TaskBase {
      if(current_time >= m_attack_begin_time && 
             current_time <m_attack_end_time)
         {
+			if(!m_damage_object.activeInHierarchy)
+			{
+				m_attack_object.BeginAttack();
+			}
             m_damage_object.SetActive(true);
+			
         }
         else
         {

@@ -24,8 +24,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 404720}
   - 136: {fileID: 13652218}
-  - 114: {fileID: 11418202}
-  m_Layer: 0
+  - 114: {fileID: 11446608}
+  m_Layer: 11
   m_Name: AttackCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,9 +207,9 @@ GameObject:
   - 114: {fileID: 11491300}
   - 114: {fileID: 11422126}
   - 114: {fileID: 11413070}
-  - 114: {fileID: 11411624}
   - 114: {fileID: 11473000}
   - 54: {fileID: 5443700}
+  - 114: {fileID: 11411280}
   m_Layer: 0
   m_Name: ShooterEnemy
   m_TagString: Enemy
@@ -1050,7 +1050,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &11411624
+--- !u!114 &11411280
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1058,15 +1058,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 138538}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20f2b746cf0bd614cad2d1d3e93f74ed, type: 3}
+  m_Script: {fileID: 11500000, guid: 5b9176446f157e54791946adce78b8f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weak_lists:
-    list:
-    - type: 1
-      multiple: 1
-    - type: 2
-      multiple: 1
+  recieveDamageType: 0
 --- !u!114 &11413070
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1099,17 +1094,6 @@ MonoBehaviour:
     i15: 126
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &11418202
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 111804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b9176446f157e54791946adce78b8f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11422126
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1156,6 +1140,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc1333636a4d4cd44bb0fa7268b103e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11446608
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 111804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20f2b746cf0bd614cad2d1d3e93f74ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weak_lists:
+    list:
+    - type: 1
+      multiple: 1
+    - type: 2
+      multiple: 1
+    - type: 4
+      multiple: 1
 --- !u!114 &11450144
 MonoBehaviour:
   m_ObjectHideFlags: 1

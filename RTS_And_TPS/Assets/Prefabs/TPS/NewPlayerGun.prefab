@@ -13,6 +13,8 @@ GameObject:
   - 23: {fileID: 2316826}
   - 54: {fileID: 5405634}
   - 114: {fileID: 11429298}
+  - 114: {fileID: 11485638}
+  - 114: {fileID: 11402764}
   m_Layer: 12
   m_Name: NewPlayerGun
   m_TagString: Player_Attack
@@ -81,6 +83,25 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &11402764
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 108974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d981c2a930215e643ad6a35b460850d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shot_info_flags:
+    list:
+    - type: 0
+    - type: 1
+  shot_info_values:
+    list:
+    - type: 0
+      value: 0.05
 --- !u!114 &11429298
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -103,6 +124,24 @@ MonoBehaviour:
   autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 490204, guid: 8931ad398a75c2c4c8b694f005800976,
     type: 2}
+--- !u!114 &11485638
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 108974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd00001f855ac274c8a122f54eae2b55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  armCriticalRateIncrement: 1
+  baseReticle:
+  - 0
+  baseRecoil: 3
+  recoveryTimeWithRecoil: 1
+  maxValueWithUpperRecoil: 3
+  maxValueWithHorizontalRecoil: 0.1
 --- !u!135 &13586182
 SphereCollider:
   m_ObjectHideFlags: 1

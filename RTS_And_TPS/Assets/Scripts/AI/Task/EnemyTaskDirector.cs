@@ -109,8 +109,8 @@ public class EnemyTaskDirector : MonoBehaviour {
     */
     public TaskBase.Status UpdateTask(TargetingSystem target_director)
     {
-        test_text.text = target_director.m_current_target.name;
-        task_text.text = m_current_task.name;
+        //test_text.text = target_director.m_current_target.name;
+        //task_text.text = m_current_task.name;
 
         TaskBase.Status current_status = TaskBase.Status.Active;
         if (m_current_task)
