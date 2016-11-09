@@ -7,6 +7,7 @@ Shader "Custom/ToonShaderTest3"
 		_MainTex("Base Color", 2D)			= "white" {}
 		_OutlineColor("Outline Color", Color) = (0,0,0,1)
 		_OutlineWidth("Outline Width", Range( 0, 0.2) ) = 0.05
+		_Emission("Emission", Color)		= (0.0, 0.0, 0.0, 0.0)
 	}
 	SubShader{
 
@@ -92,6 +93,7 @@ Shader "Custom/ToonShaderTest3"
 			#pragma fragment frag
 			#include "UnityCG.cginc"
 			
+			uniform float4		_Emission;
 			uniform sampler2D	_MainTex;
 			uniform float4		_MainTex_ST;
 			uniform float4		_Color;
@@ -123,6 +125,8 @@ Shader "Custom/ToonShaderTest3"
 				outColor.rgb	= diffuseColor.rgb;
 				outColor.a		= albedo.a;
 				
+				outColor.rgb += _Emission.rgb * _Emission.a;
+
 				return outColor;
 			
 			}

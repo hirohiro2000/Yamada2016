@@ -55,6 +55,14 @@ public class TPSMoveController : MonoBehaviour
 		}
 	}
 
+    // ダッシュ用
+  	float drivingPower      = 3.0f;
+	float maxDrivingPower   = 15.0f;
+	float dampRate          = 3.0f;
+    Vector3 drivingForce    = Vector3.zero;
+    Vector3 prePoll         = Vector3.zero;     // 前回入力があった際の傾き
+    float inputInterval     = 0.0f;
+    int   dashState         = 0;
 
 	// Use this for initialization
 	void Start()
@@ -85,10 +93,82 @@ public class TPSMoveController : MonoBehaviour
 		//characterController.SimpleMove(inputDir);
 		characterMover.AddSpeed(inputDir);
 
-		//Vector3 addDir = new Vector3();
-		//addDir.x = (inputDir.x - rigidBody.velocity.x) * sensitivity;
-		//addDir.z = (inputDir.z - rigidBody.velocity.z) * sensitivity;
+        //Vector3 addDir = new Vector3();
+        //addDir.x = (inputDir.x - rigidBody.velocity.x) * sensitivity;
+        //addDir.z = (inputDir.z - rigidBody.velocity.z) * sensitivity;
 
-		//rigidBody.velocity += addDir;
+        //rigidBody.velocity += addDir;
+
+
+        // ダッシュ処理( 押下中 => 離す => 押下(インターバルで行えるかの判定) => 押下中(離すor少し時間が過ぎたら) => ０に戻る )
+        switch (dashState)
+        {
+            case 0:
+                {
+                    float axis = inputDir.sqrMagnitude;
+                    if (axis > 2.0f)
+                    {
+                        ++dashState;
+                        inputInterval = 0.0f;
+                        prePoll = inputDir;
+                    }
+                }
+                break;
+            case 1:
+                {
+                    inputInterval += Time.deltaTime;
+                    float axis = inputDir.sqrMagnitude;
+                    if (axis < 1.0f)
+                    {
+                        ++dashState;
+                    }
+                }
+
+                break;
+            case 2:
+                {
+                    inputInterval += Time.deltaTime;
+                    float axis = inputDir.sqrMagnitude;
+
+                    if (axis > 3.0f && inputInterval < 1.5f && Vector3.Dot(inputDir, prePoll) > 0.0f)
+                    {
+                        ++dashState;
+                        inputInterval = 0.0f;
+
+                        //
+                        drivingForce += inputDir.normalized * speed * drivingPower;
+                        if (drivingForce.sqrMagnitude > maxDrivingPower * maxDrivingPower)
+                            drivingForce = drivingForce.normalized * maxDrivingPower;
+                    }
+                    if (inputInterval > 1.5f)
+                    {
+                        dashState = 0;
+                        inputInterval = 0.0f;
+                    }
+
+                }
+                break;
+            case 3:
+                {
+                    inputInterval += Time.deltaTime;
+                    float axis = inputDir.sqrMagnitude;
+                    if (axis < 1.0f || inputInterval > 0.5f)
+                    {
+                        dashState = 0;
+                        inputInterval = 0.0f;
+                    }
+
+                }
+                break;
+            default: break;
+        }
+
+        if (drivingForce.sqrMagnitude > 0.5f * 0.5f)
+        {
+            characterMover.AddSpeed(drivingForce);
+            drivingForce = Vector3.Lerp(drivingForce, Vector3.zero, dampRate * Time.deltaTime);
+        }
+
+
 	}
 }

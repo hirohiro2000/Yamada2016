@@ -6,6 +6,7 @@ Shader "Custom/ToonShaderTest1"
 		_Color("Color", Color)				= ( 1.0, 1.0, 1.0, 1.0 )
 		_MainTex("Base Color", 2D)			= "white" {}
 		_ShadeColor("ShadeColor", Color)	= (1.0, 1.0, 1.0, 1.0)
+		_Emission("Emission", Color)		= (0.0, 0.0, 0.0, 0.0)
 	}
 	SubShader{
 		Tags{
@@ -32,6 +33,7 @@ Shader "Custom/ToonShaderTest1"
 			#define UNITY_PASS_FORWARDBASE
 			#include "UnityCG.cginc"
 			uniform float4		_Color;
+			uniform float4		_Emission;
 			uniform sampler2D	_MainTex; 
 			uniform float4		_MainTex_ST;
 			struct VertexInput {
@@ -63,6 +65,8 @@ Shader "Custom/ToonShaderTest1"
 				float4 outColor = (float4)0;
 				outColor.rgb	= diffuseColor.rgb;
 				outColor.a		= albedo.a;
+
+				outColor.rgb	+= _Emission.rgb * _Emission.a;
 
 				return outColor;
 			

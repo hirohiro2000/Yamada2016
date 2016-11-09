@@ -41,7 +41,7 @@ public class TPSShotController : NetworkBehaviour {
     private LinkManager         m_rLinkManager      =   null;
 
     // サウンド
-    private SoundController     m_seShot            =   null;
+//    private SoundController     m_seShot            =   null;
 
 	// Use this for initialization
 	void    Start()
@@ -51,8 +51,8 @@ public class TPSShotController : NetworkBehaviour {
         m_rNPControl        =   transform.parent.parent.GetComponent< NetPlayer_Control >();
         m_rLinkManager      =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
 
-        TPSWeaponBar.Initialize(100);
-        m_seShot            =   SoundController.CreateShotController(transform);
+//        TPSWeaponBar.Initialize(100);
+//        m_seShot            =   SoundController.CreateShotController(transform);
 
     }
 	
@@ -82,18 +82,25 @@ public class TPSShotController : NetworkBehaviour {
 			Ray ray = new Ray(shotPointNear, direction);
 
 			RaycastHit hit;
-			if(Physics.Raycast(ray,out hit, 1000.0f))
-			{
-				AimDistance = hit.distance;
-				if (AimDistance <= shotDistance)
-				{
-					targetPoint = hit.point;
-				}
+            if (Physics.Raycast(ray, out hit, 1000.0f))
+            {
+                AimDistance = hit.distance;
+//                if (AimDistance <= shotDistance)
+                {
+                    targetPoint = hit.point;
+                }
+            }
+            else
+            {
+                GameObject cam = Camera.main.gameObject;
+                Vector3 lookVec = cam.transform.forward;
+                float dot = Vector3.Dot( lookVec, ( firePoint.position - cam.transform.position) );
+                targetPoint = cam.transform.position + lookVec*( dot + 40.0f );
 
             }
         }
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) )
 		{
 			if(cntCoolDown < 0)
 			{
@@ -106,12 +113,16 @@ public class TPSShotController : NetworkBehaviour {
 					fireCnt = 0;
                 }
 
-                TPSWeaponBar.Consumption(1.0f);
+//                TPSWeaponBar.Consumption(1.0f);
+
                 // 発砲音
-                // m_seShot.PlayOneShot();
+//                m_seShot.transform.position = firePoint.position;
+//                m_seShot.PlayOneShot();
+
             }
-		}    
-	}
+		}
+
+    }
 
     void    Shot( Vector3 firePoint, Vector3 target )
 	{
@@ -127,7 +138,8 @@ public class TPSShotController : NetworkBehaviour {
 		emit.GetComponent<Rigidbody>().velocity = forward * speed;
 
 		//距離に合わせて寿命を設定
-		emit.GetComponent<TPSNormalGun>().Shot_Start(shotDistance / speed);
+//		emit.GetComponent<TPSNormalGun>().Shot_Start(shotDistance / speed);
+		emit.GetComponent<TPSNormalGun>().Shot_Start( (target - firePoint).magnitude*Time.fixedDeltaTime );
 
         //  所属設定
         TPSNormalGun    rGun    =   emit.GetComponent< TPSNormalGun >();
