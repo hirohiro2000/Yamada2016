@@ -69,19 +69,19 @@ public class PlayerHealth : NetworkBehaviour
 			//Time.timeScale = .0f;
 		}
 	}
-	void OnCollisionEnter(Collision collision)
-	{
-		Debug.Log(gameObject.name);
-		PlayerDamageSource source = collision.gameObject.GetComponentInParent<PlayerDamageSource>();
-		if (source != null)
-		{
-			GiveDamage(source.damage);
+	//void OnCollisionEnter(Collision collision)
+	//{
+	//	Debug.Log(gameObject.name);
+	//	PlayerDamageSource source = collision.gameObject.GetComponentInParent<PlayerDamageSource>();
+	//	if (source != null)
+	//	{
+	//		GiveDamage(source.damage);
 
-            TPSHpBar.SetHP(hp);
+ //           TPSHpBar.SetHP(hp);
 
-            GuideHitEffect.Add(source.user);
-        }
-	}
+ //           GuideHitEffect.Add(source.user);
+ //       }
+	//}
 
 	public void OnGUI()
 	{

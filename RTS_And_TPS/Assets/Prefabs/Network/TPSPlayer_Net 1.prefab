@@ -239,7 +239,10 @@ GameObject:
   - 114: {fileID: 11465514}
   - 114: {fileID: 11458006}
   - 114: {fileID: 11456446}
-  m_Layer: 10
+  - 114: {fileID: 11440506}
+  - 114: {fileID: 11417110}
+  - 114: {fileID: 11487934}
+  m_Layer: 9
   m_Name: TPSPlayer_Net 1
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2513,6 +2516,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1141844b171098e4191fe5ee93b26384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11417110
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 139324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b9176446f157e54791946adce78b8f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recieveDamageType: 0
 --- !u!114 &11417802
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2562,6 +2577,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_rMyCamera: {fileID: 2043782}
   c_Commander: {fileID: 126756, guid: 00d6b3f93bb911943a0e36c9cdd64019, type: 2}
+--- !u!114 &11440506
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 139324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3809ce681c4348c42b4fa59c858597c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
 --- !u!114 &11456446
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2644,6 +2671,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_LerpRatio: 0.05
+--- !u!114 &11487934
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 139324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20f2b746cf0bd614cad2d1d3e93f74ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weak_lists:
+    list:
+    - type: 3
+      multiple: 1
 --- !u!114 &11490366
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -16,6 +16,7 @@ GameObject:
   - 114: {fileID: 11478388}
   - 114: {fileID: 11460164}
   - 114: {fileID: 11472370}
+  - 114: {fileID: 11410192}
   m_Layer: 12
   m_Name: Rifle
   m_TagString: Player_Attack
@@ -84,6 +85,33 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &11410192
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43e7d831188778b4b906f45d73c6ff5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PowerlossCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: -0.041524533
+      outSlope: -0.041524533
+      tangentMode: 10
+    - time: 999.8911
+      value: -40.52001
+      inSlope: Infinity
+      outSlope: -0.041524533
+      tangentMode: 7
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!114 &11453132
 MonoBehaviour:
   m_ObjectHideFlags: 1

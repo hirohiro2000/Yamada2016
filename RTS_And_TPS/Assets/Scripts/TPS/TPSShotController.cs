@@ -212,6 +212,16 @@ public class TPSShotController : NetworkBehaviour {
 
 		GameObject emit = Instantiate(cntWeaponData.weapon.gameObject, firePoint, Quaternion.LookRotation(forward)) as GameObject;
 
+		//cloneをまとめる
+        string parentName = emit.name + "s";
+		GameObject parent = GameObject.Find(parentName);
+		if (parent == null)
+		{
+			parent = new GameObject(parentName);
+		}
+		emit.transform.parent = parent.transform;
+
+
 		//距離に合わせて寿命を設定
 		//emit.GetComponent<TPSNormalGun>().Shot_Start(shotDistance / speed);
 		//リコイル処理
