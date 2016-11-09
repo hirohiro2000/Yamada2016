@@ -10,7 +10,7 @@ public class VisibilitySystem : MonoBehaviour {
     public class ViewCandidateData
     {
         public ViewMessageWrapper.MessageType message_type;
-        public string sender_tag;
+        public PerceiveTag sender_tag;
         public GameObject sender_object;
         public VisibilityChecker visibility_checker;
         public bool is_static;
@@ -28,7 +28,7 @@ public class VisibilitySystem : MonoBehaviour {
     public class VisibilityData
     {
         public ViewMessageWrapper.MessageType message_type;
-        public string sender_tag;
+        public PerceiveTag sender_tag;
         public GameObject sender_object;
         public float dist;  //現在未使用
         public bool is_static;
@@ -47,9 +47,9 @@ public class VisibilitySystem : MonoBehaviour {
     private Transform m_eye_position;
 
     [SerializeField, HeaderAttribute("無条件に視認させるオブジェクト(防衛拠点など)必ず1つ以上設定する")]
-    private string[] m_always_perception_tag = new string[1] { "DefenseBase" };
+    private PerceiveTag[] m_always_perception_tag = new PerceiveTag[1] { PerceiveTag.HomeBase };
 
-    [SerializeField, Range(.0f, 90.0f),HeaderAttribute("視野角")]
+    [SerializeField, Range(.0f, 180.0f),HeaderAttribute("視野角")]
     private float m_fav = 45.0f;
 
     private List<ViewCandidateData> m_candicate_list;
@@ -68,7 +68,7 @@ public class VisibilitySystem : MonoBehaviour {
     {
         m_eye_position = gameObject.transform.FindChild("Eye");
         if (m_eye_position == null)
-            Debug.Log(gameObject.name + "Eye transform not found!!");
+            UserLog.Terauchi(gameObject.name + "Eye transform not found!!");
 
 
         m_candicate_list = new List<ViewCandidateData>();
@@ -109,7 +109,7 @@ public class VisibilitySystem : MonoBehaviour {
                     break;
 
                 default:
-                    Debug.Log("error");
+                    UserLog.Terauchi("error in visibilitysystem::debuglog() message_type is " + temp.message_type);
                     break;
             }
         }
@@ -151,6 +151,9 @@ public class VisibilitySystem : MonoBehaviour {
         {
             //まずobjectが消えてないかチェックしておく
             var candicate = m_candicate_list[object_i];
+            if (candicate.sender_object == null)
+                continue;
+
             if(IsUnconditionalObject(candicate))
             {
                 InsertVisibility(candicate);
@@ -205,7 +208,7 @@ public class VisibilitySystem : MonoBehaviour {
                 break;
 
             default :
-                Debug.Log("VisibilitySystem::PerceptionMessageに想定外のメッセージ :" + message.message_type);
+                UserLog.Terauchi("VisibilitySystem::PerceptionMessageに想定外のメッセージ :" + message.message_type);
                 break;
         }    
 
@@ -231,7 +234,7 @@ public class VisibilitySystem : MonoBehaviour {
         //VisibilityRangeとして視認しているオブジェクトを抽出
         var msg_object = m_candicate_list.Find((x) => x.sender_object == msg.sender_object && x.message_type == ViewMessageWrapper.MessageType.InVisibilityRange);
         if (msg_object == null)
-            Debug.Log("InNearRangeでオブジェクトが見つかりません");
+            UserLog.Terauchi("InNearRangeでオブジェクトが見つかりません");
 
         msg_object.message_type = ViewMessageWrapper.MessageType.InNearRange;
 
@@ -242,7 +245,7 @@ public class VisibilitySystem : MonoBehaviour {
         //VisibilityRangeとして視認しているオブジェクトを抽出
         var msg_object = m_candicate_list.Find((x) => x.sender_object == msg.sender_object && x.message_type == ViewMessageWrapper.MessageType.InNearRange);
         if (msg_object == null)
-            Debug.Log("OutNearRange");
+            UserLog.Terauchi("OutNearRange");
 
         msg_object.message_type = ViewMessageWrapper.MessageType.InVisibilityRange;
     }

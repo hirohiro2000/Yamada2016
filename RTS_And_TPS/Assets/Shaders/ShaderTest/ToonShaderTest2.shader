@@ -11,6 +11,7 @@ Shader "Custom/ToonShaderTest2"
 		_VisibleRange("VisibleRange", Range(0, 1))	= 0.5
 		_ShadeColor("ShadeColor", Color)			= (1.0, 1.0, 1.0, 1.0)
 		_isXRay("Is XRay", Range(0, 1))				= 0.5
+		_Emission("Emission", Color)				= (0.0, 0.0, 0.0, 0.0)
 
 	}
 	SubShader{
@@ -52,6 +53,7 @@ Shader "Custom/ToonShaderTest2"
 			#pragma exclude_renderers gles3 metal d3d11_9x xbox360 xboxone ps3 ps4 psp2 
 			#pragma target 3.0
 			uniform float4		_Color;
+			uniform float4		_Emission;
 			uniform sampler2D	_MainTex; 
 			uniform float4		_MainTex_ST;
 			uniform sampler2D	_BumpMap; 
@@ -181,10 +183,16 @@ Shader "Custom/ToonShaderTest2"
 				indirectDiffuse += gi.indirect.diffuse;
 				float3 diffuse = (directDiffuse + indirectDiffuse) * diffuseColor;
 
+				// emission:
+				float3 emission = _Emission.rgb * _Emission.a;
+
 				// Final Color:
-				float3 finalColor = diffuse + specular;
+				float3 finalColor = diffuse + specular + emission;
 				fixed4 finalRGBA = fixed4(finalColor,1);
+
+
 				UNITY_APPLY_FOG(i.fogCoord, finalRGBA);
+
 				return finalRGBA;
 			
 			}

@@ -30,6 +30,8 @@ public class WaveManager : MonoBehaviour {
 
         //  更新
         public  void    Update( WaveManager _rWManager ){
+
+            return;
             //  未配置のエネミーがいなければ処理は行わない
             if( m_rWaveQueue.Count == 0 )   return;
             
@@ -72,16 +74,18 @@ public class WaveManager : MonoBehaviour {
     //  関連アクセス
     private EnemyShell_Control  m_rEnemyShell   =   null;
 
-    //  外部へのアクセス
+    //  外部へのアクセスr
     private GameManager         m_rGameManager  =   null;
+    private EnemyGenerator       m_ganerator = null;
 
-	// Use this for initialization
-	void    Start()
+    // Use this for initialization
+    void    Start()
     {
         //  アクセスを取得
 	    m_rGameManager  =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
         m_rEnemyShell   =   FunctionManager.GetAccessComponent< EnemyShell_Control >( "Enemy_Shell" );
-
+        m_ganerator = GetComponent<EnemyGenerator>();
+        
         //  スポーナー初期化
         for( int i = 0; i < m_rSpawner.Length; i++ ){
             m_rSpawner[ i ]             =   new EnemySpawner();
@@ -99,13 +103,13 @@ public class WaveManager : MonoBehaviour {
         if( m_rGameManager.GetState() != GameManager.State.InGame ) return;
 
         //  スポーナー更新
-        for( int i = 0; i < m_rSpawner.Length; i++ ){
-            m_rSpawner[ i ].Update( this );
-        }
+        //for( int i = 0; i < m_rSpawner.Length; i++ ){
+        //    m_rSpawner[ i ].Update( this );
+        //}
 
         //  すべての配置が終わったら全滅するまで待機
         if( CheckWhetherEmptyAllSpawner()
-        &&  m_rEnemyShell.transform.childCount == 0 ){
+        && m_ganerator.GetCurrentAliveEnemyCount() <= 0 ){
             //  次のウェーブを用意
             StandbyWave();
             //  ウェーブクリア
@@ -117,13 +121,10 @@ public class WaveManager : MonoBehaviour {
 	}
 
     //  生成器が全て空になったかどうかチェック
-    bool        CheckWhetherEmptyAllSpawner()
+    bool CheckWhetherEmptyAllSpawner()
     {
-        for( int i = 0; i < m_rSpawner.Length; i++ ){
-            if( !m_rSpawner[ i ].IsEmpty() )    return  false;
-        }
-
-        return  true;
+        return !m_ganerator.IsGeneratingEnemy();
+       // return  true;
     }
 
     //  配置情報を準備
@@ -143,48 +144,40 @@ public class WaveManager : MonoBehaviour {
             numPop  *=  2;
         }
 
-        //  配置
-        for( int i = 0; i < numPop; i++ ){
-            //  配置情報設定
-            SpawnData   rData   =   new SpawnData();
-            rData.enemyID       =   0;
-            rData.level         =   Random.Range( 0, m_WaveLevel );
+        m_ganerator.BeginGenerate(m_WaveLevel, numPop,10.0f);
+        //m_ganerator.BeginGenerate(m_WaveLevel, 1, 3.0f);
 
-            //  配置場所決定
-            int useSpanerID     =   Random.Range( 0, ( isPeak )? 3 : 2 );
-
-            //  配置情報セット
-            m_rSpawner[ useSpanerID ].AddSpawnData( rData );
-        }
     }
     //  エネミー配置
     void        PopEnemy( int _SpawnPointID, int _EnemyID, int _Level )
     {
-        Transform   rSpawnPoint =   GetTransformInActiveChild( _SpawnPointID );
-        GameObject  rObj        =   Instantiate( c_EnemyPrefab[ _EnemyID ] );
-        Transform   rTrans      =   rObj.transform;
+        //Transform   rSpawnPoint =   GetTransformInActiveChild( _SpawnPointID );
+        //GameObject  rObj        =   Instantiate( c_EnemyPrefab[ _EnemyID ] );
+        //Transform   rTrans      =   rObj.transform;
 
-        //  配置設定
-        {
-            //  座標
-            NavMeshAgent    rAgent  =   rObj.GetComponent< NavMeshAgent >();
-            if( rAgent )    rAgent.Warp( rSpawnPoint.position );
-            else            rTrans.position =   rSpawnPoint.position;
+        //rObj.transform.parent = transform;
 
-            //  向き
-            rTrans.rotation     =   rSpawnPoint.rotation;
-        }
+        ////  配置設定
+        //{
+        //    //  座標
+        //    NavMeshAgent    rAgent  =   rObj.GetComponent< NavMeshAgent >();
+        //    if( rAgent )    rAgent.Warp( rSpawnPoint.position );
+        //    else            rTrans.position =   rSpawnPoint.position;
 
-        //  パラメータ設定
-        {
-            TPS_Enemy   rTPSEnemy   =   rObj.GetComponent< TPS_Enemy >();
-            if( rTPSEnemy ){
-                rTPSEnemy.m_MaxHP   =   rTPSEnemy.m_MaxHP * Mathf.Max( 1, _Level * 1.5f );
-            }
-        }
+        //    //  向き
+        //    rTrans.rotation     =   rSpawnPoint.rotation;
+        //}
+
+        ////  パラメータ設定
+        //{
+        //    TPS_Enemy   rTPSEnemy   =   rObj.GetComponent< TPS_Enemy >();
+        //    if( rTPSEnemy ){
+        //        rTPSEnemy.m_MaxHP   =   rTPSEnemy.m_MaxHP * Mathf.Max( 1, _Level * 1.5f );
+        //    }
+        //}
         
-        //  ネットワーク上で生成
-        NetworkServer.Spawn( rObj );
+        ////  ネットワーク上で生成
+        //NetworkServer.Spawn( rObj );
     }
 
     //  アクティブな子の数を取得

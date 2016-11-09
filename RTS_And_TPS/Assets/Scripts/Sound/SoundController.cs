@@ -7,8 +7,8 @@ using System.Collections.Generic;
 [RequireComponent(typeof(AudioSource))]
 public class SoundController : MonoBehaviour {
 
-    AudioSource m_audioSource;
-    AudioClip m_clip
+    public AudioSource m_audioSource;
+    public AudioClip m_clip
     {
         get { return m_audioSource.clip; }
         set { m_audioSource.clip = value; }
@@ -39,21 +39,30 @@ public class SoundController : MonoBehaviour {
     }
 
     // スタティック
-    static public SoundController Create(Transform parent)
+    static GameObject referenceAudio = null;
+
+    static public SoundController Create(string name,Transform parent)
     {
-        GameObject gameObj = new GameObject();
-        gameObj.name    = "SoundController";
+        if (referenceAudio == null)
+        {
+            referenceAudio = GameObject.Find("Audio");
+        }
+
+        if ( referenceAudio == null ) return null;
+
+        Transform trans = referenceAudio.transform.FindChild(name);
+        GameObject gameObj = Instantiate( trans.gameObject );
         gameObj.transform.parent = parent;
         SoundController controller = gameObj.AddComponent<SoundController>();
         controller.m_audioSource.playOnAwake = false;
         return controller;
+
     }
 
     // ゲームOnly
-    static public  SoundController CreateShotController(Transform parent = null)
+    static public SoundController CreateShotController(Transform parent = null)
     {
-        SoundController controller = Create(parent);
-        controller.m_clip = Resources.Load<AudioClip>("Sounds/Designed_Game_Gun_Shot_3");
+        SoundController controller = Create("Shot0", parent);
         return controller;
     }
 

@@ -3,6 +3,18 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
 
+
+//Utilityに追加してもいいかも
+[System.Serializable]
+public class TransformList
+{
+	public Transform value;
+}
+
+[System.Serializable]
+public class TransformReorderableList : ReorderableList<TransformList> { }
+
+
 public class TPSShotController : NetworkBehaviour {
 
 	[SerializeField]
@@ -23,21 +35,86 @@ public class TPSShotController : NetworkBehaviour {
 	[SerializeField]
 	float singleRecoil = 0.2f;
 
-	//bool Targeted;
+
+	[SerializeField]
+	KeyCode weaponChangeKey = KeyCode.None;
+
+	[SerializeField]
+	KeyCode shotKey = KeyCode.None;
+
+	[SerializeField, ReorderableList(new int[] { 200 })]
+	TransformReorderableList weapons;
+	int cntWeaponIndex;
+
+	public class WeaponData
+	{
+
+		Transform _weapon = null;
+		bool[] shotInfoFlag = new bool[(int)ShotInfoFlag.FLAG_MAX];
+		float[] shotInfoValue = new float[(int)ShotInfoValue.VALUE_MAX];
+		WeaponRecoilData _weaponRecoilData = null;
+
+		public WeaponData(Transform weapon)
+		{
+			_weapon = weapon;
+			//ShotInfomationから情報をとる
+			ShotInfomation info = weapon.GetComponent<ShotInfomation>();
+			if(info != null)
+			{
+				foreach(ShotInfoFlagParam flag in info.shot_info_flags.list)
+				{
+					shotInfoFlag[(int)flag.type] = true;
+				}
+				foreach (ShotInfoValueParam value in info.shot_info_values.list)
+				{
+					shotInfoValue[(int)value.type] = value.value;
+				}
+
+			}
+
+			_weaponRecoilData = weapon.GetComponent<WeaponRecoilData>();
+		}
+
+		public bool GetInfoFlag (ShotInfoFlag type) { return shotInfoFlag[(int)type]; }
+		public float GetInfoValue(ShotInfoValue type) { return shotInfoValue[(int)type]; }
+		public Transform weapon
+		{
+			get
+			{
+				return _weapon;
+			}
+		}
+		public WeaponRecoilData weaponRecoilData
+		{
+			get
+			{
+				return _weaponRecoilData;
+			}
+		}
+
+
+
+	}
+	WeaponData cntWeaponData = null;
+
 
 	float AimDistance;
 
-	[SerializeField]
-	TPSRotationController tpsRotationController = null;
+	//[SerializeField]
+	//TPSRotationController tpsRotationController = null;
 
-    //  親へのアクセス
-    private NetworkIdentity     m_rParentIdentity   =   null;
+	[SerializeField]
+	PlayerRecoil playerRecoil = null;
+
+
+	//  親へのアクセス
+	private NetworkIdentity     m_rParentIdentity   =   null;
     private NetPlayer_Control   m_rNPControl        =   null;
     //  外部へのアクセス
     private LinkManager         m_rLinkManager      =   null;
 
     // サウンド
-    private SoundController     m_seShot            =   null;
+//    private SoundController     m_seShot            =   null;
 
 	// Use this for initialization
 	void    Start()
@@ -47,9 +124,10 @@ public class TPSShotController : NetworkBehaviour {
         m_rNPControl        =   transform.parent.parent.GetComponent< NetPlayer_Control >();
         m_rLinkManager      =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
 
-        TPSWeaponBar.Initialize(100);
-        m_seShot            =   SoundController.CreateShotController(transform);
+//        TPSWeaponBar.Initialize(100);
+//        m_seShot            =   SoundController.CreateShotController(transform);
 
+		cntWeaponData = new WeaponData(weapons[0].value);
     }
 	
 	// Update is called once per frame
@@ -57,6 +135,10 @@ public class TPSShotController : NetworkBehaviour {
         //  自分のキャラクター以外は処理を行わない
         if( !m_rParentIdentity.isLocalPlayer )  return;
 
+		if(Input.GetKeyDown(weaponChangeKey))
+		{
+			WeaponChange();
+		}
 		cntCoolDown -= Time.deltaTime;
 		//そのままの前方向
 		Transform firePoint = firePoints[fireCnt];
@@ -78,22 +160,37 @@ public class TPSShotController : NetworkBehaviour {
 			Ray ray = new Ray(shotPointNear, direction);
 
 			RaycastHit hit;
-			if(Physics.Raycast(ray,out hit, 1000.0f))
-			{
-				AimDistance = hit.distance;
-				if (AimDistance <= shotDistance)
-				{
-					targetPoint = hit.point;
-				}
+            if (Physics.Raycast(ray, out hit, 1000.0f))
+            {
+                AimDistance = hit.distance;
+//                if (AimDistance <= shotDistance)
+                {
+                    targetPoint = hit.point;
+                }
+            }
+            else
+            {
+                GameObject cam = Camera.main.gameObject;
+                Vector3 lookVec = cam.transform.forward;
+                float dot = Vector3.Dot( lookVec, ( firePoint.position - cam.transform.position) );
+                targetPoint = cam.transform.position + lookVec*( dot + 40.0f );
 
             }
         }
+		//単発orフルオート
+		bool shotRequest = false;
+		if (Input.GetKey(shotKey) && cntWeaponData.GetInfoFlag(ShotInfoFlag.FullAutoShot))
+			shotRequest = true;
+		else if(Input.GetKeyDown(shotKey))
+			shotRequest = true;
 
-        if (Input.GetMouseButton(0))
+
+
+		if (shotRequest == true)
 		{
 			if(cntCoolDown < 0)
 			{
-				cntCoolDown = shotCooldown;
+				cntCoolDown = cntWeaponData.GetInfoValue(ShotInfoValue.CoolDownTime);
 				
 				Shot( firePoint.position, targetPoint );
 				fireCnt++;
@@ -102,30 +199,46 @@ public class TPSShotController : NetworkBehaviour {
 					fireCnt = 0;
                 }
 
-                TPSWeaponBar.Consumption(1.0f);
+//                TPSWeaponBar.Consumption(1.0f);
+
                 // 発砲音
-                // m_seShot.PlayOneShot();
+//                m_seShot.transform.position = firePoint.position;
+//                m_seShot.PlayOneShot();
+
             }
-		}    
-	}
+		}
+
+    }
 
     void    Shot( Vector3 firePoint, Vector3 target )
 	{
+		//リコイル再設定
+		playerRecoil.holdingWeapon = cntWeaponData.weaponRecoilData;
+
 		Vector3 forward;
 		forward = (target - firePoint).normalized;
-		GameObject emit = Instantiate(emitter, firePoint, Quaternion.LookRotation(forward)) as GameObject;
-		float speed = 200.0f;
-		emit.GetComponent<Rigidbody>().velocity = forward * speed;
+
+		//レティクルをクォータニオンに変換して回転
+		forward = playerRecoil.GetReticleVector(forward);
+
+		GameObject emit = Instantiate(cntWeaponData.weapon.gameObject, firePoint, Quaternion.LookRotation(forward)) as GameObject;
+
+		//cloneをまとめる
+        string parentName = emit.name + "s";
+		GameObject parent = GameObject.Find(parentName);
+		if (parent == null)
+		{
+			parent = new GameObject(parentName);
+		}
+		emit.transform.parent = parent.transform;
+
 
 		//距離に合わせて寿命を設定
-		emit.GetComponent<TPSNormalGun>().Shot_Start(shotDistance / speed);
-
-        //  所属設定
-        TPSNormalGun    rGun    =   emit.GetComponent< TPSNormalGun >();
-        rGun.c_ShooterID    =   m_rLinkManager.m_LocalPlayerID;
-
+		//emit.GetComponent<TPSNormalGun>().Shot_Start(shotDistance / speed);
 		//リコイル処理
-		tpsRotationController.Recoil(singleRecoil);
+		playerRecoil.Shot();
+
+
 
         //  他のクライアントでも発射
         m_rNPControl.CmdFire_Client( firePoint, target, m_rLinkManager.m_LocalPlayerID );
@@ -146,10 +259,23 @@ public class TPSShotController : NetworkBehaviour {
         rGun.c_ShooterID    =   _ShooterID;
     }
 
+	void WeaponChange()
+	{
+		cntWeaponIndex++;
+		if (weapons.Length <= cntWeaponIndex)
+			cntWeaponIndex = 0;
+		cntWeaponData = new WeaponData(weapons[cntWeaponIndex].value);
+
+		playerRecoil.holdingWeapon = cntWeaponData.weaponRecoilData;
+	}
+
 	void OnGUI()
 	{
         //  自分のキャラクター以外は処理を行わない
         if( !m_rParentIdentity.isLocalPlayer )  return;
+
+		if (playerRecoil.holdingWeapon == null) return;
+
 
 		//照準の描画
 		GUIStyle style = new GUIStyle();
@@ -161,15 +287,40 @@ public class TPSShotController : NetworkBehaviour {
 		{
 			style.normal.textColor = Color.white;
 		}
-		style.fontSize =(int)( Screen.height * 0.05f);
+		style.fontSize =(int)( Screen.height * 0.03f);
 		style.alignment = TextAnchor.MiddleCenter;
 
-		GUI.Label(new Rect(.0f, .0f, Screen.width, Screen.height), "+", style);
+		//GUI.Label(new Rect(.0f, .0f, Screen.width, Screen.height), "・", style);
 		style.fontSize = (int)(Screen.height * 0.02f);
 		style.alignment = TextAnchor.MiddleLeft;
 		GUI.Label(new Rect(Screen.height * 0.02f + Screen.width  * 0.5f  , Screen.height * 0.02f, Screen.width, Screen.height), AimDistance.ToString(), style);
 
+		//レティクルの描画
+		float reticle = playerRecoil.GetReticle();
+		style.fontSize = (int)(Screen.height * 0.015f);
+		style.fontStyle = FontStyle.Bold;
+		style.alignment = TextAnchor.MiddleCenter;
 
+		for (int i = 0; i < 4; i++)
+		{
+			Rect rect;
+			int mul;
+			if (i % 2 == 0)
+				mul = 1;
+			else
+				mul = -1;
+			if(i / 2 == 0)
+			{
+				rect = new Rect((reticle + 1) * mul * Screen.height * 0.006f, - Screen.height * 0.001f, Screen.width, Screen.height);
+				GUI.Label(rect, "―" ,style);
+
+			}
+			else
+			{
+				rect = new Rect(.0f, (reticle + 1) * mul * Screen.height * 0.006f, Screen.width, Screen.height);
+				GUI.Label(rect, "|", style);
+			}
+		}
 	}
 
 }

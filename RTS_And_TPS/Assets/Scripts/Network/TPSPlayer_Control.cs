@@ -12,6 +12,8 @@ public class TPSPlayer_Control : NetworkBehaviour {
 
     private bool            m_IsLock        =   true;
 
+    private SoundController m_bgm           = null;
+
 	// Use this for initialization
 	void    Start()
     {
@@ -68,6 +70,17 @@ public class TPSPlayer_Control : NetworkBehaviour {
         // UI系初期化
         GameObject.Find("TPS_HUD").SetActive(true);
         UIRadar.SetPlayer(gameObject);
+
+        // カメラのスクリプト生成
+        TPS_CameraController cam = c_rMyCamera.gameObject.AddComponent<TPS_CameraController>();
+
+//        // BGM再生
+//        if (m_bgm == null)
+//        {
+//            m_bgm = SoundController.Create("BGM0", null);
+//        }
+//        m_bgm.Play();
+
     }
     //  終了処理
     void    EndProc()
@@ -76,6 +89,12 @@ public class TPSPlayer_Control : NetworkBehaviour {
         GameObject  rMainCamera =   GameObject.Find( "Main Camera" );
         rMainCamera.GetComponent< Camera >().enabled            =   true;
         rMainCamera.GetComponent< AudioListener >().enabled     =   true;
+
+        // BGM停止
+        if (m_bgm != null)
+        {
+            m_bgm.Stop();
+        }
     }
 
     //  コマンダーに戻る

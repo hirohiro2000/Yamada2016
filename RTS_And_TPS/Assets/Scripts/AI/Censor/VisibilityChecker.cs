@@ -3,30 +3,27 @@ using System.Collections;
 
 public class VisibilityChecker : MonoBehaviour
 {
-
     [SerializeField, HeaderAttribute("視界判定を行う際のターゲットとなる場所")]
     Transform[] m_raycast_target = new Transform[1];
 
-    public GameObject m_owner_object { get; private set; }
+ 
 
     [SerializeField, HeaderAttribute("このオブジェクトは動き回らないかどうか（Trueで動かない）")]
     private bool IsStaticObject = false;
+
+    [SerializeField, HeaderAttribute("オブジェクトのタグ情報")]
+    private PerceiveTag Tag = PerceiveTag.Error; 
+    
+    public GameObject m_owner_object { get; private set; }
 
     void Awake()
     {
         m_owner_object = transform.parent.gameObject;
     }
 
-
-    void Start()
+    public PerceiveTag GetPerceivetag()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        return Tag;
     }
 
     public bool IsStatic()
@@ -40,6 +37,11 @@ public class VisibilityChecker : MonoBehaviour
         RaycastHit result = new RaycastHit();
         for (int target_i = 0; target_i < m_raycast_target.Length; target_i++)
         {
+			var temp = m_raycast_target[target_i];
+			if(temp ==null)
+			{
+				UserLog.ErrorTerauchi(m_owner_object.name + "no attach raycast target !!");
+			}
             var target_pos = m_raycast_target[target_i].position;
             var ray_vec = target_pos - eye_position;
             float dist = ray_vec.magnitude;

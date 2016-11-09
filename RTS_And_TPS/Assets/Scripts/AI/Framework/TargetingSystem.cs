@@ -9,7 +9,7 @@ public class TargetingSystem : MonoBehaviour {
     public  float                                                    m_score { get; private set; }
     public ViewMessageWrapper.MessageType      m_message_type { get; private set; }
     public bool                                                     m_is_static{ get; private set; }
-    public string                                                   m_target_tag { get; private set; }
+    public PerceiveTag                                          m_target_tag { get; private set; }
     private TargetingParam                                   m_param;
     private readonly float                                      m_base_score = 100.0f;
 
@@ -60,7 +60,7 @@ public class TargetingSystem : MonoBehaviour {
         ViewMessageWrapper.MessageType message_type,
         float score,
         bool is_static,
-        string target_tag)
+        PerceiveTag target_tag)
     {
        // if (m_current_target)
        // {
@@ -85,6 +85,12 @@ public class TargetingSystem : MonoBehaviour {
     public bool EvalutionTargetCandidate(VisibilitySystem visiblity)
     {
         var visibility_list = visiblity.m_current_visibility_list;
+
+        if(visibility_list.Count == 0)
+        {
+            return false;
+        }
+
         VisibilitySystem.VisibilityData most_candidate = null;
         float max_score = .0f;
         
@@ -99,7 +105,8 @@ public class TargetingSystem : MonoBehaviour {
             if (dist_sq < .0f)
                 dist_sq += 0.1f;
 
-            float score = m_base_score * bias / dist_sq;
+            //現在のスコア評価は反比例式
+            float score = m_base_score * bias * (1.0f / dist_sq);
             if(score >= max_score)
             {
                 max_score = score;
@@ -137,5 +144,10 @@ public class TargetingSystem : MonoBehaviour {
         if (result != null)
             return true;
         return false;
+    }
+
+    public bool IsTargetArive()
+    {
+        return (m_current_target != null) ? true : false;
     }
 }

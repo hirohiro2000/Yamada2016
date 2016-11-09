@@ -32,7 +32,7 @@ public class GameManager : NetworkBehaviour {
     public  Quaternion              c_LaunchPose    =   Quaternion.identity;
 
     //  固定パラメータ
-    private float                   c_CountDownTime =   5.0f - 0.01f;//30.0f - 0.001f;
+    private float                   c_CountDownTime =   3.0f - 0.001f;
 
     //  内部パラメータ
     [ SyncVar ]
