@@ -49,7 +49,12 @@ public class EnemyGenerator : MonoBehaviour
     private static readonly int CanAllRoute = 0;
     private bool m_is_running = false;
 
-    private int m_current_alive_enemy_count = 0;
+    private List<GameObject> m_current_hierarchy_list = new List<GameObject>();
+
+    public List<GameObject> GetCurrentHierachyList()
+    {
+        return m_current_hierarchy_list;
+    }
 
     public int GetNumEnemyType()
     {
@@ -86,12 +91,12 @@ public class EnemyGenerator : MonoBehaviour
     */
     public int GetCurrentAliveEnemyCount()
     {
-        return m_current_alive_enemy_count;
+        return m_current_hierarchy_list.Count;
     }
 
-    private void DeadEnemy()
+    private void DeadEnemy(GameObject dead_enemy)
     {
-        m_current_alive_enemy_count--;
+        m_current_hierarchy_list.Remove(dead_enemy);
     }
 
     //void Start()
@@ -208,7 +213,7 @@ public class EnemyGenerator : MonoBehaviour
 
         //死亡時の通知設定
         controller.SetDeadListener(DeadEnemy);
-        m_current_alive_enemy_count++;
+        m_current_hierarchy_list.Add(ret_object);
 
         return ret_object;
     }

@@ -6,7 +6,7 @@ public class FiringDevice : NetworkBehaviour
 {
 	public GameObject		    m_bullet;
 
-	private EnemyShell_Control  m_rEnemyShell		= null;
+	private ReferenceWrapper  m_rEnemyShell		= null;
 	private	ResourceParameter	m_resourceParam		= null;
 
     private float               m_IntervalTimer     =   0.0f;
@@ -14,7 +14,7 @@ public class FiringDevice : NetworkBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		m_rEnemyShell       = GameObject.Find( "Enemy_Shell" ).GetComponent< EnemyShell_Control >();
+		m_rEnemyShell       = GameObject.Find( "EnemySpawnRoot" ).GetComponent< ReferenceWrapper >();
 		m_resourceParam		= GetComponent<ResourceParameter>();
 	}
 	
@@ -39,6 +39,7 @@ public class FiringDevice : NetworkBehaviour
 				g.transform.position	= transform.position;
 				g.transform.rotation	= transform.rotation;
 				g.AddComponent<ResourceParameter>().Copy( m_resourceParam );
+				g.GetComponent<AttackPointList>().baseAttackPoint *= m_resourceParam.GetCurLevelParam().power;
 
                 //  クライアントでも弾が見えるようにする
                 RpcSpawnBullet( transform.rotation, transform.position );

@@ -28,7 +28,8 @@ GameObject:
   - 136: {fileID: 13655042}
   - 23: {fileID: 2348708}
   - 114: {fileID: 11449958}
-  m_Layer: 0
+  - 114: {fileID: 11463866}
+  m_Layer: 12
   m_Name: Beam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,6 +119,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ec106c7e209a1747a4c960fdaa5b50e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11463866
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 197558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a55cf9a709e8fec4ca7e5e0a27eb9ba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseAttackPoint: 1
+  attack_list:
+    list:
+    - type: 2
+      multiple: 1
+  autoDestroyObject: {fileID: 0}
+  autoEmitObjectOnMyPosition: {fileID: 0}
+  autoEmitObjectOnHitPoint: {fileID: 0}
 --- !u!136 &13655042
 CapsuleCollider:
   m_ObjectHideFlags: 1
