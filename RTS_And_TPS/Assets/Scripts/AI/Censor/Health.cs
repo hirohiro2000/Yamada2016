@@ -5,11 +5,18 @@ using   System.Collections;
 
 public class Health : NetworkBehaviour {
 
-    [SerializeField, HeaderAttribute("最大HP")]
-    private float HP = 10.0f;
+    public  int     Resource    =   0;
+    public  int     Score       =   0;
+
+    [ SerializeField, HeaderAttribute("最大HP"), SyncVar ]
+    private float   MaxHP       =   10.0f;
+    [ SyncVar ]
+    private float   HP          =   0.0f;
+    private int     Level       =   0;
 
     private DamageBank  m_damage_bank   =   null;
     private LinkManager m_rLinkManager  =   null;
+    private GameManager m_rGameManager  =   null;
 
     void Awake()
     {
@@ -18,6 +25,7 @@ public class Health : NetworkBehaviour {
 
         //  アクセスの取得 
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+        m_rGameManager  =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
     } 
        
 
@@ -34,7 +42,7 @@ public class Health : NetworkBehaviour {
     //  ダメージ処理
     void    DamageProc_CallBack( DamageResult _rDamageResult, CollisionInfo _rInfo )
     {
-        //  ＴＰＳプレイヤーとのダメージ処理
+        //  ＴＰＳプレイヤーとのダメージ処理 
         DamageProc_WidthTPSPlayer( _rDamageResult, _rInfo );
         //  タワーとのダメージ処理
         DamageProc_WidthTower( _rDamageResult, _rInfo );
@@ -46,28 +54,39 @@ public class Health : NetworkBehaviour {
 
         TPSAttack_Net   rTPSATK     =   rAttacker.GetComponent< TPSAttack_Net >();
 
-        //  TPSプレイヤーの攻撃以外は無視する
+        //  TPSプレイヤーの攻撃以外は無視する 
         if( !rTPSATK )                                                  return;
-        //  発射したプレイヤーのクライアント以外では処理を行わない
+        //  発射したプレイヤーのクライアント以外では処理を行わない 
         if( rTPSATK.c_AttackerID != m_rLinkManager.m_LocalPlayerID )    return;
 
-        //  ダメージをサーバーに送信
+        //  ダメージをサーバーに送信 
         m_rLinkManager.m_rLocalNPControl.CmdSendDamageEnemy( netId, _rDamageResult.GetTotalDamage() );
     }
     void    DamageProc_WidthTower( DamageResult _rDamageResult, CollisionInfo _rInfo )
     {
+        //  サーバーでのみ処理を行う
+        if( !isServer )                                                 return;
 
+        //  ダメージを受ける
+        GiveDamage( _rDamageResult.GetTotalDamage() );
     }
 
     public  void    CorrectionHP(int level,float correcion_rate)
     {
-        HP = HP * level * correcion_rate;
+        MaxHP   =   MaxHP * level * correcion_rate;
+        HP      =   MaxHP;
+        Level   =   level;
     }
     public  void    GiveDamage( float _Damage )
     {
         HP  -=  _Damage;
         HP  =   Mathf.Max( HP, 0.0f );
         if( HP <= 0.0f ){
+            //  スコアとリソースを獲得
+            m_rGameManager.AddResource( Resource + Level );
+            m_rGameManager.AddGlobalScore( Score + Level );
+
+            //  オブジェクトを破棄
             Destroy( gameObject );
         }
     }

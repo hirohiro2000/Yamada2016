@@ -22,7 +22,7 @@ public class FiringDevice : NetworkBehaviour
 	void Update ()
 	{
         //  サーバーでのみ処理を行う
-        if( !isServer ) return;
+        //if( !isServer ) return;
 
         //  タイマー更新
         m_IntervalTimer +=  Time.deltaTime;
@@ -42,7 +42,7 @@ public class FiringDevice : NetworkBehaviour
 				g.GetComponent<AttackPointList>().baseAttackPoint *= m_resourceParam.GetCurLevelParam().power;
 
                 //  クライアントでも弾が見えるようにする
-                RpcSpawnBullet( transform.rotation, transform.position );
+                //RpcSpawnBullet( transform.rotation, transform.position );
 
                 //  インターバルリセット
                 m_IntervalTimer =   0.0f;

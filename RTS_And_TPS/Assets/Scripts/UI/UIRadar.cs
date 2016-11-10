@@ -51,15 +51,19 @@ public class UIRadar : MonoBehaviour {
 
 			item.dst.transform.SetParent( transform );
 
-            Vector3 rtPosition = relativePosition / m_searchRange;
+            Vector3 rtPosition   = relativePosition / m_searchRange;
+                    rtPosition.y = 0.0f;
+            float   maxLength    = 70.0f;
 
             rt.localPosition = new Vector3(rtPosition.x, rtPosition.z, 0.0f) * 50.0f;
+            rt.localPosition = rt.localPosition.normalized * ( Mathf.Min( rt.localPosition.magnitude, maxLength ) );
 
-            item.dst.SetActive(rtPosition.sqrMagnitude < 1.0f);
+            //item.dst.SetActive(rtPosition.sqrMagnitude < 1.0f);
+            item.dst.SetActive( true );
         }
         {
-            RectTransform rt = m_backGround.GetComponent<RectTransform>();
-            rt.eulerAngles = new Vector3(rt.eulerAngles.x, rt.eulerAngles.y, m_player.transform.eulerAngles.y);
+            //RectTransform rt = m_backGround.GetComponent<RectTransform>();
+            //rt.eulerAngles = new Vector3(rt.eulerAngles.x, rt.eulerAngles.y, m_player.transform.eulerAngles.y);
         }
 
     }
@@ -71,8 +75,8 @@ public class UIRadar : MonoBehaviour {
 
     static public void Add(GameObject src, Color rgba)
     {
-        if( !instance )                                 return;
-        if( !instance.gameObject.activeInHierarchy )    return;
+        //if( !instance )                                 return;
+        //if( !instance.gameObject.activeInHierarchy )    return;
         
 
         DATA data = new DATA();
@@ -86,8 +90,8 @@ public class UIRadar : MonoBehaviour {
     }
     static public void Remove(GameObject obj)
     {
-        if( !instance )                                 return;
-        if( !instance.gameObject.activeInHierarchy )    return;
+        //if( !instance )                                 return;
+        //if( !instance.gameObject.activeInHierarchy )    return;
 
         int numSymbols = instance.m_uiSymbolList.Count;
         for (int i = numSymbols - 1; i >= 0; --i)

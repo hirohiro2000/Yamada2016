@@ -15,6 +15,10 @@ GameObject:
   - 114: {fileID: 11485682}
   - 114: {fileID: 11474518}
   - 114: {fileID: 11463584}
+  - 114: {fileID: 11406660}
+  - 114: {fileID: 11402666}
+  - 208: {fileID: 20897738}
+  - 65: {fileID: 6518564}
   m_Layer: 0
   m_Name: Barricade
   m_TagString: Obstacle
@@ -138,7 +142,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 124090}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.2740412, y: 0.00044816732, z: 16.958445}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -221,6 +225,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 145686}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &6518564
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 124090}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5, y: 2, z: 0.5}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!65 &6584286
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -229,10 +245,37 @@ BoxCollider:
   m_GameObject: {fileID: 145686}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &11402666
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 124090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20f2b746cf0bd614cad2d1d3e93f74ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weak_lists:
+    list:
+    - type: 3
+      multiple: 1
+--- !u!114 &11406660
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 124090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b9176446f157e54791946adce78b8f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recieveDamageType: 0
 --- !u!114 &11410716
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -430,6 +473,21 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1.63
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &20897738
+NavMeshObstacle:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 124090}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 2.5, y: 1, z: 0.25}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 1, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

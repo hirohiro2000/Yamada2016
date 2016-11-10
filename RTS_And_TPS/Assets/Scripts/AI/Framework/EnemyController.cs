@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
-public class EnemyController : MonoBehaviour {
+public class EnemyController : NetworkBehaviour {
 
 
     [SerializeField, HeaderAttribute("そのうちインスペクタから隠す")]
@@ -13,7 +15,7 @@ public class EnemyController : MonoBehaviour {
     private bool                      m_coroutine_flg;
     public delegate void          Deadlistener(GameObject dead_enemy);
     private Deadlistener           m_dead_callback;   //死んだときにEnemyGeneratorに通知するためのコールバック
-
+    
     public void SetRouteData(StringList route_data)
     {
         var move_target = GetComponentInChildren<MovingTarget>();
@@ -37,6 +39,10 @@ public class EnemyController : MonoBehaviour {
         float one_frame = 1.0f / 60.0f;
         m_update_intarval_socond += one_frame * UnityEngine.Random.Range(.0f, 4.0f);
         m_coroutine_flg = true;
+
+        //  エネミーリストに追加
+        EnemyGenerator  rGenerator  =   GameObject.Find( "EnemySpawnRoot" ).GetComponent< EnemyGenerator >();
+        rGenerator.GetCurrentHierachyList().Add( gameObject );
     }
 
 	// Use this for initialization
@@ -70,11 +76,10 @@ public class EnemyController : MonoBehaviour {
         m_visibility_censor.VisibilityCheck();
     }
 
-    void OnDestroy()
+    void    OnDestroy()
     {
         UIRadar.Remove(gameObject);
         m_coroutine_flg = false;
-        m_dead_callback(gameObject);
     }
 
     // Update is called once per frame

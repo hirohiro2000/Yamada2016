@@ -173,7 +173,11 @@ GameObject:
   - 114: {fileID: 11444296}
   - 114: {fileID: 11414730}
   - 114: {fileID: 11492110}
-  m_Layer: 0
+  - 114: {fileID: 11446018}
+  - 114: {fileID: 11454426}
+  - 208: {fileID: 20838342}
+  - 136: {fileID: 13634140}
+  m_Layer: 11
   m_Name: Turret_Cannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -626,7 +630,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 1
-  m_SendInterval: 0.1
+  m_SendInterval: 0
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
@@ -666,6 +670,33 @@ MonoBehaviour:
     i15: 77
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &11446018
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 173438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b9176446f157e54791946adce78b8f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recieveDamageType: 0
+--- !u!114 &11454426
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 173438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20f2b746cf0bd614cad2d1d3e93f74ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weak_lists:
+    list:
+    - type: 3
+      multiple: 1
 --- !u!114 &11467030
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -766,6 +797,19 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!136 &13634140
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 173438}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.75
+  m_Height: 3.4
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!136 &13643538
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -818,6 +862,21 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &20838342
+NavMeshObstacle:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 173438}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

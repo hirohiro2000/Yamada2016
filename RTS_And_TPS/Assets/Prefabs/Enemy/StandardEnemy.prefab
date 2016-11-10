@@ -116,6 +116,7 @@ GameObject:
   - 114: {fileID: 11424662}
   - 54: {fileID: 5467332}
   - 114: {fileID: 11418742}
+  - 114: {fileID: 11410808}
   m_Layer: 0
   m_Name: StandardEnemy
   m_TagString: Enemy
@@ -1040,6 +1041,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf5aa4dbdf1dd49834a576bc521b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11410808
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 109252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08e157a94c3e4554db5f289e0f987a88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_ParentName: EnemySpawnRoot
 --- !u!114 &11418742
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1063,7 +1076,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96db7186b325d394182c084eb35ba915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 10
+  Resource: 10
+  Score: 10
+  MaxHP: 10
 --- !u!114 &11426922
 MonoBehaviour:
   m_ObjectHideFlags: 1

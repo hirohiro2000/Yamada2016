@@ -71,7 +71,7 @@ public class ShootAndMove : TaskBase {
             {
                 UserLog.ErrorTerauchi(m_owner_object.name + "ShootAndMove Bullet No attach RigidBody!!");
             }
-            NetworkServer.Spawn(shot_object);
+            //NetworkServer.Spawn(shot_object);
         }
     }
 

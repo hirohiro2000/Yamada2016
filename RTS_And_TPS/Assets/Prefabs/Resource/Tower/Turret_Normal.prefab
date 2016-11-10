@@ -66,7 +66,11 @@ GameObject:
   - 114: {fileID: 11492700}
   - 114: {fileID: 11446894}
   - 114: {fileID: 11412650}
-  m_Layer: 0
+  - 114: {fileID: 11453554}
+  - 114: {fileID: 11423982}
+  - 208: {fileID: 20865016}
+  - 136: {fileID: 13650706}
+  m_Layer: 11
   m_Name: Turret_Normal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -462,6 +466,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9340b9eaf15ea0d4bb1788d6fad667f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11423982
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 141050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20f2b746cf0bd614cad2d1d3e93f74ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weak_lists:
+    list:
+    - type: 3
+      multiple: 1
 --- !u!114 &11433780
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -520,6 +539,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64827b74010ebd64caf36c5d1ad4d88a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11453554
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 141050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b9176446f157e54791946adce78b8f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recieveDamageType: 0
 --- !u!114 &11471422
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -552,19 +583,19 @@ MonoBehaviour:
   m_levelInformations:
     list:
     - hp: 1
-      power: 5
-      range: 8
-      interval: 1
-      upCost: 50
-    - hp: 1
       power: 10
-      range: 9
-      interval: 0.66
-      upCost: 50
+      range: 8
+      interval: 2
+      upCost: 40
     - hp: 1
       power: 20
+      range: 9
+      interval: 1.8
+      upCost: 50
+    - hp: 1
+      power: 30
       range: 10
-      interval: 0.33
+      interval: 1.5
       upCost: 0
 --- !u!114 &11492700
 MonoBehaviour:
@@ -649,6 +680,19 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!136 &13650706
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 141050}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.75
+  m_Height: 3.4
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!136 &13673214
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -662,6 +706,21 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &20865016
+NavMeshObstacle:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 141050}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.75, y: 1.7, z: 0.75}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 1, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -1,11 +1,13 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿
+using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
+using System.Collections;
 using System.Collections.Generic;
 /**
 *@note Navmeshの全エリア名前取得できたら消す
 */
-public class CostNameContainer : MonoBehaviour {
+public class CostNameContainer : NetworkBehaviour {
 
 
     //[SerializeField]

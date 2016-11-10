@@ -4,7 +4,7 @@ using   UnityEngine.Networking;
 using   System.Collections;
 using   System.Collections.Generic;
 
-public class WaveManager : MonoBehaviour {
+public class WaveManager : NetworkBehaviour {
     
     //  内部パラメータ
     private int                 m_WaveLevel     =   0;
@@ -14,23 +14,27 @@ public class WaveManager : MonoBehaviour {
 
     //  外部へのアクセスr
     private GameManager         m_rGameManager  =   null;
-    private EnemyGenerator       m_ganerator = null;
+    private EnemyGenerator      m_ganerator     =   null;
 
     // Use this for initialization
     void    Start()
     {
-        //  アクセスを取得
+        //  アクセスを取得 
 	    m_rGameManager  =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
         m_rEnemyShell   =   FunctionManager.GetAccessComponent< EnemyShell_Control >( "Enemy_Shell" );
-        m_ganerator = GetComponent<EnemyGenerator>();
+        m_ganerator     =   GetComponent<EnemyGenerator>();
 
         //  ウェーブ情報用意
-        StandbyWave();
+        if( isServer ){
+            StandbyWave();
+        }
 	}
 	
 	// Update is called once per frame
 	void    Update()
     {
+        //  サーバーでのみ処理を行う
+        if( !isServer )                                             return;
 	    //  ゲーム中のみ処理を行う
         if( m_rGameManager.GetState() != GameManager.State.InGame ) return;
 
@@ -39,11 +43,15 @@ public class WaveManager : MonoBehaviour {
         && m_ganerator.GetCurrentAliveEnemyCount() <= 0 ){
             //  次のウェーブを用意
             StandbyWave();
+
             //  ウェーブクリア
             m_rGameManager.RpcMainMessage( "第 " + ( m_WaveLevel - 1 ) +  " ウェーブクリア！", 3.7f, 1.7f );
             //  敵の襲来を通知
             if( m_WaveLevel % 3 == 0 )  m_rGameManager.RpcMainMessage( "敵の大軍が押し寄せています！", 3.7f, 1.2f );
             else                        m_rGameManager.RpcMainMessage( "新たな敵が接近しています", 3.7f, 1.2f );
+
+            //  ウェーブ開始処理
+            m_rGameManager.StartNewWave();
         }
 	}
 
@@ -53,7 +61,7 @@ public class WaveManager : MonoBehaviour {
         return !m_ganerator.IsGeneratingEnemy();
     }
 
-    //  配置情報を準備
+    //  配置情報を準備 
     void        StandbyWave()
     {
         //  レベルアップ
@@ -72,37 +80,8 @@ public class WaveManager : MonoBehaviour {
 
         m_ganerator.BeginGenerate( m_WaveLevel, numPop, 10.0f - 6.0f );
 
-    }
-    //  エネミー配置
-    void        PopEnemy( int _SpawnPointID, int _EnemyID, int _Level )
-    {
-        //Transform   rSpawnPoint =   GetTransformInActiveChild( _SpawnPointID );
-        //GameObject  rObj        =   Instantiate( c_EnemyPrefab[ _EnemyID ] );
-        //Transform   rTrans      =   rObj.transform;
-
-        //rObj.transform.parent = transform;
-
-        ////  配置設定
-        //{
-        //    //  座標
-        //    NavMeshAgent    rAgent  =   rObj.GetComponent< NavMeshAgent >();
-        //    if( rAgent )    rAgent.Warp( rSpawnPoint.position );
-        //    else            rTrans.position =   rSpawnPoint.position;
-
-        //    //  向き
-        //    rTrans.rotation     =   rSpawnPoint.rotation;
-        //}
-
-        ////  パラメータ設定
-        //{
-        //    TPS_Enemy   rTPSEnemy   =   rObj.GetComponent< TPS_Enemy >();
-        //    if( rTPSEnemy ){
-        //        rTPSEnemy.m_MaxHP   =   rTPSEnemy.m_MaxHP * Mathf.Max( 1, _Level * 1.5f );
-        //    }
-        //}
-        
-        ////  ネットワーク上で生成
-        //NetworkServer.Spawn( rObj );
+        //  ウェーブ数更新
+        m_rGameManager.m_WaveLevel  =   m_WaveLevel;
     }
 
     //  アクティブな子の数を取得

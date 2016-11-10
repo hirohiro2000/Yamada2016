@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -20,7 +22,7 @@ public class LevelUpParamReorderableList : ReorderableList<LevelParam>
 }
 
 
-public class ResourceParameter : MonoBehaviour
+public class ResourceParameter : NetworkBehaviour
 {
 	public string		m_name;
 	public string		m_summary;
@@ -28,20 +30,44 @@ public class ResourceParameter : MonoBehaviour
 	public int			m_createCost		= 0;
 	public int			m_breakCost			= 0;
 
-	[HideInInspector]
+	[HideInInspector, SyncVar]
 	public int			m_level				= 0;
 
-	[HideInInspector]
+	[HideInInspector, SyncVar]
 	public int			m_curHp				= 0;
 
 	[ ReorderableList( new int[]{ 50, 50, 50, 50, 50 }), HeaderAttribute ("体力ー火力ー射程[radius]ー発射間隔[sec]ーレベルアップ費用")]
 	public LevelUpParamReorderableList m_levelInformations = null;
 
 
+    private DamageBank  m_rDamageBank       = null;
+
 	void Start()
 	{
-		m_curHp = GetCurLevelParam().hp;
+        m_rDamageBank   =   GetComponent< DamageBank >();
+		m_curHp         =   GetCurLevelParam().hp;
+
+        //  ダメージ処理の設定（DamageBankがアタッチされているオブジェクトのみ）
+        if( m_rDamageBank ){
+            m_rDamageBank.AdvancedDamagedCallback   +=  DamageProc_CallBack;
+        }
 	}
+    void    OnEnable()
+    {
+        if( m_rDamageBank ){
+            m_curHp         =   GetCurLevelParam().hp;
+        }
+    }
+
+    //  ダメージ処理
+    void    DamageProc_CallBack( DamageResult _rDamageResult, CollisionInfo _rInfo )
+    {
+        //  サーバーでのみ処理を行う
+        if( !isServer ) return;
+
+        //  ダメージを受ける
+        GiveDamage( ( int )_rDamageResult.GetTotalDamage() );
+    }
 
 
 	//-------------------------------------------------------------
@@ -79,6 +105,13 @@ public class ResourceParameter : MonoBehaviour
 	public void GiveDamage( int damage )
 	{
 		m_curHp -= damage;
+        m_curHp =  Mathf.Max( m_curHp, 0 );
+        if( m_curHp <= 0 ){
+            //  破壊されたら非アクティブ化
+            gameObject.SetActive( false );
+            //  クライアントでも非アクティブ化するようリクエストを飛ばす
+            RpcSetActive( false );
+        }
 	}
 	public void Copy( ResourceParameter param )
 	{
@@ -93,4 +126,11 @@ public class ResourceParameter : MonoBehaviour
 			m_levelInformations.list.Add( param.m_levelInformations[i] );
 		}
 	}
+
+    //  リクエスト
+    [ ClientRpc ]
+    void    RpcSetActive( bool _IsActive )
+    {
+        gameObject.SetActive( _IsActive );
+    }
 }

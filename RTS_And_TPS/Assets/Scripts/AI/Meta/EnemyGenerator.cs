@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Networking;
 
-public class EnemyGenerator : MonoBehaviour
+public class EnemyGenerator : NetworkBehaviour
 {
     public class EnemyData
     {
@@ -49,11 +49,12 @@ public class EnemyGenerator : MonoBehaviour
     private static readonly int CanAllRoute = 0;
     private bool m_is_running = false;
 
-    private List<GameObject> m_current_hierarchy_list = new List<GameObject>();
+    //private List<GameObject> m_current_hierarchy_list = new List<GameObject>();
+    private List< GameObject >  m_rActiveEnemyList  =   new List< GameObject >();
 
-    public List<GameObject> GetCurrentHierachyList()
+    public  List< GameObject >  GetCurrentHierachyList()
     {
-        return m_current_hierarchy_list;
+        return m_rActiveEnemyList;
     }
 
     public int GetNumEnemyType()
@@ -91,23 +92,26 @@ public class EnemyGenerator : MonoBehaviour
     */
     public int GetCurrentAliveEnemyCount()
     {
-        return m_current_hierarchy_list.Count;
+        return m_rActiveEnemyList.Count;
     }
 
-    private void DeadEnemy(GameObject dead_enemy)
-    {
-        m_current_hierarchy_list.Remove(dead_enemy);
-    }
+    //private void DeadEnemy(GameObject dead_enemy)
+    //{
+    //    m_current_hierarchy_list.Remove(dead_enemy);
+    //}
 
     //void Start()
     //{
 
     //}
 
-    //void Update()
-    //{
-
-    //}
+    void    Update()
+    {
+        //  死亡したエネミーの項目を削除
+        for( int i = 0; i < m_rActiveEnemyList.Count; i++ ){
+            m_rActiveEnemyList.Remove( null );
+        }
+    }
 
     void Awake()
     {
@@ -147,7 +151,7 @@ public class EnemyGenerator : MonoBehaviour
             for(int i = 0; i < m_num_spawn_one_frame; i++)
             {
                 EnemyData create_enemy_data = m_generate_director.DirectionGenerateEnemy();
-                GameObject new_enemy = CreateEnemyInstance(level, create_enemy_data);
+                GameObject new_enemy = CreateEnemyInstance( Random.Range( 1, level ), create_enemy_data );
                 NetworkServer.Spawn(new_enemy);
                 respawn_count++;
                 if (respawn_count >= num_spawn)
@@ -212,8 +216,8 @@ public class EnemyGenerator : MonoBehaviour
         }
 
         //死亡時の通知設定
-        controller.SetDeadListener(DeadEnemy);
-        m_current_hierarchy_list.Add(ret_object);
+        //controller.SetDeadListener(DeadEnemy);
+        //m_current_hierarchy_list.Add(ret_object);
 
         return ret_object;
     }

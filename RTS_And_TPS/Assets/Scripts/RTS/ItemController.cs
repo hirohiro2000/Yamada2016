@@ -8,7 +8,7 @@ using System.Collections.Generic;
 public class ItemController : NetworkBehaviour
 {
 	public	GameObject			m_itemFrame				= null;
-	public  int					m_resourcePoint			= 100;
+	//public  int					m_resourcePoint			= 100;
 
 	private ResourceCreator		m_resourceCreator		= null;
 	private	List<GameObject>	m_frameList				= null;
@@ -16,12 +16,15 @@ public class ItemController : NetworkBehaviour
 	private int					m_kindMax				= 0;
 	private int					m_curForcus				= 0;
 
+    private GameManager         m_rGameManager          = null;
+
 	// Use this for initialization
 	void Start ()
 	{
         //  自分のキャラクターの場合のみ処理を行う
         if( !isLocalPlayer ) return;
 
+        m_rGameManager          = GameObject.Find("GameManager").GetComponent<GameManager>();
 		m_resourceCreator		= GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
 		m_kindMax				= m_resourceCreator.m_resources.Length;
 
@@ -87,11 +90,11 @@ public class ItemController : NetworkBehaviour
 				m_curForcus %= m_kindMax;
 			}
 		}
-		{
-			var cr = GameObject.Find("Canvas");
-			var tx = GameObjectExtension.GetComponentInParentAndChildren<Text>( cr );
-			tx.text = "Resource  " + m_resourcePoint.ToString();
-		}
+        //{
+        //    var cr = GameObject.Find("Canvas");
+        //    var tx = GameObjectExtension.GetComponentInParentAndChildren<Text>( cr );
+        //    tx.text = "Resource  " + ( ( int )m_rGameManager.GetResource() ).ToString();
+        //}
 	}
 	
 
@@ -100,7 +103,7 @@ public class ItemController : NetworkBehaviour
 	//------------------------------------------------------------
 	public int GetHaveCost()
 	{
-		return m_resourcePoint;
+		return ( int )m_rGameManager.GetResource();
 	}
 	public int GetForcus()
 	{
@@ -112,7 +115,7 @@ public class ItemController : NetworkBehaviour
 	}
 	public bool CheckWhetherTheCostIsEnough()
 	{
-		return m_resourcePoint >= GetForcusResourceParam().m_createCost;
+		return m_rGameManager.GetResource() >= GetForcusResourceParam().m_createCost;
 	}
 
 
@@ -121,6 +124,6 @@ public class ItemController : NetworkBehaviour
 	//------------------------------------------------------------	
 	public void AddResourceCost( int cost )
 	{
-		m_resourcePoint += cost;
+        m_rGameManager.AddResource( cost );
 	}
 }

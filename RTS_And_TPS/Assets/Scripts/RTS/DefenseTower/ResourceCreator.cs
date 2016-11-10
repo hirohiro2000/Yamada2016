@@ -18,9 +18,14 @@ public class ResourceCreator : NetworkBehaviour
 
 	private float					m_rotateAngle				= 0;
 
+
+    private LinkManager             m_rLinkManager              = null;
+
 	// Use this for initialization
 	void Start()
 	{
+        m_rLinkManager          = FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+
 		m_resourcesInformation	= GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
 		m_fieldResources		= GameObject.Find("FieldResources");
 
@@ -132,12 +137,32 @@ public class ResourceCreator : NetworkBehaviour
 	//---------------------------------------------------------------------
 	//	アクセサ
 	//---------------------------------------------------------------------
-	public void AddResource( int resourceID )
+	public  void    AddResource( int resourceID )
 	{
 		//  サーバーにコマンドを送信
 		Transform rTrans = m_staticResources.transform.GetChild( resourceID );
-		CmdAddResource( resourceID, rTrans.position, rTrans.rotation );
+
+        //  プレイヤーオブジェクトを経由してコマンドを送信
+        m_rLinkManager.m_rLocalPlayer.GetComponent< RTSPlayer_Control >()
+            .CmdAddResource( resourceID, rTrans.position, rTrans.rotation );
+		//CmdAddResource( resourceID, rTrans.position, rTrans.rotation );
 	}
+    public  void    AddResource_CallByCommand( int resourceID, Vector3 _Position, Quaternion _Rotation )
+	{
+		GameObject rObj = Instantiate( m_resources[ resourceID ] );
+		Transform rTrans = rObj.transform;
+
+		rTrans.parent = m_fieldResources.transform;
+		rTrans.position = _Position;
+		rTrans.rotation = _Rotation;
+
+		//  実体を共有
+		NetworkServer.Spawn(rObj);
+
+		//	リソース配置フラグをセット
+		m_resourcesInformation.SetGridInformation( rObj, _Position, true );
+    }
+
 	public void SetGuideVisibleDisable()
 	{
 		for( int i=0; i<m_staticResources.transform.childCount; i++ )
@@ -152,22 +177,6 @@ public class ResourceCreator : NetworkBehaviour
 	//---------------------------------------------------------------------
 	//      コマンド
 	//---------------------------------------------------------------------
-	[Command]
-	void CmdAddResource( int resourceID, Vector3 _Position, Quaternion _Rotation )
-	{
-		GameObject rObj = Instantiate( m_resources[ resourceID ] );
-		Transform rTrans = rObj.transform;
-
-		rTrans.parent = m_fieldResources.transform;
-		rTrans.position = _Position;
-		rTrans.rotation = _Rotation;
-
-		//  実体を共有
-		NetworkServer.Spawn(rObj);
-
-		//	リソース配置フラグをセット
-		m_resourcesInformation.SetGridInformation( rObj, _Position, true );
-	}
 	//---------------------------------------------------------------------
 	//      リクエスト
 	//---------------------------------------------------------------------

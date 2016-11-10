@@ -1,12 +1,13 @@
 ﻿
 using   UnityEngine;
+using   UnityEngine.UI;
 using   UnityEngine.Networking;
 using   System.Collections;
 using   System.Collections.Generic;
 
 public class GameManager : NetworkBehaviour {
 
-    //  シーン内の状態
+    //  シーン内の状態 
     public  enum    State{
         Ready,      //  準備時間
         CountDown,  //  開始までのカウントダウン中
@@ -41,6 +42,12 @@ public class GameManager : NetworkBehaviour {
     private float                   m_StateTimer    =   0.0f;
     [ SyncVar ]
     public  float                   m_GameSpeed     =   1.0f;
+    [ SyncVar ]
+    public  int                     m_WaveLevel     =   0;
+    [ SyncVar ]
+    public  float                   m_Resource      =   0.0f;
+    [ SyncVar ]
+    public  float                   m_GlobalScore   =   0.0f;
 
     private Queue< MainMessage >    m_MainMessageQ  =   new Queue< MainMessage >();
 
@@ -49,16 +56,39 @@ public class GameManager : NetworkBehaviour {
 
     //  外部へのアクセス
     private LinkManager             m_rLinkManager  =   null;
+    private Transform               m_rResources    =   null;
+
+    private Text                    m_rWaveText     =   null;
+    private Text                    m_rResourceText =   null;
+    private Text                    m_rScoreText    =   null;
 
 	// Use this for initialization
 	void    Start()
     {
-        //  パラメータ初期化
+        //  アクセスを取得
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+        m_rResources    =   FunctionManager.GetAccessComponent< Transform >( "FieldResources" );
+
+        m_rWaveText     =   GameObject.Find( "Canvas/Column_Wave/Text_Score" ).GetComponent< Text >();
+        m_rResourceText =   GameObject.Find( "Canvas/Column_Resource/Text_Resource" ).GetComponent< Text >();
+        m_rScoreText    =   GameObject.Find( "Canvas/Column_Score/Text_Score" ).GetComponent< Text >();
+
+        //  パラメータを初期化
+        m_Resource      =   150;
 	}
 	
 	// Update is called once per frame
 	void    Update()
+    {
+        //  共通の処理
+        UpdateIn_Common();
+
+        //  サーバー側の処理
+        if( isServer )  UpdateIn_Server();
+        //  クライアント側の処理
+        else            UpdateIn_Client();
+	}
+    void    UpdateIn_Common()
     {
         //  タイムスケール更新
         if( m_State == State.InGame
@@ -77,11 +107,13 @@ public class GameManager : NetworkBehaviour {
             }
         }
 
-        //  サーバー側の処理
-        if( isServer )  UpdateIn_Server();
-        //  クライアント側の処理
-        else            UpdateIn_Client();
-	}
+        //  ＵＩの更新
+        {
+            m_rWaveText.text        =   "Wave  "     + m_WaveLevel.ToString();
+            m_rResourceText.text    =   "Resource  " + ( ( int )m_Resource ).ToString();
+            m_rScoreText.text       =   "Score  "    + ( ( int )m_GlobalScore ).ToString();
+        }
+    }
     void    UpdateIn_Server()
     {
         //  リストの項目数を調整
@@ -441,12 +473,29 @@ public class GameManager : NetworkBehaviour {
         return  count;
     }
 
+    //  ウェーブ開始処理
+    void    StandbyProc_NewWave()
+    {
+        //  破壊されたタワーを修復
+        for( int i = 0; i < m_rResources.childCount; i++ ){
+            m_rResources.GetChild( i ).gameObject.SetActive( true );
+        }
+    }
+
     //  外部からの操作
     public  void    StartCountDown()
     {
         if( m_State != State.Ready )    return;
 
         ChangeState( State.CountDown );
+    }
+    public  void    StartNewWave()
+    {
+        //  ウェーブ開始処理
+        StandbyProc_NewWave();
+
+        //  クライアントにも同じ処理をリクエスト
+        RpcStartNewWave_StandbyProc();
     }
     public  void    GameOver()
     {
@@ -466,12 +515,28 @@ public class GameManager : NetworkBehaviour {
     }
 
     //  アクセス
+    public  void    AddResource( float _AddValue )
+    {
+        m_Resource      +=  _AddValue;
+    }
+    public  void    AddGlobalScore( float _AddScore )
+    {
+        m_GlobalScore   +=  _AddScore;
+    }
     public  State   GetState(){
         return  m_State;
     }
     public  float   GetGameSpeed()
     {
         return  m_GameSpeed;
+    }
+    public  float   GetResource()
+    {
+        return  m_Resource;
+    }
+    public  float   GetGlobalScore()
+    {
+        return  m_GlobalScore;
     }
 //=========================================================================================
 //      リクエスト
@@ -481,5 +546,15 @@ public class GameManager : NetworkBehaviour {
     public  void    RpcMainMessage( string _Message, float _DisplayTime, float _Delay )
     {
         SetMainMassage( _Message, _DisplayTime, _Delay );
+    }
+    //  ウェーブ開始処理
+    [ ClientRpc ]
+    public  void    RpcStartNewWave_StandbyProc()
+    {
+        //  サーバーでは処理を行わない
+        if( isServer )  return;
+
+        //  ウェーブ開始処理
+        StandbyProc_NewWave();
     }
 }

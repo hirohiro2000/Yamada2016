@@ -83,7 +83,11 @@ GameObject:
   - 114: {fileID: 11429764}
   - 114: {fileID: 11468102}
   - 114: {fileID: 11423312}
-  m_Layer: 0
+  - 114: {fileID: 11403256}
+  - 114: {fileID: 11472202}
+  - 208: {fileID: 20838120}
+  - 136: {fileID: 13656284}
+  m_Layer: 11
   m_Name: Turret_Short
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -416,6 +420,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 188762}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &11403256
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 134056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b9176446f157e54791946adce78b8f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recieveDamageType: 0
 --- !u!114 &11414198
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -541,6 +557,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64827b74010ebd64caf36c5d1ad4d88a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11472202
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 134056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20f2b746cf0bd614cad2d1d3e93f74ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weak_lists:
+    list:
+    - type: 3
+      multiple: 1
 --- !u!114 &11495148
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -562,18 +593,18 @@ MonoBehaviour:
     list:
     - hp: 1
       power: 10
-      range: 5
-      interval: 1
+      range: 8
+      interval: 2
       upCost: 40
     - hp: 1
       power: 20
-      range: 6
-      interval: 0.7
-      upCost: 30
+      range: 9
+      interval: 1.8
+      upCost: 50
     - hp: 1
       power: 30
-      range: 7
-      interval: 0.5
+      range: 10
+      interval: 1.5
       upCost: 0
 --- !u!114 &11497434
 MonoBehaviour:
@@ -610,6 +641,19 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 3.87
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!136 &13656284
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 134056}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.75
+  m_Height: 3.4
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!136 &13661602
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -662,6 +706,21 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &20838120
+NavMeshObstacle:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 134056}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.75, y: 1.7, z: 0.75}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 0
+  m_Center: {x: 0, y: 1, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

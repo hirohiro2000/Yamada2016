@@ -8,12 +8,14 @@ public class RTSPlayer_Control : NetworkBehaviour {
     public  GameObject          c_Commander     =   null;
 
     private LinkManager         m_rLinkManager  =   null;
+    private ResourceCreator     m_rRCreator     =   null;
 
 	// Use this for initialization
 	void    Start()
     {
         //  アクセスの取得
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+        m_rRCreator     =   FunctionManager.GetAccessComponent< ResourceCreator >( "ResourceCreator" );
 
         //  自分のキャラクターのみ処理を行う
 	    if( isLocalPlayer ){
@@ -117,5 +119,14 @@ public class RTSPlayer_Control : NetworkBehaviour {
 
         //  オブジェクト破棄
         Destroy( gameObject );
+    }
+
+//================================================================================================
+//      外部からの操作
+//================================================================================================
+    [ Command ]
+	public  void    CmdAddResource( int resourceID, Vector3 _Position, Quaternion _Rotation )
+	{
+        m_rRCreator.AddResource_CallByCommand( resourceID, _Position, _Rotation );
     }
 }
