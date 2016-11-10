@@ -13,7 +13,8 @@ GameObject:
   - 23: {fileID: 2318388}
   - 114: {fileID: 11489882}
   - 114: {fileID: 11473140}
-  m_Layer: 0
+  - 114: {fileID: 11440732}
+  m_Layer: 12
   m_Name: Turret_Bullet
   m_TagString: Player_Attack
   m_Icon: {fileID: 0}
@@ -66,6 +67,27 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 180896}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &11440732
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 180896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a55cf9a709e8fec4ca7e5e0a27eb9ba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseAttackPoint: 1
+  attack_list:
+    list:
+    - type: 2
+      multiple: 1
+    - type: 155
+      multiple: 0
+  autoDestroyObject: {fileID: 440786}
+  autoEmitObjectOnMyPosition: {fileID: 0}
+  autoEmitObjectOnHitPoint: {fileID: 0}
 --- !u!114 &11473140
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -90,7 +112,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_speed: 40
-  m_lifespan: 5
   m_chaseSpeed: 20
 --- !u!135 &13530356
 SphereCollider:

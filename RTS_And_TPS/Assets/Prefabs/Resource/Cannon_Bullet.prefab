@@ -13,7 +13,8 @@ GameObject:
   - 23: {fileID: 2371078}
   - 114: {fileID: 11483552}
   - 114: {fileID: 11481932}
-  m_Layer: 0
+  - 114: {fileID: 11442020}
+  m_Layer: 12
   m_Name: Cannon_Bullet
   m_TagString: Player_Attack
   m_Icon: {fileID: 0}
@@ -66,6 +67,28 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 186000}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &11442020
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 186000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a55cf9a709e8fec4ca7e5e0a27eb9ba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseAttackPoint: 1
+  attack_list:
+    list:
+    - type: 2
+      multiple: 1
+    - type: 155
+      multiple: 0
+  autoDestroyObject: {fileID: 441920}
+  autoEmitObjectOnMyPosition: {fileID: 400006, guid: 6aea392f353e04156a230db0fba22230,
+    type: 2}
+  autoEmitObjectOnHitPoint: {fileID: 0}
 --- !u!114 &11481932
 MonoBehaviour:
   m_ObjectHideFlags: 1
