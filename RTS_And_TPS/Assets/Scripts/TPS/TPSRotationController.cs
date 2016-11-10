@@ -27,22 +27,27 @@ public class TPSRotationController : MonoBehaviour
 	[SerializeField, Range(1.0f, 100.0f)]
 	float XaxisMinAngle = -70.0f;
 
-	[SerializeField, TooltipAttribute("一秒間で戻る角度")]
-	float RecoilDampRate = 5.0f;
+	//[SerializeField, TooltipAttribute("一秒間で戻る角度")]
+	//float RecoilDampRate = 5.0f;
 
-	[SerializeField, TooltipAttribute("リコイルの最大角度")]
-	float MaxRecoil = 10.0f;
+	//[SerializeField, TooltipAttribute("リコイルの最大角度")]
+	//float MaxRecoil = 10.0f;
 
-	float cntRecoil = .0f;
+	//float cntRecoil = .0f;
 
 	float xAxisAngle = .0f;
+	float yAxisAngle = .0f;
+
+	private PlayerRecoil playerRecoil = null ;
 
     private NetworkIdentity m_rIdentity =   null;
 
 	// Use this for initialization
 	void Start()
 	{
-        m_rIdentity =   GetComponent< NetworkIdentity >();
+		yAxisAngle = YAxisRotater.localRotation.eulerAngles.y;
+		m_rIdentity =   GetComponent< NetworkIdentity >();
+		playerRecoil = GetComponent<PlayerRecoil>();
 	}
 
 	void XAxisRotate(float radius)
@@ -59,8 +64,15 @@ public class TPSRotationController : MonoBehaviour
 
 	void YAxisRotate(float radius)
 	{
+		yAxisAngle += radius;
 
-		YAxisRotater.rotation *= Quaternion.AngleAxis(radius, Vector3.up);
+		if (yAxisAngle > 720.0f)
+			yAxisAngle -= 360.0f;
+
+		if (yAxisAngle < -720.0f)
+			yAxisAngle += 360.0f;
+
+		//YAxisRotater.rotation *= Quaternion.AngleAxis(radius, Vector3.up);
 	}
 
 	// Update is called once per frame
@@ -82,15 +94,23 @@ public class TPSRotationController : MonoBehaviour
 //			XAxisRotater.localRotation = Quaternion.AngleAxis (xAxisAngle + cntRecoil,Vector3.left); 
 
 
-        }
+			//cntRecoil -= Time.deltaTime * RecoilDampRate;
+			//if (cntRecoil < .0f)
+			//	cntRecoil = .0f;
+
+			XAxisRotater.localRotation = Quaternion.AngleAxis (xAxisAngle + playerRecoil.cntRecoil.y, Vector3.left);
+			YAxisRotater.localRotation = Quaternion.AngleAxis (yAxisAngle + playerRecoil.cntRecoil.x, Vector3.up);
+
+		}
 
 	}
 
 	public void Recoil(float val)
 	{
-		cntRecoil += val;
+		playerRecoil.Shot();
+		//cntRecoil += val;
 
-		if (MaxRecoil < cntRecoil)
-			cntRecoil = MaxRecoil;
+		//if (MaxRecoil < cntRecoil)
+		//	cntRecoil = MaxRecoil;
     }
 }

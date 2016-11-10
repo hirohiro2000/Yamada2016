@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class EnemyShell_Control : MonoBehaviour {
-
+public class EnemyShell_Control : MonoBehaviour
+{
 	// Use this for initialization
 	void Start () {
 	
@@ -37,7 +38,7 @@ public class EnemyShell_Control : MonoBehaviour {
 
 		return false;
 	}
-	public bool GetNearEnemyTransform( ref Transform trans, Vector3 target, float maxDist )
+	public Transform GetNearEnemyTransform( Vector3 target, float maxDist )
 	{
 		int		nearID	= -1;
 		float	near	= maxDist*maxDist;
@@ -59,11 +60,30 @@ public class EnemyShell_Control : MonoBehaviour {
 
 		if( nearID != -1 )
 		{
-			trans = transform.GetChild( nearID ).transform;
-			return true;
+			return transform.GetChild( nearID ).transform;
 		}
 
-		trans = null;
-		return false;
+		return null;
+	}
+	public List<Transform> GetNearEnemyTransforms( Vector3 target, float maxDist )
+	{
+		List<Transform> list	= new List<Transform>();
+		float			near	= maxDist*maxDist;
+
+		for( int i=0; i<transform.childCount; ++i )
+		{
+			Vector3 pos		    = transform.GetChild(i).transform.position;
+
+            Vector3 vToTarget   =   target - pos;
+                    vToTarget.y =   0.0f;   //  高さを考慮しない
+			float	dist	    =   vToTarget.sqrMagnitude;
+
+			if( dist < near )
+			{
+				list.Add( transform.GetChild( i ).transform );
+			}
+		}
+
+		return list;
 	}
 }

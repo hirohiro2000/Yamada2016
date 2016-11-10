@@ -6,14 +6,15 @@ using UnityEngine.UI;
 
 public class GirlController : NetworkBehaviour 
 {
-	private	GameObject			m_buttonOk;
-	private	GameObject			m_buttonCancel;
-	private	GameObject			m_buttonLevel;
-	private	GameObject			m_buttonBreak;
+	private	GameObject			m_buttonOk					= null;
+	private	GameObject			m_buttonCancel				= null;
+	private	GameObject			m_buttonLevel				= null;
+	private	GameObject			m_buttonBreak				= null;
+	private	GameObject			m_towerInfoPanel			= null;
 
-	private ResourceInformation	m_resourceInformation;
-	private ResourceCreator		m_resourceCreator;
-	private ItemController		m_itemCntroller;
+	private ResourceInformation	m_resourceInformation		= null;
+	private ResourceCreator		m_resourceCreator			= null;
+	private ItemController		m_itemCntroller				= null;
     private Rigidbody           m_rRigid                    = null;
 
 	private const KeyCode		m_okKey						= KeyCode.J;
@@ -22,7 +23,6 @@ public class GirlController : NetworkBehaviour
 
 	public float				m_moveSpeed					= 1.0f;
     public float                m_LiftingForce              = 1.0f;
-	public float				m_itemEventSpeed			= 1.0f;
 
 	private enum ActionState
 	{
@@ -40,6 +40,8 @@ public class GirlController : NetworkBehaviour
 		m_buttonCancel					= GameObject.Find("Canvas").transform.FindChild("Button_Cancel").gameObject;
 		m_buttonLevel					= GameObject.Find("Canvas").transform.FindChild("Button_Level").gameObject;
 		m_buttonBreak					= GameObject.Find("Canvas").transform.FindChild("Button_Break").gameObject;
+		m_towerInfoPanel				= GameObject.Find("Canvas").transform.FindChild("Tower_Info").gameObject;
+		UserLog.Kawaguchi(m_towerInfoPanel);
 
 		m_resourceInformation			= GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
 		m_resourceCreator				= GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
@@ -57,7 +59,7 @@ public class GirlController : NetworkBehaviour
         {
             //  飛ぶ
             if( Input.GetKey( KeyCode.M ) ){
-                m_rRigid.AddForce( Vector3.up * m_LiftingForce );
+                m_rRigid.AddForce( Vector3.up * m_LiftingForce * Time.deltaTime * 60.0f );
             }
             //  浮いてる間はグリッドを表示しない
             if( Mathf.Abs( m_rRigid.velocity.y ) > 0.01f )  m_resourceInformation.m_gridSplitSpacePlane.SetActive( false );
@@ -119,6 +121,7 @@ public class GirlController : NetworkBehaviour
 		m_buttonLevel.SetActive(false);
 		m_buttonBreak.SetActive(false);
 		m_buttonCancel.SetActive(false);
+		m_towerInfoPanel.SetActive(false);
 		m_resourceCreator.SetGuideVisibleDisable();
 
 		//	change state
@@ -136,24 +139,32 @@ public class GirlController : NetworkBehaviour
 		{
 			m_buttonOk.SetActive( true );
 			m_buttonCancel.SetActive( true );
+			m_towerInfoPanel.SetActive(true);
 			m_actionState = ActionState.CreateResource;
 		}
 	}
 	void CreateResource()
 	{
-		//	リソースのUI設定
-		m_buttonOk.transform.FindChild("Point").GetComponent<Text>().text = "-" + m_itemCntroller.GetForcusResourceParam().m_createCost.ToString();
+		var forcusID	= m_itemCntroller.GetForcus();
+		var forcusParam = m_itemCntroller.GetForcusResourceParam();
 
+		//	リソースのUI設定
+		m_buttonOk.transform.FindChild("Point").GetComponent<Text>().text = "-" + forcusParam.m_createCost.ToString();
+		m_towerInfoPanel.transform.FindChild("Kind").GetComponent<Text>().text = "種類:　　　" + forcusParam.m_name;
+		m_towerInfoPanel.transform.FindChild("Summary").GetComponent<Text>().text = "概要:　　　" + forcusParam.m_summary;
+		m_towerInfoPanel.transform.FindChild("Power").GetComponent<Text>().text = "攻撃力:　　" + forcusParam.GetLevelParam(0).power;
+		m_towerInfoPanel.transform.FindChild("Interval").GetComponent<Text>().text = "発射間隔:　" + forcusParam.GetLevelParam(0).interval + "秒/発";
+		
 		//	リソースの範囲表示更新
-		m_resourceCreator.UpdateGuideResource( m_itemCntroller.GetForcus(), transform.position );
-		m_resourceCreator.UpdateGuideRange( m_itemCntroller.GetForcus(), transform.position );
+		m_resourceCreator.UpdateGuideResource( forcusID, transform.position );
+		m_resourceCreator.UpdateGuideRange( forcusID, transform.position );
 
 		//	ステート更新
 		if( Input.GetKeyDown( m_okKey )&&
 			m_itemCntroller.CheckWhetherTheCostIsEnough() )
 		{
-			m_resourceCreator.AddResource( m_itemCntroller.GetForcus() );
-			m_itemCntroller.AddResourceCost( -m_itemCntroller.GetForcusResourceParam().m_createCost );
+			m_resourceCreator.AddResource( forcusID );
+			m_itemCntroller.AddResourceCost( -forcusParam.m_createCost );
 			m_actionState = ActionState.Common;
 			return;
 		}
@@ -176,7 +187,7 @@ public class GirlController : NetworkBehaviour
 		m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.m_breakCost.ToString();
 
 		//	リソースの範囲表示更新
-		m_resourceCreator.UpdateGuideRange( m_itemCntroller.GetForcus(), transform.position );
+		m_resourceCreator.UpdateGuideRange( transform.position );
 
 		//	ステート更新
 		if( Input.GetKeyDown( m_okKey ) &&

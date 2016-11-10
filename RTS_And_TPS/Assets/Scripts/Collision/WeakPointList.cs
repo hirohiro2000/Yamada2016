@@ -8,6 +8,7 @@ public enum WeakPointType//最大値 =
 	TPSAttack,
 	RTSAttack,
 	EnemyAttack,
+	TPSRangeAttack,
 	ATTACK_PLAYER_END = 50,
 
 	ATTACK_ATTRIBUTE_TYPE,
@@ -21,6 +22,7 @@ public enum WeakPointType//最大値 =
 	Recovery,
 	Slow,
 	Stop,
+	isWallHit,
 	SPECIAL_EFFECT_END = ATTACK_ATTRIBUTE_END + 100,
 };
 
@@ -47,13 +49,15 @@ public class WeakPointList : MonoBehaviour
 		weak_lists.list = new List<WeakPointParam>(weak.weak_lists.list);
 	}
 
-	public delegate void WeakPointParamChange(ref WeakPointList weak, Vector3 attackedPostion);
+	public delegate void WeakPointParamChange(ref WeakPointList weak, CollisionInfo info);
+
+	public delegate void WeakPointParamChangeAfterDamaged(ref WeakPointList weak, DamageResult result, CollisionInfo info);
 
 	//ダメージ計算・衝突判定前に呼び出します(計算後に破棄されます)
 	public WeakPointParamChange BeforeCalcDamegeCallBack = null;
 
 	//衝突判定をした後に呼び出します(計算された値は継続しています)
-	public WeakPointParamChange HitedCallBack = null;
+	public WeakPointParamChangeAfterDamaged HitedCallBack = null;
 
 
 }

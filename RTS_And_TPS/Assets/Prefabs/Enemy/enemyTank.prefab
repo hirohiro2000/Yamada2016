@@ -27,8 +27,8 @@ GameObject:
   - 4: {fileID: 489372}
   - 95: {fileID: 9561148}
   - 65: {fileID: 6595954}
-  - 114: {fileID: 11413116}
-  m_Layer: 0
+  - 114: {fileID: 11403790}
+  m_Layer: 9
   m_Name: Tank
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -75,9 +75,9 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 453166}
-  - 114: {fileID: 11425000}
   - 65: {fileID: 6567574}
-  m_Layer: 0
+  - 114: {fileID: 11486780}
+  m_Layer: 9
   m_Name: GameObject
   m_TagString: Enemy_Weak
   m_Icon: {fileID: 0}
@@ -127,8 +127,7 @@ GameObject:
   - 33: {fileID: 3339142}
   - 23: {fileID: 2313460}
   - 65: {fileID: 6511850}
-  - 114: {fileID: 11420560}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: _2
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -153,7 +152,11 @@ GameObject:
   - 114: {fileID: 11469220}
   - 114: {fileID: 11488444}
   - 114: {fileID: 11427568}
-  m_Layer: 0
+  - 65: {fileID: 6510230}
+  - 114: {fileID: 11414718}
+  - 114: {fileID: 11416344}
+  - 114: {fileID: 11404710}
+  m_Layer: 11
   m_Name: enemyTank
   m_TagString: Enemy
   m_Icon: {fileID: 5228209130450103505, guid: 0000000000000000d000000000000000, type: 0}
@@ -482,6 +485,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &6510230
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 157942}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.09424199, y: 0.07045493, z: 0.10690358}
+  m_Center: {x: 0, y: 0.04105462, z: -0.00467487}
 --- !u!65 &6511850
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -546,6 +561,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85ef7ca19dcb5c54db0f6f2034f8a2c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11403790
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 116242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20f2b746cf0bd614cad2d1d3e93f74ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weak_lists:
+    list:
+    - type: 1
+      multiple: 1
+    - type: 2
+      multiple: 1
 --- !u!114 &11404608
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -578,6 +610,23 @@ MonoBehaviour:
     i15: 84
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &11404710
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 157942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20f2b746cf0bd614cad2d1d3e93f74ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weak_lists:
+    list:
+    - type: 4
+      multiple: 1
+    - type: 54
+      multiple: 1
 --- !u!114 &11413056
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -590,18 +639,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_LerpRatio: 0.05
---- !u!114 &11413116
+--- !u!114 &11414718
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 116242}
+  m_GameObject: {fileID: 157942}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b4dab96d5457514f88714b22d650bb6, type: 3}
+  m_Script: {fileID: 11500000, guid: 5b9176446f157e54791946adce78b8f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageMultiple: 1
+  recieveDamageType: 0
 --- !u!114 &11416158
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -618,18 +667,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &11420560
+--- !u!114 &11416344
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 157484}
+  m_GameObject: {fileID: 157942}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b4dab96d5457514f88714b22d650bb6, type: 3}
+  m_Script: {fileID: 11500000, guid: 3809ce681c4348c42b4fa59c858597c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageMultiple: 1
+  maxHealth: 10
 --- !u!114 &11420664
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -651,18 +700,6 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!114 &11425000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 125324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b4dab96d5457514f88714b22d650bb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageMultiple: 7
 --- !u!114 &11427568
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -755,6 +792,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_LerpRatio: 0.05
+--- !u!114 &11486780
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 125324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20f2b746cf0bd614cad2d1d3e93f74ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weak_lists:
+    list:
+    - type: 1
+      multiple: 7
+    - type: 2
+      multiple: 1
 --- !u!114 &11488444
 MonoBehaviour:
   m_ObjectHideFlags: 1

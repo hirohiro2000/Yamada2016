@@ -28,9 +28,11 @@ public class GameManager : NetworkBehaviour {
 
     //  公開パラメータ
     public  Font                    c_Font          =   null;
+    public  Vector3                 c_LaunchPos     =   Vector3.zero;
+    public  Quaternion              c_LaunchPose    =   Quaternion.identity;
 
     //  固定パラメータ
-    private float                   c_CountDownTime =   30.0f - 0.001f;
+    private float                   c_CountDownTime =   3.0f - 0.001f;
 
     //  内部パラメータ
     [ SyncVar ]

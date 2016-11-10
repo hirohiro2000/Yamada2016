@@ -11,6 +11,8 @@ TagManager:
   - Enemy
   - Enemy_Weak
   - Player_Attack
+  - RTSEnemy
+  - ResourceStay
   layers:
   - Default
   - TransparentFX
@@ -20,14 +22,14 @@ TagManager:
   - UI
   - 
   - 
-  - Floor
-  - EnemyAttack
-  - PlayerMover
-  - PlayerHitArea
-  - PlayerAttack
+  - Field
+  - MoverAndDefender
+  - Mover
+  - Defender
+  - Atatcker
   - Stage
-  - Damaged
-  - Attacker
+  - r
+  - Edit_GridPanel
   - 
   - 
   - 

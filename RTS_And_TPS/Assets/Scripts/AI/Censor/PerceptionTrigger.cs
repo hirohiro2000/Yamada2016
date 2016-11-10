@@ -44,7 +44,7 @@ public class PerceptionTrigger : MonoBehaviour {
 
         ViewMessageWrapper send_data = new ViewMessageWrapper();
         send_data.sender_object = m_owner.m_owner_object;
-        send_data.sender_tag = m_owner.m_owner_object.tag;
+        send_data.sender_tag = m_owner.GetPerceivetag();
         send_data.message_type = m_trigger_enter_message_type;
         send_data.visibility_checker = m_owner;
         visibility_system.PerceptionMessage(send_data);
@@ -58,7 +58,7 @@ public class PerceptionTrigger : MonoBehaviour {
 
         ViewMessageWrapper send_data = new ViewMessageWrapper();
         send_data.sender_object = m_owner.m_owner_object;
-        send_data.sender_tag = m_owner.m_owner_object.tag;
+        send_data.sender_tag = m_owner.GetPerceivetag();
         send_data.message_type = m_trigger_out_message_type;
         send_data.visibility_checker = m_owner;
         visibility_system.PerceptionMessage(send_data);
