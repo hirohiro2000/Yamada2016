@@ -92,7 +92,17 @@ public class TPSShotController : NetworkBehaviour {
 			}
 		}
 
+        public SoundController CreateSoundController( GameObject user )
+        {
+			ShotInfomation info = _weapon.GetComponent<ShotInfomation>();
+			if(info != null)
+            {
+                SoundController controller = SoundController.Create( info.m_seFileName, user.transform );
+                return controller;
+            }
 
+            return null;
+        }
 
 	}
 	WeaponData cntWeaponData = null;
@@ -114,7 +124,7 @@ public class TPSShotController : NetworkBehaviour {
     private LinkManager         m_rLinkManager      =   null;
 
     // サウンド
-//    private SoundController     m_seShot            =   null;
+    private SoundController     m_seShot            =   null;
 
 	// Use this for initialization
 	void    Start()
@@ -124,10 +134,11 @@ public class TPSShotController : NetworkBehaviour {
         m_rNPControl        =   transform.parent.parent.GetComponent< NetPlayer_Control >();
         m_rLinkManager      =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
 
-//        TPSWeaponBar.Initialize(100);
-//        m_seShot            =   SoundController.CreateShotController(transform);
-
 		cntWeaponData = new WeaponData(weapons[0].value);
+
+        TPSWeaponBar.Initialize(100);
+        m_seShot            =   cntWeaponData.CreateSoundController(this.gameObject);
+
     }
 	
 	// Update is called once per frame
@@ -199,12 +210,14 @@ public class TPSShotController : NetworkBehaviour {
 					fireCnt = 0;
                 }
 
-//                TPSWeaponBar.Consumption(1.0f);
+                TPSWeaponBar.Consumption(1.0f);
 
                 // 発砲音
-//                m_seShot.transform.position = firePoint.position;
-//                m_seShot.PlayOneShot();
-
+                if (m_seShot != null)
+                {
+                    m_seShot.transform.position = firePoint.position;
+                    m_seShot.PlayOneShot();
+                }
             }
 		}
 
@@ -267,7 +280,10 @@ public class TPSShotController : NetworkBehaviour {
 		cntWeaponData = new WeaponData(weapons[cntWeaponIndex].value);
 
 		playerRecoil.holdingWeapon = cntWeaponData.weaponRecoilData;
-	}
+
+        m_seShot = cntWeaponData.CreateSoundController(this.gameObject);
+
+    }
 
 	void OnGUI()
 	{

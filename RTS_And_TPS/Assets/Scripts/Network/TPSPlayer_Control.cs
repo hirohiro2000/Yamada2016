@@ -74,12 +74,12 @@ public class TPSPlayer_Control : NetworkBehaviour {
         // カメラのスクリプト生成
         TPS_CameraController cam = c_rMyCamera.gameObject.AddComponent<TPS_CameraController>();
 
-//        // BGM再生
-//        if (m_bgm == null)
-//        {
-//            m_bgm = SoundController.Create("BGM0", null);
-//        }
-//        m_bgm.Play();
+        // BGM再生
+        if (m_bgm == null)
+        {
+            m_bgm = SoundController.Create("BGM0", null);
+        }
+        m_bgm.Play();
 
     }
     //  終了処理

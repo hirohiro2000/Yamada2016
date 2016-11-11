@@ -84,22 +84,33 @@ public class TPSRotationController : MonoBehaviour
 		if(Time.timeScale != .0f)
 		{
 //			XAxisRotate(Input.GetAxis("Mouse Y") * XAxisRotSpeed);
-//
 //			YAxisRotate(Input.GetAxis("Mouse X") * YAxisRotSpeed);
-//
 //			cntRecoil -= Time.deltaTime * RecoilDampRate;
 //			if (cntRecoil < .0f)
 //				cntRecoil = .0f;
-//
 //			XAxisRotater.localRotation = Quaternion.AngleAxis (xAxisAngle + cntRecoil,Vector3.left); 
+//			XAxisRotater.localRotation = Quaternion.AngleAxis (xAxisAngle + playerRecoil.cntRecoil.y, Vector3.left);
+//			YAxisRotater.localRotation = Quaternion.AngleAxis (yAxisAngle + playerRecoil.cntRecoil.x, Vector3.up);
+            
+            TPS_CameraController cam = Camera.main.transform.GetComponent<TPS_CameraController>();
+            if (cam != null)
+            {
+                Vector3 f = cam.transform.forward;
+                f.y = 0.0f;
+                if (f.sqrMagnitude > 0.0f)
+                {
+                    Quaternion qt = Quaternion.LookRotation(f);
+                    YAxisRotater.localRotation = qt;
+                }
 
+                // 一時しのぎ用
+                // リコイルのパラメーターをカメラ用に編集し直したらコメントアウトしてください
+                Vector2 s = playerRecoil.cntRecoil * Mathf.Deg2Rad;
+                s.y = -s.y;
 
-			//cntRecoil -= Time.deltaTime * RecoilDampRate;
-			//if (cntRecoil < .0f)
-			//	cntRecoil = .0f;
-
-			XAxisRotater.localRotation = Quaternion.AngleAxis (xAxisAngle + playerRecoil.cntRecoil.y, Vector3.left);
-			YAxisRotater.localRotation = Quaternion.AngleAxis (yAxisAngle + playerRecoil.cntRecoil.x, Vector3.up);
+                //
+                cam.Shake(s);
+            }
 
 		}
 

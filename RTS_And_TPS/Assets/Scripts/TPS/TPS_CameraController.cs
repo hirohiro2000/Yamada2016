@@ -15,6 +15,8 @@ public class TPS_CameraController : MonoBehaviour
 
     private bool      m_isInvert            = false;
 
+    private Vector2   m_shake               = Vector2.zero;
+
     //
     void Start()
     {
@@ -35,7 +37,7 @@ public class TPS_CameraController : MonoBehaviour
     }
 
     void LateUpdate()
-    {
+    {        
         if ( m_target == null )
         {
             Destroy(gameObject);
@@ -48,31 +50,39 @@ public class TPS_CameraController : MonoBehaviour
 
         {
             Vector3 targetPosition = m_target.transform.position + new Vector3(0.0f, m_cameraHeight, 0.0f);
-            lookAt = Vector3.Lerp( lookAt, targetPosition, 0.25f );
+            lookAt = Vector3.Lerp( lookAt, targetPosition, 0.1f );
         }
 
-        {
+
+		{
 			float inputH = Input.GetAxis("Mouse X") * 0.1f;
 			float inputV = Input.GetAxis("Mouse Y") * 0.1f;
-            
-            m_camPolar.x += inputH;
-            if (m_isInvert)
+
+            if (Input.GetKey(KeyCode.LeftControl))
             {
-                m_camPolar.y += inputV;
+                // 回転を行わない
             }
             else
             {
-                m_camPolar.y -= inputV;
+                if (m_isInvert == false)
+                {
+                    inputV = -inputV;
+                }
+                m_camPolar.x += inputH;
+                m_camPolar.y += inputV;
             }
 
-            Vector3 p = lookAt + ToVector( m_camPolar.x, m_camPolar.y, m_camPolar.z );
+            Vector3 p = lookAt + ToVector( m_camPolar.x + m_shake.x, m_camPolar.y + m_shake.y, m_camPolar.z );
             position = Vector3.Slerp( position, p, 0.1f );
+
         }
 
         m_camLookAt = lookAt;
         transform.position = position;
         transform.LookAt( m_camLookAt );
         
+        m_shake = Vector2.zero;
+
     }
 
     Vector3 ToVector(float horizontal, float vertical, float length)
@@ -96,6 +106,11 @@ public class TPS_CameraController : MonoBehaviour
 
         return new Vector3(angleHorizontal, angleVertical, length);
 
+    }
+    
+    public void Shake( Vector2 value )
+    {
+        m_shake += value;
     }
 
 }

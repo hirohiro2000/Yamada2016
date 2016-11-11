@@ -164,6 +164,7 @@ GameObject:
   - 4: {fileID: 426434}
   - 114: {fileID: 11491986}
   - 114: {fileID: 11432504}
+  - 114: {fileID: 11485144}
   m_Layer: 0
   m_Name: Explosion
   m_TagString: Untagged
@@ -284,7 +285,7 @@ Transform:
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.17109603, z: 0.000000074053276}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 426434}
   m_RootOrder: 3
@@ -324,7 +325,7 @@ Transform:
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 426434}
   m_RootOrder: 6
@@ -337,7 +338,7 @@ Transform:
   m_LocalRotation: {x: 0.7071068, y: 0.0000000037727363, z: 0.0000000037727363, w: -0.7071068}
   m_LocalPosition: {x: 0, y: 0.29919103, z: -0.000000035666346}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 426434}
   m_RootOrder: 2
@@ -401,6 +402,18 @@ MonoBehaviour:
   autoDestroyObject: {fileID: 0}
   autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 0}
+--- !u!114 &11485144
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 183870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 605e4f107dbb11848a51d398f3872f0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_seFileName: Explosion0
 --- !u!114 &11491986
 MonoBehaviour:
   m_ObjectHideFlags: 1

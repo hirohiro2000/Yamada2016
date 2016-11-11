@@ -60,7 +60,6 @@ public class TPSMoveController : MonoBehaviour
 	float maxDrivingPower   = 15.0f;
 	float dampRate          = 3.0f;
     Vector3 drivingForce    = Vector3.zero;
-    Vector3 prePoll         = Vector3.zero;     // 前回入力があった際の傾き
     float inputInterval     = 0.0f;
     int   dashState         = 0;
 
@@ -105,59 +104,25 @@ public class TPSMoveController : MonoBehaviour
         {
             case 0:
                 {
-                    float axis = inputDir.sqrMagnitude;
-                    if (axis > 2.0f)
+                    if (Input.GetKeyDown(KeyCode.LeftShift))
                     {
-                        ++dashState;
+                        //
+                        drivingForce += inputDir.normalized * speed * drivingPower;
+                        if (drivingForce.sqrMagnitude > maxDrivingPower * maxDrivingPower)
+                            drivingForce = drivingForce.normalized * maxDrivingPower;
+                       
                         inputInterval = 0.0f;
-                        prePoll = inputDir;
+                        ++dashState;
                     }
                 }
                 break;
             case 1:
                 {
                     inputInterval += Time.deltaTime;
-                    float axis = inputDir.sqrMagnitude;
-                    if (axis < 1.0f)
-                    {
-                        ++dashState;
-                    }
-                }
-
-                break;
-            case 2:
-                {
-                    inputInterval += Time.deltaTime;
-                    float axis = inputDir.sqrMagnitude;
-
-                    if (axis > 3.0f && inputInterval < 1.5f && Vector3.Dot(inputDir, prePoll) > 0.0f)
-                    {
-                        ++dashState;
-                        inputInterval = 0.0f;
-
-                        //
-                        drivingForce += inputDir.normalized * speed * drivingPower;
-                        if (drivingForce.sqrMagnitude > maxDrivingPower * maxDrivingPower)
-                            drivingForce = drivingForce.normalized * maxDrivingPower;
-                    }
-                    if (inputInterval > 1.5f)
+                    if (inputInterval > 0.1f)
                     {
                         dashState = 0;
-                        inputInterval = 0.0f;
                     }
-
-                }
-                break;
-            case 3:
-                {
-                    inputInterval += Time.deltaTime;
-                    float axis = inputDir.sqrMagnitude;
-                    if (axis < 1.0f || inputInterval > 0.5f)
-                    {
-                        dashState = 0;
-                        inputInterval = 0.0f;
-                    }
-
                 }
                 break;
             default: break;
