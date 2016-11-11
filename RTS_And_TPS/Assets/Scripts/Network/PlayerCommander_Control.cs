@@ -20,7 +20,12 @@ public class PlayerCommander_Control : NetworkBehaviour {
             Cursor.lockState    =   CursorLockMode.None;
             Cursor.visible      =   true;
         }
-	}
+
+        // BGM再生
+        SoundController bgm = SoundController.Create("BGM1",this.transform);
+        bgm.Play();
+
+    }
 	
 	// Update is called once per frame
 	void    Update()

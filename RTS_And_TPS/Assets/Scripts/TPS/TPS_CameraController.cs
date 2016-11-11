@@ -11,6 +11,12 @@ public class TPS_CameraController : MonoBehaviour
     private Vector3   m_camLookAt           = Vector3.zero;
     private Vector3   m_camTarget           = Vector3.zero;
 
+    private Vector3   m_camPolar            = Vector3.zero;
+
+    private bool      m_isInvert            = false;
+
+    private Vector2   m_shake               = Vector2.zero;
+
     //
     void Start()
     {
@@ -21,21 +27,24 @@ public class TPS_CameraController : MonoBehaviour
 
         Vector3 targetPosition = m_target.transform.position + new Vector3(0.0f, m_cameraHeight, 0.0f);
 
+        m_camPolar = ToPolar( ( transform.position - targetPosition ) );
+
         m_camLookAt = targetPosition;
         m_camTarget = targetPosition;
 
+        transform.parent = null;
 
     }
 
     void LateUpdate()
-    {
+    {        
         if ( m_target == null )
         {
             Destroy(gameObject);
             return;
         }
 
-        Vector3 position = m_camPosition;
+        Vector3 position = transform.position;
         Vector3 lookAt   = m_camLookAt;
 
 
@@ -46,15 +55,34 @@ public class TPS_CameraController : MonoBehaviour
 
 
 		{
-            transform.localPosition = m_idenLocalPosition;
-            position = Vector3.Slerp( position, transform.position, 0.15f );
+			float inputH = Input.GetAxis("Mouse X") * 0.1f;
+			float inputV = Input.GetAxis("Mouse Y") * 0.1f;
+
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+                // 回転を行わない
+            }
+            else
+            {
+                if (m_isInvert == false)
+                {
+                    inputV = -inputV;
+                }
+                m_camPolar.x += inputH;
+                m_camPolar.y += inputV;
+            }
+
+            Vector3 p = lookAt + ToVector( m_camPolar.x + m_shake.x, m_camPolar.y + m_shake.y, m_camPolar.z );
+            position = Vector3.Slerp( position, p, 0.1f );
+
         }
 
-        m_camPosition = position;
         m_camLookAt = lookAt;
-        transform.position = m_camPosition;
+        transform.position = position;
         transform.LookAt( m_camLookAt );
         
+        m_shake = Vector2.zero;
+
     }
 
     Vector3 ToVector(float horizontal, float vertical, float length)
@@ -78,6 +106,11 @@ public class TPS_CameraController : MonoBehaviour
 
         return new Vector3(angleHorizontal, angleVertical, length);
 
+    }
+    
+    public void Shake( Vector2 value )
+    {
+        m_shake += value;
     }
 
 }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class UIRadar : MonoBehaviour {
 
@@ -15,6 +16,12 @@ public class UIRadar : MonoBehaviour {
 
     [SerializeField]
     private float     m_searchRange      = 50.0f;
+
+    [SerializeField]
+    private Color      m_ownColor       = Color.blue;
+    [SerializeField]
+    private Color      m_enemyColor      = Color.red;
+    
 
     struct DATA
     {
@@ -55,7 +62,10 @@ public class UIRadar : MonoBehaviour {
                     rtPosition.y = 0.0f;
             float   maxLength    = 70.0f;
 
-            rt.localPosition = new Vector3(rtPosition.x, rtPosition.z, 0.0f) * 50.0f;
+            if (rtPosition.sqrMagnitude > 1.0f)
+            {
+                rtPosition.Normalize();
+            }
             rt.localPosition = rt.localPosition.normalized * ( Mathf.Min( rt.localPosition.magnitude, maxLength ) );
 
             //item.dst.SetActive(rtPosition.sqrMagnitude < 1.0f);
@@ -83,7 +93,8 @@ public class UIRadar : MonoBehaviour {
         data.reference = src;
         data.dst = Instantiate(instance.m_enemyFighter);
         data.dst.transform.SetParent( instance.transform );
-
+        data.dst.transform.localScale = Vector3.one;
+        data.dst.GetComponent<RawImage>().color = rgba;
         data.dst.SetActive(true);
 
         instance.m_uiSymbolList.Add(data);
@@ -109,11 +120,11 @@ public class UIRadar : MonoBehaviour {
 
     static public void AddOwnObject(GameObject src)
     {
-        Add(src, Color.blue);
+        Add(src, instance.m_ownColor);
     }
     static public void AddEnemy(GameObject src)
     {
-        Add(src, Color.red);
+        Add(src, instance.m_enemyColor);
     }
 
 

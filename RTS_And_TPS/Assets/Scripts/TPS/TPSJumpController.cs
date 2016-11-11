@@ -78,7 +78,7 @@ public class TPSJumpController : MonoBehaviour {
     {
 	    m_rIdentity =   GetComponent< NetworkIdentity >();
         cntHoverTime = maxHoverTime;
-//        TPSBoosterBar.Initialize(maxHoverTime);
+        TPSBoosterBar.Initialize(maxHoverTime);
 	}
 
     // Update is called once per frame
@@ -132,7 +132,7 @@ public class TPSJumpController : MonoBehaviour {
                 cntHoverTime = next;
  
                 // UI更新                
-//                TPSBoosterBar.Storage(d);
+                TPSBoosterBar.Storage(d);
             }
         } 
  
@@ -142,7 +142,7 @@ public class TPSJumpController : MonoBehaviour {
 			{
 				cntHoverTime -= Time.deltaTime;
 				fallPower -= Time.deltaTime * HoverPower;
-//                TPSBoosterBar.Consumption(Time.deltaTime);
+                TPSBoosterBar.Consumption(Time.deltaTime);
             }
 
 		}

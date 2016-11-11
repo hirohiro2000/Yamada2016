@@ -43,6 +43,9 @@ public class ShotInfomation : MonoBehaviour {
 
 	[ReorderableList(new int[] { 300, 50 })]
 	public ShotInfoValueParamReorderableList shot_info_values;
+
+    public string m_seFileName = "";
+
 	// Use this for initialization
 	void Start () {
 	
