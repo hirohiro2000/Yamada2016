@@ -4,47 +4,145 @@ using UnityEngine.Networking;
 using System.Collections;
 
 
-//Utilityに追加してもいいかも
 [System.Serializable]
-public class TransformList
+public class WeaponList
 {
-	public Transform value;
+	public Transform weapon = null ;
+	[HideInInspector]
+	WeaponData _data = null;
+	[HideInInspector]
+	WeaponParameter _param = null;
+
+
+	public WeaponData data
+	{
+		get
+		{
+			if (_data == null)
+				_data = new WeaponData(weapon);
+			return _data;
+		}
+	}
+
+	public WeaponParameter param
+	{
+		get
+		{
+			if (_param == null)
+				_param = new WeaponParameter(data);
+
+			return _param;
+		}
+	}
+	public void Update()
+	{ 
+		param.Update();
+	}
 }
 
 [System.Serializable]
-public class TransformReorderableList : ReorderableList<TransformList> { }
+public class WeaponReorderableList : ReorderableList<WeaponList> { }
 
+public class WeaponParameter
+{
+	int cntAmmo = 0;
+	int cntHavingAmmo = 0;
+	float cntReloadTime = .0f;
 
-public class TPSShotController : NetworkBehaviour {
-    
-	[SerializeField]
-	Transform[] firePoints = null;
+	WeaponData data;
 
-	[SerializeField]
-	GameObject emitter = null;
+	public WeaponParameter(WeaponData data)
+	{
+		this.data = data;
+		AllRecovery();
+	}
 
-	[SerializeField]
-	float shotCooldown =.0f;
+	public void Update()
+	{
+		if (IsCanReload())
+			cntReloadTime += Time.deltaTime;
+		else
+			cntReloadTime = .0f;
 
-	int fireCnt;
-	float cntCoolDown;
+		//リロード
+		if (cntReloadTime > data.GetInfoValue(ShotInfoValue.ReloadTime))
+		{
+			//シングルリロードなら一発補充
+			float singleReloadTime = data.GetInfoValue(ShotInfoValue.SingleReloadTime);
+			if(singleReloadTime != .0f)
+			{
+				Reload(1);
+				cntReloadTime -= cntReloadTime;
+			}
+			else
+			{
+				Reload((int)data.GetInfoValue(ShotInfoValue.Ammo));
+				cntReloadTime = .0f;
+			}
+		}
+	}
 
-	[SerializeField]
-	float shotDistance = 100.0f;
+	public void AllRecovery()
+	{
+		cntAmmo = (int)data.GetInfoValue(ShotInfoValue.Ammo);
+		cntHavingAmmo = (int)data.GetInfoValue(ShotInfoValue.HavingAmmo);
+	}
 
-	[SerializeField]
-	float singleRecoil = 0.2f;
+	public bool IsCanReload()
+	{
+		return (cntAmmo < (int)data.GetInfoValue(ShotInfoValue.Ammo) 
+			&& IsEnableHavingAmmo()
+			&& (int)data.GetInfoValue(ShotInfoValue.Ammo) != 0);
+	}
 
+	public bool IsEnableHavingAmmo()
+	{
+		return (cntHavingAmmo != 0 || (int)data.GetInfoValue(ShotInfoValue.HavingAmmo) == 0);
+	}
+	public bool IsCanShot()
+	{
+		return (cntAmmo != 0 || (int)data.GetInfoValue(ShotInfoValue.Ammo) == 0);
+	}
 
-	[SerializeField]
-	KeyCode weaponChangeKey = KeyCode.None;
+	public void Shot()
+	{
+		cntAmmo--;
+		cntReloadTime = .0f;
+	}
 
-	[SerializeField]
-	KeyCode shotKey = KeyCode.None;
+	public void Reload(int requestAmmo)
+	{
+		int restAmmo;
 
-	[SerializeField, ReorderableList(new int[] { 200 })]
-	TransformReorderableList weapons;
-	int cntWeaponIndex;
+		if(data.GetInfoValue(ShotInfoValue.HavingAmmo) != 0)
+			restAmmo = cntHavingAmmo;
+		else
+		{
+			restAmmo = (int)data.GetInfoValue(ShotInfoValue.Ammo);
+		}
+		int supplyAmmo = Mathf.Min(requestAmmo, restAmmo);
+		cntAmmo += supplyAmmo;
+		cntHavingAmmo -= supplyAmmo;
+	}
+
+	public void Supply()
+	{
+		int maxHavingAmmo = (int)data.GetInfoValue(ShotInfoValue.HavingAmmo);
+		int maxAmmo = (int)data.GetInfoValue(ShotInfoValue.Ammo);
+		//HavingAmmoに増加
+		if (cntHavingAmmo < maxHavingAmmo)
+		{
+			cntHavingAmmo += (int)data.GetInfoValue(ShotInfoValue.Ammo);
+
+			if (maxHavingAmmo < cntHavingAmmo)
+				cntHavingAmmo = maxHavingAmmo;
+		}
+		else//Ammoに増加
+		{
+			cntAmmo = maxAmmo;
+		}
+	}
+}
 
 	public class WeaponData
 	{
@@ -105,7 +203,26 @@ public class TPSShotController : NetworkBehaviour {
         }
 
 	}
-	WeaponData cntWeaponData = null;
+
+public class TPSShotController : NetworkBehaviour {
+    
+	[SerializeField]
+	Transform[] firePoints = null;
+
+	int fireCnt;
+	float cntCoolDown;
+
+	[SerializeField]
+	KeyCode weaponChangeKey = KeyCode.None;
+
+	[SerializeField]
+	KeyCode shotKey = KeyCode.None;
+
+	[SerializeField, ReorderableList(new int[] { 200 })]
+	WeaponReorderableList weapons;
+
+	int cntWeaponIndex;
+	WeaponList cntWeaponList = null;
 
 
 	float AimDistance;
@@ -137,7 +254,7 @@ public class TPSShotController : NetworkBehaviour {
         m_rNPControl        =   transform.parent.parent.GetComponent< NetPlayer_Control >();
         m_rLinkManager      =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
 
-		cntWeaponData = new WeaponData(weapons[0].value);
+		cntWeaponList = weapons[0];
         //  自分が何番目の子か調べる（他のクライアントで発射させるときにどこから発射されたかを識別するため）
         m_MyChildID         =   CheckMyChildID();
 
@@ -145,7 +262,7 @@ public class TPSShotController : NetworkBehaviour {
 //        m_seShot            =   SoundController.CreateShotController(transform);
 
         TPSWeaponBar.Initialize(100);
-        m_seShot            =   cntWeaponData.CreateSoundController(this.gameObject);
+        m_seShot            =   cntWeaponList.data.CreateSoundController(this.gameObject);
 
     }
 	
@@ -158,7 +275,15 @@ public class TPSShotController : NetworkBehaviour {
 		{
 			WeaponChange();
 		}
+
+		//クールダウンタイムの更新
 		cntCoolDown -= Time.deltaTime;
+
+		//ウェポンの更新
+		foreach(WeaponList list in weapons.list)
+		{
+			list.Update();
+		}
 		//そのままの前方向
 		Transform firePoint = firePoints[fireCnt];
 		Vector3 targetPoint = firePoints[fireCnt].position + firePoints[fireCnt].forward;
@@ -182,7 +307,7 @@ public class TPSShotController : NetworkBehaviour {
             if (Physics.Raycast(ray, out hit, 1000.0f))
             {
                 AimDistance = hit.distance;
-//                if (AimDistance <= shotDistance)
+				if (cntWeaponList.data.GetInfoFlag(ShotInfoFlag.ShotDirectionChangeFromScreenCenter))
                 {
                     targetPoint = hit.point;
                 }
@@ -198,7 +323,7 @@ public class TPSShotController : NetworkBehaviour {
         }
 		//単発orフルオート
 		bool shotRequest = false;
-		if (Input.GetKey(shotKey) && cntWeaponData.GetInfoFlag(ShotInfoFlag.FullAutoShot))
+		if (Input.GetKey(shotKey) && cntWeaponList.data.GetInfoFlag(ShotInfoFlag.FullAutoShot))
 			shotRequest = true;
 		else if(Input.GetKeyDown(shotKey))
 			shotRequest = true;
@@ -207,11 +332,14 @@ public class TPSShotController : NetworkBehaviour {
 
 		if (shotRequest == true)
 		{
-			if(cntCoolDown < 0)
+			//クールダウン＆残り弾薬
+			if(cntCoolDown < 0 && cntWeaponList.param.IsCanShot())
 			{
-				cntCoolDown = cntWeaponData.GetInfoValue(ShotInfoValue.CoolDownTime);
 				
 				Shot( firePoint.position, targetPoint );
+				cntCoolDown = cntWeaponList.data.GetInfoValue(ShotInfoValue.CoolDownTime);
+				cntWeaponList.param.Shot();
+
 				fireCnt++;
 				if(firePoints.Length <= fireCnt)
 				{
@@ -228,13 +356,12 @@ public class TPSShotController : NetworkBehaviour {
                 }
             }
 		}
-
     }
 
     void    Shot( Vector3 firePoint, Vector3 target )
 	{
 		//リコイル再設定
-		playerRecoil.holdingWeapon = cntWeaponData.weaponRecoilData;
+		playerRecoil.holdingWeapon = cntWeaponList.data.weaponRecoilData;
 
 		Vector3 forward;
 		forward = (target - firePoint).normalized;
@@ -242,7 +369,7 @@ public class TPSShotController : NetworkBehaviour {
 		//レティクルをクォータニオンに変換して回転
 		forward = playerRecoil.GetReticleVector(forward);
 
-		GameObject emit = Instantiate(cntWeaponData.weapon.gameObject, firePoint, Quaternion.LookRotation(forward)) as GameObject;
+		GameObject emit = Instantiate(cntWeaponList.weapon.gameObject, firePoint, Quaternion.LookRotation(forward)) as GameObject;
 
 		//cloneをまとめる
         string parentName = emit.name + "s";
@@ -268,7 +395,7 @@ public class TPSShotController : NetworkBehaviour {
         Vector3 forward;
 		forward = (target - firePoint).normalized;
 
-		GameObject  emit  = Instantiate( weapons[ _WeaponID ].value.gameObject, firePoint, Quaternion.LookRotation(forward)) as GameObject;
+		GameObject  emit  = Instantiate( weapons[ _WeaponID ].weapon.gameObject, firePoint, Quaternion.LookRotation(forward)) as GameObject;
 
 		//cloneをまとめる
         string parentName = emit.name + "s";
@@ -289,11 +416,12 @@ public class TPSShotController : NetworkBehaviour {
 		cntWeaponIndex++;
 		if (weapons.Length <= cntWeaponIndex)
 			cntWeaponIndex = 0;
-		cntWeaponData = new WeaponData(weapons[cntWeaponIndex].value);
 
-		playerRecoil.holdingWeapon = cntWeaponData.weaponRecoilData;
+		cntWeaponList = weapons[cntWeaponIndex];
 
-        m_seShot = cntWeaponData.CreateSoundController(this.gameObject);
+		playerRecoil.holdingWeapon = cntWeaponList.data.weaponRecoilData;
+
+        m_seShot = cntWeaponList.data.CreateSoundController(this.gameObject);
 
     }
 
@@ -307,11 +435,11 @@ public class TPSShotController : NetworkBehaviour {
 
 		//照準の描画
 		GUIStyle style = new GUIStyle();
-		if(AimDistance <= shotDistance)
-		{
-			style.normal.textColor = new Color(1.0f,0.5f,.0f);
-		}
-		else
+		//if(AimDistance <= shotDistance)
+		//{
+		//	style.normal.textColor = new Color(1.0f,0.5f,.0f);
+		//}
+		//else
 		{
 			style.normal.textColor = Color.white;
 		}

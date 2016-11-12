@@ -111,14 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f25afd9c1ced10e4c937ebf8a6b10a27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LastSendTime: 0
-  m_SyncVarGuard: 0
-  m_MyView: {fileID: 0}
-  c_ShooterID: 0
   particle: {fileID: 175374, guid: 8931ad398a75c2c4c8b694f005800976, type: 2}
-  cntTime: 0
-  destroyTime: 0
-  m_rLinkManager: {fileID: 0}
 --- !u!114 &11450980
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -130,6 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddc3d683d06a3404f8a4fe0621d1c8ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_AttackerID: 0
 --- !u!114 &11453622
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -149,6 +143,10 @@ MonoBehaviour:
     list:
     - type: 0
       value: 0.1
+    - type: 2
+      value: 30
+    - type: 4
+      value: 3
   m_seFileName: Shot0
 --- !u!114 &11463520
 MonoBehaviour:
@@ -179,8 +177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43e7d831188778b4b906f45d73c6ff5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackPointList: {fileID: 0}
   PowerlossCurve:
+    serializedVersion: 2
     m_Curve:
     - time: 0
       value: 1
@@ -195,8 +193,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  cntDistance: 0
-  BeforePos: {x: 0, y: 0, z: 0}
 --- !u!114 &11478656
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -219,7 +215,6 @@ MonoBehaviour:
   autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 490204, guid: 8931ad398a75c2c4c8b694f005800976,
     type: 2}
-  ColliderResetRequest: 0
 --- !u!135 &13560222
 SphereCollider:
   m_ObjectHideFlags: 1
