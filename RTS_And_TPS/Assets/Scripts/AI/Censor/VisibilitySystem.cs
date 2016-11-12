@@ -52,6 +52,9 @@ public class VisibilitySystem : MonoBehaviour {
     [SerializeField, Range(.0f, 180.0f),HeaderAttribute("視野角")]
     private float m_fav = 45.0f;
 
+    [SerializeField, HeaderAttribute("視界判定にRaycastを使用するかどうか")]
+    private bool m_use_raycast = true;
+
     private List<ViewCandidateData> m_candicate_list;
     public List<VisibilityData>             m_current_visibility_list { get; private set; }
 
@@ -154,6 +157,11 @@ public class VisibilitySystem : MonoBehaviour {
             if (candicate.sender_object == null)
                 continue;
 
+            //ヒエラルキー上でfalseになってしまったオブジェクトは考慮しない
+            if (!candicate.sender_object.activeInHierarchy)
+                continue;
+
+
             if(IsUnconditionalObject(candicate))
             {
                 InsertVisibility(candicate);
@@ -169,9 +177,12 @@ public class VisibilitySystem : MonoBehaviour {
             }
 
             //rayを飛ばして最終判定を行う
-            if (!candicate.visibility_checker.IsInsight(ref eye))
+            if (m_use_raycast)
             {
-                continue;
+                if (!candicate.visibility_checker.IsInsight(ref eye))
+                {
+                    continue;
+                }
             }
             InsertVisibility(candicate);
 
@@ -188,6 +199,13 @@ public class VisibilitySystem : MonoBehaviour {
 
     public void PerceptionMessage(ViewMessageWrapper message)
     {
+
+        //意味ないかもしれないけど
+        if (message.sender_object == null)
+            return;
+        if (!message.sender_object.activeInHierarchy)
+            return;
+
         //そのうち良い方法考える
         switch(message.message_type)
         {
@@ -234,8 +252,11 @@ public class VisibilitySystem : MonoBehaviour {
         //VisibilityRangeとして視認しているオブジェクトを抽出
         var msg_object = m_candicate_list.Find((x) => x.sender_object == msg.sender_object && x.message_type == ViewMessageWrapper.MessageType.InVisibilityRange);
         if (msg_object == null)
-            UserLog.Terauchi("InNearRangeでオブジェクトが見つかりません");
-
+        {
+            
+            UserLog.Terauchi(msg.sender_object.name + " がInNearRangeでオブジェクトが見つかりません");
+            return;
+        }
         msg_object.message_type = ViewMessageWrapper.MessageType.InNearRange;
 
     }
@@ -245,14 +266,29 @@ public class VisibilitySystem : MonoBehaviour {
         //VisibilityRangeとして視認しているオブジェクトを抽出
         var msg_object = m_candicate_list.Find((x) => x.sender_object == msg.sender_object && x.message_type == ViewMessageWrapper.MessageType.InNearRange);
         if (msg_object == null)
-            UserLog.Terauchi("OutNearRange");
-
+        {
+            UserLog.Terauchi(msg.sender_object.name + " がOutNearRangeでオブジェクトが見つかりません");
+            return;
+        }
         msg_object.message_type = ViewMessageWrapper.MessageType.InVisibilityRange;
     }
 
     public void ClearCurrentVisibilityList()
     {
         m_current_visibility_list.Clear();
+        //candidate_listの中もnullcheckを行う
+
+        //視認候補の中からnullになったものactivateが切られたものを削除する
+        m_candicate_list.RemoveAll((VisibilitySystem.ViewCandidateData data) =>
+        {
+            if (data.sender_object == null)
+                return true;
+            if (!data.sender_object.activeInHierarchy)
+                return true;
+            return false;
+        }
+        );
+
     }
 
 }

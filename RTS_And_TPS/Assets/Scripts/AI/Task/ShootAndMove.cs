@@ -4,6 +4,12 @@ using UnityEngine.Networking;
 
 public class ShootAndMove : TaskBase {
 
+    public enum ShootType
+    {
+         FullAuto,
+         Burst 
+    }
+
     [SerializeField,HeaderAttribute("発射するオブジェクト")]
     private GameObject BulletObject = null;
 
@@ -53,24 +59,24 @@ public class ShootAndMove : TaskBase {
     {
         while(m_is_active)
         {
+            StartCoroutine(BurstShoot(target_system));
             yield return new WaitForSeconds(ShotIntarvalSecond);
-
-            GameObject shot_object = Instantiate(BulletObject);
-            shot_object.transform.position = m_shoot_object.transform.position;
-            Vector3 target_position = target_system.m_current_target.transform.position;
-            //とりあえずちょっと上にあげる
-            target_position += new Vector3(.0f, 0.7f, .0f);
-            Vector3 vec = (target_position - shot_object.transform.position).normalized * ShotPower;
-            var rigid_body = shot_object.GetComponent<Rigidbody>();
-            shot_object.transform.parent = m_attack_object_root.transform;
-            if(rigid_body)
-            {
-                rigid_body.AddForce(vec);
-            }
-            else
-            {
-                UserLog.ErrorTerauchi(m_owner_object.name + "ShootAndMove Bullet No attach RigidBody!!");
-            }
+            //GameObject shot_object = Instantiate(BulletObject);
+            //shot_object.transform.position = m_shoot_object.transform.position;
+            //Vector3 target_position = target_system.m_current_target.transform.position;
+            ////とりあえずちょっと上にあげる
+            //target_position += new Vector3(.0f, 0.7f, .0f);
+            //Vector3 vec = (target_position - shot_object.transform.position).normalized * ShotPower;
+            //var rigid_body = shot_object.GetComponent<Rigidbody>();
+            //shot_object.transform.parent = m_attack_object_root.transform;
+            //if(rigid_body)
+            //{
+            //    rigid_body.AddForce(vec);
+            //}
+            //else
+            //{
+            //    UserLog.ErrorTerauchi(m_owner_object.name + "ShootAndMove Bullet No attach RigidBody!!");
+            //}
             //NetworkServer.Spawn(shot_object);
         }
     }
@@ -127,6 +133,32 @@ public class ShootAndMove : TaskBase {
         {
             m_navmesh_accessor.Stop();
         }
+    }
+
+    IEnumerator BurstShoot(TargetingSystem target_system)
+    {
+
+        for (int i = 0; i < 3; i++)
+        {
+            GameObject shot_object = Instantiate(BulletObject);
+            shot_object.transform.position = m_shoot_object.transform.position;
+            Vector3 target_position = target_system.m_current_target.transform.position;
+            //とりあえずちょっと上にあげる
+            target_position += new Vector3(.0f, 0.7f, .0f);
+            Vector3 vec = (target_position - shot_object.transform.position).normalized * ShotPower;
+            var rigid_body = shot_object.GetComponent<Rigidbody>();
+            shot_object.transform.parent = m_attack_object_root.transform;
+            if (rigid_body)
+            {
+                rigid_body.AddForce(vec);
+            }
+            else
+            {
+                UserLog.ErrorTerauchi(m_owner_object.name + "ShootAndMove Bullet No attach RigidBody!!");
+            }
+            yield return new WaitForSeconds((1.0f / 60.0f) * 3.0f);
+        }
+
     }
 
 }

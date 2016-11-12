@@ -29,7 +29,7 @@ public class TargetingSystem : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+       // UserLog.Terauchi(m_current_target.name);
 	}
 
     /**
@@ -148,6 +148,11 @@ public class TargetingSystem : MonoBehaviour {
 
     public bool IsTargetArive()
     {
-        return (m_current_target != null) ? true : false;
+        if (m_current_target == null)
+            return false;
+        if (!m_current_target.activeInHierarchy)
+            return false;
+
+        return true;
     }
 }

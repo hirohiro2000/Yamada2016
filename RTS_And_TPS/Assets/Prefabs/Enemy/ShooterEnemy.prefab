@@ -1207,9 +1207,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BulletObject: {fileID: 162058, guid: eb1cd25c2ec9863418960ad35d169c7a, type: 2}
-  ShotIntarvalSecond: 3
-  ShotPower: 40
-  ShotRange: 16
+  ShotIntarvalSecond: 2
+  ShotPower: 100
+  ShotRange: 18.1
 --- !u!114 &11467812
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1287,6 +1287,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_always_perception_tag: 00000000
   m_fav: 180
+  m_use_raycast: 1
 --- !u!120 &12058514
 LineRenderer:
   m_ObjectHideFlags: 1
@@ -1362,7 +1363,7 @@ SkinnedMeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: a82f88e94aa23f84ca4aefebc2c05f2f, type: 2}
+  - {fileID: 2100000, guid: f02d95777f7cdb0429c06d170100cd05, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -1456,7 +1457,7 @@ SkinnedMeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: a82f88e94aa23f84ca4aefebc2c05f2f, type: 2}
+  - {fileID: 2100000, guid: f02d95777f7cdb0429c06d170100cd05, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -1503,7 +1504,7 @@ SkinnedMeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: a82f88e94aa23f84ca4aefebc2c05f2f, type: 2}
+  - {fileID: 2100000, guid: f02d95777f7cdb0429c06d170100cd05, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -1522,7 +1523,7 @@ SkinnedMeshRenderer:
   serializedVersion: 2
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
-  m_Mesh: {fileID: 4300004, guid: 94e250fa037fc1a48953df7f226b18b8, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 422df761fd59eb147ae22e5b0695a172, type: 3}
   m_Bones:
   - {fileID: 481312}
   - {fileID: 470716}
@@ -1550,7 +1551,7 @@ SkinnedMeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: a82f88e94aa23f84ca4aefebc2c05f2f, type: 2}
+  - {fileID: 2100000, guid: f02d95777f7cdb0429c06d170100cd05, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -1595,7 +1596,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 138538}
   m_Enabled: 1
   m_Radius: 0.76
-  m_Speed: 2
+  m_Speed: 4
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 178.5

@@ -40,9 +40,9 @@ public class UserLog
 
 	static public void Terauchi(object message)
 	{
-#if DEBUGLOG_ON
-		Debug.Log("tera : " + message);
-#endif
+        //#if DEBUGLOG_ON
+        Debug.Log("tera : " + message);
+//#endif
 	}
 
     static public void ErrorTerauchi(object msg)

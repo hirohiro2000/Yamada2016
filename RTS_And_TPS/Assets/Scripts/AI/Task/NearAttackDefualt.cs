@@ -34,6 +34,7 @@ public class NearAttackDefualt : TaskBase {
        // flg = false;
         timer = 120;
         task_director.m_anime_controller.SetTrigger("ToNearAttack");
+        m_owner_object.transform.LookAt(target_system.m_current_target.transform.position);
     }
 
     public override TaskBase.Status Execute(TargetingSystem target_system, EnemyTaskDirector task_director)
@@ -45,7 +46,8 @@ public class NearAttackDefualt : TaskBase {
         {
 			if(!m_damage_object.activeInHierarchy)
 			{
-				m_attack_object.BeginAttack();
+                if(!m_damage_object.activeInHierarchy)
+				    m_attack_object.BeginAttack();
 			}
             m_damage_object.SetActive(true);
 			
