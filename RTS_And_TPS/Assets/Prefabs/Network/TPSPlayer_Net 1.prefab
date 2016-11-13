@@ -2582,15 +2582,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firePoints:
   - {fileID: 400556}
-  emitter: {fileID: 102464, guid: b99fe1000ac85ba4a9ce9923ef0f4b00, type: 2}
-  shotCooldown: 0.05
-  shotDistance: 200
-  singleRecoil: 1
   weaponChangeKey: 50
   shotKey: 324
   weapons:
     list:
     - weapon: {fileID: 493186, guid: 3e56443d03e1e354c877fd5b215e7df6, type: 2}
+    - weapon: {fileID: 415918, guid: 2f193a89037968b4b8b10e199c2a940e, type: 2}
   playerRecoil: {fileID: 11456446}
 --- !u!114 &11410464
 MonoBehaviour:
@@ -2666,10 +2663,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firePoints:
   - {fileID: 455154}
-  emitter: {fileID: 102464, guid: b99fe1000ac85ba4a9ce9923ef0f4b00, type: 2}
-  shotCooldown: 0.1
-  shotDistance: 200
-  singleRecoil: 1
   weaponChangeKey: 49
   shotKey: 323
   weapons:

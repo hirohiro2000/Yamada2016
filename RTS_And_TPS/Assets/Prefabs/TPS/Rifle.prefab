@@ -25,6 +25,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &191510
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 465610}
+  - 96: {fileID: 9632806}
+  - 114: {fileID: 11496294}
+  m_Layer: 12
+  m_Name: Trail
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &455538
 Transform:
   m_ObjectHideFlags: 1
@@ -35,8 +52,22 @@ Transform:
   m_LocalPosition: {x: -1.09, y: 34.2, z: 17.76}
   m_LocalScale: {x: 0.19397569, y: 0.19397569, z: 0.19397569}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
+  m_Children:
+  - {fileID: 465610}
   m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!4 &465610
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 191510}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.6800001, y: 14.389997, z: 0}
+  m_LocalScale: {x: 0.1939757, y: 0.1939757, z: 0.1939757}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 455538}
   m_RootOrder: 0
 --- !u!23 &2366106
 MeshRenderer:
@@ -86,6 +117,53 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!96 &9632806
+TrailRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 191510}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_Materials:
+  - {fileID: 2100000, guid: 96149ffbf8c170d46accf2f9cb7bd0f7, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
+  m_ProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_Time: 1
+  m_StartWidth: 0.5
+  m_EndWidth: 0
+  m_Colors:
+    m_Color[0]:
+      serializedVersion: 2
+      rgba: 4294967295
+    m_Color[1]:
+      serializedVersion: 2
+      rgba: 3372220415
+    m_Color[2]:
+      serializedVersion: 2
+      rgba: 1895825407
+    m_Color[3]:
+      serializedVersion: 2
+      rgba: 352321535
+    m_Color[4]:
+      serializedVersion: 2
+      rgba: 16777215
+  m_MinVertexDistance: 0.1
+  m_Autodestruct: 1
 --- !u!114 &11410192
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -136,12 +214,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd00001f855ac274c8a122f54eae2b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  armCriticalRateIncrement: 50
+  armCriticalRateIncrement: 90
   baseReticle:
   - 0.1
-  baseRecoil: 10
+  baseRecoil: 20
   recoveryTimeWithRecoil: 3
-  maxValueWithUpperRecoil: 12
+  maxValueWithUpperRecoil: 18
   maxValueWithHorizontalRecoil: 12
 --- !u!114 &11460164
 MonoBehaviour:
@@ -167,13 +245,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a55cf9a709e8fec4ca7e5e0a27eb9ba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseAttackPoint: 10
+  baseAttackPoint: 30
   attack_list:
     list:
     - type: 1
       multiple: 1
     - type: 155
-      multiple: 0
+      multiple: 1
   autoDestroyObject: {fileID: 455538}
   autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 490204, guid: 8931ad398a75c2c4c8b694f005800976,
@@ -196,12 +274,23 @@ MonoBehaviour:
   shot_info_values:
     list:
     - type: 0
-      value: 2
+      value: 3
     - type: 2
       value: 5
     - type: 4
       value: 5
   m_seFileName: Shot0
+--- !u!114 &11496294
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 191510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab98f39ae2a04140820d1932b9fc562, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &13597176
 SphereCollider:
   m_ObjectHideFlags: 1
