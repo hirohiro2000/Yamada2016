@@ -72,11 +72,11 @@ public class WeaponParameter
 			if(singleReloadTime != .0f)
 			{
 				Reload(1);
-				cntReloadTime -= cntReloadTime;
+				cntReloadTime -= singleReloadTime;
 			}
 			else
 			{
-				Reload((int)data.GetInfoValue(ShotInfoValue.Ammo));
+				Reload((int)data.GetInfoValue(ShotInfoValue.Ammo) - cntAmmo);
 				cntReloadTime = .0f;
 			}
 		}
@@ -97,7 +97,9 @@ public class WeaponParameter
 
 	public bool IsEnableHavingAmmo()
 	{
-		return (cntHavingAmmo != 0 || (int)data.GetInfoValue(ShotInfoValue.HavingAmmo) == 0);
+		return ((cntHavingAmmo != 0 
+			|| (int)data.GetInfoValue(ShotInfoValue.HavingAmmo) == 0)
+			&& data.GetInfoValue(ShotInfoValue.ReloadTime) != .0f);
 	}
 	public bool IsCanShot()
 	{
@@ -141,6 +143,42 @@ public class WeaponParameter
 		{
 			cntAmmo = maxAmmo;
 		}
+	}
+
+	public string DispAmmo()
+	{
+		return cntAmmo.ToString();
+	}
+	public string DispHavingAmmo()
+	{
+		if (IsEnableHavingAmmo() && (int)data.GetInfoValue(ShotInfoValue.HavingAmmo) == 0)
+			return "∞";
+		return cntHavingAmmo.ToString();
+	}
+	public float DispReloadProgress()
+	{
+		float cnt;
+		float max;
+		if (data.GetInfoValue(ShotInfoValue.ReloadTime) == .0f)
+			return .0f;
+
+		if (data.GetInfoValue(ShotInfoValue.SingleReloadTime) == .0f)
+		{
+			//通常リロード
+			float NoDispTime = 0.3f;
+			cnt = cntReloadTime - NoDispTime;
+			max = data.GetInfoValue(ShotInfoValue.ReloadTime) - NoDispTime;
+
+		}
+		else
+		{
+			//シングルリロード
+			cnt = cntReloadTime - (data.GetInfoValue(ShotInfoValue.ReloadTime) - data.GetInfoValue(ShotInfoValue.SingleReloadTime));
+			max = data.GetInfoValue(ShotInfoValue.SingleReloadTime);
+
+		}
+		return Mathf.Clamp01(cnt / max);
+
 	}
 }
 
@@ -213,6 +251,9 @@ public class TPSShotController : NetworkBehaviour {
 	float cntCoolDown;
 
 	[SerializeField]
+	int UI_ID;
+
+	[SerializeField]
 	KeyCode weaponChangeKey = KeyCode.None;
 
 	[SerializeField]
@@ -280,9 +321,13 @@ public class TPSShotController : NetworkBehaviour {
 		cntCoolDown -= Time.deltaTime;
 
 		//ウェポンの更新
-		foreach(WeaponList list in weapons.list)
+		if(cntCoolDown < .0f)
 		{
-			list.Update();
+			foreach(WeaponList list in weapons.list)
+			{
+				list.Update();
+			}
+
 		}
 		//そのままの前方向
 		Transform firePoint = firePoints[fireCnt];
@@ -356,7 +401,12 @@ public class TPSShotController : NetworkBehaviour {
                 }
             }
 		}
-    }
+		//UIの描画
+		WeaponAmmoUIList UIList = WeaponAmmoUIList.Aceess(UI_ID);
+		if (UIList != null)
+			UIList.Disp(weapons.list.ToArray(),cntWeaponIndex);
+
+	}
 
     void    Shot( Vector3 firePoint, Vector3 target )
 	{
