@@ -61,23 +61,6 @@ public class ShootAndMove : TaskBase {
         {
             StartCoroutine(BurstShoot(target_system));
             yield return new WaitForSeconds(ShotIntarvalSecond);
-            //GameObject shot_object = Instantiate(BulletObject);
-            //shot_object.transform.position = m_shoot_object.transform.position;
-            //Vector3 target_position = target_system.m_current_target.transform.position;
-            ////とりあえずちょっと上にあげる
-            //target_position += new Vector3(.0f, 0.7f, .0f);
-            //Vector3 vec = (target_position - shot_object.transform.position).normalized * ShotPower;
-            //var rigid_body = shot_object.GetComponent<Rigidbody>();
-            //shot_object.transform.parent = m_attack_object_root.transform;
-            //if(rigid_body)
-            //{
-            //    rigid_body.AddForce(vec);
-            //}
-            //else
-            //{
-            //    UserLog.ErrorTerauchi(m_owner_object.name + "ShootAndMove Bullet No attach RigidBody!!");
-            //}
-            //NetworkServer.Spawn(shot_object);
         }
     }
 

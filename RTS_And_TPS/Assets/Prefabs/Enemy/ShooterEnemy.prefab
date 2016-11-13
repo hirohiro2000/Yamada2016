@@ -211,6 +211,7 @@ GameObject:
   - 54: {fileID: 5443700}
   - 114: {fileID: 11411280}
   - 114: {fileID: 11403024}
+  - 114: {fileID: 11496774}
   m_Layer: 0
   m_Name: ShooterEnemy
   m_TagString: Enemy
@@ -1272,6 +1273,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cbaf5aa4dbdf1dd49834a576bc521b4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11496774
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 138538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b3a0bf183f766c45b0ea5338046959f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &11497090
