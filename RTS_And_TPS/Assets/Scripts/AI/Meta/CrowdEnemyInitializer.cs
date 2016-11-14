@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
 public class CrowdEnemyInitializer : EnemyInitializerBase {
 
@@ -39,7 +40,7 @@ public class CrowdEnemyInitializer : EnemyInitializerBase {
             {
                 health.CorrectionHP(level, HPCorrectionRate);
             }
-
+            NetworkServer.Spawn(init_object);
         }//enemy_i
     }
 
