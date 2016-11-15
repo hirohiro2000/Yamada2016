@@ -8,10 +8,14 @@ public enum ShotInfoFlag //リストに含まれていたらtrue
 	FLAG_MAX,
 }
 
-public enum ShotInfoValue //リストに含むとtrue更に値をセットする
+public enum ShotInfoValue //リストに含むと値をセットする
 {
 	CoolDownTime, //クールダウンタイム
 	VisibleSimurateLineLength, //発射時の経路をシミュレート表示し、値は長さ
+	Ammo,//一度に発射できる弾薬数(0なら無限)
+	HavingAmmo,//他に所有できる弾薬数 
+	ReloadTime,//リロード時間
+	SingleReloadTime,//一発を込める時間(0なら未設定)
 	VALUE_MAX,
 }
 

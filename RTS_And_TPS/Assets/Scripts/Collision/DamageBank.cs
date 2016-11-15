@@ -459,7 +459,11 @@ public class DamageBank : MonoBehaviour {
 			foreach (WorkDamageResult result in workDamageResults.results)
 			{//階層weak
 
-				if( DamagedCallback != null )
+				//その場しのぎ
+				if (workDamageResults.atk == null)
+					continue;
+
+				if ( DamagedCallback != null )
 					DamagedCallback(result.GetTotalDamage());
 				if (AdvancedDamagedCallback != null)
 					AdvancedDamagedCallback(result, workDamageResults.info);
@@ -475,9 +479,8 @@ public class DamageBank : MonoBehaviour {
 			//その場しのぎ
 			if(workDamageResults.atk != null)
 			{
-				workDamageResults.atk.CallEmitObjectOnMyPosition();
 				workDamageResults.atk.CallEmitObjectOnHitPoint(workDamageResults.info.contactPoint);
-				workDamageResults.atk.CallDestroy();
+				workDamageResults.atk.Hited();
 			}
 		}
 		//検査済みとして値を更新
