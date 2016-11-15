@@ -134,8 +134,15 @@ public class ShootAndMove : TaskBase {
             GameObject shot_object = Instantiate(BulletObject);
             shot_object.transform.position = m_shoot_object.transform.position;
             Vector3 target_position = target_system.m_current_target.transform.position;
-            //とりあえずちょっと上にあげる
-            target_position += new Vector3(.0f, 0.7f, .0f);
+            //とりあえずちょっと上にあげた後に散らばらせる
+            //ここの散らばらせ方はそのうち帰るかも
+            target_position += new Vector3(
+                UnityEngine.Random.Range(-0.3f, 0.3f),
+                 0.7f + UnityEngine.Random.Range(-0.3f, 0.3f),
+                 UnityEngine.Random.Range(-0.3f, 0.3f));
+         
+            
+
             Vector3 vec = (target_position - shot_object.transform.position).normalized * ShotPower;
             var rigid_body = shot_object.GetComponent<Rigidbody>();
             shot_object.transform.parent = m_attack_object_root.transform;
