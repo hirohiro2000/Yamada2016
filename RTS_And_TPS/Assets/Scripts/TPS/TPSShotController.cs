@@ -431,14 +431,18 @@ public class TPSShotController : NetworkBehaviour {
 		emit.transform.parent = parent.transform;
 
         //  所属を設定
-        TPSAttack_Net   rAttack =   emit.GetComponent< TPSAttack_Net >();
-        rAttack.c_AttackerID    =   m_rLinkManager.m_LocalPlayerID;
+        if( m_rLinkManager ){
+            TPSAttack_Net   rAttack =   emit.GetComponent< TPSAttack_Net >();
+            rAttack.c_AttackerID    =   m_rLinkManager.m_LocalPlayerID;
+        }
 
 		//リコイル処理
 		playerRecoil.Shot();
 
         //  他のクライアントでも発射
-        m_rNPControl.CmdFire_Client( firePoint, target, m_rLinkManager.m_LocalPlayerID, cntWeaponIndex, m_MyChildID );
+        if( m_rLinkManager ){
+            m_rNPControl.CmdFire_Client( firePoint, target, m_rLinkManager.m_LocalPlayerID, cntWeaponIndex, m_MyChildID );
+        }
     }
     public  void    Shot_ByRequest( Vector3 firePoint, Vector3 target, int _ShooterID, int _WeaponID )
     {

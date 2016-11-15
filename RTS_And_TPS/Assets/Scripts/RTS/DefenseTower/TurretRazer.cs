@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
 public class TurretRazer : MonoBehaviour
 {
@@ -30,7 +31,7 @@ public class TurretRazer : MonoBehaviour
 		if( !rParam )                   return;
 
         //  ダメージを与える（サーバーのみ）
-        if( m_rLinkManager.isServer ){
+        if( NetworkServer.active ){
             rEnemy.GiveDamage( rParam.GetCurLevelParam().power );
         }
 	}

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Networking;
 
 public class TurretCannon : MonoBehaviour
 {
@@ -57,7 +58,7 @@ public class TurretCannon : MonoBehaviour
 			if( !rParam )                   continue;
 
 			//  ダメージを与える（サーバーのみ）
-			if( m_rLinkManager.isServer ){
+			if( NetworkServer.active ){
 				rEnemy.GiveDamage( rParam.GetCurLevelParam().power );
 			}
 		}

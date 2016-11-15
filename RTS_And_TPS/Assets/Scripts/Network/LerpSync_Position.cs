@@ -22,8 +22,8 @@ public class LerpSync_Position : NetworkBehaviour {
     {
         //  自分のキャラなら座標を送信
         if( isLocalPlayer ){
-            if( isServer )  UpdateSyncPosition( transform.position );
-            else            CmdUpdateSyncPosition( transform.position );
+            if( NetworkServer.active )  UpdateSyncPosition( transform.position );
+            else                        CmdUpdateSyncPosition( transform.position );
         }
         //  他人のキャラなら共有座標を適用
         else    if( m_IsStart ){

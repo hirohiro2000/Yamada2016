@@ -56,7 +56,9 @@ public class PlayerCommander_Control : NetworkBehaviour {
     public  void    CmdLunchTPSPlayer()
     {
         //  カウントダウン開始
-        m_rGameManager.StartCountDown();
+        if( m_rGameManager ){
+            m_rGameManager.StartCountDown();
+        }
 
         //  新しいプレイヤーオブジェクト生成
         GameObject  newPlayer   =   Instantiate( c_TPSPlayer );
@@ -64,9 +66,11 @@ public class PlayerCommander_Control : NetworkBehaviour {
         //  配置設定
         newPlayer.transform.position    =   new Vector3( 0.0f, 0.0f, 15.0f );
         newPlayer.transform.rotation    =   Quaternion.Euler( 0.0f, 180.0f, 0.0f );
-        if( m_rGameManager ){
-            newPlayer.transform.position    =   m_rGameManager.c_LaunchPos;
-            newPlayer.transform.eulerAngles =   m_rGameManager.c_LaunchAngle;
+
+        GameObject  rSpawnPoint         =   GameObject.Find( "Player_SpawnPoint" );
+        if( rSpawnPoint ){
+            newPlayer.transform.position    =   rSpawnPoint.transform.position;
+            newPlayer.transform.eulerAngles =   rSpawnPoint.transform.eulerAngles;
         }
 
         //  変身
@@ -80,17 +84,21 @@ public class PlayerCommander_Control : NetworkBehaviour {
     public  void    CmdLunchRTSPlayer()
     {
         //  カウントダウン開始
-        m_rGameManager.StartCountDown();
+        if( m_rGameManager ){
+            m_rGameManager.StartCountDown();
+        }
 
-        //  新しいプレイヤーオブジェクト生成
+        //  新しいプレイヤーオブジェクト生成 
         GameObject  newPlayer   =   Instantiate( c_RTSPlayer );
 
         //  配置設定
         newPlayer.transform.position    =   new Vector3( 0.0f, 0.0f, 15.0f );
         newPlayer.transform.rotation    =   Quaternion.Euler( 0.0f, 180.0f, 0.0f );
-        if( m_rGameManager ){
-            newPlayer.transform.position    =   m_rGameManager.c_LaunchPos;
-            newPlayer.transform.eulerAngles =   m_rGameManager.c_LaunchAngle;
+
+        GameObject  rSpawnPoint         =   GameObject.Find( "Player_SpawnPoint" );
+        if( rSpawnPoint ){
+            newPlayer.transform.position    =   rSpawnPoint.transform.position;
+            newPlayer.transform.eulerAngles =   rSpawnPoint.transform.eulerAngles;
         }
 
         //  変身

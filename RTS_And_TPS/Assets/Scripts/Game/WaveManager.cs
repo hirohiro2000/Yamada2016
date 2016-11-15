@@ -25,8 +25,8 @@ public class WaveManager : NetworkBehaviour {
         m_ganerator     =   GetComponent<EnemyGenerator>();
 
         //  ウェーブ情報用意
-        if( isServer ){
-            StandbyWave();
+        if( NetworkServer.active ){
+            //StandbyWave();
         }
 	}
 	
@@ -34,21 +34,30 @@ public class WaveManager : NetworkBehaviour {
 	void    Update()
     {
         //  サーバーでのみ処理を行う
-        if( !isServer )                                             return;
+        if( !NetworkServer.active )                                 return;
 	    //  ゲーム中のみ処理を行う
         if( m_rGameManager.GetState() != GameManager.State.InGame ) return;
+        //  スポーンポイントがなければ処理しない（エディット用）
+        if( m_ganerator.GetNumSpawnPointList() == 0 )               return;
 
         //  すべての配置が終わったら全滅するまで待機
         if( CheckWhetherEmptyAllSpawner()
-        && m_ganerator.GetCurrentAliveEnemyCount() <= 0 ){
+        &&  m_ganerator.GetCurrentAliveEnemyCount() <= 0 ){
             //  次のウェーブを用意
-            StandbyWave();
+            StandbyWave( 4.0f );
 
             //  ウェーブクリア
-            m_rGameManager.RpcMainMessage( "第 " + ( m_WaveLevel - 1 ) +  " ウェーブクリア！", 3.7f, 1.7f );
+            if( NetworkServer.active )  m_rGameManager.SetMainMassage( "第 " + ( m_WaveLevel - 1 ) +  " ウェーブクリア！", 3.7f, 1.7f );
+            else                        m_rGameManager.RpcMainMessage( "第 " + ( m_WaveLevel - 1 ) +  " ウェーブクリア！", 3.7f, 1.7f );
             //  敵の襲来を通知
-            if( m_WaveLevel % 3 == 0 )  m_rGameManager.RpcMainMessage( "敵の大軍が押し寄せています！", 3.7f, 1.2f );
-            else                        m_rGameManager.RpcMainMessage( "新たな敵が接近しています", 3.7f, 1.2f );
+            if( m_WaveLevel % 3 == 0 ){
+                if( NetworkServer.active )  m_rGameManager.SetMainMassage( "敵の大軍が押し寄せています！", 3.7f, 1.2f );
+                else                        m_rGameManager.RpcMainMessage( "敵の大軍が押し寄せています！", 3.7f, 1.2f );
+            }
+            else{
+                if( NetworkServer.active )  m_rGameManager.SetMainMassage( "新たな敵が接近しています", 3.7f, 1.2f );
+                else                        m_rGameManager.RpcMainMessage( "新たな敵が接近しています", 3.7f, 1.2f );
+            }
 
             //  ウェーブ開始処理
             m_rGameManager.StartNewWave();
@@ -62,7 +71,7 @@ public class WaveManager : NetworkBehaviour {
     }
 
     //  配置情報を準備 
-    void        StandbyWave()
+    void        StandbyWave( float _Delay )
     {
         //  レベルアップ
         ++m_WaveLevel;
@@ -78,7 +87,7 @@ public class WaveManager : NetworkBehaviour {
             numPop  *=  2;
         }
 
-        m_ganerator.BeginGenerate( m_WaveLevel, numPop, 10.0f - 6.0f );
+        m_ganerator.BeginGenerate( m_WaveLevel, numPop, _Delay );
 
         //  ウェーブ数更新
         m_rGameManager.m_WaveLevel  =   m_WaveLevel;
@@ -110,5 +119,11 @@ public class WaveManager : NetworkBehaviour {
         }
 
         return  null;
+    }
+
+    //  ゲーム開始
+    public  void    StartWave()
+    {
+        StandbyWave( 0.0f );
     }
 }

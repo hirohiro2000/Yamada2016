@@ -48,7 +48,7 @@ public class PlayerHealth : NetworkBehaviour
 	public void GiveDamage(float damage)
 	{
         //  サーバーでのみダメージ処理を行う
-        if( !m_rIdentity.isServer )  return;
+        if( !NetworkServer.active )  return;
 
 		hp -= damage;
 		if (hp <= .0f)

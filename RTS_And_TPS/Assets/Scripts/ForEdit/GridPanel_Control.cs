@@ -5,12 +5,13 @@ using System.Collections;
 public class GridPanel_Control : MonoBehaviour {
 
     public  enum    GridType{
-        None,       //  何もない
-        Wall,       //  壁
-        Slope,      //  斜面
-        SpawnPoint, //  敵の発生地点
-        Base,       //  拠点
-        Empty,      //  空
+        None,           //  何もない
+        Wall,           //  壁
+        Slope,          //  斜面
+        SpawnPoint,     //  敵の発生地点
+        LaunchPoint,    //  出撃地点
+        Base,           //  拠点
+        Empty,          //  空
     }
 
     //  関連オブジェクトへのアクセス
@@ -29,7 +30,9 @@ public class GridPanel_Control : MonoBehaviour {
     public  bool                m_IsStorage     =   false;
 
     //  内部パラメータ
-    private Color               m_InitColor     =   Color.black;
+    private string              m_DefaultStr    =   "";
+    private string              m_SubStr        =   "";
+    private bool                m_UseSubStr     =   false;
     
     //  内部アクセス
     private Renderer            m_rRenderer     =   null;
@@ -61,12 +64,14 @@ public class GridPanel_Control : MonoBehaviour {
         m_rHeightTextM  =   m_rHeightText.GetComponent< TextMesh >();
 
         m_rEditManager  =   FunctionManager.GetAccessComponent< EditManager >( "EditManager" );
-
-        m_InitColor     =   m_rRenderer.material.color;
 	}
     void    Start()
     {
-        m_rHeightTextM.text =   ( m_GridPoint.z > 0 )? ( ( int )m_GridPoint.z ).ToString() : "";
+        m_DefaultStr        =   ( m_GridPoint.z > 0 )? ( ( int )m_GridPoint.z ).ToString() : "";
+        m_SubStr            =   ( ( int )m_GridPoint.z + 1 ).ToString();
+
+        m_rHeightTextM.text =   m_DefaultStr;
+        m_UseSubStr         =   false;
     }
 	
 	// Update is called once per frame
@@ -94,13 +99,18 @@ public class GridPanel_Control : MonoBehaviour {
     //  テキスト更新
     void    UpdateTextMesh()
     {
-        if( !m_rUP
-        &&  m_rRelatedObj ){
-            m_rHeightTextM.text =   ( ( int )m_GridPoint.z + 1 ).ToString();
+        bool    isMaxHeight =   CheckIsMaxHeight();
+        if( isMaxHeight != m_UseSubStr ){
+            m_rHeightTextM.text =   ( isMaxHeight )? m_SubStr : m_DefaultStr;
+            m_UseSubStr         =   isMaxHeight;
         }
-        else{
-            m_rHeightTextM.text =   ( m_GridPoint.z > 0 )? ( ( int )m_GridPoint.z ).ToString() : "";
-        }
+    }
+    bool    CheckIsMaxHeight()
+    {
+        if( m_rUP )             return  false;
+        if( !m_rRelatedObj )    return  false;
+
+        return  true;
     }
 
     //  上下方向へ再帰
@@ -145,6 +155,8 @@ public class GridPanel_Control : MonoBehaviour {
         m_rRenderer.enabled     =   _IsActive;
         m_rHeightText.enabled   =   _IsActive;
         m_IsActive              =   _IsActive;
+
+        //this.enabled            =   _IsActive;
     }
 
     public  void    SetColor( Color _Color )

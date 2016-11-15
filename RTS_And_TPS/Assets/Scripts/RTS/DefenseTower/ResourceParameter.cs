@@ -63,7 +63,7 @@ public class ResourceParameter : NetworkBehaviour
     void    DamageProc_CallBack( DamageResult _rDamageResult, CollisionInfo _rInfo )
     {
         //  サーバーでのみ処理を行う
-        if( !isServer ) return;
+        if( !NetworkServer.active ) return;
 
         //  ダメージを受ける
         GiveDamage( ( int )_rDamageResult.GetTotalDamage() );

@@ -17,7 +17,7 @@ public class EnemyBaseWalker : NetworkBehaviour {
 	// Use this for initialization
 	void Start () {
         //  サーバーでのみ処理を行う
-        if( !isServer ){
+        if( !NetworkServer.active ){
             GetComponent< NavMeshAgent >().enabled  =   false;
             return;
         }
@@ -32,7 +32,7 @@ public class EnemyBaseWalker : NetworkBehaviour {
 	// Update is called once per frame
 	void Update () {
         //  サーバーでのみ処理を行う
-        if( !isServer ) return;
+        if( !NetworkServer.active ) return;
 
         //agent.SetDestination(basePoint.position);
         agent.speed = walkSpeed;

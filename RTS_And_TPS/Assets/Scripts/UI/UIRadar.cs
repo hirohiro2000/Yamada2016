@@ -62,16 +62,13 @@ public class UIRadar : MonoBehaviour {
                     rtPosition.y = 0.0f;
             float   maxLength    = 70.0f;
 
-            if (rtPosition.sqrMagnitude > 1.0f)
-            {
-                rtPosition.Normalize();
-            }
+            rt.localPosition = new Vector3(rtPosition.x, rtPosition.z, 0.0f) * 50.0f;
 
             rt.localPosition = new Vector3(rtPosition.x, rtPosition.z, 0.0f) * maxLength;
 
         }
         {
-            //RectTransform rt = m_backGround.GetComponent<RectTransform>();
+            //RectTransform rt = m_backGround.GetComponent<RectTransform>(); 
             //rt.eulerAngles = new Vector3(rt.eulerAngles.x, rt.eulerAngles.y, m_player.transform.eulerAngles.y);
         }
 

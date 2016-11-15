@@ -53,7 +53,8 @@ public class MovingTarget : TaskBase
 
     void InitializeCostArray()
     {
-        var component = transform.root.GetComponent<CostNameContainer>();
+        var enemy_root = GameObject.Find("EnemySpawnRoot");
+        var component = enemy_root.GetComponent<CostNameContainer>();
         var layer_name_array = component.GetLayerNameArray();
 
         //通過できる場所だけNormalCostを挿入

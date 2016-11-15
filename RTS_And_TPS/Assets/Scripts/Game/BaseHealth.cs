@@ -19,6 +19,8 @@ public class BaseHealth : NetworkBehaviour {
 	[SerializeField]
 	Rect rect;
 
+    public  bool            m_UseEdit       =   false;
+
     //  外部へのアクセス
     private GameManager     m_rGameManager  =   null;
 
@@ -34,13 +36,25 @@ public class BaseHealth : NetworkBehaviour {
 	// Update is called once per frame
 	void    Update()
 	{
-
+        //  アクセス取得
+        if( !m_rGameManager )   m_rGameManager  =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
 	}
 
     void    OnTriggerEnter( Collider _rCollider )
     {
-        //  サーバーでのみ処理を行う
-        if( !isServer )                                             return;
+        CollisionProc( _rCollider );
+    }
+    void    OnTriggerStay( Collider _rCollider )
+    {
+        CollisionProc( _rCollider );
+    }
+    void    CollisionProc( Collider _rCollider )
+    {
+        //  エディットモードではチェックしない
+        if( !m_UseEdit ){
+            //  サーバーでのみ処理を行う
+            if( !NetworkServer.active ) return;
+        }
 
         //  突っ込んできたのがエネミーかどうかチェック
         Health          rEnemy  =   _rCollider.GetComponent< Health >();
@@ -90,7 +104,7 @@ public class BaseHealth : NetworkBehaviour {
     [ ClientRpc ]
     void    RpcDisableCylinder()
     {
-        if( isServer )  return;
+        if( NetworkServer.active )  return;
 
         //  メッシュを非アクティブ化 
         Transform   rCylinder   =   transform.FindChild( "Cylinder" );

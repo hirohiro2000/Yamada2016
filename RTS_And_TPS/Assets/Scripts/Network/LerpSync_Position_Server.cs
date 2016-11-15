@@ -21,7 +21,7 @@ public class LerpSync_Position_Server : NetworkBehaviour {
     void    FixedUpdate()
     {
         //  自分のキャラなら座標を送信
-        if( isServer ){
+        if( NetworkServer.active ){
             m_SyncPosition  =   transform.position;
             if( m_SyncState == SyncState.StartWait ){
                 m_SyncState =   SyncState.StartOK;

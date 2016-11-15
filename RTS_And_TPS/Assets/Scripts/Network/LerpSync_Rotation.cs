@@ -22,8 +22,8 @@ public class LerpSync_Rotation : NetworkBehaviour {
     {
         //  自分のキャラなら座標を送信
         if( isLocalPlayer ){
-            if( isServer )  UpdateSyncPose( transform.rotation );
-            else            CmdUpdateSyncPose( transform.rotation );
+            if( NetworkServer.active )  UpdateSyncPose( transform.rotation );
+            else                        CmdUpdateSyncPose( transform.rotation );
         }
         //  他人のキャラなら共有座標を適用
         else    if( m_IsStart ){

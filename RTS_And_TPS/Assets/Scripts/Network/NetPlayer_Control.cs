@@ -45,7 +45,23 @@ public class NetPlayer_Control : NetworkBehaviour {
             m_rLinkManager.m_rLocalNPControl    =   this;
         }
 	}
-
+//*********************************************************************************
+//      アクセス
+//*********************************************************************************
+    //  コマンダーに戻る
+    public  void        ChangeToCommander()
+    {
+        TPSPlayer_Control   rTPSControl =   GetComponent< TPSPlayer_Control >();
+        RTSPlayer_Control   rRTSControl =   GetComponent< RTSPlayer_Control >();
+        if( rTPSControl ){
+            rTPSControl.EndProc();
+            rTPSControl.CmdChangeToCommander();
+        }
+        if( rRTSControl ){
+            rRTSControl.EndProc();
+            rRTSControl.CmdChangeToCommander();
+        }
+    }
 //*********************************************************************************
 //      コマンド
 //*********************************************************************************

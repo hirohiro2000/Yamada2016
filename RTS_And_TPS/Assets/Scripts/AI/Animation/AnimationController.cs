@@ -37,8 +37,8 @@ public class AnimationController : MonoBehaviour {
    public void SetTrigger(string trigger_name)
     {
         //そのうちこのIFは消す
-        if(m_animator)
-            m_animator.SetTrigger(trigger_name);
+        //if(m_animator)
+        //    m_animator.SetTrigger(trigger_name);
     }
 
     public AnimatorStateInfo GetCurrentAnimatorStateInfo()

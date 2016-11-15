@@ -152,7 +152,7 @@ public class FunctionManager : MonoBehaviour {
     {
         Vector2     size    =   _Style.CalcSize( new GUIContent( _Str ) );
         Rect        rect    =   FunctionManager.AdjustRectCanvasToGUI(
-            FunctionManager.AR_TYPE.TOP_CENTER,
+            _Type,
             new Rect( _Coord.x, _Coord.y, size.x, size.y ),
             _Pivot,
             _ParentSize

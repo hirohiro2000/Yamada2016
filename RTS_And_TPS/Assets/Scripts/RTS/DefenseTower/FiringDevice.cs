@@ -70,7 +70,7 @@ public class FiringDevice : NetworkBehaviour
     [ ClientRpc ]
     void    RpcSpawnBullet( Quaternion _Rotation, Vector3 _Position )
     {
-        if( isServer )      return;
+        if( NetworkServer.active )      return;
 
         transform.rotation  =   _Rotation;
 
