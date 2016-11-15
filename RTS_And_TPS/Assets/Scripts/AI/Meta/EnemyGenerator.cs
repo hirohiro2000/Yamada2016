@@ -95,15 +95,6 @@ public class EnemyGenerator : NetworkBehaviour
         return m_rActiveEnemyList.Count;
     }
 
-    //private void DeadEnemy(GameObject dead_enemy)
-    //{
-    //    m_current_hierarchy_list.Remove(dead_enemy);
-    //}
-
-    //void Start()
-    //{
-
-    //}
 
     void    Update()
     {
@@ -146,6 +137,9 @@ public class EnemyGenerator : NetworkBehaviour
         yield return new WaitForSeconds(delay_second);
 
         int respawn_count = 0;
+
+        //test
+        //num_spawn = 1;
         while (respawn_count < num_spawn)
         {
             for(int i = 0; i < m_num_spawn_one_frame; i++)
@@ -180,45 +174,45 @@ public class EnemyGenerator : NetworkBehaviour
             UserLog.ErrorTerauchi("Enemygenerator::CreateEnemyInstance respawan_index error !! max_respawn_point_index is " + GenerateEnemyList.Length + "type_index is" + data.respawn_point_index);
         
         GameObject ret_object = Instantiate(GenerateEnemyList[data.type]);
-        Transform respawn_point = m_navigation_data_list[data.respawn_point_index].transform;
-        ret_object.GetComponent<NavMeshAgent>().Warp(respawn_point.position);
+        Vector3 respawn_point = m_navigation_data_list[data.respawn_point_index].transform.position;
+        //ret_object.GetComponent<NavMeshAgent>().Warp(respawn_point.position);
         // ret_object.transform.position = respawn_point.position;
         //座標はちょっとだけばらつき入れておく
-        ret_object.transform.position += new Vector3(UnityEngine.Random.Range(-0.5f, 0.5f), .0f, UnityEngine.Random.Range(-0.5f, 0.5f));
+        respawn_point += new Vector3(UnityEngine.Random.Range(-0.5f, 0.5f), .0f, UnityEngine.Random.Range(-0.5f, 0.5f));
 
+      
+        var route_list = m_navigation_data_list[data.respawn_point_index].GetRouteData(data.route_index);
+        //サイズが0の場合の時は出現位置から最短経路をたどる敵になる
+        if (route_list.data.Count == CanAllRoute)
+        {
+            route_list = GetComponent<CostNameContainer>().GetLayerNameArray();
+        }
+
+        var initializer = ret_object.GetComponent<EnemyInitializerBase>();
+        initializer.Execute(respawn_point, route_list, level, HPCorrectionRate);
         ret_object.transform.parent = this.transform;
+        return ret_object;
+    }
 
-        var health = ret_object.GetComponent<Health>();
-        if(!health)
+    /**
+    *@note そのうちちゃんとする
+    */
+    private void InitializeCrowdEnemy(GameObject root_enemy_object,StringList route_list,int level)
+    {
+      
+        for(int i = 0; i < root_enemy_object.transform.childCount; i++)
         {
-            UserLog.ErrorTerauchi(ret_object.name + "no attach Health !!");
-        }
-        else
-        {
-            health.CorrectionHP(level, HPCorrectionRate);
-        }
-
-        //通る経路の設定
-        var controller = ret_object.GetComponent<EnemyController>();
-        if(!controller)
-        {
-            UserLog.ErrorTerauchi(ret_object.name + "not attach EnemyController!!");
-        }
-        else
-        {
-            var route_list = m_navigation_data_list[data.respawn_point_index].GetRouteData(data.route_index);
-            //サイズが0の場合の時は出現位置から最短経路をたどる敵になる
-            if(route_list.data.Count == CanAllRoute)
+            var game_object = root_enemy_object.transform.GetChild(i);
+            //経路設定
+            var controller = game_object.GetComponent<EnemyController>();
+            if (route_list.data.Count == CanAllRoute)
             {
                 route_list = GetComponent<CostNameContainer>().GetLayerNameArray();
             }
-            controller.SetRouteData(m_navigation_data_list[data.respawn_point_index].GetRouteData(data.route_index));
+            controller.SetRouteData(route_list);
+
+            //体力設定
+            var hp = game_object.GetComponent<Health>();
         }
-
-        //死亡時の通知設定
-        //controller.SetDeadListener(DeadEnemy);
-        //m_current_hierarchy_list.Add(ret_object);
-
-        return ret_object;
     }
 }

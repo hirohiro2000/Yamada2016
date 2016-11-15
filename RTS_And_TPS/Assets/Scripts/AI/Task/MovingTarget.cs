@@ -16,7 +16,7 @@ public class MovingTarget : TaskBase
     private readonly float m_update_adjust_static_object_min = 0.9f;
     private readonly float m_update_adjust_static_object_max = 2.0f;
     private readonly float m_update_adjust_move_object_min = 0.02f;
-    private readonly float m_update_adjust_move_object_max = 0.6f;
+    private readonly float m_update_adjust_move_object_max = 0.3f;
     private readonly float m_default_update_interval = 0.1f;
 
     private NavMeshAgent m_navmesh_accessor = null;

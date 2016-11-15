@@ -16,7 +16,7 @@ public class ReferenceWrapper : MonoBehaviour {
     }
 	void Update()
     {
-        UserLog.Terauchi(m_active_enemy_list.Count);
+      //  UserLog.Terauchi(m_active_enemy_list.Count);
     }
 
 

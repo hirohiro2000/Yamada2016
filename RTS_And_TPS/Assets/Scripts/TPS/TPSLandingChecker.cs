@@ -15,7 +15,7 @@ public class TPSLandingChecker : MonoBehaviour
 			Rigidbody rigidBody = gameObject.AddComponent<Rigidbody>();
 			rigidBody.isKinematic = true;
 		}
-		Debug.LogWarning("現在、床判定はレイヤーで判定しています");
+		UserLog.NakanoWarning("現在、床判定はレイヤーで判定しています");
 	}
 
 	// Update is called once per frame
