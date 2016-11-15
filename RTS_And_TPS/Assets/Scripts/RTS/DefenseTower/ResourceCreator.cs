@@ -44,6 +44,15 @@ public class ResourceCreator : NetworkBehaviour
 		//	ガイドレンジの初期化
 		m_resourceRangeGuideRef = Instantiate( m_resourceRangeGuide );
 
+        //  エディット用
+        {
+            GameObject  rPTShell    =   GameObject.Find( "PlayTest_Shell" );
+            if( rPTShell ){
+                m_resourceRangeGuideRef.transform.parent
+                    =   rPTShell.transform;
+            }
+        }
+
 		//	ガイドの非表示
 		SetGuideVisibleDisable();
 	}

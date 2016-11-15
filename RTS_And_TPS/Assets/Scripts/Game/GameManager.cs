@@ -56,6 +56,7 @@ public class GameManager : NetworkBehaviour {
 
     //  外部へのアクセス
     private LinkManager             m_rLinkManager  =   null;
+    private WaveManager             m_rWaveManager  =   null;
     private Transform               m_rResources    =   null;
 
     private Text                    m_rWaveText     =   null;
@@ -65,28 +66,38 @@ public class GameManager : NetworkBehaviour {
 	// Use this for initialization
 	void    Start()
     {
-        //  アクセスを取得
+        //  アクセスを取得 
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+        m_rWaveManager  =   FunctionManager.GetAccessComponent< WaveManager >( "EnemySpawnRoot" );
         m_rResources    =   FunctionManager.GetAccessComponent< Transform >( "FieldResources" );
 
-        m_rWaveText     =   GameObject.Find( "Canvas/Column_Wave/Text_Score" ).GetComponent< Text >();
-        m_rResourceText =   GameObject.Find( "Canvas/Column_Resource/Text_Resource" ).GetComponent< Text >();
-        m_rScoreText    =   GameObject.Find( "Canvas/Column_Score/Text_Score" ).GetComponent< Text >();
+        m_rWaveText     =   FunctionManager.GetAccessComponent< Text >( "Canvas/Column_Wave/Text_Score" );
+        m_rResourceText =   FunctionManager.GetAccessComponent< Text >( "Canvas/Column_Resource/Text_Resource" );
+        m_rScoreText    =   FunctionManager.GetAccessComponent< Text >( "Canvas/Column_Score/Text_Score" );
 
         //  パラメータを初期化
         m_Resource      =   150;
+
+        //  配置座標取得
+        {
+            Transform   rPSpawnPoint    =   FunctionManager.GetAccessComponent< Transform >( "Player_SpawnPoint" );
+            if( rPSpawnPoint ){
+                c_LaunchPos     =   rPSpawnPoint.position;
+                c_LaunchAngle   =   rPSpawnPoint.eulerAngles;
+            }
+        }
 	}
 	
 	// Update is called once per frame
 	void    Update()
     {
-        //  共通の処理
+        //  共通の処理 
         UpdateIn_Common();
 
         //  サーバー側の処理
-        if( isServer )  UpdateIn_Server();
+        if( NetworkServer.active )  UpdateIn_Server();
         //  クライアント側の処理
-        else            UpdateIn_Client();
+        else                        UpdateIn_Client();
 	}
     void    UpdateIn_Common()
     {
@@ -109,9 +120,9 @@ public class GameManager : NetworkBehaviour {
 
         //  ＵＩの更新
         {
-            m_rWaveText.text        =   "Wave  "     + m_WaveLevel.ToString();
-            m_rResourceText.text    =   "Resource  " + ( ( int )m_Resource ).ToString();
-            m_rScoreText.text       =   "Score  "    + ( ( int )m_GlobalScore ).ToString();
+            if( m_rWaveText )       m_rWaveText.text        =   "Wave  "     + m_WaveLevel.ToString();
+            if( m_rResourceText )   m_rResourceText.text    =   "Resource  " + ( ( int )m_Resource ).ToString();
+            if( m_rScoreText )      m_rScoreText.text       =   "Score  "    + ( ( int )m_GlobalScore ).ToString();
         }
     }
     void    UpdateIn_Server()
@@ -146,6 +157,8 @@ public class GameManager : NetworkBehaviour {
         if( m_StateTimer >= c_CountDownTime ){
             //  ゲーム開始
             ChangeState( State.InGame );
+            //  ウェーブ開始
+            m_rWaveManager.StartWave();
         }
     }
     void    Update_InGame()
@@ -552,7 +565,7 @@ public class GameManager : NetworkBehaviour {
     public  void    RpcStartNewWave_StandbyProc()
     {
         //  サーバーでは処理を行わない
-        if( isServer )  return;
+        if( NetworkServer.active )  return;
 
         //  ウェーブ開始処理
         StandbyProc_NewWave();

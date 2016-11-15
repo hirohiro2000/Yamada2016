@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
 public class Razer_HitControl : MonoBehaviour {
@@ -31,7 +32,7 @@ public class Razer_HitControl : MonoBehaviour {
         if( !rParam )                   return;
 
         //  ダメージを与える（サーバーのみ）
-        if( m_rLinkManager.isServer ){
+        if( NetworkServer.active ){
             rEnemy.GiveDamage( rParam.GetCurLevelParam().power );
         }
 	}

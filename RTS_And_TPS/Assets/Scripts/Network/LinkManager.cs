@@ -22,11 +22,11 @@ public class LinkManager : NetworkBehaviour {
 	void    Update()
     {
 	    //  クライアントでは更新処理を行わない
-        if( !isServer )         return;
+        if( !NetworkServer.active ) return;
 
 	    //  アクセス更新
-        if( !m_rNetManager )    m_rNetManager   =   FunctionManager.GetAccessComponent< NetworkManager >( "NetworkManager" );
-        if( !m_rNetManager )    return;
+        if( !m_rNetManager )        m_rNetManager   =   FunctionManager.GetAccessComponent< NetworkManager >( "NetworkManager" );
+        if( !m_rNetManager )        return;
 
 
 	}

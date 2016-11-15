@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class ReferenceWrapper : MonoBehaviour {
 
-    public GameObject m_home_base { get; private set; }
+    public GameObject m_home_base { get; set; }
     public GameObject m_attack_object_root { get; private set; }
     public List<GameObject> m_active_enemy_list { get; private set; }
 
@@ -16,6 +16,9 @@ public class ReferenceWrapper : MonoBehaviour {
     }
 	void Update()
     {
+        //  アクセスの取得
+        if( !m_attack_object_root ) m_attack_object_root    =   GameObject.Find("EnemyAttackObjectRoot");
+
         UserLog.Terauchi(m_active_enemy_list.Count);
     }
 

@@ -46,7 +46,7 @@ public class TPS_EnemyAttacker : NetworkBehaviour {
 	// Update is called once per frame
 	void Update () {
         //  サーバーでのみ処理を行う
-        if( !isServer ) return;
+        if( !NetworkServer.active ) return;
 
 		isAttack = false;
 		cntCooldown -= Time.deltaTime;

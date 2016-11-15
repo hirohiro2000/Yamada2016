@@ -65,7 +65,7 @@ public class Health : NetworkBehaviour {
     void    DamageProc_WidthTower( DamageResult _rDamageResult, CollisionInfo _rInfo )
     {
         //  サーバーでのみ処理を行う
-        if( !isServer )                                                 return;
+        if( !NetworkServer.active ) return;
 
         //  ダメージを受ける
         GiveDamage( _rDamageResult.GetTotalDamage() );

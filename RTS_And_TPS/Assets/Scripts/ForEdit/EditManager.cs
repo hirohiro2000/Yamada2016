@@ -4,6 +4,7 @@ using   System.IO;
 using   System.Collections;
 using   System.Collections.Generic;
 using   UnityEngine;
+using   UnityEngine.Networking;
 
 #if     UNITY_EDITOR
 using   UnityEditor;
@@ -13,11 +14,12 @@ public class EditManager : MonoBehaviour {
 
     //  編集モード
     public  enum    EditMode{
-        Wall,       //  壁を編集
-        Base,       //  拠点を編集
-        SpawnPoint, //  エネミーの巣を編集
-        Empty,      //  空
-        NavMesh,    //  ナビメッシュ編集
+        Wall,           //  壁を編集
+        Base,           //  拠点を編集
+        SpawnPoint,     //  エネミーの巣を編集
+        LaunchPoint,    //  出撃地点を編集
+        Empty,          //  空
+        //NavMesh,        //  ナビメッシュ編集
         Select,     //  選択
     }
 
@@ -112,7 +114,7 @@ public class EditManager : MonoBehaviour {
         private void    UpdatePrevWorld(){
             m_PrevWorld =   m_rDragCamera.ScreenToWorldPoint( Input.mousePosition );
         }
-    };
+    }
 
     //  ウィンドウ統括ウィンドウ
     class   WindowOversee
@@ -124,6 +126,8 @@ public class EditManager : MonoBehaviour {
         public  bool                m_UseOutput     =   false;
         public  bool                m_UseMapConfig  =   false;
         public  bool                m_UseToolBox    =   false;
+        public  bool                m_UseInfo       =   false;
+        public  bool                m_UseBox        =   false;
         public  bool                m_UseCamera     =   false;
         public  bool                m_UseTest       =   false;
         public  bool                m_UseSetting    =   false;
@@ -132,6 +136,8 @@ public class EditManager : MonoBehaviour {
         private Window_ToolBox      m_rToolBox      =   null;
         private Window_MapConfig    m_rMapConfig    =   null;
         private Window_FileMenu     m_rFileMenu     =   null;
+        private Window_Info         m_rInfo         =   null;
+        private Window_Block        m_rBlock        =   null;
 
         public  WindowOversee( EditManager _rEditManager )
         {
@@ -145,6 +151,8 @@ public class EditManager : MonoBehaviour {
             m_rToolBox      =   new Window_ToolBox( _rEditManager, this );
             m_rMapConfig    =   new Window_MapConfig( _rEditManager, this );
             m_rFileMenu     =   new Window_FileMenu( _rEditManager, this );
+            m_rInfo         =   new Window_Info( _rEditManager, this );
+            m_rBlock        =   new Window_Block( _rEditManager, this );
         }
 
         public  void    Update()
@@ -164,6 +172,8 @@ public class EditManager : MonoBehaviour {
             if( m_UseToolBox )      m_rToolBox.Update();
             if( m_UseMapConfig )    m_rMapConfig.Update();
             if( m_UseOutput )       m_rFileMenu.Update();
+            if( m_UseInfo )         m_rInfo.Update();
+            if( m_UseBox )          m_rBlock.Update();
         }
         private void    WindowProc( int _WindowID )
         {
@@ -199,17 +209,29 @@ public class EditManager : MonoBehaviour {
                 }
                 offsetY +=  space;
 
-                //  カメラ
-                m_UseCamera     =   GUI.Toggle( new Rect( 10, offsetY, 100, 20 ), m_UseCamera, "  Camera" );
+                //  ボックス
+                if( CheckChangeBool_True( ref m_UseBox, GUI.Toggle( new Rect( 10, offsetY, 100, 20 ), m_UseBox, "  Block" ) ) ){
+                    m_rBlock.InitWindowRect();
+                }
                 offsetY +=  space;
+
+                //  情報
+                if( CheckChangeBool_True( ref m_UseInfo, GUI.Toggle( new Rect( 10, offsetY, 100, 20 ), m_UseInfo, "  Info" ) ) ){
+                    m_rInfo.InitWindowRect();
+                }
+                offsetY +=  space;
+
+                //  カメラ
+                //m_UseCamera     =   GUI.Toggle( new Rect( 10, offsetY, 100, 20 ), m_UseCamera, "  Camera" );
+                //offsetY +=  space;
 
                 //  テスト
                 m_UseTest       =   GUI.Toggle( new Rect( 10, offsetY, 100, 20 ), m_UseTest, "  Play Test" );
                 offsetY +=  space;
 
                 //  設定
-                m_UseSetting    =   GUI.Toggle( new Rect( 10, offsetY, 100, 20 ), m_UseSetting, "  Setting" );
-                offsetY +=  space;
+                //m_UseSetting    =   GUI.Toggle( new Rect( 10, offsetY, 100, 20 ), m_UseSetting, "  Setting" );
+                //offsetY +=  space;
 
                 //  ログ
                 m_UseLog        =   GUI.Toggle( new Rect( 10, offsetY, 100, 20 ), m_UseLog, "  Log" );
@@ -247,6 +269,10 @@ public class EditManager : MonoBehaviour {
             &&  m_rMapConfig.CheckOverlap( _ScreenPoint ) ) return  true;
             if( m_UseOutput
             &&  m_rFileMenu.CheckOverlap( _ScreenPoint ) )  return  true;
+            if( m_UseInfo
+            &&  m_rInfo.CheckOverlap( _ScreenPoint ) )      return  true;
+            if( m_UseBox
+            &&  m_rBlock.CheckOverlap( _ScreenPoint ) )     return  true;
 
             return  false;
         }
@@ -311,8 +337,8 @@ public class EditManager : MonoBehaviour {
                         "壁",
                         "拠点",
                         "敵の巣",
+                        "出撃地点",
                         "空",
-                        "敵の通路",
                         "選択",
                     };
                     Rect        rect        =   FunctionManager.AdjustRectCanvasToGUI(
@@ -452,7 +478,7 @@ public class EditManager : MonoBehaviour {
             return  m_WindowRect.Overlaps( new Rect( _ScreenPoint.x, _ScreenPoint.y, 1, 1 ), true );
         }
     }
-    //  編集ウィンドウ
+    //  編集ウィンドウ 
     class   Window_MapConfig
     {
         private EditManager     m_rParent       =   null;
@@ -624,6 +650,7 @@ public class EditManager : MonoBehaviour {
         private bool            m_SaveWindow    =   false;
         private string          m_SaveName      =   "";
         private Rect            m_SaveRect      =   new Rect();
+        private bool            m_SaveLight     =   false;
 
         public  Window_FileMenu( EditManager _rParent, WindowOversee _rOversee )
         {
@@ -817,7 +844,7 @@ public class EditManager : MonoBehaviour {
             {
                 m_SaveRect          =   m_WindowRect;
                 m_SaveRect.x        +=  m_WindowRect.width + 20.0f;
-                m_SaveRect.height   =   102.0f;
+                m_SaveRect.height   =   133.0f;
 
                 //  フレーム描画
                 GUI.Box( m_SaveRect, "Save Config" );
@@ -862,6 +889,14 @@ public class EditManager : MonoBehaviour {
             offsetY +=  space;
             offsetY +=  5;
 
+            //  チェックボックス
+            {
+                m_SaveLight =   GUI.Toggle( new Rect( 10, offsetY, 80, 21 ), m_SaveLight, "  軽量版" );
+            }
+
+            offsetY +=  space;
+            offsetY +=  5;
+
             //  項目の表示
             {
                 Rect    rect    =   FunctionManager.AdjustRectCanvasToGUI(
@@ -872,7 +907,9 @@ public class EditManager : MonoBehaviour {
                 );
                 if( GUI.Button( rect, "保存" )
                 &&  CheckSaveName( m_SaveName ) ){
-                    m_rParent.SaveEditData( m_SaveName );
+                    if( m_SaveLight )   m_rParent.SaveToPrefab_Light( m_SaveName );
+                    else                m_rParent.SaveEditData( m_SaveName );
+
                     m_SaveWindow    =   false;
                 }
                 offsetY +=  rect.height;
@@ -928,7 +965,350 @@ public class EditManager : MonoBehaviour {
             return  false;
         }
     }
-    //  設定ウィンドウ
+    //  情報ウィンドウ
+    class   Window_Info
+    {
+        private EditManager     m_rParent       =   null;
+        private WindowOversee   m_rOversee      =   null;
+        private Rect            m_WindowRect    =   new Rect();
+
+        public  Window_Info( EditManager _rParent, WindowOversee _rOversee )
+        {
+            m_rParent   =   _rParent;
+            m_rOversee  =   _rOversee;
+
+            InitWindowRect();
+        }
+
+        public  void    Update()
+        {
+            m_WindowRect    =   GUI.Window( 4, m_WindowRect, WindowProc, "Information" );
+        }
+        private void    WindowProc( int _WindowID )
+        {
+            //  閉じるボタン
+            {
+                Rect    rect    =   FunctionManager.AdjustRectCanvasToGUI(
+                    FunctionManager.AR_TYPE.TOP_RIGHT,
+                    new Rect( -6.0f, -5.0f, 14.0f, 10.0f ),
+                    new Vector2( 1.0f, 1.0f ),
+                    new Vector2( m_WindowRect.width, m_WindowRect.height )
+                );
+                if( GUI.Button( rect, "" ) ){
+                    m_rOversee.m_UseInfo    =   false;
+                }
+            }
+
+            //  ドラッグできるようにする
+            GUI.DragWindow( new Rect( 0, 0, m_WindowRect.width, 18 ) );
+
+            //  項目の表示
+            {
+                float   space   =   22.0f;
+                float   offsetY =   24.0f;
+                
+                //  項目の表示
+                {
+                    GUI.Label( new Rect( 10, offsetY, 200, 20 ), "Cursor :" );
+
+                    FunctionManager.GUILabel(
+                        FunctionManager.AR_TYPE.TOP_RIGHT,
+                        new Vector2( -12.0f, -offsetY ),
+                        ""  +   ( ( int )m_rParent.m_GridCursor.x + 1 ).ToString() .PadLeft( 3, '_' ) + ",  "
+                            +   ( ( int )m_rParent.m_GridCursor.y + 1 ).ToString() .PadLeft( 3, '_' ),
+                        new Vector2( 1.0f, 1.0f ),
+                        new Vector2( m_WindowRect.width, m_WindowRect.height )
+                    );
+                }
+                offsetY +=  space;
+                
+                //  項目の表示
+                {
+                    GUI.Label( new Rect( 10, offsetY, 200, 20 ), "Select :" );
+
+                    Vector3 focusSize   =   m_rParent.CalcFocusSize( m_rParent.m_rFocusList );
+                    FunctionManager.GUILabel(
+                        FunctionManager.AR_TYPE.TOP_RIGHT,
+                        new Vector2( -12.0f, -offsetY ),
+                        ""  +   ( ( int )focusSize.x ).ToString().PadLeft( 3, '_' ) + ",  "
+                            +   ( ( int )focusSize.y ).ToString().PadLeft( 3, '_' ) + ",  "
+                            +   ( ( int )focusSize.z ).ToString().PadLeft( 3, '_' ),
+                        new Vector2( 1.0f, 1.0f ),
+                        new Vector2( m_WindowRect.width, m_WindowRect.height )
+                    );
+                }
+                offsetY +=  space;
+
+                //  項目の表示 
+                {
+                    GUI.Label( new Rect( 10, offsetY, 200, 20 ), "MapSize :" );
+
+                    FunctionManager.GUILabel(
+                        FunctionManager.AR_TYPE.TOP_RIGHT,
+                        new Vector2( -12.0f, -offsetY ),
+                        ""  +   m_rParent.m_MapWidth.ToString() .PadLeft( 3, '_' ) + ",  "
+                            +   m_rParent.m_MapHeight.ToString().PadLeft( 3, '_' ) + ",  "
+                            +   m_rParent.m_MapDepth.ToString() .PadLeft( 3, '_' ),
+                        new Vector2( 1.0f, 1.0f ),
+                        new Vector2( m_WindowRect.width, m_WindowRect.height )
+                    );
+                }
+                offsetY +=  space;
+            }
+        }
+
+        public  void    InitWindowRect()
+        {
+            m_WindowRect    =   FunctionManager.AdjustRectCanvasToGUI(
+                FunctionManager.AR_TYPE.TOP_RIGHT,
+                new Rect( -20, -20, 180, 94 ),
+                new Vector2( 1.0f, 1.0f )
+            );
+        }
+        public  bool    CheckOverlap( Vector2 _ScreenPoint )
+        {
+            _ScreenPoint    =   FunctionManager.ScreenToGUI( _ScreenPoint );
+            return  m_WindowRect.Overlaps( new Rect( _ScreenPoint.x, _ScreenPoint.y, 1, 1 ), true );
+        }
+    }
+    //  ブロックウィンドウ
+    class   Window_Block
+    {
+        private EditManager     m_rParent       =   null;
+        private WindowOversee   m_rOversee      =   null;
+        private Rect            m_WindowRect    =   new Rect();
+
+        private Vector2         m_FileScroll    =   Vector2.zero;
+
+        private DirectoryInfo   m_rDirInfo      =   null;
+        private FileInfo[]      m_rFileInfo     =   null;
+        private Rect            m_FileRect      =   new Rect();
+
+        public  Window_Block( EditManager _rParent, WindowOversee _rOversee )
+        {
+            m_rDirInfo  =   new DirectoryInfo( Application.dataPath + "/Resources/EditImport_Block/" );
+
+            m_rParent   =   _rParent;
+            m_rOversee  =   _rOversee;
+
+            InitWindowRect();
+        }
+        public  void    Update()
+        {
+            m_WindowRect    =   GUI.Window( 5, m_WindowRect, WindowProc, "Block Config" );
+
+            //  読み込みリストを表示
+            if( m_rFileInfo != null ){
+                Print_OpenFileList();
+            }
+        }
+        private void    WindowProc( int _WindowID )
+        {
+            //  閉じるボタン
+            {
+                Rect    rect    =   FunctionManager.AdjustRectCanvasToGUI(
+                    FunctionManager.AR_TYPE.TOP_RIGHT,
+                    new Rect( -6.0f, -5.0f, 14.0f, 10.0f ),
+                    new Vector2( 1.0f, 1.0f ),
+                    new Vector2( m_WindowRect.width, m_WindowRect.height )
+                );
+                if( GUI.Button( rect, "" ) ){
+                    m_rOversee.m_UseBox =   false;
+                }
+            }
+
+            //  ドラッグできるようにする
+            GUI.DragWindow( new Rect( 0, 0, m_WindowRect.width, 18 ) );
+
+            //  項目の表示
+            {
+                float   space   =   22.0f;
+                float   offsetY =   24.0f;
+                
+                //  項目名 
+                {
+                    FunctionManager.GUILabel(
+                        FunctionManager.AR_TYPE.TOP_CENTER,
+                        new Vector2( 0.0f, -offsetY ),
+                        "――   使用ブロック   ――",
+                        new Vector2( 0.5f, 1.0f ),
+                        new Vector2( m_WindowRect.width, m_WindowRect.height )
+                    );
+                }
+                offsetY +=  space;
+
+                //  項目の表示
+                {
+                    FunctionManager.GUILabel(
+                        FunctionManager.AR_TYPE.TOP_CENTER,
+                        new Vector2( 0.0f, -offsetY ),
+                        m_rParent.m_UseBlockName,
+                        new Vector2( 0.5f, 1.0f ),
+                        new Vector2( m_WindowRect.width, m_WindowRect.height )
+                    );
+                }
+                offsetY +=  space;
+                offsetY +=  4;
+
+                //  項目を表示
+                {
+                    Rect    rect    =   FunctionManager.AdjustRectCanvasToGUI(
+                        FunctionManager.AR_TYPE.TOP_CENTER,
+                        new Rect( 0, -offsetY, 160, 20 ),
+                        new Vector2( 0.5f, 1.0f ),
+                        new Vector2( m_WindowRect.width, m_WindowRect.height )
+                    );
+                    if( GUI.Button( rect, "変更" ) ){
+                        m_FileScroll    =   Vector2.zero;
+                        m_rFileInfo     =   m_rDirInfo.GetFiles( "*.prefab" );
+                    }
+
+                    offsetY +=  rect.height;
+                }
+                offsetY +=  10;
+
+                //  項目名 
+                {
+                    FunctionManager.GUILabel(
+                        FunctionManager.AR_TYPE.TOP_CENTER,
+                        new Vector2( 0.0f, -offsetY ),
+                        "――   配置設定   ――",
+                        new Vector2( 0.5f, 1.0f ),
+                        new Vector2( m_WindowRect.width, m_WindowRect.height )
+                    );
+                }
+                offsetY +=  space;
+
+                //  項目の表示
+                {
+                    FunctionManager.GUILabel(
+                        FunctionManager.AR_TYPE.TOP_CENTER,
+                        new Vector2( 0.0f, -offsetY ),
+                        "" + ( int )m_rParent.m_BlockAngle + " 度",
+                        new Vector2( 0.5f, 1.0f ),
+                        new Vector2( m_WindowRect.width, m_WindowRect.height )
+                    );
+                }
+                //  項目を表示
+                {
+                    Rect    rect    =   FunctionManager.AdjustRectCanvasToGUI(
+                        FunctionManager.AR_TYPE.TOP_LEFT,
+                        new Rect( 10, -offsetY - 1, 40, 18 ),
+                        new Vector2( 0.0f, 1.0f ),
+                        new Vector2( m_WindowRect.width, m_WindowRect.height )
+                    );
+                    if( GUI.Button( rect, "左" ) ){
+                        m_rParent.AddPlaceBlockAngle( -90 );
+                    }
+                }
+                //  項目を表示
+                {
+                    Rect    rect    =   FunctionManager.AdjustRectCanvasToGUI(
+                        FunctionManager.AR_TYPE.TOP_RIGHT,
+                        new Rect( -10, -offsetY - 1, 40, 18 ),
+                        new Vector2( 1.0f, 1.0f ),
+                        new Vector2( m_WindowRect.width, m_WindowRect.height )
+                    );
+                    if( GUI.Button( rect, "右" ) ){
+                        m_rParent.AddPlaceBlockAngle( +90 );
+                    }
+                }
+
+                offsetY +=  space;
+            }
+        }
+        private void    Print_OpenFileList()
+        {
+            //  フレーム
+            {
+                m_FileRect      =   m_WindowRect;
+                m_FileRect.x    -=  m_WindowRect.width + 20.0f;
+
+                //  フレーム描画
+                GUI.Box( m_FileRect, "File List" );
+
+                //  グループ開始
+                GUI.BeginGroup( m_FileRect );
+            }
+
+            //  閉じるボタン
+            {
+                Rect    rect    =   FunctionManager.AdjustRectCanvasToGUI(
+                    FunctionManager.AR_TYPE.TOP_RIGHT,
+                    new Rect( -6.0f, -5.0f, 14.0f, 10.0f ),
+                    new Vector2( 1.0f, 1.0f ),
+                    new Vector2( m_FileRect.width, m_FileRect.height )
+                );
+                if( GUI.Button( rect, "" ) ){
+                    m_rFileInfo =   null;
+                }
+            }
+
+            //  スクロール
+            if( m_rFileInfo != null ){
+                //  スクロール
+                Rect    scrollRect  =   new Rect( 0.0f, 0.0f, m_WindowRect.width, m_WindowRect.height );
+                scrollRect.width    -=  14;
+                scrollRect.height   -=  30;
+                scrollRect.x        +=  10;
+                scrollRect.y        +=  24;
+
+                //  スクロール開始
+                float   itemHeight  =   m_rFileInfo.Length * 24;
+                m_FileScroll    =   GUI.BeginScrollView( scrollRect, m_FileScroll, new Rect( 0, 0, scrollRect.width - 50, itemHeight ) );
+
+                //  リスト表示
+                if( m_rFileInfo != null ){
+                    for( int i = 0; i < m_rFileInfo.Length; i++ ){
+                        FileInfo    rInfo       =   m_rFileInfo[ i ];
+                        string      fileName    =   rInfo.Name;
+                                    fileName    =   fileName.Substring( 0, fileName.Length - 7 );
+                        if( fileName.Length > 16 ){
+                            fileName    =   fileName.Substring( 0, 16 ) + "...";
+                        }
+
+                        //  読み込みデータ決定
+                        if( GUI.Button( new Rect( 0, 0 + 24 * i, m_WindowRect.width - 38, 20 ), fileName ) ){
+                            m_rParent.LoadBlockData( rInfo.Name );
+                            m_rFileInfo =   null;
+                            break;
+                        }
+                    }
+                }
+
+                //  スクロール終了
+                GUI.EndScrollView();
+            }
+
+            //  グループ終了
+            GUI.EndGroup();
+        }
+
+        public  void    InitWindowRect()
+        {
+            m_WindowRect    =   FunctionManager.AdjustRectCanvasToGUI(
+                FunctionManager.AR_TYPE.TOP_RIGHT,
+                new Rect( -220, -20, 180, 154 ),
+                new Vector2( 1.0f, 1.0f )
+            );
+            m_FileRect      =   m_WindowRect;
+            m_FileRect.x    -=  m_WindowRect.width + 20.0f;
+
+            m_rFileInfo     =   null;
+            m_FileScroll    =   Vector2.zero;
+        }
+        public  bool    CheckOverlap( Vector2 _ScreenPoint )
+        {
+            _ScreenPoint    =   FunctionManager.ScreenToGUI( _ScreenPoint );
+
+            if( m_WindowRect.Overlaps( new Rect( _ScreenPoint.x, _ScreenPoint.y, 1, 1 ), true ) )   return  true;
+            if( m_rFileInfo != null
+            &&  m_FileRect.Overlaps( new Rect( _ScreenPoint.x, _ScreenPoint.y, 1, 1 ), true ) )     return  true;
+
+            return  false;
+        }
+    }
+    //  設定ウィンドウ 
     class   Window_Setting
     {
         private EditManager     m_rParent       =   null;
@@ -948,71 +1328,96 @@ public class EditManager : MonoBehaviour {
         }
     }
     
-    public  GameObject      c_GridPanel         =   null;
-    public  GameObject      c_WallBlock         =   null;
-    public  GameObject      c_SlopeBlock        =   null;
-    public  GameObject      c_Base              =   null;
-    public  GameObject      c_SpawnPoint        =   null;
-    public  GameObject      c_EmptyBlock        =   null;
+    public  GameObject          c_GridPanel         =   null;
+    public  GameObject          c_SlopeBlock        =   null;
+    public  GameObject          c_Base              =   null;
+    public  GameObject          c_SpawnPoint        =   null;
+    public  GameObject          c_LaunchPoint       =   null;
+    public  GameObject          c_EmptyBlock        =   null;
 
-    public  Color           c_DefaultColor      =   Color.black;
-    public  Color           c_FocusColor        =   Color.white;
+    public  Material            c_StageMaterial     =   null;
 
-    public  float           c_GridWidth         =   1.0f;
-    public  float           c_GridScale         =   1.0f;
+    public  Color               c_DefaultColor      =   Color.black;
+    public  Color               c_FocusColor        =   Color.white;
 
-    public  float           c_OlthoSize         =   1.8f;
-    public  float           c_PlaceHeight       =   0.0f;
+    public  float               c_GridWidth         =   1.0f;
+    public  float               c_GridScale         =   1.0f;
 
-    public  float           m_WallHeight        =   1.0f;
+    public  float               c_OlthoSize         =   1.8f;
+    public  float               c_PlaceHeight       =   0.0f;
 
-    public  int             m_MapWidth          =   1;
-    public  int             m_MapHeight         =   1;
-    public  int             m_MapDepth          =   1;
+    public  float               m_WallHeight        =   1.0f;
 
-    public  bool            m_VisibleEmpty      =   true;
+    public  int                 m_MapWidth          =   1;
+    public  int                 m_MapHeight         =   1;
+    public  int                 m_MapDepth          =   1;
 
-    private string          c_FilePath          =   "Assets/Resources/EditData/";
-    private string          c_LoadPath          =   "EditData/";
+    public  bool                m_VisibleEmpty      =   true;
 
-    private float           c_FrameWidth        =   5.75f;
-    private float           c_FrameHeight       =   3.0f;
-    private Vector3         c_Center            =   Vector3.zero;
+    public  GameObject          c_PlayTestShell     =   null;
+    public  GameObject          c_EnemySpawnPoint   =   null;
+    public  GameObject          c_HomeBase          =   null;
+
+    private string              c_FilePath          =   "Assets/Resources/EditData/";
+    private string              c_LightPath         =   "Assets/Resources/EditData_Light/";
+    private string              c_MeshPath          =   "Assets/Resources/EditData_Mesh/";
+    private string              c_BlockPath         =   "EditImport_Block/";
+    private string              c_LoadPath          =   "EditData/";
+
+    private float               c_FrameWidth        =   5.75f;
+    private float               c_FrameHeight       =   3.0f;
+    private Vector3             c_Center            =   Vector3.zero;
+
+    //  配置ブロック
+    public  List< GameObject >  m_rBlockList        =   new List< GameObject >();
+    public  GameObject          m_rUseBlock         =   null;
+    public  string              m_UseBlockName      =   "";
+    public  int                 m_BlockAngle        =   0;
 
     //  編集パラメータ
-    private Transform       m_rEditData         =   null;
-    private Transform       m_rGridShell        =   null;
+    private Transform           m_rEditData         =   null;
+    private Transform           m_rGridShell        =   null;
 
-    private Transform       m_rWallShell        =   null;
-    private Transform       m_rSlopShell        =   null;
-    private Transform       m_rBaseShell        =   null;
-    private Transform       m_rSpawnPointShell  =   null;
-    private Transform       m_rEmptyShell       =   null;
+    private Transform           m_rWallShell        =   null;
+    private Transform           m_rSlopShell        =   null;
+    private Transform           m_rBoxShell         =   null;
+    private Transform           m_rBaseShell        =   null;
+    private Transform           m_rSpawnPointShell  =   null;
+    private Transform           m_rLaunchPointShell =   null;
+    private Transform           m_rEmptyShell       =   null;
 
-    private Transform       m_rMapFloor         =   null;
-    private Camera          m_rEditCamera       =   null;
+    private Transform           m_rMapFloor         =   null;
+    private Camera              m_rEditCamera       =   null;
 
-    private EditData_Config m_rDataConfig       =   null;
+    private EditData_Config     m_rDataConfig       =   null;
 
-    private EditMode        m_EditMode          =   EditMode.Select;
-    private Vector3         m_PrevPoint         =   -Vector3.one;
-    private Vector3         m_PrevMouse         =   Vector3.zero;
-    private bool            m_PrevPaint         =   false;
+    private EditMode            m_EditMode          =   EditMode.Select;
+    private Vector3             m_PrevPoint         =   -Vector3.one;
+    private Vector3             m_PrevMouse         =   Vector3.zero;
+    private bool                m_PrevPaint         =   false;
 
-    private bool            m_GridConnectOK     =   false;
-    private float           m_GridAccessTimer   =   0.0f;
+    private Vector3             m_RectStart         =   -Vector3.one;
+    private Vector2             m_GridCursor        =   Vector2.zero;
+
+    private bool                m_GridConnectOK     =   false;
+    private float               m_GridAccessTimer   =   0.0f;
+
+    //  プレイテスト用パラメータ
+    private NetworkManager      m_rNetworkManager   =   null;
+    private Transform           m_rPlayTestShell    =   null;
+    private bool                m_PlayTest          =   false;
     
-    //  ウィンドウパラメータ
-    private WindowOversee   m_rWindowOver       =   null;
-    private bool            m_OpenWindow        =   false;
+    //  ウィンドウパラメータ  
+    private WindowOversee       m_rWindowOver       =   null;
+    private bool                m_OpenWindow        =   false;
 
     //  
-    private EditCamera      m_rECameraCtrl      =   null;
+    private EditCamera          m_rECameraCtrl      =   null;
 
     private List< GridPanel_Control >
-                            m_rGridList         =   new List< GridPanel_Control >();
+                                m_rGridList         =   new List< GridPanel_Control >();
     private List< GridPanel_Control >
-                            m_rFocusList        =   new List< GridPanel_Control >();
+                                m_rFocusList        =   new List< GridPanel_Control >();
 
 	// Use this for initialization
 	void    Start()
@@ -1031,22 +1436,42 @@ public class EditManager : MonoBehaviour {
 	}
     void    GetAccessToExternalObject()
     {
+        m_rNetworkManager   =   FunctionManager.GetAccessComponent< NetworkManager >( "NetworkManager" );
+
         m_rEditData         =   GameObject.Find( "Edit_Data" ).transform;
         m_rGridShell        =   GameObject.Find( "Grid_Shell" ).transform;
         m_rWallShell        =   GameObject.Find( "Edit_Data/Wall_Shell" ).transform;
         m_rSlopShell        =   GameObject.Find( "Edit_Data/Slope_Shell" ).transform;
+        m_rBoxShell         =   GameObject.Find( "Edit_Data/Box_Shell" ).transform;
         m_rBaseShell        =   GameObject.Find( "Edit_Data/Base_Shell" ).transform;
         m_rSpawnPointShell  =   GameObject.Find( "Edit_Data/SpawnPoint_Shell" ).transform;
+        m_rLaunchPointShell =   GameObject.Find( "Edit_Data/LaunchPoint_Shell" ).transform;
         m_rEmptyShell       =   GameObject.Find( "Edit_Data/Empty_Shell" ).transform;
         m_rMapFloor         =   GameObject.Find( "Edit_Data/MapFloor" ).transform;
         m_rEditCamera       =   GameObject.Find( "Main Camera" ).GetComponent< Camera >(); 
 
         m_rDataConfig       =   GameObject.Find( "Edit_Data/ConfigData" ).GetComponent< EditData_Config >();
+
+        if( !m_rBoxShell )  m_rBoxShell =   CreateEmptyObject( "Edit_Data", "Box_Shell" );
     }
 	
 	// Update is called once per frame
 	void    Update()
     {
+        //  プレイテスト開始 / 終了
+        if( Input.GetKeyDown( KeyCode.F10 ) ){
+            if( m_PlayTest )    PT_EndPlayTest();
+            else                PT_StartPlayTest();
+        }
+
+        //  プレイテスト中は編集しない
+        if( m_PlayTest )    return;
+
+        //  壁を矩形内に生成
+        if( Input.GetKeyDown( KeyCode.I ) ){
+            SetLargeWall( m_rFocusList );
+        }
+
         //  オブジェクトのアクセス取得
         {
             if( m_GridAccessTimer > 0.0f ){
@@ -1099,6 +1524,9 @@ public class EditManager : MonoBehaviour {
 
         //  ペイント操作
         {
+            //  カーソルが触れているマス
+            GridPanel_Control   rControl    =   GetHitPanel_InGrid();
+
             //  クリックする度に選択をリセット
             if( Input.GetMouseButtonDown( 0 ) ){
                 if( !Input.GetKey( KeyCode.RightControl ) && !Input.GetKey( KeyCode.LeftControl )
@@ -1107,6 +1535,26 @@ public class EditManager : MonoBehaviour {
                 &&  !CheckOverlapWindow() ){
                     SetFocus_All( false );
                 }
+            }
+
+            //  矩形選択
+            if( Input.GetKey( KeyCode.RightShift )
+            ||  Input.GetKey( KeyCode.LeftShift ) ){
+                if( rControl
+                &&  CheckOverlapWindow() == false ){
+                    //  選択開始
+                    if( Input.GetMouseButtonDown( 0 ) ) m_RectStart =   rControl.m_GridPoint;
+                    //  選択中
+                    if( Input.GetMouseButton( 0 ) ){
+                        if( m_RectStart.x == -1 )       m_RectStart =   rControl.m_GridPoint;
+                        else                            SetFocusByRectangle( rControl.m_GridPoint, m_RectStart );
+                    }
+                }
+            }
+            //  矩形選択終了
+            if( ( !Input.GetKey( KeyCode.RightShift ) && !Input.GetKey( KeyCode.LeftShift ) )
+            ||  ( !Input.GetMouseButton( 0 ) ) ){
+                m_RectStart =   -Vector3.one;
             }
 
             //  塗る
@@ -1118,7 +1566,6 @@ public class EditManager : MonoBehaviour {
                 }
 
                 //  触れているパネルを取得
-                GridPanel_Control   rControl    =   GetHitPanel_InGrid();
                 if( rControl
                 &&  CheckOverlapWindow() == false ){
                     //  前回塗ったマスには塗らない
@@ -1141,17 +1588,28 @@ public class EditManager : MonoBehaviour {
                 m_PrevPaint     =   true;
                 m_PrevMouse     =   Input.mousePosition;
             }
+
+            //  カーソル位置保存
+            if( rControl ){
+                m_GridCursor    =   rControl.m_GridPoint;
+            }
         }
         //  選択モードでなければ選択を解除
         if( m_EditMode != EditMode.Select ){
             SetFocus_All( false );
         }
 
+        //  選択を拡張 
+        if( Input.GetKeyDown( KeyCode.U ) ){
+            SetFocus_PlusUP();
+        }
+
         //  選択部分を塗る
         if( Input.GetKeyDown( KeyCode.Alpha1 ) )    PaintGrid_Focus( EditMode.Wall );
         if( Input.GetKeyDown( KeyCode.Alpha2 ) )    PaintGrid_Focus( EditMode.Base );
         if( Input.GetKeyDown( KeyCode.Alpha3 ) )    PaintGrid_Focus( EditMode.SpawnPoint );
-        if( Input.GetKeyDown( KeyCode.Alpha4 ) )    PaintGrid_Focus( EditMode.Empty );
+        if( Input.GetKeyDown( KeyCode.Alpha4 ) )    PaintGrid_Focus( EditMode.LaunchPoint );
+        if( Input.GetKeyDown( KeyCode.Alpha5 ) )    PaintGrid_Focus( EditMode.Empty );
         if( Input.GetKeyDown( KeyCode.Alpha7 ) ){
             SetSlope( m_rFocusList );
             SetFocus_All( false );
@@ -1165,6 +1623,7 @@ public class EditManager : MonoBehaviour {
         if( Input.GetKeyDown( KeyCode.Delete ) ){
             int loopCount   =   m_rFocusList.Count;
             for( int i = 0; i < loopCount; i++ ){
+                if( m_rFocusList.Count == 0 )   break;
                 Erase_Vertical( m_rFocusList[ 0 ] );
             }
             SetFocus_All( false );
@@ -1173,6 +1632,9 @@ public class EditManager : MonoBehaviour {
 
     void    OnGUI()
     {
+        //  プレイテスト中は表示しない
+        if( m_PlayTest )    return;
+
         //  ウィンドウ設定
         {
             float   screenRatio =   Screen.width / 1024.0f;
@@ -1286,13 +1748,27 @@ public class EditManager : MonoBehaviour {
         {
             m_rEditData         =   rNewEDTrans;
             m_rWallShell        =   rNewEDTrans.FindChild( "Wall_Shell" );
-            m_rSlopShell        =   rNewEDTrans.FindChild( "Slope_Shell" ).transform;
-            m_rBaseShell        =   rNewEDTrans.FindChild( "Base_Shell" ).transform;
-            m_rSpawnPointShell  =   rNewEDTrans.FindChild( "SpawnPoint_Shell" ).transform;
+            m_rSlopShell        =   rNewEDTrans.FindChild( "Slope_Shell" );
+            m_rBoxShell         =   rNewEDTrans.FindChild( "Box_Shell" );
+            m_rBaseShell        =   rNewEDTrans.FindChild( "Base_Shell" );
+            m_rSpawnPointShell  =   rNewEDTrans.FindChild( "SpawnPoint_Shell" );
+            m_rLaunchPointShell =   rNewEDTrans.FindChild( "LaunchPoint_Shell" );
             m_rEmptyShell       =   rNewEDTrans.FindChild( "Empty_Shell" );
             m_rMapFloor         =   rNewEDTrans.FindChild( "MapFloor" );
 
             m_rDataConfig       =   rNewEDTrans.FindChild( "ConfigData" ).GetComponent< EditData_Config >();
+
+            //  互換
+            if( !m_rBoxShell ){
+                GameObject  rObj    =   new GameObject( "Box_Shell" );
+                m_rBoxShell         =   rObj.transform;
+                m_rBoxShell.parent  =   m_rEditData;
+            }
+            if( !m_rLaunchPointShell ){
+                GameObject  rObj            =   new GameObject( "LaunchPoint_Shell" );
+                m_rLaunchPointShell         =   rObj.transform;
+                m_rLaunchPointShell.parent  =   m_rEditData;
+            }
         }
 
         //  マップ情報取得
@@ -1372,6 +1848,20 @@ public class EditManager : MonoBehaviour {
         m_GridAccessTimer   =   0.1f;
     }
 
+    //  ブロックデータを読み込み
+    void    LoadBlockData( string _FileName )
+    {
+        //  拡張子を除く
+        _FileName   =   EraseExtension( _FileName );
+
+        //  オブジェクトをロード
+        GameObject  rPrefab     =   Resources.Load( c_BlockPath + _FileName ) as GameObject;
+        if( rPrefab ){
+            m_rUseBlock         =   rPrefab;
+            m_UseBlockName      =   _FileName;
+        }
+    }
+
     //  オブジェクトのアクセスを更新 
     void    UpdateGridObjectAccess()
     {
@@ -1406,10 +1896,197 @@ public class EditManager : MonoBehaviour {
     }
     void    SaveToPrefab( GameObject _rObj, string _FileName )
     {
+        SaveToPrefab( _rObj, _FileName, c_FilePath );
+    }
+    void    SaveToPrefab( GameObject _rObj, string _FileName, string _FilePath )
+    {
 #if     UNITY_EDITOR
         //  保存
-        PrefabUtility.CreatePrefab( c_FilePath + _FileName + ".prefab", _rObj );
+        PrefabUtility.CreatePrefab( _FilePath + _FileName + ".prefab", _rObj );
 #endif
+    }
+
+    //  ゲームオブジェクトを保存（軽量版、読み込み不可）
+    void    SaveToPrefab_Light( string _FileName )
+    {
+        //  壁と斜面をリストにまとめる
+        List< Transform >   rTransList  =   new List< Transform >();
+        for( int i = 0; i < m_rWallShell.childCount; i++ )  rTransList.Add( m_rWallShell.GetChild( i ) );
+        for( int i = 0; i < m_rSlopShell.childCount; i++ )  rTransList.Add( m_rSlopShell.GetChild( i ) );
+
+        //  合体させるためのデータを作成
+        CombineInstance[]   combine     =   new CombineInstance[ rTransList.Count ];
+        for( int i = 0; i < combine.Length; i++ ){
+            combine[ i ].mesh       =   rTransList[ i ].GetComponent< MeshFilter >().sharedMesh;
+            combine[ i ].transform  =   rTransList[ i ].localToWorldMatrix;
+        }
+
+        //  プレハブを作成
+        GameObject      saveObj     =   new GameObject( _FileName );
+        MeshFilter      rFilter     =   saveObj.AddComponent< MeshFilter >();
+        MeshRenderer    rRenderer   =   saveObj.AddComponent< MeshRenderer >();
+        MeshCollider    rCollider   =   saveObj.AddComponent< MeshCollider >();
+
+        //  準備開始
+        for( int i = 0; i < rTransList.Count; i++ ){
+            rTransList[ i ].gameObject.SetActive( false );
+        }
+        saveObj.SetActive( false );
+
+        //  メッシュをひとつにまとめる
+        rFilter.mesh        =   new Mesh();
+        rFilter.mesh.name   =   _FileName;
+        rFilter.mesh.CombineMeshes( combine, true, true );
+
+        //  マテリアル設定
+        rRenderer.material      =   c_StageMaterial;
+        //  コライダー設定
+        rCollider.sharedMesh    =   rFilter.mesh;
+
+        //  元に戻す
+        for( int i = 0; i < rTransList.Count; i++ ){
+            rTransList[ i ].gameObject.SetActive( true );
+        }
+        saveObj.SetActive( true );
+
+#if     UNITY_EDITOR
+        //  アセット作成 
+        AssetDatabase.CreateAsset( rFilter.mesh, c_MeshPath + rFilter.mesh.name + ".asset" );
+		AssetDatabase.SaveAssets();
+#endif
+
+        //  保存
+        SaveToPrefab( saveObj, _FileName, c_LightPath );
+
+        //  オブジェクト削除
+        Destroy( saveObj );
+    }
+
+    //  矩形選択から大きな壁を作成
+    void    SetLargeWall( List< GridPanel_Control > _rGridList )
+    {
+        //  各軸の両端を調べる
+        Vector3 pointMin    =   new Vector3( m_MapWidth, m_MapHeight, m_MapDepth );
+        Vector3 pointMax    =   -Vector3.one;
+        for( int i = 0; i < _rGridList.Count; i++ ){
+            Vector3 curPoint    =   _rGridList[ i ].m_GridPoint;
+
+            pointMin.x  =   Mathf.Min( curPoint.x, pointMin.x );
+            pointMin.y  =   Mathf.Min( curPoint.y, pointMin.y );
+            pointMin.z  =   Mathf.Min( curPoint.z, pointMin.z );
+
+            pointMax.x  =   Mathf.Max( curPoint.x, pointMax.x );
+            pointMax.y  =   Mathf.Max( curPoint.y, pointMax.y );
+            pointMax.z  =   Mathf.Max( curPoint.z, pointMax.z );
+        }
+
+        //  サイズを計算
+        Vector3 size        =   pointMax - pointMin + Vector3.one;
+
+        //  座標を計算
+        Vector3 maxPos      =   GetGrid_FromPoint( pointMax ).m_GridPos;
+        Vector3 minPos      =   GetGrid_FromPoint( pointMin ).m_GridPos;
+        Vector3 objPos      =   minPos + ( maxPos - minPos ) * 0.5f;
+                objPos.y    +=  c_GridWidth * 0.5f;
+
+        //  生成
+        {
+            //  オブジェクト作成
+            GameObject  rObj    =   Instantiate( m_rUseBlock );
+            Transform   rTrans  =   rObj.transform;
+
+            //  親の設定
+            rTrans.parent       =   ( m_rUseBlock.name.IndexOf( "EB_" ) != -1 )? m_rBoxShell : m_rWallShell;
+            
+            //  向き設定
+            rTrans.eulerAngles  =   new Vector3( 0.0f, m_BlockAngle, 0.0f );
+
+            //  サイズ設定
+            Vector3 worldScale  =   new Vector3(
+                c_GridWidth * size.x,
+                c_GridWidth * size.z,
+                c_GridWidth * size.y
+            );
+            Vector3 localScale      =   rTrans.InverseTransformVector( worldScale );
+                    localScale.x    =   Mathf.Abs( localScale.x );
+                    localScale.y    =   Mathf.Abs( localScale.y );
+                    localScale.z    =   Mathf.Abs( localScale.z );
+            rTrans.localScale       =   localScale;
+
+            //  座標設定
+            rTrans.position         =   objPos;
+
+            //  ＵＶ設定
+            MeshFilter  rFilter     =   rObj.GetComponent< MeshFilter >();
+            
+
+            //  パラメータ更新 
+            for( int z = ( int )pointMin.z; z <= pointMax.z; z++ ){
+            for( int y = ( int )pointMin.y; y <= pointMax.y; y++ ){
+            for( int x = ( int )pointMin.x; x <= pointMax.x; x++ ){
+                GridPanel_Control   rGrid   =   GetGrid_FromPoint( x, y, z );
+                if( !rGrid )        continue;
+
+                rGrid.m_GridType    =   GridPanel_Control.GridType.Wall;
+                rGrid.SetRelatedObject( rObj );
+            }
+            }
+            }
+        }
+
+        //  選択解除
+        SetFocus_All( false );
+    }
+    //  矩形選択
+    void    SetFocusByRectangle( Vector3 _PointA, Vector3 _PointB )
+    {
+        //  フォーカス解除
+        SetFocus_All( false );
+
+        //  両端を調べる
+        Vector3 pointMin    =   new Vector3( m_MapWidth, m_MapHeight, m_MapDepth );
+        Vector3 pointMax    =   -Vector3.one;
+        {
+            pointMin.x      =   Mathf.Min( _PointA.x, _PointB.x );
+            pointMin.y      =   Mathf.Min( _PointA.y, _PointB.y );
+            pointMin.z      =   Mathf.Min( _PointA.z, _PointB.z );
+
+            pointMax.x      =   Mathf.Max( _PointA.x, _PointB.x );
+            pointMax.y      =   Mathf.Max( _PointA.y, _PointB.y );
+            pointMax.z      =   Mathf.Max( _PointA.z, _PointB.z );
+        }
+
+        //  矩形のサイズを計算
+        Vector3 size        =   pointMax - pointMin + Vector3.one;
+        Vector3 start       =   pointMin;
+        Vector3 end         =   pointMin + size;
+
+        //  選択
+        for( int z = ( int )start.z; z < ( int )end.z; z++ ){
+        for( int y = ( int )start.y; y < ( int )end.y; y++ ){
+        for( int x = ( int )start.x; x < ( int )end.x; x++ ){
+            GridPanel_Control   rControl    =   GetGrid_FromPoint( x, y, z );
+            if( !rControl )     continue;
+
+            SetFocus( rControl, true );
+        }
+        }
+        }
+    }
+    //  一段上を追加選択
+    void    SetFocus_PlusUP()
+    {
+        List< GridPanel_Control >   rList   =   new List< GridPanel_Control >();
+        for( int i = 0; i < m_rFocusList.Count; i++ ){
+            rList.Add( m_rFocusList[ i ] );
+        }
+
+        for( int i = 0; i < rList.Count; i++ ){
+            GridPanel_Control   rTarget =   GetGrid_FromPoint( rList[ i ].m_GridPoint + new Vector3( 0, 0, 1 ) );
+            if( !rTarget )      continue;
+
+            SetFocus( rTarget, true );
+        }
     }
 
     //  グリッド生成
@@ -1762,8 +2439,9 @@ public class EditManager : MonoBehaviour {
             case    EditMode.Wall:          SetWall( _rPanel );         break;
             case    EditMode.Base:          SetBase( _rPanel );         break;
             case    EditMode.SpawnPoint:    SetSpawnPoint( _rPanel );   break;
+            case    EditMode.LaunchPoint:   SetLaunchPoint( _rPanel );  break;
             case    EditMode.Empty:         SetEmptyBox( _rPanel );     break;
-            case    EditMode.NavMesh:       break;
+            //case    EditMode.NavMesh:       break;
             case    EditMode.Select:        SetFocus( _rPanel, true );  break;
         }
     }
@@ -1896,6 +2574,32 @@ public class EditManager : MonoBehaviour {
         }
     }
 
+    //  出撃地点の配置
+    void    SetLaunchPoint( GridPanel_Control _rPanel )
+    {
+        //  既に拠点が配置されている場合は処理を行わない
+        if( _rPanel.m_GridType == GridPanel_Control.GridType.LaunchPoint )  return;
+
+        //  オブジェクト作成
+        GameObject  rObj    =   Instantiate( c_LaunchPoint );
+        Transform   rTrans  =   rObj.transform;
+        
+        //  親の設定
+        rTrans.parent       =   m_rLaunchPointShell;
+
+        //  座標設定
+        Vector3 panelPos    =   _rPanel.transform.position;
+        rTrans.position     =   new Vector3(
+            panelPos.x,
+            c_GridWidth * _rPanel.m_GridPoint.z,
+            panelPos.z
+        );
+
+        //  パラメータ更新
+        _rPanel.m_GridType  =   GridPanel_Control.GridType.LaunchPoint;
+        _rPanel.SetRelatedObject( rObj );
+    }
+
     //  壁の配置
     void    SetWall( GridPanel_Control _rPanel )
     {
@@ -1903,11 +2607,11 @@ public class EditManager : MonoBehaviour {
         if( _rPanel.m_GridType == GridPanel_Control.GridType.Wall ) return;
 
         //  オブジェクト作成
-        GameObject  rObj    =   Instantiate( c_WallBlock );
+        GameObject  rObj    =   Instantiate( m_rUseBlock );
         Transform   rTrans  =   rObj.transform;
 
         //  親の設定
-        rTrans.parent       =   m_rWallShell;
+        rTrans.parent       =   ( m_rUseBlock.name.IndexOf( "EB_" ) != -1 )? m_rBoxShell : m_rWallShell;
         
         //  サイズ設定
         rTrans.localScale   =   new Vector3(
@@ -1915,6 +2619,9 @@ public class EditManager : MonoBehaviour {
             m_WallHeight,
             c_GridWidth
         );
+
+        //  向き設定
+        rTrans.eulerAngles  =   new Vector3( 0.0f, m_BlockAngle, 0.0f );
 
         //  座標設定
         Vector3 panelPos    =   _rPanel.transform.position;
@@ -2196,7 +2903,7 @@ public class EditManager : MonoBehaviour {
             case    EditMode.Wall:          SetWall_All();          break;
             case    EditMode.Base:          SetBase_All();          break;
             case    EditMode.SpawnPoint:    SetSpawnPoint_All();    break;
-            case    EditMode.NavMesh:       break;
+            //case    EditMode.NavMesh:       break;
             case    EditMode.Select:        break;
         }
     }
@@ -2262,6 +2969,224 @@ public class EditManager : MonoBehaviour {
             for( int i = 0; i < loopCount; i++ ){
                 //  フォーカス解除
                 SetFocus( m_rFocusList[ 0 ], false );
+            }
+        }
+    }
+
+    //  ゲームオブジェクト作成
+    Transform   CreateEmptyObject( string _ParentName, string _Name )
+    {
+        GameObject  rObj    =   new GameObject( _Name );
+        Transform   rTrans  =   rObj.transform;
+        GameObject  rParent =   GameObject.Find( _ParentName );
+        if( rParent ){
+            rTrans.SetParent( rParent.transform );
+        }
+
+        return  rTrans;
+    }
+
+    //  配置する向きを変更
+    void    AddPlaceBlockAngle( int _AddAngle )
+    {
+        m_BlockAngle    +=  _AddAngle;
+        m_BlockAngle    =   m_BlockAngle % 360;
+    }
+    //  選択のサイズを計算
+    Vector3 CalcFocusSize( List< GridPanel_Control > _rList )
+    {
+        //  項目がなければサイズは０
+        if( _rList.Count == 0 ) return  Vector3.zero;
+
+        //  各軸の両端を調べる
+        Vector3 pointMin    =   new Vector3( m_MapWidth, m_MapHeight, m_MapDepth );
+        Vector3 pointMax    =   -Vector3.one;
+        for( int i = 0; i < _rList.Count; i++ ){
+            Vector3 curPoint    =   _rList[ i ].m_GridPoint;
+
+            pointMin.x  =   Mathf.Min( curPoint.x, pointMin.x );
+            pointMin.y  =   Mathf.Min( curPoint.y, pointMin.y );
+            pointMin.z  =   Mathf.Min( curPoint.z, pointMin.z );
+
+            pointMax.x  =   Mathf.Max( curPoint.x, pointMax.x );
+            pointMax.y  =   Mathf.Max( curPoint.y, pointMax.y );
+            pointMax.z  =   Mathf.Max( curPoint.z, pointMax.z );
+        }
+
+        //  サイズを計算
+        Vector3 size        =   pointMax - pointMin + Vector3.one;
+
+        return  size;
+    }
+    //  拡張子を消す
+    string  EraseExtension( string _String )
+    {
+        //  拡張子がついている場合は消す
+        if( _String.IndexOf( '.' ) != -1 ){
+            string  ext =   Path.GetExtension( _String );
+            _String     =   _String.Substring( 0, _String.Length - ext.Length );
+        }
+
+        return  _String;
+    }
+
+//===========================================================================
+//      プレイテスト関連
+//===========================================================================
+    //  テスト開始
+    void    PT_StartPlayTest()
+    {
+#if     UNITY_EDITOR
+        //  ナビメッシュ作成
+        NavMeshBuilder.BuildNavMesh();
+#endif
+
+        //  プレイテスト用データ作成
+        {
+            //  古いデータを破棄
+            if( m_rPlayTestShell ){
+                Destroy( m_rPlayTestShell.gameObject );
+            }
+
+            //  作成
+            GameObject  rPTShellObj =   Instantiate( c_PlayTestShell );
+            m_rPlayTestShell    =   rPTShellObj.transform;
+        }
+
+        //  敵の出現地点設定
+        PT_SetEnemySpawnPoint( m_rPlayTestShell );
+        //  拠点を設定
+        PT_SetHomeBase( m_rPlayTestShell );
+
+        //  プレイ開始
+        m_rNetworkManager.StartHost();
+
+        //  グリッド無効化 
+        m_rGridShell.gameObject.SetActive( false );
+
+        //  RTSグリッドの調整
+        {
+            Transform   rRITrans =   m_rPlayTestShell.FindChild( "ResourceInformation" );
+            if( rRITrans ){
+                rRITrans.GetComponent< ResourceInformation >().m_GridOffset -=  new Vector3(
+                    ( m_MapWidth  % 2 ) * 1.5f,
+                    0.0f,
+                    ( m_MapHeight % 2 ) * 1.5f
+                 );
+            }
+        }
+
+        //  パラメータ更新
+        m_PlayTest  =   true;
+    }
+    //  テスト終了
+    void    PT_EndPlayTest()
+    {
+        //  プレイヤーが出撃している場合は戻す
+        {
+            Transform   rLinkTrans      =   m_rPlayTestShell.FindChild( "LinkManager" );
+            LinkManager rLinkManager    =   rLinkTrans.GetComponent< LinkManager >();
+
+            rLinkManager.m_rLocalNPControl.ChangeToCommander();
+        }
+
+        //  ネットワーク終了
+        m_rNetworkManager.StopHost();
+
+        //  テスト用データ破棄
+        if( m_rPlayTestShell ){
+            Destroy( m_rPlayTestShell.gameObject );
+        }
+
+        //  グリッド有効化
+        m_rGridShell.gameObject.SetActive( true );
+
+        //  パラメータ更新
+        m_PlayTest  =   false;
+    }
+
+    //  敵の出現地点を設定
+    void    PT_SetEnemySpawnPoint( Transform _rPlayTestShell )
+    {
+        //  スポーン地点の親へのアクセス
+        Transform   rShellTrans     =   _rPlayTestShell.FindChild( "EnemySpawnRoot" );
+        if( !rShellTrans )      return;
+
+        //  現在の出現地点を破棄
+        foreach( Transform rChild in rShellTrans ){
+            Destroy( rChild.gameObject );
+        }
+
+        //  出現地点を設定
+        List< Transform >   rSpawnPointList =   new List< Transform >();
+        for( int i = 0; i < m_rSpawnPointShell.childCount; i++ ){
+            //  編集データの出現地点
+            Transform   rEditSP =   m_rSpawnPointShell.GetChild( i );
+
+            //  プレイテスト用の出現地点
+            GameObject  rObj    =   Instantiate( c_EnemySpawnPoint );
+            Transform   rTrans  =   rObj.transform;
+
+            rTrans.parent       =   rShellTrans;
+            rTrans.position     =   rEditSP.position;
+            rTrans.rotation     =   rEditSP.rotation;
+
+            //  リストに登録
+            rSpawnPointList.Add( rTrans );
+        }
+
+        //  スポーン地点更新
+        EnemyGenerator  rGenerator  =   rShellTrans.GetComponent< EnemyGenerator >();
+        rGenerator.InitializeSpawnPoint( rSpawnPointList );
+    }
+    //  拠点を設定
+    void    PT_SetHomeBase( Transform _rPlayTestShell )
+    {
+        //  生成済みの拠点を削除
+        {
+            //  削除リスト作成
+            List< GameObject >  eraseList   =   new List< GameObject >();
+            for( int i = 0; i < _rPlayTestShell.childCount; i++ ){
+                Transform   rTrans      =   _rPlayTestShell.GetChild( i );
+                if( rTrans.name.IndexOf( "Homebase" ) == -1 )   continue;
+            
+                eraseList.Add( rTrans.gameObject );
+            }
+
+            //  削除
+            for( int i = 0; i < eraseList.Count; i++ ){
+                Destroy( eraseList[ i ] );
+            }
+        }
+
+        //  ベース配置
+        for( int i = 0; i < m_rBaseShell.childCount; i++ ){
+            //  編集データのベース
+            Transform   rEditBase   =   m_rBaseShell.GetChild( i );
+        
+            //  拠点を生成
+            {
+                GameObject  rObj    =   Instantiate( c_HomeBase );
+                Transform   rTrans  =   rObj.transform;
+        
+                rTrans.parent       =   FunctionManager.GetAccessComponent< Transform >( "PlayTest_Shell" );
+                rTrans.name         =   "Homebase";
+
+                rTrans.position     =   rEditBase.position;
+                rTrans.GetChild( 0 ).localScale
+                    =   rEditBase.GetChild( 0 ).localScale;
+
+                //  エディタ用設定
+                BaseHealth  rBase   =   rTrans.GetComponent< BaseHealth >();
+                if( rBase ){
+                    rBase.m_UseEdit =   true;
+                }
+
+                //  アクセスを登録
+                Transform   rShellTrans =   _rPlayTestShell.FindChild( "EnemySpawnRoot" );
+                if( rShellTrans ){
+                    rShellTrans.GetComponent< ReferenceWrapper >().m_home_base  =   rObj;
+                }
             }
         }
     }

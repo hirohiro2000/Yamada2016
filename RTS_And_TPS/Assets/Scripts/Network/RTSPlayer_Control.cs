@@ -69,7 +69,7 @@ public class RTSPlayer_Control : NetworkBehaviour {
         rRTSCamera.GetComponent< RTSCamera >().m_target     =   transform;
     }
     //  終了処理
-    void    EndProc()
+    public  void    EndProc()
     {
         //  メインカメラを復旧
         GameObject  rMainCamera =   GameObject.Find( "Main Camera" );

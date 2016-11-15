@@ -36,7 +36,13 @@ public class ShootAndMove : TaskBase {
 
     void Start()
     {
-        m_attack_object_root = transform.root.GetComponent<ReferenceWrapper>().m_attack_object_root;
+        var enemy_root = GameObject.Find("EnemySpawnRoot");
+        m_attack_object_root = enemy_root.GetComponent<ReferenceWrapper>().m_attack_object_root;
+    }
+
+    void Update()
+    {
+
     }
 
     IEnumerator UpdateLookPoint(TargetingSystem target_system)
@@ -83,7 +89,9 @@ public class ShootAndMove : TaskBase {
     public override void Initialize(GameObject owner)
     {
         base.Initialize(owner);
-        m_home_base = transform.root.GetComponent<ReferenceWrapper>().m_home_base;
+
+        var enemy_root = GameObject.Find("EnemySpawnRoot");
+        m_home_base = enemy_root.GetComponent<ReferenceWrapper>().m_home_base;
         m_navmesh_accessor = owner.GetComponent<NavMeshAgent>();
     }
 

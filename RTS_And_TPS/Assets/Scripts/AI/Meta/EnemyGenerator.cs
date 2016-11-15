@@ -129,11 +129,26 @@ public class EnemyGenerator : NetworkBehaviour
         InitializeSpawnPoint();
     }
 
-    void InitializeSpawnPoint()
+    void    InitializeSpawnPoint()
     {
         for (int i = 0; i < transform.childCount; i++)
         {
             var nav_data = transform.GetChild(i).GetComponent<NavigationRouteData>();
+            if (nav_data)
+                m_navigation_data_list.Add(nav_data);
+            else
+                UserLog.ErrorTerauchi(transform.GetChild(i).name + "not attach NavigationRouteData");
+        }
+    }
+    public  void    InitializeSpawnPoint( List< Transform > _rSpawnPointList )
+    {
+        //  リストをクリア
+        m_navigation_data_list.Clear();
+
+        for( int i = 0; i < _rSpawnPointList.Count; i++ ){
+            Transform   rTrans  =   _rSpawnPointList[ i ];
+
+            var nav_data = rTrans.GetComponent<NavigationRouteData>();
             if (nav_data)
                 m_navigation_data_list.Add(nav_data);
             else
@@ -152,7 +167,10 @@ public class EnemyGenerator : NetworkBehaviour
             {
                 EnemyData create_enemy_data = m_generate_director.DirectionGenerateEnemy();
                 GameObject new_enemy = CreateEnemyInstance( Random.Range( 1, level ), create_enemy_data );
-                NetworkServer.Spawn(new_enemy);
+
+                if (new_enemy)
+                    NetworkServer.Spawn(new_enemy);
+
                 respawn_count++;
                 if (respawn_count >= num_spawn)
                     break;    
@@ -173,6 +191,9 @@ public class EnemyGenerator : NetworkBehaviour
         int level,
         EnemyData data)
     {
+        //  出現地点がない場合は発生処理を行わない
+        if( m_navigation_data_list.Count == 0 ) return  null;
+
         //このエラーチェックは最終的に消す
         if(data.type >= GenerateEnemyList.Length)
             UserLog.ErrorTerauchi("Enemygenerator::CreateEnemyInstance type_index error !! max_enemy_type is " + GenerateEnemyList.Length + "type_index is" + data.type);

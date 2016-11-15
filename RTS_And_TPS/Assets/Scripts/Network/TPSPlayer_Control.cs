@@ -80,14 +80,19 @@ public class TPSPlayer_Control : NetworkBehaviour {
         // BGM再生
         if (m_bgm == null)
         {
-            m_bgm = SoundController.Create("BGM0", null);
+            Transform   rPTTrans    =   FunctionManager.GetAccessComponent< Transform >( "PlayTest_Shell" );
+            m_bgm = SoundController.Create("BGM0", rPTTrans);
         }
         m_bgm.Play();
 
     }
     //  終了処理
-    void    EndProc()
+    public  void    EndProc()
     {
+        //  カーソルを戻す
+        Cursor.lockState    =   CursorLockMode.None;
+        Cursor.visible      =   true;
+
         //  ＵＩ無効化
         GameObject.Find( "Canvas" ).transform
             .FindChild( "TPS_HUD" ).gameObject.SetActive( false );

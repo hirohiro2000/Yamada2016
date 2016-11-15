@@ -52,6 +52,15 @@ public class ResourceInformation : NetworkBehaviour
 		m_gridSplitSpacePlane	= Instantiate( m_gridSplitSpacePlane );
 		m_gridSplitSpacePlane.transform.localScale = new Vector3( m_gridSplitSpaceScale*0.1f, 1.0f, m_gridSplitSpaceScale*0.1f );//test
 
+        //  エディット用
+        {
+            GameObject  rPTShell    =   GameObject.Find( "PlayTest_Shell" );
+            if( rPTShell ){
+                m_gridSplitSpacePlane.transform.parent
+                    =   rPTShell.transform;
+            }
+        }
+
         //  非表示
         m_gridSplitSpacePlane.GetComponent< MeshRenderer >().enabled    =   false;
 	}
