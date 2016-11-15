@@ -6,6 +6,8 @@ public class AttackPointList : MonoBehaviour {
 
 	public float baseAttackPoint = 1.0f;
 
+	bool Destroyed = false;
+	Vector3 DestroyPos = Vector3.zero;
 
 	[SerializeField, ReorderableList(new int[] { 100, 100 })]
 	public WeakPointParamReorderableList attack_list = null;
@@ -56,6 +58,11 @@ public class AttackPointList : MonoBehaviour {
 				collider.enabled = true;
 			}
 		}
+		if(Destroyed == true)
+		{
+			CallEmitObjectOnMyPosition();
+            Destroy(autoDestroyObject.gameObject);
+		}
 	}
 
 	void OnTriggerEnter(Collider collider)
@@ -76,12 +83,22 @@ public class AttackPointList : MonoBehaviour {
 	public AttackPointParamChange HitedCallBack = null;
 
 
-	public void CallDestroy()
+	public void Hited()
 	{
-		if(autoDestroyObject != null)
+
+        if (autoDestroyObject != null)
 		{
-			Destroy(autoDestroyObject.gameObject);
+			if (Destroyed == false)
+			{
+				Destroyed = true;
+				DestroyPos = transform.position;
+			}
 		}
+		else
+		{
+			CallEmitObjectOnMyPosition();
+        }
+
 	}
 
 	public void CallEmitObjectOnMyPosition()

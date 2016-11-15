@@ -35,13 +35,13 @@ public class WeaponAmmoUIList : MonoBehaviour {
 
 	public void Disp(WeaponList[] weapons, int cnt)
 	{
-		for (int i = 0; i < transform.childCount; i++)
-		{
-			weaponAmmoUIs[i].gameObject.SetActive(false);
-		}
+		//for (int i = 0; i < transform.childCount; i++)
+		//{
+		//	weaponAmmoUIs[i].gameObject.SetActive(false);
+		//}
 		for (int i = 0; i < weapons.Length; i++)
 		{
-			weaponAmmoUIs[i].gameObject.SetActive(true);
+			//weaponAmmoUIs[i].gameObject.SetActive(true);
 			weaponAmmoUIs[i].Update(weapons[i].param, cnt == i);
 		}
 	}
