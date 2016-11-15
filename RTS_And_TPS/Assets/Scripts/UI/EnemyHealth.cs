@@ -23,6 +23,6 @@ public class EnemyHealth : MonoBehaviour
     void Update()
     {
         m_healthBar.setValue( m_health.GetHP() / m_health.GetMaxHP() );
-        m_text.text = m_health.GetLevel().ToString();
+        m_text.text = "Lv " + m_health.GetLevel().ToString();
     }
 }

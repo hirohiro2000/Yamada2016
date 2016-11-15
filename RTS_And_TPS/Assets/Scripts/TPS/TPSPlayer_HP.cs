@@ -13,6 +13,7 @@ public class TPSPlayer_HP : NetworkBehaviour {
 
     private DamageBank          m_rDamageBank   =   null;
     private TPSPlayer_Control   m_rTPSControl   =   null;
+    private RTSPlayer_Control   m_rRTSControl   =   null;
     private NetPlayer_Control   m_rNetPlayer    =   null;
 
 	//  Use this for initialization
@@ -21,6 +22,7 @@ public class TPSPlayer_HP : NetworkBehaviour {
         //  アクセスの取得
 	    m_rDamageBank   =   GetComponent< DamageBank >();
         m_rTPSControl   =   GetComponent< TPSPlayer_Control >();
+        m_rRTSControl   =   GetComponent< RTSPlayer_Control >();
         m_rNetPlayer    =   GetComponent< NetPlayer_Control >();
 
         //  パラメータ初期化
@@ -38,7 +40,8 @@ public class TPSPlayer_HP : NetworkBehaviour {
 	void    DamageProc_CallBack( float _Damage )
     {
         //  受けたダメージをサーバーに送信
-        m_rTPSControl.CmdSendDamage( _Damage );
+        if( m_rRTSControl ) m_rRTSControl.CmdSendDamage( _Damage );
+        if( m_rTPSControl ) m_rTPSControl.CmdSendDamage( _Damage );
     }
 
 	//  Update is called once per frame
@@ -53,13 +56,14 @@ public class TPSPlayer_HP : NetworkBehaviour {
     //  外部からの操作
     public  void    SetDamage( float _Damage )
     {
-        //  ダメージを受ける
+        //  ダメージを受ける 
         m_CurHP -=  _Damage;
         m_CurHP =   Mathf.Max( m_CurHP, 0.0f );
         //  死亡チェック
         if( m_CurHP == 0.0f ){
             //  コマンダーに戻る
-            m_rTPSControl.RpcChangeToCommander( m_rNetPlayer.c_ClientID );
+            if( m_rTPSControl ) m_rTPSControl.RpcChangeToCommander( m_rNetPlayer.c_ClientID );
+            if( m_rRTSControl ) m_rRTSControl.RpcChangeToCommander( m_rNetPlayer.c_ClientID );
         }
     }
 }

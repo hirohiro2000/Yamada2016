@@ -10,12 +10,15 @@ public class RTSPlayer_Control : NetworkBehaviour {
     private LinkManager         m_rLinkManager  =   null;
     private ResourceCreator     m_rRCreator     =   null;
 
+    private TPSPlayer_HP        m_rHP           =   null;
+
 	// Use this for initialization
 	void    Start()
     {
         //  アクセスの取得
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
         m_rRCreator     =   FunctionManager.GetAccessComponent< ResourceCreator >( "ResourceCreator" );
+        m_rHP           =   GetComponent< TPSPlayer_HP >();
 
         //  自分のキャラクターのみ処理を行う
 	    if( isLocalPlayer ){
@@ -44,6 +47,10 @@ public class RTSPlayer_Control : NetworkBehaviour {
     //  開始処理
     void    StartProc()
     {
+        //  UI系初期化
+        GameObject.Find( "Canvas" ).transform
+            .FindChild( "TPS_HUD" ).gameObject.SetActive( true );
+
         //  リソース情報有効化
         ResourceInformation rResourceInfo   =   GameObject.Find( "ResourceInformation" ).GetComponent< ResourceInformation >();
         rResourceInfo.enabled   =   true;
@@ -71,6 +78,10 @@ public class RTSPlayer_Control : NetworkBehaviour {
     //  終了処理
     public  void    EndProc()
     {
+        //  ＵＩ無効化
+        GameObject.Find( "Canvas" ).transform
+            .FindChild( "TPS_HUD" ).gameObject.SetActive( false );
+
         //  メインカメラを復旧
         GameObject  rMainCamera =   GameObject.Find( "Main Camera" );
         rMainCamera.GetComponent< Camera >().enabled            =   true;
@@ -128,5 +139,12 @@ public class RTSPlayer_Control : NetworkBehaviour {
 	public  void    CmdAddResource( int resourceID, Vector3 _Position, Quaternion _Rotation )
 	{
         m_rRCreator.AddResource_CallByCommand( resourceID, _Position, _Rotation );
+    }
+    //  ダメージ送信
+    [ Command ]
+    public  void    CmdSendDamage( float _Damage )
+    {
+        //  ダメージを受ける
+        m_rHP.SetDamage( _Damage );
     }
 }
