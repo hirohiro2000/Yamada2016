@@ -90,4 +90,9 @@ public class Health : NetworkBehaviour {
             Destroy( gameObject );
         }
     }
+    
+    public float GetHP()    { return HP;    }
+    public float GetMaxHP() { return MaxHP; }
+    public float GetLevel() { return Level; }
+
 }

@@ -66,10 +66,9 @@ public class UIRadar : MonoBehaviour {
             {
                 rtPosition.Normalize();
             }
-            rt.localPosition = rt.localPosition.normalized * ( Mathf.Min( rt.localPosition.magnitude, maxLength ) );
 
-            //item.dst.SetActive(rtPosition.sqrMagnitude < 1.0f);
-            item.dst.SetActive( true );
+            rt.localPosition = new Vector3(rtPosition.x, rtPosition.z, 0.0f) * maxLength;
+
         }
         {
             //RectTransform rt = m_backGround.GetComponent<RectTransform>();

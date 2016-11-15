@@ -30,7 +30,6 @@ public class TPSWeaponBar : MonoBehaviour
         RectTransform rt = instance.m_mainImage.GetComponent<RectTransform>();
         instance.m_curValue = 0.0f;
         rt.localScale = Vector3.one;
-        rt.localPosition = instance.m_mainImageDefaultPosition;
     }
     static public void Consumption(float value)
     {
@@ -43,10 +42,6 @@ public class TPSWeaponBar : MonoBehaviour
         Vector3 scale = rt.localScale;
         scale.x = rate;
         rt.localScale = scale;
-
-        Vector3 localPosition = rt.localPosition;
-        localPosition.x -= rt.sizeDelta.x * delta / instance.m_capacity * 0.5f;
-        rt.localPosition = localPosition;
 
         // Clear
         if (instance.m_curValue >= instance.m_capacity)

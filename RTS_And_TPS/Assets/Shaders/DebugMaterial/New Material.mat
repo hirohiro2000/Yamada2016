@@ -78,6 +78,13 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _NoiseTex
+        second:
+          m_Texture: {fileID: 2800000, guid: 2cb239a7acda54821b8371920489346f, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
     m_Floats:
       data:
         first:
@@ -127,6 +134,18 @@ Material:
         first:
           name: _Metallic
         second: 0
+      data:
+        first:
+          name: _Noise
+        second: 0.22
+      data:
+        first:
+          name: _VertexHeightStart
+        second: -0.03
+      data:
+        first:
+          name: _NoiseEmission
+        second: 0.4
     m_Colors:
       data:
         first:
@@ -135,4 +154,4 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 0.093271986, g: 0.16911763, b: 0.08704584, a: 1}
+        second: {r: 0, g: 0.3602941, b: 0.032302227, a: 1}

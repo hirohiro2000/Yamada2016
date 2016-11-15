@@ -55,19 +55,101 @@ public class TPSMoveController : MonoBehaviour
 		}
 	}
 
-    // ダッシュ用
-  	float drivingPower      = 3.0f;
-	float maxDrivingPower   = 15.0f;
-	float dampRate          = 3.0f;
-    Vector3 drivingForce    = Vector3.zero;
-    float inputInterval     = 0.0f;
-    int   dashState         = 0;
+    // 加速用
+  	float   avoidStepPower  = 15.0f;
+  	float   boosterPower    = 3.0f;
+	float   maxDrivingPower = 45.0f;
+    Vector3 impluseForce    = Vector3.zero;
+	float   dampRate        = 2.0f;         
+
+    // ２回連続に押下したかの判定用
+    class DoublePress
+    {
+        public enum STATE { eIdle, ePress, eNotPress, eDoublePressDown, eDoublePress }
+
+        KeyCode m_key;
+        float   m_timer;
+        STATE   m_state;
+
+        public DoublePress( KeyCode key )
+        {
+            m_key = key;
+            m_timer = 0.0f;
+            if ( Input.GetKey(m_key) )  m_state = STATE.ePress;
+            else                        m_state = STATE.eIdle;
+        }
+
+        public  void Update()
+        {
+            switch (m_state)
+            {
+                case STATE.eIdle:               IdleProc();             break;
+                case STATE.ePress:              PressProc();            break;
+                case STATE.eNotPress:           NotPressProc();         break;
+                case STATE.eDoublePressDown:    DoublePressDownProc();  break;
+                case STATE.eDoublePress:        DoublePressProc();      break;
+                default:break;
+            }
+        }
+        private void IdleProc()
+        {
+            if ( Input.GetKey(m_key) )
+            {
+                m_state = STATE.ePress;
+            }
+        }
+        private void PressProc()
+        {
+            if ( Input.GetKeyUp(m_key) )
+            {
+                m_state = STATE.eNotPress;
+                m_timer = 0.0f;
+            }
+        }
+        private void NotPressProc()
+        {
+            if (Input.GetKey(m_key))
+            {
+                m_state = STATE.eDoublePressDown;
+            }
+
+            m_timer += Time.deltaTime;
+            if (m_timer > 0.5f)
+            {
+                m_state = STATE.eIdle;
+            }
+
+        }
+        private void DoublePressDownProc()
+        {
+            m_state = STATE.eDoublePress;
+        }
+        private void DoublePressProc()
+        {
+            if ( Input.GetKey(m_key) == false )
+            {
+                m_state = STATE.eIdle;
+            }
+        }
+
+        public STATE GetState()         { return m_state;   }
+        public KeyCode GetKeyCode()     { return m_key;     }
+
+    }
+    DoublePress[] m_doublePressKeys;
 
 	// Use this for initialization
 	void Start()
 	{
         m_rIdentity =   GetComponent< NetworkIdentity >();
-	}
+
+        m_doublePressKeys = new DoublePress[4];
+        m_doublePressKeys[0] = new DoublePress( KeyCode.W );
+        m_doublePressKeys[1] = new DoublePress( KeyCode.S );
+        m_doublePressKeys[2] = new DoublePress( KeyCode.A );
+        m_doublePressKeys[3] = new DoublePress( KeyCode.D );
+
+    }
 
 	// Update is called once per frame
 	void Update()
@@ -97,43 +179,89 @@ public class TPSMoveController : MonoBehaviour
         //addDir.z = (inputDir.z - rigidBody.velocity.z) * sensitivity;
 
         //rigidBody.velocity += addDir;
+        
+                
+        UpdateAdjustMoveForce();
 
+    }
 
-        // ダッシュ処理( 押下中 => 離す => 押下(インターバルで行えるかの判定) => 押下中(離すor少し時間が過ぎたら) => ０に戻る )
-        switch (dashState)
+    void UpdateAdjustMoveForce()
+    {
+        // キーの更新
+        foreach (var key in m_doublePressKeys)
         {
-            case 0:
-                {
-                    if (Input.GetKeyDown(KeyCode.LeftShift))
-                    {
-                        //
-                        drivingForce += inputDir.normalized * speed * drivingPower;
-                        if (drivingForce.sqrMagnitude > maxDrivingPower * maxDrivingPower)
-                            drivingForce = drivingForce.normalized * maxDrivingPower;
-                       
-                        inputInterval = 0.0f;
-                        ++dashState;
-                    }
-                }
-                break;
-            case 1:
-                {
-                    inputInterval += Time.deltaTime;
-                    if (inputInterval > 0.1f)
-                    {
-                        dashState = 0;
-                    }
-                }
-                break;
-            default: break;
+            key.Update();
         }
 
-        if (drivingForce.sqrMagnitude > 0.5f * 0.5f)
+        // 加速方向（上下左右）
+        Vector3[] directions = {
+            transform.forward,
+            -transform.forward,
+            -transform.right,
+            transform.right
+        };
+
+        // ステップによる力取得
+        Vector3 impluse = AvoidPower( directions );
+
+        // 
+        impluseForce += impluse;
+
+        // 上限を超えないようclamp処理
+        if (impluseForce.sqrMagnitude > maxDrivingPower * maxDrivingPower)
         {
-            characterMover.AddSpeed(drivingForce);
-            drivingForce = Vector3.Lerp(drivingForce, Vector3.zero, dampRate * Time.deltaTime);
+            impluseForce = impluseForce.normalized * maxDrivingPower;
+        }
+
+        // ブーストダッシュによる力取得
+        Vector3 velocity = BoostPower( directions );
+
+        // 移動処理
+        Vector3 totalForce = impluseForce + velocity;   // インパルス + 等加速運動
+        float   minPower   = 0.5f*0.5f;                 // ※適当な値を設定しています
+        if (totalForce.sqrMagnitude > minPower )
+        {
+            characterMover.AddSpeed(totalForce);
+        }
+
+        // ステップ力の減速処理
+        if (impluseForce.sqrMagnitude > 0.5f * 0.5f)
+        {
+            impluseForce = Vector3.Lerp(impluseForce, Vector3.zero, dampRate * Time.deltaTime);
         }
 
 
-	}
+    }
+    Vector3 AvoidPower(Vector3[] directions)
+    {
+        Vector3 outVec = Vector3.zero;
+        for (int i = 0; i < m_doublePressKeys.Length; i++)
+        {
+            DoublePress key = m_doublePressKeys[i];
+
+            if (key.GetState() == DoublePress.STATE.eDoublePressDown)
+            {
+                outVec += directions[i] * avoidStepPower;
+            }
+        }
+        return outVec;
+    }
+    Vector3 BoostPower(Vector3[] directions)
+    {
+        Vector3 outVec = Vector3.zero;
+
+        for (int i = 0; i < m_doublePressKeys.Length; i++)
+        {
+            DoublePress key = m_doublePressKeys[i];
+
+            if (key.GetState() == DoublePress.STATE.eDoublePress)
+            {
+                outVec += directions[i] * boosterPower;
+            }
+        }
+
+        return outVec;
+
+    }
+
 }

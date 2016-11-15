@@ -156,6 +156,7 @@ GameObject:
   - 114: {fileID: 11438522}
   - 208: {fileID: 20826356}
   - 136: {fileID: 13619102}
+  - 114: {fileID: 11458484}
   m_Layer: 11
   m_Name: Turret_Long
   m_TagString: Untagged
@@ -551,6 +552,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bullet: {fileID: 180896, guid: 96c12297e05f0cc4695f884bff8928fc, type: 2}
+--- !u!114 &11458484
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 194466}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 763b25596baf47b4eac7eabbd537575d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  height:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: -5.5
+      inSlope: 5.5
+      outSlope: 5.5
+      tangentMode: 10
+    - time: 1
+      value: 0
+      inSlope: 5.5
+      outSlope: 5.5
+      tangentMode: 10
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  originHeight: 0
+  timer: 0
+  timeSpeed: 1
 --- !u!114 &11470598
 MonoBehaviour:
   m_ObjectHideFlags: 1

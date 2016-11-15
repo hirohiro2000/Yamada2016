@@ -161,6 +161,18 @@ public class ResourceCreator : NetworkBehaviour
 
 		//	リソース配置フラグをセット
 		m_resourcesInformation.SetGridInformation( rObj, _Position, true );
+
+        if ( rObj == null )
+        {
+            return;
+        }
+
+        ResourceAppear apper = rObj.GetComponent<ResourceAppear>();
+        if (apper != null)
+        {
+            apper.enabled = true;
+        }
+
     }
 
 	public void SetGuideVisibleDisable()

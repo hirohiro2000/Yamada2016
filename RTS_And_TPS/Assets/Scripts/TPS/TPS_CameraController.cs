@@ -3,6 +3,15 @@ using System.Collections;
 
 public class TPS_CameraController : MonoBehaviour
 {
+    [SerializeField]
+    private float     m_maxVerticalDeg  = 80.0f;
+
+    [SerializeField]
+    private float     m_minVerticalDeg  = -80.0f;
+
+    [SerializeField, Range(0.01f, 1.0f)]
+    private float     m_sensitivity     = 1.0f;
+
     private Transform m_target       = null;
     private float     m_cameraHeight = 2.424826f;
 
@@ -73,7 +82,22 @@ public class TPS_CameraController : MonoBehaviour
             }
 
             Vector3 p = lookAt + ToVector( m_camPolar.x + m_shake.x, m_camPolar.y + m_shake.y, m_camPolar.z );
-            position = Vector3.Slerp( position, p, 0.1f );
+
+            Vector3     dir         = ( p - m_camLookAt );
+            RaycastHit  rHit        = new RaycastHit();
+            Ray         rRay        = new Ray( m_camLookAt, dir.normalized );
+            float       maxDist     = dir.magnitude;
+            
+            //  レイ判定
+            if( Physics.Raycast( rRay, out rHit, maxDist ) )
+            {
+                p = rHit.point;
+            }
+
+            m_camPolar.y = Mathf.Clamp( m_camPolar.y, m_minVerticalDeg*Mathf.Deg2Rad, m_maxVerticalDeg*Mathf.Deg2Rad );
+
+            position = Vector3.Slerp( position, p, m_sensitivity );
+
 
         }
 
