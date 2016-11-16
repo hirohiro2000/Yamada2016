@@ -30,4 +30,8 @@ public class WeaponAmmoUI : MonoBehaviour {
 		havingAmmoText.text = param.DispHavingAmmo();
 		reloadProgress.value = param.DispReloadProgress();
 	}
+	public void Alpha()
+	{
+		group.alpha = 0.0f;
+	}
 }
