@@ -6,6 +6,7 @@ using   System.Collections;
 public class Health : NetworkBehaviour {
 
     public  GameObject  c_ExplodedObj   =   null;
+	public	GameObject	c_Explosion		=	null;
 
     public  int         Resource        =   0;
     public  int         Score           =   0;
@@ -49,8 +50,12 @@ public class Health : NetworkBehaviour {
                 rControl.m_rTargetTrans     =   rPlayer.transform;
             }
         }
-    }
-       
+
+		//ここで爆発
+		Instantiate(c_Explosion, transform.position, Quaternion.identity);
+
+	}
+
 
 	// Use this for initialization
 	void Start () {
