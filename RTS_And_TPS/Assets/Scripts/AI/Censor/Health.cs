@@ -15,6 +15,7 @@ public class Health : NetworkBehaviour {
     private float       MaxHP           =   10.0f;
     [ SyncVar ]
     private float       HP              =   0.0f;
+	[ SyncVar ]
     private int         Level           =   0;
 
     private DamageBank  m_damage_bank   =   null;

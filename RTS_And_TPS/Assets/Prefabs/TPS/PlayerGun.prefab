@@ -222,9 +222,9 @@ MonoBehaviour:
     - type: 0
       value: 0.1
     - type: 2
-      value: 30
+      value: 120
     - type: 4
-      value: 3
+      value: 5
   m_seFileName: Shot0
 --- !u!114 &11463520
 MonoBehaviour:
@@ -237,10 +237,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd00001f855ac274c8a122f54eae2b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  armCriticalRateIncrement: 80
+  armCriticalRateIncrement: 25
   baseReticle:
-  - 1
-  baseRecoil: 0.3
+  - 2.5
+  baseRecoil: 0.15
   recoveryTimeWithRecoil: 2
   maxValueWithUpperRecoil: 12
   maxValueWithHorizontalRecoil: 12
