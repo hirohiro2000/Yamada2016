@@ -59,12 +59,10 @@ public class UIRadar : MonoBehaviour {
 			item.dst.transform.SetParent( transform );
 
             Vector3 rtPosition   = relativePosition / m_searchRange;
-                    rtPosition.y = 0.0f;
             float   maxLength    = 70.0f;
 
-            rt.localPosition = new Vector3(rtPosition.x, rtPosition.z, 0.0f) * 50.0f;
-
             rt.localPosition = new Vector3(rtPosition.x, rtPosition.z, 0.0f) * maxLength;
+            rt.localPosition = rt.localPosition.normalized * ( Mathf.Min( rt.localPosition.magnitude, maxLength ) );
 
         }
         {
