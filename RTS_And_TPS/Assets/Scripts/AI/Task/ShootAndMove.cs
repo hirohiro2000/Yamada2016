@@ -148,7 +148,7 @@ public class ShootAndMove : TaskBase {
                 UserLog.ErrorTerauchi(m_owner_object.name + "ShootAndMove Bullet No attach RigidBody!!");
             }
 
-            Debug.Log("Fire!!");
+            //Debug.Log("Fire!!");
             yield return new WaitForSeconds((1.0f / 60.0f) * 3.0f);
         }
 

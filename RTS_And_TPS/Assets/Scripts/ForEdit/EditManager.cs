@@ -1459,7 +1459,7 @@ public class EditManager : MonoBehaviour {
 	void    Update()
     {
         //  プレイテスト開始 / 終了
-        if( Input.GetKeyDown( KeyCode.F10 ) ){
+        if( Input.GetKeyDown( KeyCode.F12 ) ){
             if( m_PlayTest )    PT_EndPlayTest();
             else                PT_StartPlayTest();
         }

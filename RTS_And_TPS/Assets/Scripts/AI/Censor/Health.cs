@@ -5,14 +5,16 @@ using   System.Collections;
 
 public class Health : NetworkBehaviour {
 
-    public  int     Resource    =   0;
-    public  int     Score       =   0;
+    public  GameObject  c_ExplodedObj   =   null;
+
+    public  int         Resource        =   0;
+    public  int         Score           =   0;
 
     [ SerializeField, HeaderAttribute("最大HP"), SyncVar ]
-    private float   MaxHP       =   10.0f;
+    private float       MaxHP           =   10.0f;
     [ SyncVar ]
-    private float   HP          =   0.0f;
-    private int     Level       =   0;
+    private float       HP              =   0.0f;
+    private int         Level           =   0;
 
     private DamageBank  m_damage_bank   =   null;
     private LinkManager m_rLinkManager  =   null;
@@ -26,7 +28,28 @@ public class Health : NetworkBehaviour {
         //  アクセスの取得 
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
         m_rGameManager  =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
-    } 
+    }
+    public  override    void    OnNetworkDestroy()
+    {
+        base.OnNetworkDestroy();
+
+        //  破砕オブジェクト生成
+        if( c_ExplodedObj ){
+            GameObject  rObj    =   Instantiate( c_ExplodedObj );
+            Transform   rTrans  =   rObj.transform;
+
+            rTrans.position     =   transform.position;
+            rTrans.localScale   =   transform.localScale;
+            rTrans.rotation     =   transform.rotation;
+
+            //  パラメータ設定
+            ExpSylinder_Control rControl    =   rObj.GetComponent< ExpSylinder_Control >();
+            GameObject          rPlayer     =   m_rLinkManager.m_rLocalPlayer;
+            if( rPlayer ){
+                rControl.m_rTargetTrans     =   rPlayer.transform;
+            }
+        }
+    }
        
 
 	// Use this for initialization
@@ -95,4 +118,8 @@ public class Health : NetworkBehaviour {
     public float GetMaxHP() { return MaxHP; }
     public float GetLevel() { return Level; }
 
+
+//====================================================================================
+//      リクエスト
+//====================================================================================
 }

@@ -123,7 +123,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 410692, guid: 8d60fc4c4f43dec4cac3b0a62e4f5340, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 185342, guid: 8d60fc4c4f43dec4cac3b0a62e4f5340, type: 2}
       propertyPath: m_Name
@@ -12596,6 +12596,7 @@ GameObject:
   - 4: {fileID: 420201046}
   - 114: {fileID: 420201045}
   - 114: {fileID: 420201044}
+  - 114: {fileID: 420201047}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -12666,6 +12667,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
+--- !u!114 &420201047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 420201043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2c3f537b4a19d54da28117e7503404e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &471431937
 GameObject:
   m_ObjectHideFlags: 0
@@ -13789,6 +13801,7 @@ MonoBehaviour:
   c_Targets:
   - {fileID: 883473095}
   c_SetActive: 0
+  c_Mode: 1
 --- !u!1 &895908829
 GameObject:
   m_ObjectHideFlags: 0
@@ -15154,6 +15167,8 @@ MonoBehaviour:
   - {fileID: 150220, guid: 738621ce0ca63214297b76d0ee9f7e30, type: 2}
   - {fileID: 134056, guid: 06b04c2e8c6ec2a4a8a9a6080dad0fd0, type: 2}
   - {fileID: 192732, guid: 3e4550b91055d3e428211fc5e4d92eda, type: 2}
+  - {fileID: 123842, guid: cba85ea5da92dcc4cba034490e63d948, type: 2}
+  - {fileID: 0}
   - {fileID: 0}
   m_CustomConfig: 0
   m_MaxConnections: 4
