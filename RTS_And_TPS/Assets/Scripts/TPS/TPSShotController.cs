@@ -253,6 +253,8 @@ public class TPSShotController : NetworkBehaviour {
 	[SerializeField]
 	int UI_ID;
 
+	public LayerMask excludeLayers = 0;
+
 	[SerializeField]
 	KeyCode weaponChangeKey = KeyCode.None;
 
@@ -349,7 +351,7 @@ public class TPSShotController : NetworkBehaviour {
 			Ray ray = new Ray(shotPointNear, direction);
 
 			RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 1000.0f))
+            if (Physics.Raycast(ray, out hit, 10000.0f, excludeLayers))
             {
                 AimDistance = hit.distance;
 				if (cntWeaponList.data.GetInfoFlag(ShotInfoFlag.ShotDirectionChangeFromScreenCenter))
@@ -431,18 +433,14 @@ public class TPSShotController : NetworkBehaviour {
 		emit.transform.parent = parent.transform;
 
         //  所属を設定
-        if( m_rLinkManager ){
-            TPSAttack_Net   rAttack =   emit.GetComponent< TPSAttack_Net >();
-            rAttack.c_AttackerID    =   m_rLinkManager.m_LocalPlayerID;
-        }
+        TPSAttack_Net   rAttack =   emit.GetComponent< TPSAttack_Net >();
+        rAttack.c_AttackerID    =   m_rLinkManager.m_LocalPlayerID;
 
 		//リコイル処理
 		playerRecoil.Shot();
 
         //  他のクライアントでも発射
-        if( m_rLinkManager ){
-            m_rNPControl.CmdFire_Client( firePoint, target, m_rLinkManager.m_LocalPlayerID, cntWeaponIndex, m_MyChildID );
-        }
+        m_rNPControl.CmdFire_Client( firePoint, target, m_rLinkManager.m_LocalPlayerID, cntWeaponIndex, m_MyChildID );
     }
     public  void    Shot_ByRequest( Vector3 firePoint, Vector3 target, int _ShooterID, int _WeaponID )
     {

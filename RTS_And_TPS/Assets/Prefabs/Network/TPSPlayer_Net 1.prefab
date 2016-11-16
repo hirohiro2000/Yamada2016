@@ -2583,6 +2583,9 @@ MonoBehaviour:
   firePoints:
   - {fileID: 400556}
   UI_ID: 1
+  excludeLayers:
+    serializedVersion: 2
+    m_Bits: 2816
   weaponChangeKey: 50
   shotKey: 324
   weapons:
@@ -2601,9 +2604,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95ed9566f8098694fae17a00374cbf75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Power: 0.6
-  maxHoverTime: 1.05
-  HoverPower: 1.25
+  Power: 0.45
+  maxHoverTime: 1.02
+  HoverPower: 1.05
 --- !u!114 &11411308
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2665,6 +2668,9 @@ MonoBehaviour:
   firePoints:
   - {fileID: 455154}
   UI_ID: 0
+  excludeLayers:
+    serializedVersion: 2
+    m_Bits: 2816
   weaponChangeKey: 49
   shotKey: 323
   weapons:
