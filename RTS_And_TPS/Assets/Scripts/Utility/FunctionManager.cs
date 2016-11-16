@@ -22,12 +22,11 @@ public class FunctionManager : MonoBehaviour {
 	    //  ベジェ曲線計算用バッファ初期化
         s_BezieBuffer   =   new float[ c_BezieBufferMax, c_BezieBufferMax - 1 ];
 	}
-	
-	// Update is called once per frame
-	void    Update()
+	public  void    Initialize()
     {
-	    
-	}
+        //  ベジェ曲線計算用バッファ初期化
+        s_BezieBuffer   =   new float[ c_BezieBufferMax, c_BezieBufferMax - 1 ];
+    }
 //******************************************************************************************************
 //
 //      グローバル関数
@@ -38,7 +37,10 @@ public class FunctionManager : MonoBehaviour {
     public  static  float   CalcBezie( float[] _Points, float _Time )
     {
         //  バッファの準備が終わるまでは計算しない
-        if( s_BezieBuffer == null )                     return  0.0f;
+        //if( s_BezieBuffer == null )                     return  0.0f;
+        if( s_BezieBuffer == null ){
+            s_BezieBuffer   =   new float[ c_BezieBufferMax, c_BezieBufferMax - 1 ];
+        }
 
         //	例外に対処
 		if( _Points.Length  <   1 )                     return  0.0f;
