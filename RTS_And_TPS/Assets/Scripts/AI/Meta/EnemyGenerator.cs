@@ -154,7 +154,7 @@ public class EnemyGenerator : NetworkBehaviour
         int respawn_count = 0;
 
         //test
-        //num_spawn = 1;
+        num_spawn = 1;
         while (respawn_count < num_spawn)
         {
             for(int i = 0; i < m_num_spawn_one_frame; i++)

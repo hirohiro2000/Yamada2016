@@ -19,7 +19,7 @@ public class ReferenceWrapper : MonoBehaviour {
         //  アクセスの取得
         if( !m_attack_object_root ) m_attack_object_root    =   GameObject.Find("EnemyAttackObjectRoot");
 
-        UserLog.Terauchi(m_active_enemy_list.Count);
+       // UserLog.Terauchi(m_active_enemy_list.Count);
     }
 
 
