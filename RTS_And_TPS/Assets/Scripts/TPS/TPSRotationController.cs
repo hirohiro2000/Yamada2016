@@ -105,7 +105,7 @@ public class TPSRotationController : MonoBehaviour
 
                 // 一時しのぎ用
                 // リコイルのパラメーターをカメラ用に編集し直したらコメントアウトしてください
-                Vector2 s = playerRecoil.cntRecoil * Mathf.Deg2Rad;
+                Vector2 s = playerRecoil.cntDisplayRecoiil * Mathf.Deg2Rad;
                 s.y = -s.y;
 
                 //

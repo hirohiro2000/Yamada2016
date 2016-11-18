@@ -1396,8 +1396,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 139324}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000016292068}
-  m_LocalPosition: {x: 2.3366737, y: 0.00044816732, z: -1.1992822}
-  m_LocalScale: {x: 1.4, y: 1.4, z: 1.4}
+  m_LocalPosition: {x: 8.224579, y: 0.0010326831, z: 0.7597563}
+  m_LocalScale: {x: 1.82593, y: 1.8259296, z: 1.8259296}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_Children:
   - {fileID: 421142}
@@ -2375,7 +2375,7 @@ BoxCollider:
   m_GameObject: {fileID: 183628}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.78, y: 1.4, z: 0.23000002}
   m_Center: {x: 0, y: 0.5, z: -0.09000003}
@@ -2507,7 +2507,7 @@ BoxCollider:
   m_GameObject: {fileID: 156632}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.77, y: 0.08231825, z: 0.21898568}
   m_Center: {x: 0, y: 0.026238129, z: -0.0903759}
@@ -2606,7 +2606,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Power: 0.45
   maxHoverTime: 1.02
-  HoverPower: 1.05
+  HoverPower: 0.5
+  HoverSpeed: 0.15
 --- !u!114 &11411308
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2776,6 +2777,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 0
   cntRecoil: {x: 0, y: 0}
+  cntDisplayRecoiil: {x: 0, y: 0}
+  recoilChangeTime: 0.05
   holdingWeapon: {fileID: 11493948, guid: 523644f231b72d14786f1559fbdd9dc5, type: 2}
 --- !u!114 &11458006
 MonoBehaviour:

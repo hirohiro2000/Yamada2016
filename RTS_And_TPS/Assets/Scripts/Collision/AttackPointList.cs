@@ -61,7 +61,7 @@ public class AttackPointList : MonoBehaviour {
 		if(Destroyed == true)
 		{
 			CallEmitObjectOnMyPosition();
-            Destroy(autoDestroyObject.gameObject);
+            DestroyImmediate(autoDestroyObject.gameObject);
 		}
 	}
 
