@@ -125,13 +125,13 @@ TrailRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 121082}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_Materials:
-  - {fileID: 2100000, guid: 96149ffbf8c170d46accf2f9cb7bd0f7, type: 2}
+  - {fileID: 2100000, guid: 731c393017a052f4b83f84072e551d49, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 1
+  m_UseLightProbes: 0
   m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
@@ -163,7 +163,7 @@ TrailRenderer:
     m_Color[4]:
       serializedVersion: 2
       rgba: 16777215
-  m_MinVertexDistance: 0.1
+  m_MinVertexDistance: 0
   m_Autodestruct: 1
 --- !u!114 &11425642
 MonoBehaviour:
@@ -222,9 +222,9 @@ MonoBehaviour:
     - type: 0
       value: 0.05
     - type: 2
-      value: 120
+      value: 360
     - type: 4
-      value: 5
+      value: 15
   m_seFileName: Shot0
 --- !u!114 &11463520
 MonoBehaviour:
