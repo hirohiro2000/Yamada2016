@@ -31,7 +31,8 @@ public class ShootAndMove : TaskBase {
 
     private GameObject m_attack_object_root = null;
 
-    private float m_shot_pos_update_intarval = 1.0f; 
+    private float m_shot_pos_update_intarval = 1.0f;
+    private float m_agent_speed = .0f;
 
     void Awake()
     {
@@ -56,7 +57,11 @@ public class ShootAndMove : TaskBase {
         while(m_is_active)
         {
             m_shoot_point = target_system.m_current_target.transform.position;
+         
+         //   m_owner_object.transform.LookAt(m_shoot_point);
             m_shoot_object.LookAt(m_shoot_point);
+
+            m_navmesh_accessor.SetDestination(m_shoot_point);
             yield return new WaitForSeconds(m_shot_pos_update_intarval);
         }
     }
@@ -82,6 +87,7 @@ public class ShootAndMove : TaskBase {
         var enemy_root = GameObject.Find("EnemySpawnRoot");
         m_home_base = enemy_root.GetComponent<ReferenceWrapper>().m_home_base;
         m_navmesh_accessor = owner.GetComponent<NavMeshAgent>();
+        m_agent_speed = m_navmesh_accessor.speed;
     }
 
     public override void Enter(TargetingSystem target_system, EnemyTaskDirector task_director)
@@ -90,12 +96,12 @@ public class ShootAndMove : TaskBase {
         StartCoroutine(UpdateLookPoint(target_system));
         StartCoroutine(Attack(target_system));
         //ほかのキャラクターのルートをたどる可能性があるから改良する
-        m_navmesh_accessor.SetDestination(m_home_base.transform.position);
+     //   m_navmesh_accessor.SetDestination(m_home_base.transform.position);
     }
 
     public override Status Execute(TargetingSystem target_system, EnemyTaskDirector task_director)
     {
-        UpdateIsReachHomeBase();
+        UpdateIsReachHomeBase(target_system);
         Status current_status = EvaluteStatus(target_system, task_director);
         return current_status;
     }
@@ -103,6 +109,8 @@ public class ShootAndMove : TaskBase {
     public override void Exit(TargetingSystem target_system, EnemyTaskDirector task_director)
     {
         m_is_active = false;
+        m_navmesh_accessor.Resume();
+        m_navmesh_accessor.speed = m_agent_speed;
     }
 
     private Status EvaluteStatus(TargetingSystem target_system, EnemyTaskDirector task_director)
@@ -117,12 +125,22 @@ public class ShootAndMove : TaskBase {
         return Status.Active;
     }
 
-    private void UpdateIsReachHomeBase()
+    private void UpdateIsReachHomeBase(TargetingSystem m_current_target)
     {
-        float dist = (m_owner_object.transform.position - m_home_base.transform.position).magnitude;
-        if(dist < m_navmesh_agent_stop_dist)
+        //現在ホームベースがないからターゲットにする
+        //float dist = (m_owner_object.transform.position - m_home_base.transform.position).magnitude;
+        float dist = (m_owner_object.transform.position - m_current_target.transform.position).magnitude;
+        if (dist < m_navmesh_agent_stop_dist)
         {
             m_navmesh_accessor.Stop();
+            m_navmesh_accessor.updateRotation = true;
+            Quaternion look_rotation = Quaternion.LookRotation((m_shoot_point - m_owner_object.transform.position).normalized);
+            m_owner_object.transform.rotation = Quaternion.Slerp(m_owner_object.transform.rotation, look_rotation, 0.1f);
+        }
+        else
+        {
+           // m_navmesh_accessor.speed = m_agent_speed;
+            m_navmesh_accessor.Resume();
         }
     }
 
