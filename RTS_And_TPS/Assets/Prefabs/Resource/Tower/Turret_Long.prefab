@@ -540,6 +540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64827b74010ebd64caf36c5d1ad4d88a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_OwnerID: 0
 --- !u!114 &11457876
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -607,26 +608,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_name: "\u9577\u8DDD\u96E2\u30BF\u30EC\u30C3\u30C8"
   m_summary: "\u5A01\u529B\u304C\u5C11\u3057\u4F4E\u3081"
-  m_createCost: 50
-  m_breakCost: 50
+  m_createCost: 67
+  m_breakCost: 23
   m_level: 0
   m_curHp: 0
   m_levelInformations:
     list:
-    - hp: 1
-      power: 10
-      range: 8
-      interval: 2
-      upCost: 40
-    - hp: 1
-      power: 20
-      range: 9
-      interval: 1.8
-      upCost: 50
-    - hp: 1
-      power: 30
-      range: 10
-      interval: 1.5
+    - hp: 10
+      power: 6
+      range: 11
+      interval: 0.5
+      upCost: 47
+    - hp: 15
+      power: 8
+      range: 12
+      interval: 0.4
+      upCost: 81
+    - hp: 30
+      power: 12
+      range: 13
+      interval: 0.3
       upCost: 0
 --- !u!114 &11492536
 MonoBehaviour:

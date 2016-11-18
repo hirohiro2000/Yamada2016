@@ -49,7 +49,7 @@ public class Debris_Control : MonoBehaviour {
 	void    Update()
     {
         //  アクセス取得
-        if( !m_rLinkManager )   m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+        //if( !m_rLinkManager )   m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
 
         //  タイマー更新
         m_BearthTimer   -=  Time.deltaTime;
@@ -82,11 +82,10 @@ public class Debris_Control : MonoBehaviour {
 
             //  終了処理
             if( timeRate >= 1.0f ){
-                //  スコア獲得（自分のプレイヤーだけ処理）
+                //  リソース獲得（自分のプレイヤーだけ処理）
                 if( m_rLinkManager ){
-
-                    if( c_TargetID >= 0 ){
-
+                    if( c_TargetID == m_rLinkManager.m_LocalPlayerID ){
+                        if( m_rLinkManager.m_rLocalNPControl )  m_rLinkManager.m_rLocalNPControl.CmdAddResource( c_Score );
                     }
                 }
 

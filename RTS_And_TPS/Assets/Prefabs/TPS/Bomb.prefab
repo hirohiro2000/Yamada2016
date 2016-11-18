@@ -34,7 +34,7 @@ GameObject:
   - 114: {fileID: 11413172}
   - 114: {fileID: 11421978}
   - 114: {fileID: 11451724}
-  - 114: {fileID: 11449328}
+  - 114: {fileID: 11486514}
   m_Layer: 12
   m_Name: Bomb
   m_TagString: Player_Attack
@@ -223,8 +223,7 @@ MonoBehaviour:
     - type: 155
       multiple: 1
   autoDestroyObject: {fileID: 493186}
-  autoEmitObjectOnMyPosition: {fileID: 426434, guid: 073c9ebb652abdf4187690414a9e6e15,
-    type: 2}
+  autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 0}
 --- !u!114 &11447414
 MonoBehaviour:
@@ -244,18 +243,6 @@ MonoBehaviour:
   recoveryTimeWithRecoil: 1.5
   maxValueWithUpperRecoil: 3
   maxValueWithHorizontalRecoil: 0.1
---- !u!114 &11449328
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 184498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddc3d683d06a3404f8a4fe0621d1c8ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  c_AttackerID: 0
 --- !u!114 &11451724
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -283,6 +270,19 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &11486514
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 184498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db88a9e66a59a2468e428f5cb59e70e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_AttackerID: 0
+  c_Explosion: {fileID: 183870, guid: 073c9ebb652abdf4187690414a9e6e15, type: 2}
 --- !u!114 &11494436
 MonoBehaviour:
   m_ObjectHideFlags: 1

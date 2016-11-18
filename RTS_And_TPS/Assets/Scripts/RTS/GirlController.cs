@@ -233,7 +233,7 @@ public class GirlController : NetworkBehaviour
     [ Command ]
     void    CmdLevelUpResource( Vector3 _Position )
     {
-        m_resourceInformation.LevelUpResource( _Position );
+        m_resourceInformation.LevelUpResource( _Position, connectionToClient.connectionId );
     }
     [ Command ]
     void    CmdBreakResource( Vector3 _Position )

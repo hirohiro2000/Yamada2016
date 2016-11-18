@@ -78,13 +78,13 @@ public class NetPlayer_Control : NetworkBehaviour {
         if( !rHaelth )      return;
 
         //  ダメージを与える
-        rHaelth.GiveDamage( _Damage );
+        rHaelth.GiveDamage( _Damage, connectionToClient.connectionId );
     }
     //  発射コマンドを送信
     [ Command ]
-    public  void    CmdFire_Client( Vector3 _Position, Vector3 _Target, int _ShooterID, int _WeaponID, int _ChildID )
+    public  void    CmdFire_Client( Vector3 _Position, Vector3 _Target, int _WeaponID, int _ChildID )
     {
-        RpcFire_Client( _Position, _Target, _ShooterID, _WeaponID, _ChildID );
+        RpcFire_Client( _Position, _Target, connectionToClient.connectionId, _WeaponID, _ChildID );
     }
     //  データ更新
     [ Command ]
@@ -97,6 +97,12 @@ public class NetPlayer_Control : NetworkBehaviour {
     public  void    CmdChange_GameSpeed( float _GameSpeed )
     {
         m_rGameManager.m_GameSpeed  =   _GameSpeed;
+    }
+    //  スコア加算
+    [ Command ]
+    public  void    CmdAddResource( float _AddResource )
+    {
+        m_rGameManager.AddResource( _AddResource );
     }
 //*********************************************************************************
 //      リクエスト

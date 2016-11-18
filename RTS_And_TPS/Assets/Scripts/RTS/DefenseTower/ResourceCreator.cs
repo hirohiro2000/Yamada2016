@@ -156,7 +156,7 @@ public class ResourceCreator : NetworkBehaviour
             .CmdAddResource( resourceID, rTrans.position, rTrans.rotation );
 		//CmdAddResource( resourceID, rTrans.position, rTrans.rotation );
 	}
-    public  void    AddResource_CallByCommand( int resourceID, Vector3 _Position, Quaternion _Rotation )
+    public  void    AddResource_CallByCommand( int resourceID, Vector3 _Position, Quaternion _Rotation, int _OwnerID )
 	{
 		GameObject rObj = Instantiate( m_resources[ resourceID ] );
 		Transform rTrans = rObj.transform;
@@ -164,6 +164,10 @@ public class ResourceCreator : NetworkBehaviour
 		rTrans.parent = m_fieldResources.transform;
 		rTrans.position = _Position;
 		rTrans.rotation = _Rotation;
+
+        //  所有者を登録
+        RTSResourece_Control    rControl    =   rObj.GetComponent< RTSResourece_Control >();
+        rControl.c_OwnerID  =   _OwnerID;
 
 		//  実体を共有
 		NetworkServer.Spawn(rObj);
