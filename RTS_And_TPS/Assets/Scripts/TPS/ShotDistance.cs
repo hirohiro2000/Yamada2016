@@ -34,7 +34,7 @@ public class ShotDistance : MonoBehaviour {
 	void Awake ()
 	{
 		BeforePos = transform.position;
-		attackPointList.BeforeCalcDamegeCallBack += (ref AttackPointList atk, CollisionInfo info) =>
+		attackPointList.BeforeCalcDamegeCallBack += (ref AttackPointListData atk, CollisionInfo info) =>
 		{
 			//距離で減衰
 			atk.baseAttackPoint *= PowerlossCurve.Evaluate(cntDistance);

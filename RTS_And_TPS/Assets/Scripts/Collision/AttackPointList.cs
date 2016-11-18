@@ -2,6 +2,27 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[System.Serializable]
+public class AttackPointListData
+{
+	public float baseAttackPoint = 1.0f;
+
+	public WeakPointParamReorderableList attack_list = null;
+
+	public AttackPointListData(AttackPointList atk)
+	{
+		baseAttackPoint = atk.baseAttackPoint;
+		attack_list = new WeakPointParamReorderableList();
+		attack_list.list = new List<WeakPointParam>(atk.attack_list.list);
+	}
+	public AttackPointListData()
+	{
+
+	}
+
+}
+
+
 public class AttackPointList : MonoBehaviour {
 
 	public float baseAttackPoint = 1.0f;
@@ -11,6 +32,19 @@ public class AttackPointList : MonoBehaviour {
 
 	[SerializeField, ReorderableList(new int[] { 100, 100 })]
 	public WeakPointParamReorderableList attack_list = null;
+
+	AttackPointListData data = new AttackPointListData();
+
+	public AttackPointListData GetData()
+	{
+		if(data == null)
+			data = new AttackPointListData();
+		data.baseAttackPoint = baseAttackPoint;
+		data.attack_list = attack_list;
+
+		return data;
+    }
+
 
 	//衝突後に自動的に消去するオブジェクト
 	[SerializeField]
@@ -74,10 +108,13 @@ public class AttackPointList : MonoBehaviour {
 		}
     }
 
+	public delegate void AttackPointDataChange(ref AttackPointListData atk, CollisionInfo info);
+
+
 	public delegate void AttackPointParamChange(ref AttackPointList atk,CollisionInfo info);
 
 	//ダメージ計算・衝突判定前に呼び出します(計算後に破棄されます)
-	public AttackPointParamChange BeforeCalcDamegeCallBack = null;
+	public AttackPointDataChange BeforeCalcDamegeCallBack = null;
 
 	//衝突判定をした後に呼び出します(計算された値は継続しています)
 	public AttackPointParamChange HitedCallBack = null;

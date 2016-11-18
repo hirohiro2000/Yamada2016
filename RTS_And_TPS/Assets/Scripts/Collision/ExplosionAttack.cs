@@ -42,7 +42,7 @@ public class ExplosionAttack : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 
-		attackPointList.BeforeCalcDamegeCallBack += (ref AttackPointList atk, CollisionInfo info) =>
+		attackPointList.BeforeCalcDamegeCallBack += (ref AttackPointListData atk, CollisionInfo info) =>
 		{
 			//距離により修正
 			//当たり判定の半径を取得

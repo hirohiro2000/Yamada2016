@@ -108,7 +108,7 @@ public class DamageResult
 	//WeakPointList weak;
 	List<DamageParam> damageParamList = new List<DamageParam>();
 
-	public DamageResult(AttackPointList attackedObject)
+	public DamageResult(AttackPointListData attackedObject)
 	{
 		this.baseDamage = attackedObject.baseAttackPoint;
 		//this.attackedObject = attackedObject;
@@ -164,7 +164,7 @@ public class DamageResult
 //内部作業用クラス
 public class WorkDamageResult : DamageResult
 {
-	public WorkDamageResult(AttackPointList attackedObject) :base(attackedObject)
+	public WorkDamageResult(AttackPointListData attackedObject) :base(attackedObject)
 	{
 
 	}
@@ -285,16 +285,16 @@ public class DamageBank : MonoBehaviour {
 			bool isHit = false;
 
 			//ダメージ計算前にデリゲートします
-			AttackPointList copyAtk;
+			AttackPointListData copyAtk;
 			if(atk.BeforeCalcDamegeCallBack != null)
 			{
 				//設定していたら複製
-				copyAtk = new AttackPointList(atk);
+				copyAtk = new AttackPointListData(atk);
 				atk.BeforeCalcDamegeCallBack(ref copyAtk, workDamageResults.info);
             }
 			else
 			{
-				copyAtk = atk;
+				copyAtk = atk.GetData();
             }
 
 			foreach(WeakPointList weak  in weaks)
@@ -498,7 +498,7 @@ public class DamageBank : MonoBehaviour {
 	};
 
 
-	WorkDamageResult GetDamageResult(AttackPointList atk, WeakPointList weak)
+	WorkDamageResult GetDamageResult(AttackPointListData atk, WeakPointList weak)
 	{
 		bool isHit = false;
 		WorkDamageResult damageResult = new WorkDamageResult(atk);
