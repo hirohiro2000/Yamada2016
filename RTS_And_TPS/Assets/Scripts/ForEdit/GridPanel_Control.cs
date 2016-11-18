@@ -43,6 +43,14 @@ public class GridPanel_Control : MonoBehaviour {
     //  外部へのアクセス
     private EditManager         m_rEditManager  =   null;
 
+	//	
+	private	Color[]				c_HeightColor	=	new Color[]{
+		Color.red,
+		Color.blue,
+		Color.green,
+	};
+	private	Renderer			m_rHeightMesh	= null;
+
     //  コピー用
     public  void    CopyParam( GridPanel_Control _rSource )
     {
@@ -62,8 +70,9 @@ public class GridPanel_Control : MonoBehaviour {
         m_rCollider     =   GetComponent< Collider >();
         m_rHeightText   =   transform.FindChild( "_HeightText" ).GetComponent< Renderer >();
         m_rHeightTextM  =   m_rHeightText.GetComponent< TextMesh >();
+		m_rHeightMesh	=	transform.FindChild( "_HeightMesh" ).GetComponent< Renderer >();
 
-        m_rEditManager  =   FunctionManager.GetAccessComponent< EditManager >( "EditManager" );
+		m_rEditManager  =   FunctionManager.GetAccessComponent< EditManager >( "EditManager" );
 	}
     void    Start()
     {
@@ -77,7 +86,7 @@ public class GridPanel_Control : MonoBehaviour {
 	// Update is called once per frame
 	void    Update()
     {
-        if( !m_IsActive )   return;
+		if ( !m_IsActive )   return;
 
         //  数字を更新
         UpdateTextMesh();
@@ -104,6 +113,12 @@ public class GridPanel_Control : MonoBehaviour {
             m_rHeightTextM.text =   ( isMaxHeight )? m_SubStr : m_DefaultStr;
             m_UseSubStr         =   isMaxHeight;
         }
+
+		int		height			=	( int )m_GridPoint.z;
+		m_rHeightMesh.material.color	=
+			c_HeightColor[ ( height + c_HeightColor.Length - 1 ) % c_HeightColor.Length ];
+
+		m_rHeightMesh.enabled	= false;
     }
     bool    CheckIsMaxHeight()
     {
@@ -154,6 +169,8 @@ public class GridPanel_Control : MonoBehaviour {
         m_rCollider.enabled     =   _IsActive;
         m_rRenderer.enabled     =   _IsActive;
         m_rHeightText.enabled   =   _IsActive;
+		m_rHeightMesh.enabled	=	( m_GridPoint.z <= 0 )? false : _IsActive;
+
         m_IsActive              =   _IsActive;
 
         //this.enabled            =   _IsActive;
