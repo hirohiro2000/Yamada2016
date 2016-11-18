@@ -45,7 +45,7 @@ public class TPS_CameraController : MonoBehaviour
 
     }
 
-    void LateUpdate()
+    void FixedUpdate()
     {        
         if ( m_target == null )
         {
@@ -78,7 +78,7 @@ public class TPS_CameraController : MonoBehaviour
                     inputV = -inputV;
                 }
                 m_camPolar.x += inputH;
-                m_camPolar.y += inputV;
+                m_camPolar.y = Mathf.Clamp( m_camPolar.y + inputV, m_minVerticalDeg*Mathf.Deg2Rad, m_maxVerticalDeg*Mathf.Deg2Rad );
             }
 
             Vector3 p = lookAt + ToVector( m_camPolar.x + m_shake.x, m_camPolar.y + m_shake.y, m_camPolar.z );
@@ -93,8 +93,6 @@ public class TPS_CameraController : MonoBehaviour
             {
                 p = rHit.point;
             }
-
-            m_camPolar.y = Mathf.Clamp( m_camPolar.y, m_minVerticalDeg*Mathf.Deg2Rad, m_maxVerticalDeg*Mathf.Deg2Rad );
 
             position = Vector3.Slerp( position, p, m_sensitivity );
 
@@ -136,6 +134,8 @@ public class TPS_CameraController : MonoBehaviour
     {
         m_shake += value;
     }
+
+    public Vector3 GetPolar() { return m_camPolar; }
 
 }
 

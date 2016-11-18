@@ -12,68 +12,31 @@ public class TPSRotationController : MonoBehaviour
 	[SerializeField]
 	Transform YAxisRotater = null;
 
-	[SerializeField]
-	Transform XAxisRotater = null;
+    [SerializeField]
+	Transform m_neckTransform = null;
 
-	[SerializeField, Range(1.0f, 100.0f)]
-	float YAxisRotSpeed = 50.0f;
-
-	[SerializeField, Range(1.0f, 100.0f)]
-	float XAxisRotSpeed = 50.0f;
+    [SerializeField]
+    Vector3   m_neckAdjustEulerAngles = Vector3.zero;
 
 	[SerializeField]
-	float XAxisMaxangle = 70.0f;
+	Transform m_eyeTransform = null;
 
-	[SerializeField, Range(1.0f, 100.0f)]
-	float XaxisMinAngle = -70.0f;
+	[SerializeField]
+    Vector3   m_eyeAdjustEulerAngles = Vector3.zero;
 
-	//[SerializeField, TooltipAttribute("一秒間で戻る角度")]
-	//float RecoilDampRate = 5.0f;
 
-	//[SerializeField, TooltipAttribute("リコイルの最大角度")]
-	//float MaxRecoil = 10.0f;
 
-	//float cntRecoil = .0f;
-
-	float xAxisAngle = .0f;
-	float yAxisAngle = .0f;
-
-	private PlayerRecoil playerRecoil = null ;
-
-    private NetworkIdentity m_rIdentity =   null;
+	private PlayerRecoil        m_playerRecoil  = null ;
+    private NetworkIdentity     m_rIdentity     = null;
+    private CharacterController m_character     = null;
 
 	// Use this for initialization
 	void Start()
 	{
-		yAxisAngle = YAxisRotater.localRotation.eulerAngles.y;
-		m_rIdentity =   GetComponent< NetworkIdentity >();
-		playerRecoil = GetComponent<PlayerRecoil>();
-	}
-
-	void XAxisRotate(float radius)
-	{
-		//XAxisRotater.rotation *= Quaternion.AngleAxis(radius, Vector3.right);
-		xAxisAngle += radius;
-
-		if (xAxisAngle > XAxisMaxangle)
-			xAxisAngle = XAxisMaxangle;
-
-		if (xAxisAngle < XaxisMinAngle)
-			xAxisAngle = XaxisMinAngle;
-	}
-
-	void YAxisRotate(float radius)
-	{
-		yAxisAngle += radius;
-
-		if (yAxisAngle > 720.0f)
-			yAxisAngle -= 360.0f;
-
-		if (yAxisAngle < -720.0f)
-			yAxisAngle += 360.0f;
-
-		//YAxisRotater.rotation *= Quaternion.AngleAxis(radius, Vector3.up);
-	}
+		m_rIdentity     = GetComponent< NetworkIdentity >();
+		m_playerRecoil  = GetComponent<PlayerRecoil>();
+        m_character     = GetComponent<CharacterController>();
+    }
 
 	// Update is called once per frame
 	void Update()
@@ -83,19 +46,10 @@ public class TPSRotationController : MonoBehaviour
 
 		if(Time.timeScale != .0f)
 		{
-//			XAxisRotate(Input.GetAxis("Mouse Y") * XAxisRotSpeed);
-//			YAxisRotate(Input.GetAxis("Mouse X") * YAxisRotSpeed);
-//			cntRecoil -= Time.deltaTime * RecoilDampRate;
-//			if (cntRecoil < .0f)
-//				cntRecoil = .0f;
-//			XAxisRotater.localRotation = Quaternion.AngleAxis (xAxisAngle + cntRecoil,Vector3.left); 
-//			XAxisRotater.localRotation = Quaternion.AngleAxis (xAxisAngle + playerRecoil.cntRecoil.y, Vector3.left);
-//			YAxisRotater.localRotation = Quaternion.AngleAxis (yAxisAngle + playerRecoil.cntRecoil.x, Vector3.up);
-            
             TPS_CameraController cam = Camera.main.transform.GetComponent<TPS_CameraController>();
             if (cam != null)
             {
-                Vector3 f = cam.transform.forward;
+                Vector3 f = m_character.velocity;
                 f.y = 0.0f;
                 if (f.sqrMagnitude > 0.0f)
                 {
@@ -103,9 +57,25 @@ public class TPSRotationController : MonoBehaviour
                     YAxisRotater.localRotation = qt;
                 }
 
-                // 一時しのぎ用
-                // リコイルのパラメーターをカメラ用に編集し直したらコメントアウトしてください
-                Vector2 s = playerRecoil.cntRecoil * Mathf.Deg2Rad;
+
+                // 首と目の処理
+                Vector3 lookDir = cam.transform.forward;
+
+                Vector3 lookDirHorizontal = new Vector3( lookDir.x, 0.0f, lookDir.z );
+                if ( lookDirHorizontal.sqrMagnitude > 0.0f )
+                {
+                    m_neckTransform.rotation = Quaternion.LookRotation( lookDirHorizontal.normalized );
+                    m_neckTransform.localEulerAngles += m_neckAdjustEulerAngles;
+                }
+
+                Vector3 eulerAngles = m_eyeAdjustEulerAngles;
+                eulerAngles.y -= Mathf.Asin(lookDir.y)*Mathf.Rad2Deg;
+                m_eyeTransform.localEulerAngles = eulerAngles;
+
+
+                // リコイル処理変更時の一時しのぎ用
+                //　パラメーターを変更する際に[m_playerRecoil.cntRecoil]を直接代入できるようにしてください
+                Vector2 s = m_playerRecoil.cntRecoil * Mathf.Deg2Rad;
                 s.y = -s.y;
 
                 //
@@ -118,10 +88,6 @@ public class TPSRotationController : MonoBehaviour
 
 	public void Recoil(float val)
 	{
-		playerRecoil.Shot();
-		//cntRecoil += val;
-
-		//if (MaxRecoil < cntRecoil)
-		//	cntRecoil = MaxRecoil;
+		m_playerRecoil.Shot();
     }
 }

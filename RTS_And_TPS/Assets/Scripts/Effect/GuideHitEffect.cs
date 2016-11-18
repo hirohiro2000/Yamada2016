@@ -102,12 +102,12 @@ public class GuideHitEffect : MonoBehaviour
 
     static public void Add(GameObject attacker)
     {
-        Vector3 screenPos = Camera.main.WorldToViewportPoint(attacker.transform.position);
-        if ((screenPos.x >= 0.0f && screenPos.x <= 1.0f) &&
-            (screenPos.y >= 0.0f && screenPos.y <= 1.0f))
-        {
-            return;
-        }
+//        Vector3 screenPos = Camera.main.WorldToViewportPoint(attacker.transform.position);
+//        if ((screenPos.x >= 0.0f && screenPos.x <= 1.0f) &&
+//            (screenPos.y >= 0.0f && screenPos.y <= 1.0f))
+//        {
+//            return;
+//        }
 
         GameObject dst = Instantiate(instance.m_guideOriginal);
         dst.transform.SetParent( instance.transform );
