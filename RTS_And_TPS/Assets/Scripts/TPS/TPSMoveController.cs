@@ -15,7 +15,6 @@ public class TPSMoveController : MonoBehaviour
 
 	Vector3 inputDir;
 
-
 	Rigidbody _rigidBody;
 	Rigidbody rigidBody
 	{
@@ -55,6 +54,9 @@ public class TPSMoveController : MonoBehaviour
 		}
 	}
 
+    // アニメーション用
+    TPS_AnimationController m_animationController = null;
+
     // 加速用
   	float   avoidStepPower  = 15.0f;
   	float   boosterPower    = 3.0f;
@@ -70,7 +72,6 @@ public class TPSMoveController : MonoBehaviour
         KeyCode m_key;
         float   m_timer;
         STATE   m_state;
-
         public DoublePress( KeyCode key )
         {
             m_key = key;
@@ -96,13 +97,23 @@ public class TPSMoveController : MonoBehaviour
             if ( Input.GetKey(m_key) )
             {
                 m_state = STATE.ePress;
+                m_timer = 0.0f;
             }
         }
         private void PressProc()
         {
+            m_timer += Time.deltaTime;
             if ( Input.GetKeyUp(m_key) )
             {
-                m_state = STATE.eNotPress;
+                if (m_timer > 0.2f)
+                {
+                    m_state = STATE.eIdle;
+                }
+                else
+                {
+                    m_state = STATE.eNotPress;
+                }
+
                 m_timer = 0.0f;
             }
         }
@@ -114,7 +125,7 @@ public class TPSMoveController : MonoBehaviour
             }
 
             m_timer += Time.deltaTime;
-            if (m_timer > 0.5f)
+            if (m_timer > 0.2f)
             {
                 m_state = STATE.eIdle;
             }
@@ -149,6 +160,8 @@ public class TPSMoveController : MonoBehaviour
         m_doublePressKeys[2] = new DoublePress( KeyCode.A );
         m_doublePressKeys[3] = new DoublePress( KeyCode.D );
 
+        m_animationController = GetComponent< TPS_AnimationController >();
+
     }
 
 	// Update is called once per frame
@@ -157,7 +170,10 @@ public class TPSMoveController : MonoBehaviour
         //  自分のキャラクター以外は処理を行わない
         if( !m_rIdentity.isLocalPlayer )    return;
 
-		Vector3 forward = transform.forward;
+        if ( Camera.main == null )          return;
+        Transform camTransform = Camera.main.transform;
+
+		Vector3 forward = ( transform.position - camTransform.position );
 		forward.y = .0f;
 		forward.Normalize();
 
@@ -179,13 +195,23 @@ public class TPSMoveController : MonoBehaviour
         //addDir.z = (inputDir.z - rigidBody.velocity.z) * sensitivity;
 
         //rigidBody.velocity += addDir;
-        
                 
-        UpdateAdjustMoveForce();
+        // 加速処理（ブースト＆ステップ）
+        UpdateAdjustMoveForce( forward, right );
+
+        // アニメーション
+        if ( inputDir.sqrMagnitude > 0.0f )
+        {
+            m_animationController.ChangeStateMove();
+        }
+        else
+        {
+            m_animationController.ChangeStateIdle();
+        }
 
     }
 
-    void UpdateAdjustMoveForce()
+    void UpdateAdjustMoveForce( Vector3 forward, Vector3 right )
     {
         // キーの更新
         foreach (var key in m_doublePressKeys)
@@ -195,10 +221,10 @@ public class TPSMoveController : MonoBehaviour
 
         // 加速方向（上下左右）
         Vector3[] directions = {
-            transform.forward,
-            -transform.forward,
-            -transform.right,
-            transform.right
+            forward,
+            -forward,
+            -right,
+            right
         };
 
         // ステップによる力取得
