@@ -2304,6 +2304,8 @@ public class EditManager : MonoBehaviour {
                 MoveChildren( m_rWallShell, offset );
                 MoveChildren( m_rSlopShell, offset );
                 MoveChildren( m_rBaseShell, offset );
+                MoveChildren( m_rBoxShell, offset );
+                MoveChildren( m_rLaunchPointShell, offset );
                 MoveChildren( m_rSpawnPointShell, offset );
                 MoveChildren( m_rEmptyShell, offset );
             }

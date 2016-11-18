@@ -4,24 +4,26 @@ using System.Collections;
 
 public class FiringDevice : NetworkBehaviour
 {
-	public GameObject		    m_bullet;
+	public GameObject		        m_bullet;
 
-	private ReferenceWrapper  m_rEnemyShell		= null;
-	private	ResourceParameter	m_resourceParam		= null;
+	private ReferenceWrapper        m_rEnemyShell		= null;
+	private	ResourceParameter	    m_resourceParam		= null;
+    private RTSResourece_Control    m_RTSResControl     = null;
 
-    private float               m_IntervalTimer     =   0.0f;
+    private float                   m_IntervalTimer     = 0.0f;
 
 	// Use this for initialization
 	void Start ()
 	{
 		m_rEnemyShell       = GameObject.Find( "EnemySpawnRoot" ).GetComponent< ReferenceWrapper >();
 		m_resourceParam		= GetComponent<ResourceParameter>();
+        m_RTSResControl     = GetComponent<RTSResourece_Control>();
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-        //  サーバーでのみ処理を行う
+        //  サーバーでのみ処理を行う 
         //if( !isServer ) return;
 
         //  タイマー更新
@@ -38,8 +40,15 @@ public class FiringDevice : NetworkBehaviour
 				GameObject g			= Instantiate( m_bullet );
 				g.transform.position	= transform.position;
 				g.transform.rotation	= transform.rotation;
-				g.AddComponent<ResourceParameter>().Copy( m_resourceParam );
-				g.GetComponent<AttackPointList>().baseAttackPoint *= m_resourceParam.GetCurLevelParam().power;
+
+                AttackPointList rATKPL  =   g.GetComponentInChildren< AttackPointList >();
+                GameObject      rObj    =   rATKPL.gameObject;
+                rATKPL.baseAttackPoint  *=  m_resourceParam.GetCurLevelParam().power;
+
+                rObj.AddComponent< ResourceParameter >().Copy( m_resourceParam );
+
+                //  オーナー設定
+                rObj.GetComponent< RTSAttack_Net >().c_AttackerID   =   m_RTSResControl.c_OwnerID;
 
                 //  クライアントでも弾が見えるようにする
                 //RpcSpawnBullet( transform.rotation, transform.position );

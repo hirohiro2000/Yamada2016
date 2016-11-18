@@ -4,6 +4,8 @@ using System.Collections;
 [RequireComponent(typeof(AttackPointList))]
 [RequireComponent(typeof(SphereCollider))]
 public class ExplosionAttack : MonoBehaviour {
+    public  int     c_DestroyCounter    =   0;
+
 	[SerializeField]
 	AnimationCurve hitPowerLengthRate;
 
@@ -61,6 +63,9 @@ public class ExplosionAttack : MonoBehaviour {
 
 	void FixedUpdate()
 	{
-		Destroy(this.gameObject);
+        //  カウンター数分フレームが経過してから破棄
+        if( c_DestroyCounter-- <= 0 ){
+            Destroy(this.gameObject);
+        }
 	}
 }

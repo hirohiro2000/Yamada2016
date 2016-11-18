@@ -820,13 +820,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_name: "\u30EC\u30FC\u30C0\u30FC"
   m_summary: "\u30EC\u30FC\u30C0\u30FC\u5F37\u5316\uFF08\u4EEE\uFF09"
-  m_createCost: 0
-  m_breakCost: 0
+  m_createCost: 33
+  m_breakCost: 12
   m_level: 0
   m_curHp: 0
   m_levelInformations:
     list:
-    - hp: 0
+    - hp: 1
+      power: 0
+      range: 0
+      interval: 0
+      upCost: 67
+    - hp: 1
+      power: 0
+      range: 0
+      interval: 0
+      upCost: 111
+    - hp: 1
       power: 0
       range: 0
       interval: 0
@@ -842,6 +852,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64827b74010ebd64caf36c5d1ad4d88a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_OwnerID: 0
 --- !u!114 &11437114
 MonoBehaviour:
   m_ObjectHideFlags: 1
