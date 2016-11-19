@@ -96,7 +96,9 @@ public class Health : NetworkBehaviour {
         if( rTPSATK.c_AttackerID != m_rLinkManager.m_LocalPlayerID )    return;
 
         //  ダメージをサーバーに送信 
-        m_rLinkManager.m_rLocalNPControl.CmdSendDamageEnemy( netId, _rDamageResult.GetTotalDamage() );
+        if( m_rLinkManager.m_rLocalNPControl ){
+            m_rLinkManager.m_rLocalNPControl.CmdSendDamageEnemy( netId, _rDamageResult.GetTotalDamage() );
+        }
     }
     void    DamageProc_WidthTower( DamageResult _rDamageResult, CollisionInfo _rInfo )
     {
@@ -110,14 +112,10 @@ public class Health : NetworkBehaviour {
         //  設置したプレイヤーのクライアント以外では処理を行わない 
         if( rRTSATK.c_AttackerID != m_rLinkManager.m_LocalPlayerID )    return;
 
-        //  ダメージをサーバーに送信 
-        m_rLinkManager.m_rLocalNPControl.CmdSendDamageEnemy( netId, _rDamageResult.GetTotalDamage() );
-
-        ////  サーバーでのみ処理を行う
-        //if( !NetworkServer.active ) return;
-
-        ////  ダメージを受ける
-        //GiveDamage( _rDamageResult.GetTotalDamage(), 0 );
+        //  ダメージをサーバーに送信
+        if( m_rLinkManager.m_rLocalNPControl ){
+            m_rLinkManager.m_rLocalNPControl.CmdSendDamageEnemy( netId, _rDamageResult.GetTotalDamage() );
+        }
     }
 
     public  void    CorrectionHP(int level,float correcion_rate)

@@ -432,7 +432,7 @@ public class TPSShotController : NetworkBehaviour {
 		}
 		emit.transform.parent = parent.transform;
 
-        //  所属を設定
+        //  所属を設定 
         TPSAttack_Net   rAttack =   emit.GetComponent< TPSAttack_Net >();
         if( rAttack )   rAttack.c_AttackerID    =   m_rLinkManager.m_LocalPlayerID;
         BombExplosion   rBomb   =   emit.GetComponent< BombExplosion >();

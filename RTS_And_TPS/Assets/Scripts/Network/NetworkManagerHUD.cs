@@ -1,49 +1,70 @@
 
 #if ENABLE_UNET
 
+using System;
+using System.Collections.Generic;
+
 namespace   UnityEngine.Networking
 {
 	[ AddComponentMenu( "Network/NetworkManagerHUD" ) ]
 	[ System.ComponentModel.EditorBrowsable( System.ComponentModel.EditorBrowsableState.Never ) ]
 	public  class   NetworkManagerHUD   :   MonoBehaviour
 	{
-		public  NetworkManager  m_rNetworkManager   =   null;
-        public  uint            m_MatchSize         =   4;
+		public  NetworkManager      m_rNetworkManager   =   null;
+        public  uint                m_MatchSize         =   4;
 
-        public  bool            showGUI             =   true;
+        public  bool                showGUI             =   true;
 
-        private int             offsetX             =   0;
-        private int             offsetY             =   0;
+        private int                 offsetX             =   0;
+        private int                 offsetY             =   0;
 
-        private string          m_RoomPass          =   "";
-        private string          m_JoinPass          =   "";
-        private string          m_NameFilter        =   "";
+        private string              m_RoomPass          =   "";
+        private string              m_JoinPass          =   "";
+        private string              m_NameFilter        =   "";
+
+        private MyNetworkDiscovery  m_rDiscovery        =   null;
 
 		// Runtime variable
-		private bool            showServer          =   false;
+		//private bool                showServer          =   false;
 
 		void    Awake()
 		{
 			m_rNetworkManager   =   GetComponent< NetworkManager >();
+            m_rDiscovery        =   GetComponent< MyNetworkDiscovery >();
 		}
+        void    Start()
+        {
+            m_rNetworkManager.matchName =   "";
+        }
 
 		void    Update()
 		{
 			if( !showGUI )	return;
 
-			if( !NetworkClient.active
+            if( !NetworkClient.active
             &&  !NetworkServer.active
             &&  m_rNetworkManager.matchMaker == null )
-			{
-				if( Input.GetKeyDown( KeyCode.S ) ) m_rNetworkManager.StartServer();
-				if( Input.GetKeyDown( KeyCode.H ) ) m_rNetworkManager.StartHost();
-				if( Input.GetKeyDown( KeyCode.C ) ) m_rNetworkManager.StartClient();
-			}
-			if( NetworkServer.active
-            &&  NetworkClient.active )
-			{
-				if( Input.GetKeyDown( KeyCode.X ) ) m_rNetworkManager.StopHost();
-			}
+            {
+                //if( Input.GetKeyDown( KeyCode.S ) ) m_rNetworkManager.StartServer();
+                if( Input.GetKeyDown( KeyCode.H ) ){
+                    //  ブロードキャスト開始 
+                    m_rDiscovery.Initialize();
+                    m_rDiscovery.StartAsServer();
+
+                    //  ホスト開始
+                    m_rNetworkManager.StartHost();
+                }
+                if( Input.GetKeyDown( KeyCode.C ) ){
+                    //  ブロードキャスト開始
+                    m_rDiscovery.Initialize();
+                    m_rDiscovery.StartAsClient();
+                }
+            }
+            //if( NetworkServer.active
+            //&&  NetworkClient.active )
+            //{
+            //    if( Input.GetKeyDown( KeyCode.X ) ) m_rNetworkManager.StopHost();
+            //}
 		}
 
 		void    OnGUI()
@@ -56,18 +77,43 @@ namespace   UnityEngine.Networking
 
 			if( !NetworkClient.active
             &&  !NetworkServer.active
-            &&  m_rNetworkManager.matchMaker == null )
+            &&  m_rNetworkManager.matchMaker == null
+            &&  !m_rDiscovery.running )
 			{
-				if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "LAN Host(H)" ) )          m_rNetworkManager.StartHost();
+				if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "LAN Host(H)" ) ){
+                    //  ブロードキャスト開始 
+                    m_rDiscovery.Initialize();
+                    m_rDiscovery.StartAsServer();
+
+                    //  ホスト開始
+                    m_rNetworkManager.StartHost();
+                }
 				ypos    +=  spacing;
 
-				if( GUI.Button( new Rect( xpos, ypos, 105, 20 ), "LAN Client(C)" ) )        m_rNetworkManager.StartClient();
-				m_rNetworkManager.networkAddress
-                    =   GUI.TextField( new Rect( xpos + 110, ypos, 90, 20 ), m_rNetworkManager.networkAddress );
-				ypos    +=  spacing;
+				if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "LAN Client(C)" ) ){
+                    //  ブロードキャスト開始
+                   m_rDiscovery.Initialize();
+                   m_rDiscovery.StartAsClient();
+                }
+                ypos    +=  spacing;
 
-				if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "LAN Server Only(S)" ) )   m_rNetworkManager.StartServer();
-				ypos    +=  spacing;
+                //if( GUI.Button( new Rect( xpos, ypos, 106, 20 ), "LAN Client" ) ){
+                //    //  クライアント開始
+                //    m_rNetworkManager.StartClient();
+                //}
+                //m_rNetworkManager.networkAddress
+                //    =   GUI.TextField( new Rect( xpos + 110, ypos, 90, 20 ), m_rNetworkManager.networkAddress );
+                //ypos    +=  spacing;
+
+                //if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "LAN Server Only(S)" ) ){
+                //    //  ブロードキャスト開始 
+                //    m_rDiscovery.Initialize();
+                //    m_rDiscovery.StartAsServer();
+
+                //    //  サーバー起動
+                //    m_rNetworkManager.StartServer();
+                //}
+                //ypos    +=  spacing;
 			}
 			else
 			{
@@ -80,6 +126,49 @@ namespace   UnityEngine.Networking
 					ypos    +=  spacing;
 				}
 			}
+
+            if( !NetworkServer.active
+            &&  !NetworkClient.active
+            &&  m_rDiscovery.running ){
+                //  サーバーが見つかった
+                if( m_rDiscovery.broadcastsReceived            != null
+                &&  m_rDiscovery.broadcastsReceived.Keys.Count >  0    ){ 
+                    foreach( var key in m_rDiscovery.broadcastsReceived.Keys ){
+                        var value       =   m_rDiscovery.broadcastsReceived[ key ];
+                        var dataString  =   MyNetworkDiscovery.BytesToString( value.broadcastData );
+                        var items       =   dataString.Split( ':' );
+
+                        if( items.Length == 3 && items[ 0 ] == "NetworkManager" ){
+                            if( NetworkManager.singleton != null && NetworkManager.singleton.client == null ){
+                                //  クライアント開始
+                                NetworkManager.singleton.networkAddress =   items[ 1 ];
+                                NetworkManager.singleton.networkPort    =   Convert.ToInt32( items[ 2 ] );
+                                NetworkManager.singleton.StartClient();
+
+                                //  ブロードキャスト終了
+                                m_rDiscovery.StopBroadcast();
+                            }
+                        }
+
+                        //  最初に見つかったアドレス以外は無視
+                        break;
+                    }
+                }
+                //  検索中
+                else{
+                    GUIContent  content =   new GUIContent( "___  Searching Host  ___" );
+                    GUIStyle    style   =   new GUIStyle( GUI.skin.label );
+                    Vector2     size    =   style.CalcSize( content );
+                    Rect        rect    =   FunctionManager.AdjustRectCanvasToGUI(
+                        FunctionManager.AR_TYPE.MIDDLE_CENTER,
+                        new Rect( 0, 0, size.x, size.y ),
+                        new Vector2( 0.5f, 0.5f ),
+                        new Vector2( 200, 20 )
+                    );
+                    GUI.Label( new Rect( xpos + rect.x, ypos, 300, 20 ), content );
+                    ypos += spacing; 
+                }
+            }
 
 			if( NetworkClient.active
             &&  !ClientScene.ready )
@@ -96,23 +185,28 @@ namespace   UnityEngine.Networking
 			}
 
 			if( NetworkServer.active
-            ||  NetworkClient.active )
+            ||  NetworkClient.active
+            ||  m_rDiscovery.running )
 			{
 				if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "Stop (X)" ) )
 				{
 					m_rNetworkManager.StopHost();
+                    if( m_rDiscovery.running ){
+                        m_rDiscovery.StopBroadcast();
+                    }
 				}
 				ypos += spacing;
 			}
 
 			if( !NetworkServer.active
-            &&  !NetworkClient.active )
+            &&  !NetworkClient.active
+            &&  !m_rDiscovery.running )
 			{
 				ypos += 10;
 
 				if( m_rNetworkManager.matchMaker == null )
 				{
-					if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "Enable Match Maker (M)" ) )
+					if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "Enable Match Maker" ) )
 					{
 						m_rNetworkManager.StartMatchMaker();
 					}
@@ -197,37 +291,6 @@ namespace   UnityEngine.Networking
                             ypos += 10;
 						}
 					}
-
-					if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "Change MM server" ) )
-					{
-						showServer = !showServer;
-					}
-					if( showServer )
-					{
-						ypos += spacing;
-						if( GUI.Button( new Rect( xpos, ypos, 100, 20 ), "Local" ) )
-						{
-							m_rNetworkManager.SetMatchHost( "localhost", 1337, false );
-							showServer  =   false;
-						}
-						ypos += spacing;
-						if( GUI.Button( new Rect( xpos, ypos, 100, 20 ), "Internet" ) )
-						{
-							m_rNetworkManager.SetMatchHost( "mm.unet.unity3d.com", 443, true );
-							showServer = false;
-						}
-						ypos += spacing;
-						if( GUI.Button( new Rect( xpos, ypos, 100, 20 ), "Staging" ) )
-						{
-							m_rNetworkManager.SetMatchHost( "staging-mm.unet.unity3d.com", 443, true );
-							showServer  =   false;
-						}
-					}
-
-					ypos += spacing;
-
-					GUI.Label( new Rect( xpos, ypos, 300, 20 ), "MM Uri: " + m_rNetworkManager.matchMaker.baseUri );
-					ypos += spacing;
 
 					if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "Disable Match Maker" ) )
 					{

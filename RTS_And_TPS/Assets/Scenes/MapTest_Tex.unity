@@ -15190,6 +15190,7 @@ GameObject:
   - 4: {fileID: 1551213989}
   - 114: {fileID: 1551213987}
   - 114: {fileID: 1551213990}
+  - 114: {fileID: 1551213988}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -15220,8 +15221,8 @@ MonoBehaviour:
   m_PlayerPrefab: {fileID: 126756, guid: 00d6b3f93bb911943a0e36c9cdd64019, type: 2}
   m_AutoCreatePlayer: 1
   m_PlayerSpawnMethod: 0
-  m_OfflineScene: NetworkTPS
-  m_OnlineScene: NetworkTPS
+  m_OfflineScene: MapTest_Tex
+  m_OnlineScene: MapTest_Tex
   m_SpawnPrefabs:
   - {fileID: 139324, guid: ac0234c790d1a4e429d184d663db879b, type: 2}
   - {fileID: 185506, guid: ef62698dc89114541a6189b4ec9fc0a9, type: 2}
@@ -15280,6 +15281,27 @@ MonoBehaviour:
   matchMaker: {fileID: 0}
   matchName: 64656661756c74
   matchSize: 4
+--- !u!114 &1551213988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1551213986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a3b25bf48bd2f94ba96f9f1faf231c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BroadcastPort: 47777
+  m_BroadcastKey: 2222
+  m_BroadcastVersion: 1
+  m_BroadcastSubVersion: 1
+  m_BroadcastInterval: 1000
+  m_UseNetworkManager: 1
+  m_BroadcastData: HELLO
+  m_ShowGUI: 0
+  m_OffsetX: 220
+  m_OffsetY: 0
 --- !u!4 &1551213989
 Transform:
   m_ObjectHideFlags: 0
@@ -15305,7 +15327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rNetworkManager: {fileID: 0}
-  m_MatchSize: 4
+  m_MatchSize: 20
   showGUI: 1
 --- !u!1 &1573448896
 GameObject:

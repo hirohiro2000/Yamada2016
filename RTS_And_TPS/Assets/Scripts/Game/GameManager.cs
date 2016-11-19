@@ -560,6 +560,8 @@ public class GameManager : NetworkBehaviour {
     [ ClientRpc ]
     public  void    RpcMainMessage( string _Message, float _DisplayTime, float _Delay )
     {
+        if( NetworkServer.active )  return;
+
         SetMainMassage( _Message, _DisplayTime, _Delay );
     }
     //  ウェーブ開始処理

@@ -169,11 +169,25 @@ public class GridPanel_Control : MonoBehaviour {
         m_rCollider.enabled     =   _IsActive;
         m_rRenderer.enabled     =   _IsActive;
         m_rHeightText.enabled   =   _IsActive;
-		m_rHeightMesh.enabled	=	( m_GridPoint.z <= 0 )? false : _IsActive;
-
         m_IsActive              =   _IsActive;
 
-        //this.enabled            =   _IsActive;
+        m_rHeightMesh.enabled   =   _IsActive && CheckUseHeightColor();
+    }
+    private bool    CheckUseHeightColor()
+    {
+        if( m_GridPoint.z == 0 )                            return  false;
+        if( !m_rDOWN )                                      return  false;
+        if( !m_rDOWN.m_rRelatedObj )                        return  false;
+
+        GameObject  rDownObj    =   m_rDOWN.m_rRelatedObj;
+        Transform   rDownParent =   rDownObj.transform.parent;
+
+        if( rDownParent.name.IndexOf( "Base" )    != -1 )   return  false;
+        if( rDownParent.name.IndexOf( "Spawn" )   != -1 )   return  false;
+        if( rDownParent.name.IndexOf( "Launch" )  != -1 )   return  false;
+        if( rDownParent.name.IndexOf( "Empty" )   != -1 )   return  false;
+
+        return  true;
     }
 
     public  void    SetColor( Color _Color )
