@@ -210,7 +210,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 141050}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.412962, y: 0.00044816732, z: -27.495811}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -488,7 +488,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 141050}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 763b25596baf47b4eac7eabbd537575d, type: 3}
   m_Name: 
@@ -511,7 +511,7 @@ MonoBehaviour:
     m_RotationOrder: 0
   originHeight: 0
   timer: 0
-  timeSpeed: 1
+  timeSpeed: 0.25
 --- !u!114 &11433780
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -614,20 +614,20 @@ MonoBehaviour:
   m_curHp: 0
   m_levelInformations:
     list:
-    - hp: 10
-      power: 64
-      range: 8
-      interval: 2.2
-      upCost: 128
     - hp: 15
-      power: 83
-      range: 9
+      power: 16
+      range: 8
       interval: 2
-      upCost: 203
-    - hp: 30
-      power: 102
+      upCost: 117
+    - hp: 20
+      power: 24
+      range: 9
+      interval: 1.75
+      upCost: 161
+    - hp: 40
+      power: 40
       range: 10
-      interval: 1.8
+      interval: 1.5
       upCost: 0
 --- !u!114 &11492700
 MonoBehaviour:

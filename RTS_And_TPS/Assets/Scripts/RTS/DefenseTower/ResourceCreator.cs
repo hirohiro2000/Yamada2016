@@ -180,11 +180,11 @@ public class ResourceCreator : NetworkBehaviour
             return;
         }
 
-        ResourceAppear apper = rObj.GetComponent<ResourceAppear>();
-        if (apper != null)
-        {
-            apper.enabled = true;
-        }
+        //ResourceAppear apper = rObj.GetComponent<ResourceAppear>();
+        //if (apper != null)
+        //{
+        //    apper.enabled = true;
+        //}
 
     }
 
