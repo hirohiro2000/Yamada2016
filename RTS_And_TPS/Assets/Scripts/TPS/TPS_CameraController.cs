@@ -27,7 +27,7 @@ public class TPS_CameraController : MonoBehaviour
     private Vector2   m_shake               = Vector2.zero;
 
 	[SerializeField, Range(0.005f, 0.1f)]
-	private float m_rotateSpeed = 0.01f;
+	private float m_rotateSpeed = 0.04f;
 
 	//
 	void Start()
@@ -48,7 +48,7 @@ public class TPS_CameraController : MonoBehaviour
 
     }
 
-    void FixedUpdate()
+    void Update()
     {        
         if ( m_target == null )
         {

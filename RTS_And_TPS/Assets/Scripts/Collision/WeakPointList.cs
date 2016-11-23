@@ -36,6 +36,23 @@ public class WeakPointParam
 [System.Serializable]
 public class WeakPointParamReorderableList : ReorderableList<WeakPointParam> { }
 
+[System.Serializable]
+public class WeakPointListData
+{
+	public WeakPointParamReorderableList weak_lists = null;
+
+	public WeakPointListData(WeakPointList weak)
+	{
+		weak_lists = new WeakPointParamReorderableList();
+		weak_lists.list = new List<WeakPointParam>(weak.weak_lists.list);
+	}
+	public WeakPointListData()
+	{
+
+	}
+
+}
+
 
 public class WeakPointList : MonoBehaviour
 {
@@ -49,7 +66,18 @@ public class WeakPointList : MonoBehaviour
 		weak_lists.list = new List<WeakPointParam>(weak.weak_lists.list);
 	}
 
-	public delegate void WeakPointParamChange(ref WeakPointList weak, CollisionInfo info);
+	WeakPointListData data = new WeakPointListData();
+
+	public WeakPointListData GetData()
+	{
+		if (data == null)
+			data = new WeakPointListData();
+		data.weak_lists = weak_lists;
+
+		return data;
+	}
+
+	public delegate void WeakPointParamChange(ref WeakPointListData weak, CollisionInfo info);
 
 	public delegate void WeakPointParamChangeAfterDamaged(ref WeakPointList weak, DamageResult result, CollisionInfo info);
 

@@ -110,8 +110,12 @@ public class AttackPointList : MonoBehaviour {
 
 	public delegate void AttackPointDataChange(ref AttackPointListData atk, CollisionInfo info);
 
-
 	public delegate void AttackPointParamChange(ref AttackPointList atk,CollisionInfo info);
+
+	//厳密に衝突点を取得したいとき
+	public delegate Vector3 CalcContactPoint(Collider damagedCollider);
+
+	public CalcContactPoint CalcContactPointBeforeDamege = null;
 
 	//ダメージ計算・衝突判定前に呼び出します(計算後に破棄されます)
 	public AttackPointDataChange BeforeCalcDamegeCallBack = null;
