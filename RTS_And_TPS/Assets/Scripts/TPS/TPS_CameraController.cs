@@ -138,7 +138,5 @@ public class TPS_CameraController : MonoBehaviour
         m_shake += value;
     }
 
-    public Vector3 GetPolar() { return m_camPolar; }
-
 }
 

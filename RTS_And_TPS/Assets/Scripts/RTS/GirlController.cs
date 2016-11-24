@@ -31,8 +31,10 @@ public class GirlController : NetworkBehaviour
 		ConvertResource,
 	}
 	private ActionState			m_actionState	= ActionState.Common;
-
-
+    
+    private bool                m_isMoveByKey   = false;
+    private NavMeshAgent        m_navAgent      = null;
+    
 	// Use this for initialization
 	void Start ()
 	{
@@ -47,7 +49,10 @@ public class GirlController : NetworkBehaviour
 		m_resourceCreator				= GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
 		m_itemCntroller					= GetComponent<ItemController>();
         m_rRigid                        = GetComponent< Rigidbody >();
-	}
+
+        m_navAgent                      = gameObject.AddComponent<NavMeshAgent>();
+
+    }
 
 	//	Write to the FixedUpdate if including physical behavior
 	void Update () 
@@ -82,10 +87,15 @@ public class GirlController : NetworkBehaviour
 
 		switch( m_actionState )
 		{
-		case ActionState.Common:			MovedByKey();		break;
+		case ActionState.Common:    Move();		break;
 		}
 	}
 
+    void Move()
+    {
+        MovedByKey();
+        MoveByNavMeshAgent();
+    }
 
 	//---------------------------------------------------------------------
 	//      すてーと
@@ -113,8 +123,44 @@ public class GirlController : NetworkBehaviour
 		{
 			Vector3 newDir 		= Vector3.RotateTowards( transform.forward, animDir, 10.0f*Time.deltaTime, 0f );
 			transform.rotation 	= Quaternion.LookRotation( newDir );
-		}		
+		}
+        
+        // Did a player move by a key?
+        m_isMoveByKey = ( direction.sqrMagnitude > 0.0f );
+        		
 	}
+    void MoveByNavMeshAgent()
+    {
+        if (m_isMoveByKey == true)
+        {
+            m_navAgent.Stop();
+            return;
+        }
+
+        if ( m_navAgent.hasPath == false )
+        {
+            m_navAgent.Stop();
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3     mousePosition   = Input.mousePosition;
+            Ray         ray             = Camera.main.ScreenPointToRay(mousePosition);
+            RaycastHit  hit             = new RaycastHit();
+
+            if ( Physics.Raycast(ray, out hit, float.MaxValue) )
+            {                            
+                Vector3 targetPosition  = m_resourceInformation.ComputeGridPosition( hit.point );
+                m_navAgent.SetDestination( targetPosition );
+                m_navAgent.Resume();
+
+                m_navAgent.speed = m_moveSpeed;
+            }
+        }
+
+    }
+
+
 	void UpdateCommon()
 	{
 		m_buttonOk.SetActive(false);
