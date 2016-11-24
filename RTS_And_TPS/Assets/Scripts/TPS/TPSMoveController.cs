@@ -289,5 +289,19 @@ public class TPSMoveController : MonoBehaviour
         return outVec;
 
     }
+    
+    	//敵との衝突用
+	public void OnControllerColliderHit(ControllerColliderHit hit)
+	{
+		if (hit.gameObject.layer == LayerMask.NameToLayer("Field"))
+			return;
+		if(Mathf.Abs(hit.normal.y) < 0.5f )
+		{
+			Vector3 dir = hit.normal;
+			dir.y = .0f;
+			dir.Normalize();
+			transform.position = transform.position + dir * 0.2f;
+        }
+    }
 
 }

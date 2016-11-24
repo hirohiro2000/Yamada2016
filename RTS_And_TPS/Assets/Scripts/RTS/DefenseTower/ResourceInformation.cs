@@ -120,13 +120,16 @@ public class ResourceInformation : NetworkBehaviour
 	//---------------------------------------------------------------------
 	//  
 	//---------------------------------------------------------------------
-	public void LevelUpResource( Vector3 pos )
+	public void LevelUpResource( Vector3 pos, int _OwnerID )
     {
 		var gi = ComputeGridResource( pos );
 
 		if( gi.resource != null )
 		{
 			gi.resource.GetComponent<ResourceParameter>().LevelUp();
+
+            //  所有者変更
+            gi.resource.GetComponent< RTSResourece_Control >().c_OwnerID    =   _OwnerID;
 		}
 	}
 

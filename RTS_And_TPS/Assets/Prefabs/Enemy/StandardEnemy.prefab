@@ -88,7 +88,7 @@ GameObject:
   - 4: {fileID: 438564}
   - 114: {fileID: 11489704}
   - 114: {fileID: 11494592}
-  - 136: {fileID: 13691844}
+  - 65: {fileID: 6581274}
   m_Layer: 12
   m_Name: DamageObject
   m_TagString: Untagged
@@ -757,7 +757,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 109252}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.36, y: 0.00044816732, z: 2.931157}
+  m_LocalPosition: {x: -0.17089117, y: -0.5, z: 6.860245}
   m_LocalScale: {x: 2.4277558, y: 2.4277565, z: 2.4277565}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -889,7 +889,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 108744}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.516, z: 0.856}
+  m_LocalPosition: {x: 0, y: 0.478, z: 1.103}
   m_LocalScale: {x: 0.62036014, y: 0.62036014, z: 0.62036014}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -1264,6 +1264,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.9999999, y: 0.27402422, z: 0.8319217}
   m_Center: {x: 0, y: 0.181779, z: -0.084039144}
+--- !u!65 &6581274
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 108744}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1.54}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &9571974
 Animator:
   serializedVersion: 3
@@ -1351,8 +1363,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_ExplodedObj: {fileID: 106676, guid: 665a2285f8096464685e5624d31fe644, type: 2}
   c_Explosion: {fileID: 183870, guid: 2d604258e71134b418a81a7e69a56dcf, type: 2}
-  Resource: 10
-  Score: 10
+  Resource: 8
+  Score: 8
   MaxHP: 10
 --- !u!114 &11426922
 MonoBehaviour:
@@ -1868,19 +1880,6 @@ CapsuleCollider:
   m_Height: 1.6
   m_Direction: 1
   m_Center: {x: 0.07, y: 0.82, z: -0.04}
---- !u!136 &13691844
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 108744}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2.59
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!137 &13738138
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
@@ -2123,7 +2122,7 @@ NavMeshAgent:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 109252}
   m_Enabled: 1
-  m_Radius: 0.76
+  m_Radius: 0.6
   m_Speed: 13
   m_Acceleration: 8
   avoidancePriority: 50

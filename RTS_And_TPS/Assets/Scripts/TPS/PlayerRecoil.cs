@@ -7,6 +7,7 @@ public class PlayerRecoil : MonoBehaviour {
 	public float recoveryTimeWithArmAndReticle = 0.5f; //腕力限界度とレティクルが戻る時間
 	float cntMaxArmCriticalRate = .0f; //現在の最大腕力限界度
 	public float cntArmCriticalRate = .0f; //現在の腕力限界度
+
 	float cntMaxReticleMultiple = .0f; //現在の最大レティクルブレ倍率
 	public float cntReticleMultiple = .0f; //現在のレティクルブレ倍率
 	float recoveryRateWithArmAndReticle = 1.0f; //腕力限界度とレティクルの回復率
@@ -14,9 +15,13 @@ public class PlayerRecoil : MonoBehaviour {
 	AnimationCurve reticleIncrementCurve = null; //レティクル増加量カーブ
 	[SerializeField]
 	AnimationCurve recoilIncrementCurve = null; //リコイル増加量カーブ
+	Vector2 beforeRecoil = Vector2.zero; //発射前のリコイル量
 	Vector2 cntMaxRecoil = Vector2.zero; //現在の最大リコイル量
 	public Vector2 cntRecoil = Vector2.zero; //現在のリコイル量
 	float recoveryRateWithRecoil = 1.0f; //リコイルの回復率
+	public Vector2 cntDisplayRecoiil = Vector2.zero; //現在の表示用リコイル量
+	public float recoilChangeTime = 0.05f;//リコイルが変化する時間
+	float changeRateWithRecoil = 1.0f; //リコイルの変化率
 
 	public WeaponRecoilData holdingWeapon;
 
@@ -43,6 +48,7 @@ public class PlayerRecoil : MonoBehaviour {
 
 		}
 
+
 		//リコイル回復
 		{
 			float recoveryTime;
@@ -61,6 +67,17 @@ public class PlayerRecoil : MonoBehaviour {
 			cntRecoil = cntMaxRecoil * (1.0f - recoveryRateWithRecoil) * (1.0f - recoveryRateWithRecoil);
 
 		}
+		//表示用リコイルの更新
+		{
+			float recovery = Time.deltaTime / recoilChangeTime;
+			changeRateWithRecoil += recovery;
+
+			if (changeRateWithRecoil > 1.0f)
+				changeRateWithRecoil = 1.0f;
+
+			//変化率を反映
+			cntDisplayRecoiil = beforeRecoil +  (cntRecoil - beforeRecoil )* changeRateWithRecoil;
+		}
 
 	}
 
@@ -74,6 +91,7 @@ public class PlayerRecoil : MonoBehaviour {
 		//回復率をリセット
 		recoveryRateWithArmAndReticle = .0f;
 		recoveryRateWithRecoil = .0f;
+		changeRateWithRecoil = .0f;
 
 		//リコイル上昇
 		{
@@ -128,8 +146,10 @@ public class PlayerRecoil : MonoBehaviour {
 			}
 
 			//最終結果を代入
+			beforeRecoil = cntRecoil;
 			cntRecoil = work;
-			cntMaxRecoil = cntRecoil; 
+			cntDisplayRecoiil = beforeRecoil;
+            cntMaxRecoil = cntRecoil; 
 		}
 		//レティクル上昇
 		{

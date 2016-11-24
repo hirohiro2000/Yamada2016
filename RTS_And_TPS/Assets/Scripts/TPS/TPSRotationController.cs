@@ -75,7 +75,7 @@ public class TPSRotationController : MonoBehaviour
 
                 // リコイル処理変更時の一時しのぎ用
                 //　パラメーターを変更する際に[m_playerRecoil.cntRecoil]を直接代入できるようにしてください
-                Vector2 s = m_playerRecoil.cntRecoil * Mathf.Deg2Rad;
+                Vector2 s = m_playerRecoil.cntDisplayRecoiil * Mathf.Deg2Rad;
                 s.y = -s.y;
 
                 //

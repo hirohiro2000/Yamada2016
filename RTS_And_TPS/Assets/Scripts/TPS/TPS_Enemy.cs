@@ -105,9 +105,6 @@ public class TPS_Enemy : NetworkBehaviour {
 				}
 			}
 
-            //  プレイヤーを介してサーバーにダメージを送信
-            NetPlayer_Control   rNPControl  =   m_rLinkManager.m_rLocalPlayer.GetComponent< NetPlayer_Control >();
-            rNPControl.CmdSendDamageEnemy( netId, maxDamageMultiple * source.damage );
 		}
 	
 	}

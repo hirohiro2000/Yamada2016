@@ -16,28 +16,51 @@ public class ExpSylinder_Control : MonoBehaviour {
     private float               c_CatchInterval =   0.0f;
     private float               m_CatchTimer    =   0.0f;
 
-    private int                 m_NumUpdate     =   0;
-    private bool                m_Start         =   false;
+    //private int                 m_NumUpdate     =   0;
+    //private bool                m_Start         =   false;
 
-    private int                 c_SavingLine    =   4;
+    private int                 c_SavingLine    =   3;
+    private ExplodedManager     m_rExpManager   =   null;
+    private bool                m_Removed       =   false;
 
 
 	// Use this for initialization
+    void    Awake()
+    {
+
+    }
 	void    Start()
     {
+        //  アクセスを取得
+        m_rExpManager   =   FunctionManager.GetAccessComponent< ExplodedManager >( "ExplodedManager" );
+
+        //  当たり判定の設定
+        if( m_rExpManager ){
+            //  個数を見て軽量処理にするかどうかを決定
+            bool    doSaving    =   ( m_rExpManager.m_rExpObjList.Count + 1 >= c_SavingLine )? true : false;
+
+            //  軽量化
+            if( doSaving ){
+                for( int i = 0; i < transform.childCount; i++ ){
+                    Rigidbody   rRigid      =   transform.GetChild( i ).GetComponent< Rigidbody >();
+                    if( !rRigid )   continue;
+
+                    rRigid.velocity         =   Vector3.zero;
+                    rRigid.angularVelocity  =   Vector3.zero;
+                    rRigid.isKinematic      =   true;
+                }
+            }
+            else{
+                //  オブジェクトを登録
+                m_rExpManager.m_rExpObjList.Add( gameObject );
+            }
+        }
+
+        //  目標をセット
         UpdateTargetTrans();
 
         //  パラメーターセット
         m_WaitTimer     =   c_WaitTime;
-
-        //for( int i = 0; i < transform.childCount; i++ ){
-        //    Rigidbody   rRigid  =   transform.GetChild( i ).GetComponent< Rigidbody >();
-        //    if( !rRigid )   continue;
-
-        //    rRigid.velocity         =   Vector3.zero;
-        //    rRigid.angularVelocity  =   Vector3.zero;
-        //    rRigid.isKinematic      =   false;
-        //}
 	}
 	
 	// Update is called once per frame
@@ -58,6 +81,7 @@ public class ExpSylinder_Control : MonoBehaviour {
             if( m_CatchTimer <= 0.0f ){
                 m_CatchTimer    =   c_CatchInterval;
 
+                bool    isAllMoved  =   true;
                 for( int i = 1; i < transform.childCount; i++ ){
                     Debris_Control  rControl    =   transform.GetChild( i ).GetComponent< Debris_Control >();
                     if( rControl.IsMove() ) continue;
@@ -66,8 +90,14 @@ public class ExpSylinder_Control : MonoBehaviour {
                     rControl.c_TargetID =   c_PartnerID;
                     rControl.c_Score    =   ( float )c_Score / Mathf.Max( 1, ( transform.childCount - 1 ) );
                     rControl.c_ForMe    =   m_ForMe;
-                    //Debug.Log( "MoveStart" );
+
+                    isAllMoved          =   false;
                     break;
+                }
+
+                if( !m_Removed
+                &&  isAllMoved ){
+                    m_rExpManager.m_rExpObjList.Remove( gameObject );
                 }
             }
         }
@@ -78,43 +108,26 @@ public class ExpSylinder_Control : MonoBehaviour {
             return;
         }
 	}
-    void    FixedUpdate()
-    {
-        if( !m_Start ){
-            if( m_NumUpdate++ == 3 ){
-                m_Start =   true;
-
-                for( int i = 0; i < transform.childCount; i++ ){
-                    Rigidbody   rRigid  =   transform.GetChild( i ).GetComponent< Rigidbody >();
-                    if( !rRigid )   continue;
-
-                    rRigid.velocity         =   Vector3.zero;
-                    rRigid.angularVelocity  =   Vector3.zero;
-                    rRigid.isKinematic      =   false;
-                }
-            }
-        }
-    }
     void    UpdateTargetTrans()
     {
         if( m_rTargetTrans != null )    return;
 
         //Debug.Log( "Call_Start" );
 
-        //GameObject[]    objList =   GameObject.FindGameObjectsWithTag( "Player" );
-        //for( int i = 0; i < objList.Length; i++ ){
-        //    ClientID_Control    rControl    =   objList[ i ].GetComponent< ClientID_Control >();
-        //    if( rControl == null )                      continue;
-        //    if( rControl.c_ClientID != c_PartnerID ){
-        //        //Debug.Log( "UnMatch_ID_" + rControl.c_ClientID + "_" + c_PartnerID );
-        //        continue;
-        //    }
+        GameObject[]    objList =   GameObject.FindGameObjectsWithTag( "Player" );
+        for( int i = 0; i < objList.Length; i++ ){
+            NetPlayer_Control   rControl    =   objList[ i ].GetComponent< NetPlayer_Control >();
+            if( rControl == null )                      continue;
+            if( rControl.c_ClientID != c_PartnerID ){
+                //Debug.Log( "UnMatch_ID_" + rControl.c_ClientID + "_" + c_PartnerID );
+                continue;
+            }
 
-        //    m_rTargetTrans  =   objList[ i ].transform;
-        //    m_ForMe         =   rControl.c_IsMe;
-        //    //Debug.Log( "Find_OK" );
-        //    break;
-        //}
+            m_rTargetTrans  =   objList[ i ].transform;
+            m_ForMe         =   rControl.c_IsMe;
+            //Debug.Log( "Find_OK" );
+            break;
+        }
     }
 
     public  void    SetExplosionPoint( Vector3 _Point )
@@ -127,45 +140,6 @@ public class ExpSylinder_Control : MonoBehaviour {
             rRigid.angularVelocity  =   Vector3.zero;
             rRigid.isKinematic      =   true;
         }
-
-        //  当たり判定の設定
-        //{
-        //    LinkManager         rLinkManager    =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
-        //    List< Collider >    rColList        =   rLinkManager.GetDebrisList();
-
-        //    //  個数を見て軽量処理にするかどうかを決定
-        //    bool    doSaving    =   ( rLinkManager.GetExpObjList().Count + 1 >= c_SavingLine )? true : false;
-
-        //    //  軽量化
-        //    if( doSaving ){
-        //        //  レイヤー変更
-        //        for( int i = 0; i < transform.childCount; i++ ){
-        //            transform.GetChild( i ).gameObject.layer    =   LayerMask.NameToLayer( "Debris_Light" );
-        //        }
-        //    }
-        //    else{
-        //        //  オブジェクトを登録
-        //        rLinkManager.GetExpObjList().Add( gameObject );
-
-        //        //  ほかのオブジェクトの破片とは当たらないようにする
-        //        for( int i = 1; i < transform.childCount; i++ ){
-        //            Collider    rCollider   =   transform.GetChild( i ).GetComponent< Collider >();
-        //            //  
-        //            for( int n = 0; n < rColList.Count; n++ ){
-        //                if( !rColList[ n ] ) continue;
-
-        //                Physics.IgnoreCollision( rCollider, rColList[ n ] );
-        //            }
-        //        }
-        //        //  破片を登録
-        //        for( int i = 1; i < transform.childCount; i++ ){
-        //            Collider    rCollider   =   transform.GetChild( i ).GetComponent< Collider >();
-
-        //            rColList.Remove( rCollider );
-        //            rColList.Add( rCollider );
-        //        }
-        //    }
-        //}
 
         //
         Transform   rTrans  =   transform.GetChild( 0 );

@@ -86,7 +86,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 452560}
-  - 136: {fileID: 13607960}
+  - 65: {fileID: 6512496}
   - 195: {fileID: 19504290}
   - 114: {fileID: 11430314}
   - 114: {fileID: 11462320}
@@ -99,6 +99,8 @@ GameObject:
   - 54: {fileID: 5413260}
   - 114: {fileID: 11409232}
   - 114: {fileID: 11418790}
+  - 114: {fileID: 11408248}
+  - 114: {fileID: 11437196}
   m_Layer: 0
   m_Name: MiniEnemy
   m_TagString: Enemy
@@ -1135,6 +1137,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &6512496
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 123842}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0.5, z: -0.02}
 --- !u!95 &9576848
 Animator:
   serializedVersion: 3
@@ -1183,6 +1197,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffdc86b727eee3645996e48527550cf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11408248
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 123842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b3a0bf183f766c45b0ea5338046959f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &11408546
@@ -1364,6 +1389,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11437196
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 123842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43d95227cd5f6d84092af83f7c73f595, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particle: {fileID: 19810104, guid: 1b3f5250cf3f5f3469fe5ebf17a609fe, type: 2}
 --- !u!114 &11444242
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1571,8 +1608,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_ExplodedObj: {fileID: 106676, guid: 665a2285f8096464685e5624d31fe644, type: 2}
   c_Explosion: {fileID: 183870, guid: 2d604258e71134b418a81a7e69a56dcf, type: 2}
-  Resource: 10
-  Score: 10
+  Resource: 2
+  Score: 2
   MaxHP: 5
 --- !u!114 &11481464
 MonoBehaviour:
@@ -1671,19 +1708,6 @@ LineRenderer:
       serializedVersion: 2
       rgba: 4294967295
   m_UseWorldSpace: 1
---- !u!136 &13607960
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 123842}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.48
-  m_Height: 1.6
-  m_Direction: 1
-  m_Center: {x: 0.07, y: 0.82, z: -0.04}
 --- !u!136 &13682346
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -1952,7 +1976,7 @@ NavMeshAgent:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 123842}
   m_Enabled: 1
-  m_Radius: 0.76
+  m_Radius: 0.5
   m_Speed: 8
   m_Acceleration: 8
   avoidancePriority: 50
@@ -1964,7 +1988,7 @@ NavMeshAgent:
   m_Height: 1.48
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 2
+  m_ObstacleAvoidanceType: 0
 --- !u!222 &22205774
 CanvasRenderer:
   m_ObjectHideFlags: 1

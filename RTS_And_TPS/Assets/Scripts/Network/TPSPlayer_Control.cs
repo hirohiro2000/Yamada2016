@@ -70,12 +70,17 @@ public class TPSPlayer_Control : NetworkBehaviour {
         rMainCamera.GetComponent< AudioListener >().enabled     =   false;
         
         //  UI系初期化
-        GameObject.Find( "Canvas" ).transform
-            .FindChild( "TPS_HUD" ).gameObject.SetActive( true );
+        GameObject  rCanvas         =   GameObject.Find( "Canvas" );
+        if( rCanvas ){
+            Transform   rTPSHUD     =   rCanvas.transform.FindChild( "TPS_HUD" );
+            if( rTPSHUD )   rTPSHUD.gameObject.SetActive( true );
+        }
         UIRadar.SetPlayer( gameObject );
 
         //  カメラのスクリプト生成
         TPS_CameraController cam = c_rMyCamera.gameObject.AddComponent<TPS_CameraController>();
+        //  リスナーを有効化
+        c_rMyCamera.GetComponent< AudioListener >().enabled     =   true;
 
         // BGM再生
         if (m_bgm == null)

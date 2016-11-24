@@ -21,6 +21,9 @@ public class TPSJumpController : MonoBehaviour {
 	[SerializeField]
 	float HoverPower = 0.1f;
 
+	[SerializeField]
+	float HoverSpeed = 0.1f;
+
 	float cntHoverTime;
 
 	bool isCanHover;
@@ -93,7 +96,7 @@ public class TPSJumpController : MonoBehaviour {
 		}
 		if(characterController.isGrounded == true || (characterController.collisionFlags & CollisionFlags.Below) != 0)
 		{
-			fallPower = 2.0f;
+			fallPower = 0.3f;
 			isJumped = false;
 			isCanHover = false;
         }
@@ -140,8 +143,13 @@ public class TPSJumpController : MonoBehaviour {
 		{
 			if(cntHoverTime > .0f)
 			{
-				cntHoverTime -= Time.deltaTime;
-				fallPower -= Time.deltaTime * HoverPower;
+				//重力無効
+				fallPower -= Time.deltaTime;
+				//HoverSpeedになるようにHoverPowerを加算する
+				float sub = -HoverSpeed - (fallPower);
+				sub = Mathf.Clamp(sub, -HoverPower * Time.deltaTime, HoverPower * Time.deltaTime);
+                cntHoverTime -= Time.deltaTime;
+				fallPower += sub;
                 TPSBoosterBar.Consumption(Time.deltaTime);
             }
 

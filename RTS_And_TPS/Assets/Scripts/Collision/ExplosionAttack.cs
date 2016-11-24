@@ -4,6 +4,8 @@ using System.Collections;
 [RequireComponent(typeof(AttackPointList))]
 [RequireComponent(typeof(SphereCollider))]
 public class ExplosionAttack : MonoBehaviour {
+    public  int     c_DestroyCounter    =   0;
+
 	[SerializeField]
 	AnimationCurve hitPowerLengthRate;
 
@@ -40,7 +42,7 @@ public class ExplosionAttack : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 
-		attackPointList.BeforeCalcDamegeCallBack += (ref AttackPointList atk, CollisionInfo info) =>
+		attackPointList.BeforeCalcDamegeCallBack += (ref AttackPointListData atk, CollisionInfo info) =>
 		{
 			//距離により修正
 			//当たり判定の半径を取得
@@ -61,6 +63,9 @@ public class ExplosionAttack : MonoBehaviour {
 
 	void FixedUpdate()
 	{
-		Destroy(this.gameObject);
+        //  カウンター数分フレームが経過してから破棄
+        if( c_DestroyCounter-- <= 0 ){
+            Destroy(this.gameObject);
+        }
 	}
 }

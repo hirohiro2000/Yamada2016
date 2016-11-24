@@ -491,7 +491,9 @@ public class GameManager : NetworkBehaviour {
     {
         //  破壊されたタワーを修復
         for( int i = 0; i < m_rResources.childCount; i++ ){
-            m_rResources.GetChild( i ).gameObject.SetActive( true );
+            GameObject  rObj    =   m_rResources.GetChild( i ).gameObject;
+            rObj.SetActive( false );
+            rObj.SetActive( true );
         }
     }
 

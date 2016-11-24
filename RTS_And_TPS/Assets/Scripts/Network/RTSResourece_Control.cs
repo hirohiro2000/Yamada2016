@@ -4,12 +4,9 @@ using UnityEngine.Networking;
 using System.Collections;
 
 public class RTSResourece_Control : NetworkBehaviour {
+    [ SyncVar ]
+    public  int     c_OwnerID   =   0;
 
-	// Use this for initialization
-	void    Start()
-    {
-	    
-	}
 	public  override    void    OnStartServer()
     {
         transform.parent    =   GameObject.Find( "FieldResources" ).transform;
@@ -18,11 +15,4 @@ public class RTSResourece_Control : NetworkBehaviour {
     {
         transform.parent    =   GameObject.Find( "FieldResources" ).transform;
     }
-
-
-	// Update is called once per frame
-	void    Update()
-    {
-	    
-	}
 }

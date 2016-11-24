@@ -434,13 +434,15 @@ public class TPSShotController : NetworkBehaviour {
 
         //  所属を設定
         TPSAttack_Net   rAttack =   emit.GetComponent< TPSAttack_Net >();
-        rAttack.c_AttackerID    =   m_rLinkManager.m_LocalPlayerID;
+        if( rAttack )   rAttack.c_AttackerID    =   m_rLinkManager.m_LocalPlayerID;
+        BombExplosion   rBomb   =   emit.GetComponent< BombExplosion >();
+        if( rBomb )     rBomb.c_AttackerID      =   m_rLinkManager.m_LocalPlayerID;
 
 		//リコイル処理
 		playerRecoil.Shot();
 
         //  他のクライアントでも発射
-        m_rNPControl.CmdFire_Client( firePoint, target, m_rLinkManager.m_LocalPlayerID, cntWeaponIndex, m_MyChildID );
+        m_rNPControl.CmdFire_Client( firePoint, target, cntWeaponIndex, m_MyChildID );
     }
     public  void    Shot_ByRequest( Vector3 firePoint, Vector3 target, int _ShooterID, int _WeaponID )
     {
@@ -460,7 +462,9 @@ public class TPSShotController : NetworkBehaviour {
 
         //  所属を設定
         TPSAttack_Net   rAttack =   emit.GetComponent< TPSAttack_Net >();
-        rAttack.c_AttackerID    =   m_rLinkManager.m_LocalPlayerID;
+        if( rAttack )   rAttack.c_AttackerID    =   _ShooterID;
+        BombExplosion   rBomb   =   emit.GetComponent< BombExplosion >();
+        if( rBomb )     rBomb.c_AttackerID      =   _ShooterID;
     }
 
 	void WeaponChange()

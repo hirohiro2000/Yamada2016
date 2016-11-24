@@ -18,7 +18,7 @@ public class PhysicsAttack : MonoBehaviour {
 			 attackdObject.Add(info.damagedObject);
          };
 
-		attackPointList.BeforeCalcDamegeCallBack += (ref AttackPointList atk, CollisionInfo info) =>
+		attackPointList.BeforeCalcDamegeCallBack += (ref AttackPointListData atk, CollisionInfo info) =>
 		{
 			foreach(Transform obj in attackdObject)
 			{

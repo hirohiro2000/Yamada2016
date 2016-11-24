@@ -18,7 +18,16 @@ public class RTSCamera : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		Vector3 dir	= m_dir.normalized * m_targetDistance;
+        // カメラ距離の調整
+        {
+            if ( Input.GetMouseButton(2) ){
+                m_targetDistance += Input.GetAxis("Mouse Y");
+            }
+        }
+
+
+
+        Vector3 dir	= m_dir.normalized * m_targetDistance;
 
 		if( m_target == null )
 		{

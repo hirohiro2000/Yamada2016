@@ -138,7 +138,7 @@ public class RTSPlayer_Control : NetworkBehaviour {
     [ Command ]
 	public  void    CmdAddResource( int resourceID, Vector3 _Position, Quaternion _Rotation )
 	{
-        m_rRCreator.AddResource_CallByCommand( resourceID, _Position, _Rotation );
+        m_rRCreator.AddResource_CallByCommand( resourceID, _Position, _Rotation, connectionToClient.connectionId );
     }
     //  ダメージ送信
     [ Command ]

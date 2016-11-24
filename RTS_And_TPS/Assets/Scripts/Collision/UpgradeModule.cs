@@ -19,7 +19,7 @@ public class UpgradeModule : MonoBehaviour {
 	void Start () {
 		attackPointList = GetComponent<AttackPointList>();
 
-		attackPointList.BeforeCalcDamegeCallBack = (ref AttackPointList copy, CollisionInfo info) =>
+		attackPointList.BeforeCalcDamegeCallBack = (ref AttackPointListData copy, CollisionInfo info) =>
 		{
 			//BaseDamageを乗算
 			copy.baseAttackPoint *= BaseAttackPoint;

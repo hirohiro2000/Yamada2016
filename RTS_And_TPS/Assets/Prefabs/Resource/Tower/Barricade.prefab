@@ -20,7 +20,7 @@ GameObject:
   - 208: {fileID: 20897738}
   - 65: {fileID: 6518564}
   - 114: {fileID: 11478224}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Barricade
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -360,27 +360,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_name: "\u30D0\u30EA\u30B1\u30FC\u30C9"
   m_summary: "\u6575\u306E\u9032\u884C\u3092\u98DF\u3044\u6B62\u3081\u308B"
-  m_createCost: 10
-  m_breakCost: 5
+  m_createCost: 56
+  m_breakCost: 19
   m_level: 0
   m_curHp: 0
   m_levelInformations:
     list:
-    - hp: 100
+    - hp: 50
       power: 0
       range: 0
       interval: 0
-      upCost: 20
-    - hp: 200
+      upCost: 36
+    - hp: 75
       power: 0
       range: 0
       interval: 0
       upCost: 30
-    - hp: 300
+    - hp: 150
       power: 0
       range: 0
       interval: 0
-      upCost: -1
+      upCost: 101
 --- !u!114 &11474518
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -392,6 +392,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64827b74010ebd64caf36c5d1ad4d88a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_OwnerID: 0
 --- !u!114 &11478224
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -11,6 +11,7 @@ GameObject:
   - 135: {fileID: 13553820}
   - 114: {fileID: 11442112}
   - 114: {fileID: 11433128}
+  - 114: {fileID: 11419952}
   m_Layer: 12
   m_Name: AttackArea
   m_TagString: Untagged
@@ -171,7 +172,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &184048
 GameObject:
   m_ObjectHideFlags: 1
@@ -342,6 +343,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 426434}
   m_RootOrder: 2
+--- !u!114 &11419952
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc3d683d06a3404f8a4fe0621d1c8ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_AttackerID: 0
 --- !u!114 &11432504
 MonoBehaviour:
   m_ObjectHideFlags: 1

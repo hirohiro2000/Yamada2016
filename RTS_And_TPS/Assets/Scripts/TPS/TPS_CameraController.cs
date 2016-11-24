@@ -26,8 +26,10 @@ public class TPS_CameraController : MonoBehaviour
 
     private Vector2   m_shake               = Vector2.zero;
 
-    //
-    void Start()
+	private float m_rotateSpeed = 0.1f;
+
+	//
+	void Start()
     {
         m_target = transform.parent;
 
@@ -45,7 +47,7 @@ public class TPS_CameraController : MonoBehaviour
 
     }
 
-    void FixedUpdate()
+    void Update()
     {        
         if ( m_target == null )
         {
@@ -64,8 +66,8 @@ public class TPS_CameraController : MonoBehaviour
 
 
 		{
-			float inputH = Input.GetAxis("Mouse X") * 0.1f;
-			float inputV = Input.GetAxis("Mouse Y") * 0.1f;
+			float inputH = Input.GetAxis("Mouse X") * m_rotateSpeed;
+			float inputV = Input.GetAxis("Mouse Y") * m_rotateSpeed;
 
             if (Input.GetKey(KeyCode.LeftControl))
             {
@@ -134,8 +136,6 @@ public class TPS_CameraController : MonoBehaviour
     {
         m_shake += value;
     }
-
-    public Vector3 GetPolar() { return m_camPolar; }
 
 }
 
