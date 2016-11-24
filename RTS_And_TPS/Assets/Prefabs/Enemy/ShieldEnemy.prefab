@@ -1774,7 +1774,7 @@ MonoBehaviour:
   c_ExplodedObj: {fileID: 106676, guid: 665a2285f8096464685e5624d31fe644, type: 2}
   c_Explosion: {fileID: 183870, guid: 2d604258e71134b418a81a7e69a56dcf, type: 2}
   Resource: 10
-  Score: 10
+  Score: 200
   MaxHP: 10
 --- !u!114 &11479458
 MonoBehaviour:
@@ -2214,7 +2214,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 157498}
   m_Enabled: 1
   m_Radius: 0.76
-  m_Speed: 8
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 200

@@ -18,6 +18,14 @@ public class ResourceAppear : MonoBehaviour
     {
         timer = 0.0f;
         originHeight = transform.localPosition.y;
+
+        //  高さを初期化
+        {
+            Vector3 localHeight = transform.localPosition;
+            localHeight.y = originHeight + height.Evaluate( timer );
+
+            transform.localPosition = localHeight;
+        }
     }
     void Update()
     {

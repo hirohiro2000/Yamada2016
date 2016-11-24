@@ -25,6 +25,8 @@ public class Health : NetworkBehaviour {
     private LinkManager m_rLinkManager  =   null;
     private GameManager m_rGameManager  =   null;
 
+    private bool        m_IsGameQuit    =   false;
+
     void Awake()
     {
         m_damage_bank = transform.GetComponent<DamageBank>();
@@ -34,9 +36,16 @@ public class Health : NetworkBehaviour {
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
         m_rGameManager  =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
     }
+    void    OnApplicationQuit()
+    {
+        m_IsGameQuit    =   true;
+    }
     public  override    void    OnNetworkDestroy()
     {
         base.OnNetworkDestroy();
+
+        //  ゲーム終了時は処理を行わない
+        if( m_IsGameQuit )  return;
 
         //  破砕オブジェクト生成
         if( c_ExplodedObj ){
@@ -58,7 +67,22 @@ public class Health : NetworkBehaviour {
 
 		//ここで爆発
         if( c_Explosion ){
-            //Instantiate(c_Explosion, transform.position, Quaternion.identity);
+            //Instantiate(c_Explosion, transform.position, Quaternion.identity);  
+        }
+
+        //  カメラシェイク
+        {
+            Shaker_Control  rShaker     =   Camera.main.GetComponent< Shaker_Control >();
+            if( rShaker ){
+                Transform   rCamTrans   =   rShaker.transform;
+                Vector3     vToCamera   =   ( Camera.main.transform.position - transform.position );
+                Vector3     vShake      =   vToCamera.normalized;
+                            vShake      =   rCamTrans.InverseTransformDirection( vShake );
+                float       shakePower  =   10 / vToCamera.magnitude;
+                            shakePower  =   Mathf.Min( shakePower, 1.0f );
+                
+                rShaker.SetShake( vShake, 3.0f, 0.2f, shakePower );
+            }
         }
 	}
 
@@ -70,9 +94,9 @@ public class Health : NetworkBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if( Input.GetKeyDown( KeyCode.B ) ){
-            GiveDamage( 1000.0f, 0 );
-        }
+        //if( Input.GetKeyDown( KeyCode.B ) ){
+        //    GiveDamage( 1000.0f, 0 );
+        //}
 	}
 
     //  ダメージ処理
@@ -96,7 +120,15 @@ public class Health : NetworkBehaviour {
         if( rTPSATK.c_AttackerID != m_rLinkManager.m_LocalPlayerID )    return;
 
         //  ダメージをサーバーに送信 
-        m_rLinkManager.m_rLocalNPControl.CmdSendDamageEnemy( netId, _rDamageResult.GetTotalDamage() );
+        if( m_rLinkManager.m_rLocalNPControl ){
+            //  弱点に当たったかどうか
+            bool    weakHit =   _rDamageResult.GetTotalDamage() > _rDamageResult.GetBaseDamage();
+            //  弱点なら割合ダメージ
+            float   damage  =   ( weakHit )? MaxHP * 0.2f * _rDamageResult.GetBaseDamage(): _rDamageResult.GetTotalDamage();
+
+            //  送信
+            m_rLinkManager.m_rLocalNPControl.CmdSendDamageEnemy( netId, damage, weakHit );
+        }
     }
     void    DamageProc_WidthTower( DamageResult _rDamageResult, CollisionInfo _rInfo )
     {
@@ -110,14 +142,10 @@ public class Health : NetworkBehaviour {
         //  設置したプレイヤーのクライアント以外では処理を行わない 
         if( rRTSATK.c_AttackerID != m_rLinkManager.m_LocalPlayerID )    return;
 
-        //  ダメージをサーバーに送信 
-        m_rLinkManager.m_rLocalNPControl.CmdSendDamageEnemy( netId, _rDamageResult.GetTotalDamage() );
-
-        ////  サーバーでのみ処理を行う
-        //if( !NetworkServer.active ) return;
-
-        ////  ダメージを受ける
-        //GiveDamage( _rDamageResult.GetTotalDamage(), 0 );
+        //  ダメージをサーバーに送信
+        if( m_rLinkManager.m_rLocalNPControl ){
+            m_rLinkManager.m_rLocalNPControl.CmdSendDamageEnemy( netId, _rDamageResult.GetTotalDamage(), false );
+        }
     }
 
     public  void    CorrectionHP(int level,float correcion_rate)
@@ -126,7 +154,7 @@ public class Health : NetworkBehaviour {
         HP      =   MaxHP;
         Level   =   level;
     }
-    public  void    GiveDamage( float _Damage, int _AttackerID )
+    public  void    GiveDamage( float _Damage, int _AttackerID, bool _HitWeak )
     {
         //  攻撃者のＩＤを保存
         KillerID    =   _AttackerID;
@@ -135,9 +163,23 @@ public class Health : NetworkBehaviour {
         HP  -=  _Damage;
         HP  =   Mathf.Max( HP, 0.0f );
         if( HP <= 0.0f ){
-            //  スコアとリソースを獲得
-            //m_rGameManager.AddResource( Resource + Level );
-            m_rGameManager.AddGlobalScore( Score + Level );
+            //  スコアを獲得
+            m_rGameManager.AddGlobalScore( Score );
+
+            //  スコア獲得通知
+            int score   =   ( int )( Score + Score * 0.2f * Mathf.Max( 0, Level - 1 ) );
+            if( NetworkServer.active )  m_rGameManager.SetAcqScoreNotrice( score, KillerID );
+                                        m_rGameManager.RpcGetScoreNotice( score, KillerID );
+            //  ヘッドショット
+            if( _HitWeak ){
+                //  レコードを通知
+                if( NetworkServer.active )  m_rGameManager.SetAcqRecord( "ヘッドショットキル！ + 20", KillerID );
+                                            m_rGameManager.RpcRecordNotice( "ヘッドショットキル！ + 20", KillerID );
+                //  スコアを獲得
+                m_rGameManager.AddGlobalScore( 20 );
+                //  獲得リソース増加
+                Resource    +=  2;
+            }
 
             //  オブジェクトを破棄
             Destroy( gameObject );

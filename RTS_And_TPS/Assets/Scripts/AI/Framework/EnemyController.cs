@@ -47,7 +47,7 @@ public class EnemyController : NetworkBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        UIRadar.AddEnemy(gameObject);
+        //UIRadar.AddEnemy(gameObject);
         StartCoroutine(UpdateFramework());
 	}
 
@@ -78,7 +78,7 @@ public class EnemyController : NetworkBehaviour {
 
     void    OnDestroy()
     {
-        UIRadar.Remove(gameObject);
+        //UIRadar.Remove(gameObject);
         m_coroutine_flg = false;
     }
 

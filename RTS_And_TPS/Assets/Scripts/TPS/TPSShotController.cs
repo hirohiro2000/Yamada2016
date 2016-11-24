@@ -106,6 +106,14 @@ public class WeaponParameter
 		return (cntAmmo != 0 || (int)data.GetInfoValue(ShotInfoValue.Ammo) == 0);
 	}
 
+    public bool IsFullAmmo()
+    {
+        if( cntAmmo < ( int )data.GetInfoValue( ShotInfoValue.Ammo ) )              return  false;
+        if( cntHavingAmmo < ( int )data.GetInfoValue( ShotInfoValue.HavingAmmo ) )  return  false;
+
+        return  true;
+    }
+
 	public void Shot()
 	{
 		cntAmmo--;
@@ -282,6 +290,7 @@ public class TPSShotController : NetworkBehaviour {
     private NetPlayer_Control   m_rNPControl        =   null;
     //  外部へのアクセス
     private LinkManager         m_rLinkManager      =   null;
+    private Shaker_Control      m_rShaker           =   null;
 
     //  内部パラメータ
     private int                 m_MyChildID         =   0;
@@ -296,8 +305,10 @@ public class TPSShotController : NetworkBehaviour {
 	    m_rParentIdentity   =   transform.parent.parent.GetComponent< NetworkIdentity >();
         m_rNPControl        =   transform.parent.parent.GetComponent< NetPlayer_Control >();
         m_rLinkManager      =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+        m_rShaker           =   Camera.main.GetComponent< Shaker_Control >();
 
 		cntWeaponList = weapons[0];
+
         //  自分が何番目の子か調べる（他のクライアントで発射させるときにどこから発射されたかを識別するため）
         m_MyChildID         =   CheckMyChildID();
 
@@ -313,6 +324,8 @@ public class TPSShotController : NetworkBehaviour {
 	void    Update () {
         //  自分のキャラクター以外は処理を行わない
         if( !m_rParentIdentity.isLocalPlayer )  return;
+        //  アクセスの取得
+        if( !m_rShaker )    m_rShaker   =   Camera.main.GetComponent< Shaker_Control >();
 
 		if(Input.GetKeyDown(weaponChangeKey))
 		{
@@ -432,7 +445,7 @@ public class TPSShotController : NetworkBehaviour {
 		}
 		emit.transform.parent = parent.transform;
 
-        //  所属を設定
+        //  所属を設定 
         TPSAttack_Net   rAttack =   emit.GetComponent< TPSAttack_Net >();
         if( rAttack )   rAttack.c_AttackerID    =   m_rLinkManager.m_LocalPlayerID;
         BombExplosion   rBomb   =   emit.GetComponent< BombExplosion >();
@@ -440,6 +453,13 @@ public class TPSShotController : NetworkBehaviour {
 
 		//リコイル処理
 		playerRecoil.Shot();
+
+        //  カメラシェイク
+        if( m_rShaker ){
+            Vector3 vShake  =   forward.normalized;
+                    vShake  =   -m_rShaker.transform.InverseTransformDirection( vShake );
+            m_rShaker.SetShake( vShake, 1.0f, 0.125f, 0.15f );
+        }
 
         //  他のクライアントでも発射
         m_rNPControl.CmdFire_Client( firePoint, target, cntWeaponIndex, m_MyChildID );
@@ -546,5 +566,23 @@ public class TPSShotController : NetworkBehaviour {
         }
 
         return  -1;
+    }
+
+//==============================================================================
+//      アクセス
+//==============================================================================
+    public  void    SupplyAmmo()
+    {
+        for( int i = 0; i < weapons.Length; i++ ){
+            weapons[ i ].param.AllRecovery();
+        }
+    }
+    public  bool    IsFullAmmo()
+    {
+        for( int i = 0; i < weapons.Length; i++ ){
+            if( !weapons[ i ].param.IsFullAmmo() )  return  false;
+        }
+
+        return  true;
     }
 }

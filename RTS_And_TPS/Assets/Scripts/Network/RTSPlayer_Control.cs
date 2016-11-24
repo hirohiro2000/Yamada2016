@@ -70,10 +70,11 @@ public class RTSPlayer_Control : NetworkBehaviour {
         
         //  ＲＴＳカメラ有効化
         GameObject  rRTSCamera  =   GameObject.Find( "RTSCamera" );
+        Transform   rRTSCParent =   rRTSCamera.transform.parent;
         rRTSCamera.GetComponent< Camera >().enabled         =   true;
         rRTSCamera.GetComponent< AudioListener >().enabled  =   true;
-        rRTSCamera.GetComponent< RTSCamera >().enabled      =   true;
-        rRTSCamera.GetComponent< RTSCamera >().m_target     =   transform;
+        rRTSCParent.GetComponent< RTSCamera >().enabled     =   true;
+        rRTSCParent.GetComponent< RTSCamera >().m_target    =   transform;
     }
     //  終了処理
     public  void    EndProc()
@@ -89,9 +90,10 @@ public class RTSPlayer_Control : NetworkBehaviour {
 
         //  ＲＴＳカメラ無効化
         GameObject  rRTSCamera  =   GameObject.Find( "RTSCamera" );
+        Transform   rRTSCParent =   rRTSCamera.transform.parent;
         rRTSCamera.GetComponent< Camera >().enabled         =   false;
         rRTSCamera.GetComponent< AudioListener >().enabled  =   false;
-        rRTSCamera.GetComponent< RTSCamera >().enabled      =   false;
+        rRTSCParent.GetComponent< RTSCamera >().enabled     =   false;
 
         //  リソース情報無効化
         GameObject.Find( "ResourceInformation" )
@@ -122,6 +124,12 @@ public class RTSPlayer_Control : NetworkBehaviour {
     [ Command ]
     public  void    CmdChangeToCommander()
     {
+        //  ゲームオーバー
+        GameManager rGameManager    =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
+        if( rGameManager ){
+            rGameManager.GameOver();
+        }
+
         //  新しいプレイヤーオブジェクト生成
         GameObject  newPlayer   =   Instantiate( c_Commander );
 

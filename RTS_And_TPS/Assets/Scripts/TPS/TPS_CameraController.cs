@@ -90,9 +90,10 @@ public class TPS_CameraController : MonoBehaviour
             RaycastHit  rHit        = new RaycastHit();
             Ray         rRay        = new Ray( m_camLookAt, dir.normalized );
             float       maxDist     = dir.magnitude;
+            int         layerMask   = LayerMask.GetMask( "Field" );
             
             //  レイ判定
-            if( Physics.Raycast( rRay, out rHit, maxDist ) )
+            if( Physics.Raycast( rRay, out rHit, maxDist, layerMask ) )
             {
                 p = rHit.point;
             }

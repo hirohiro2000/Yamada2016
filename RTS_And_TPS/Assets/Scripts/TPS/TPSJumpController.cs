@@ -116,10 +116,10 @@ public class TPSJumpController : MonoBehaviour {
             }
 
 		}
-		if (Input.GetButton("Jump") == false && characterController.isGrounded == false)
-		{
-			isCanHover = true;
-        }
+        //if (Input.GetButton("Jump") == false && characterController.isGrounded == false)
+        //{
+        //    isCanHover = true;
+        //}
 
         if (Input.GetButton("Jump") == false)
         {
@@ -139,21 +139,21 @@ public class TPSJumpController : MonoBehaviour {
             }
         } 
  
-		if (Input.GetButton("Jump") == true && characterController.isGrounded == false && isCanHover == true)
-		{
-			if(cntHoverTime > .0f)
-			{
-				//重力無効
-				fallPower -= Time.deltaTime;
-				//HoverSpeedになるようにHoverPowerを加算する
-				float sub = -HoverSpeed - (fallPower);
-				sub = Mathf.Clamp(sub, -HoverPower * Time.deltaTime, HoverPower * Time.deltaTime);
-                cntHoverTime -= Time.deltaTime;
-				fallPower += sub;
-                TPSBoosterBar.Consumption(Time.deltaTime);
-            }
+        //if (Input.GetButton("Jump") == true && characterController.isGrounded == false && isCanHover == true)
+        //{
+        //    if(cntHoverTime > .0f)
+        //    {
+        //        //重力無効
+        //        fallPower -= Time.deltaTime;
+        //        //HoverSpeedになるようにHoverPowerを加算する
+        //        float sub = -HoverSpeed - (fallPower);
+        //        sub = Mathf.Clamp(sub, -HoverPower * Time.deltaTime, HoverPower * Time.deltaTime);
+        //        cntHoverTime -= Time.deltaTime;
+        //        fallPower += sub;
+        //        TPSBoosterBar.Consumption(Time.deltaTime);
+        //    }
 
-		}
+        //}
 
         //if(cntEnableTime > .0f)
         //{

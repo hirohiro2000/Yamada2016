@@ -2,6 +2,7 @@
 using   UnityEngine;
 using   UnityEngine.UI;
 using   UnityEngine.Networking;
+using   UnityEngine.SceneManagement;
 using   System.Collections;
 using   System.Collections.Generic;
 
@@ -28,6 +29,7 @@ public class GameManager : NetworkBehaviour {
     }
 
     //  公開パラメータ
+    public  string                  c_RetryScene    =   "";
     public  Font                    c_Font          =   null;
     public  Vector3                 c_LaunchPos     =   Vector3.zero;
     public  Vector3                 c_LaunchAngle   =   Vector3.zero;
@@ -62,6 +64,8 @@ public class GameManager : NetworkBehaviour {
     private Text                    m_rWaveText     =   null;
     private Text                    m_rResourceText =   null;
     private Text                    m_rScoreText    =   null;
+    private AcqScore_Control        m_rAcqScore     =   null;
+    private AcqRecord_Control       m_rAcqRecord    =   null;
 
 	// Use this for initialization
 	void    Start()
@@ -74,6 +78,8 @@ public class GameManager : NetworkBehaviour {
         m_rWaveText     =   FunctionManager.GetAccessComponent< Text >( "Canvas/Column_Wave/Text_Score" );
         m_rResourceText =   FunctionManager.GetAccessComponent< Text >( "Canvas/Column_Resource/Text_Resource" );
         m_rScoreText    =   FunctionManager.GetAccessComponent< Text >( "Canvas/Column_Score/Text_Score" );
+        m_rAcqScore     =   FunctionManager.GetAccessComponent< AcqScore_Control >( "Canvas/AcqScore" );
+        m_rAcqRecord    =   FunctionManager.GetAccessComponent< AcqRecord_Control >( "Canvas/AcqRecord" );
 
         //  パラメータを初期化
         m_Resource      =   150;
@@ -189,7 +195,7 @@ public class GameManager : NetworkBehaviour {
         //  全員の準備が完了したらシーンをリロード
         if( CountIsReady() >= NetworkManager.singleton.numPlayers ){
             //  シーンをリロード
-            NetworkManager.singleton.ServerChangeScene( "NetworkTPS" );
+            NetworkManager.singleton.ServerChangeScene( c_RetryScene );
         }
     }
 
@@ -235,10 +241,10 @@ public class GameManager : NetworkBehaviour {
             PrintMessage( "敵が拠点への侵攻を開始しました" );
         }
 
-        //  拠点が破壊されました
+        //  拠点が破壊されました 
         if( m_State == State.GameOver
         &&  CheckTimeShift( m_StateTimer, 1.7f, 1.7f + 3.7f ) ){
-            PrintMessage( "拠点が制圧されました" );
+            PrintMessage( "味方が全滅しました" );
         }
         //  ゲーム終了
         if( m_State == State.GameOver
@@ -269,18 +275,26 @@ public class GameManager : NetworkBehaviour {
     //  メッセージを表示
     void    PrintMessage( string _Content )
     {
+        PrintMessage( _Content, -150.0f );
+    }
+    void    PrintMessage( string _Content, float _Height )
+    {
         GUIStyle    countStyle  =   new GUIStyle( GUI.skin.label );
         countStyle.fontSize     =   15;
         countStyle.fontStyle    =   FontStyle.Normal;
         countStyle.font         =   c_Font;
 
-        Vector2     contentSize =   countStyle.CalcSize( new GUIContent( _Content ) );
+        PrintMessage( _Content, _Height, countStyle );
+    }
+    void    PrintMessage( string _Content, float _Height, GUIStyle _Style )
+    {
+        Vector2 contentSize =   _Style.CalcSize( new GUIContent( _Content ) );
 
         //  フレーム表示
         {
             Rect    rect    =   FunctionManager.AdjustRectCanvasToGUI(
                 FunctionManager.AR_TYPE.TOP_CENTER,
-                new Rect( 0.0f, -160.0f, contentSize.x + 36.0f, 36.0f )
+                new Rect( 0.0f, _Height, contentSize.x + 36.0f, 36.0f )
             );
             GUI.Box( rect, "" );
         }
@@ -289,13 +303,13 @@ public class GameManager : NetworkBehaviour {
         {
             Rect    rect    =   FunctionManager.AdjustRectCanvasToGUI(
                 FunctionManager.AR_TYPE.TOP_CENTER,
-                new Rect( 0.0f, -161.0f, contentSize.x, contentSize.y )
+                new Rect( 0.0f, _Height - 1.0f, contentSize.x, contentSize.y )
             );
 
             GUI.color           =   Color.white;
             GUI.backgroundColor =   Color.white;
 
-            GUI.Label( rect, _Content, countStyle );
+            GUI.Label( rect, _Content, _Style );
         }
     }
     //  リザルト画面表示
@@ -528,11 +542,24 @@ public class GameManager : NetworkBehaviour {
 
         m_MainMessageQ.Enqueue( rData );
     }
+    public  void    SetAcqScoreNotrice( float _AddScore, int _ClientID )
+    {
+        if( m_rLinkManager.m_LocalPlayerID != _ClientID )   return;
+
+        m_rAcqScore.SetAddScore( ( int )_AddScore );
+    }
+    public  void    SetAcqRecord( string _Record, int _ClientID )
+    {
+        if( m_rLinkManager.m_LocalPlayerID != _ClientID )   return;
+
+        m_rAcqRecord.SetRecord( _Record );
+    }
 
     //  アクセス
     public  void    AddResource( float _AddValue )
     {
         m_Resource      +=  _AddValue;
+        m_Resource      =   Mathf.Max( m_Resource, 0.0f );
     }
     public  void    AddGlobalScore( float _AddScore )
     {
@@ -560,6 +587,8 @@ public class GameManager : NetworkBehaviour {
     [ ClientRpc ]
     public  void    RpcMainMessage( string _Message, float _DisplayTime, float _Delay )
     {
+        if( NetworkServer.active )  return;
+
         SetMainMassage( _Message, _DisplayTime, _Delay );
     }
     //  ウェーブ開始処理
@@ -571,5 +600,29 @@ public class GameManager : NetworkBehaviour {
 
         //  ウェーブ開始処理
         StandbyProc_NewWave();
+    }
+    //  スコア獲得通知
+    [ ClientRpc ]
+    public  void    RpcGetScoreNotice( float _AddScore, int _ClientID )
+    {
+        //  サーバーでは処理を行わない
+        if( NetworkServer.active )                          return;
+        //  指定されたプレイヤー以外は無視する
+        if( m_rLinkManager.m_LocalPlayerID != _ClientID )   return;
+        
+        //  スコア獲得通知
+        m_rAcqScore.SetAddScore( ( int )_AddScore );
+    }
+    //  レコードを通知
+    [ ClientRpc ]
+    public  void    RpcRecordNotice( string _Record, int _ClientID )
+    {
+        //  サーバーでは処理を行わない
+        if( NetworkServer.active )                          return;
+        //  指定されたプレイヤー以外は無視する
+        if( m_rLinkManager.m_LocalPlayerID != _ClientID )   return;
+        
+        //  レコードを通知
+        m_rAcqRecord.SetRecord( _Record );
     }
 }

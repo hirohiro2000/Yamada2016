@@ -46,8 +46,11 @@ public class TPSRotationController : MonoBehaviour
 
 		if(Time.timeScale != .0f)
 		{
-            TPS_CameraController cam = Camera.main.transform.GetComponent<TPS_CameraController>();
-            if (cam != null)
+            Transform               rCamTrans   =   Camera.main.transform.parent;
+            TPS_CameraController    cam         =   null;
+            if( rCamTrans )         cam         =   rCamTrans.GetComponent< TPS_CameraController >();
+            
+            if( rCamTrans )
             {
                 Vector3 f = m_character.velocity;
                 f.y = 0.0f;
@@ -59,7 +62,7 @@ public class TPSRotationController : MonoBehaviour
 
 
                 // 首と目の処理
-                Vector3 lookDir = cam.transform.forward;
+                Vector3 lookDir = rCamTrans.forward.normalized;
 
                 Vector3 lookDirHorizontal = new Vector3( lookDir.x, 0.0f, lookDir.z );
                 if ( lookDirHorizontal.sqrMagnitude > 0.0f )
@@ -79,7 +82,9 @@ public class TPSRotationController : MonoBehaviour
                 s.y = -s.y;
 
                 //
-                cam.Shake(s);
+                if( cam ){
+                    cam.Shake(s);
+                }
             }
 
 		}
