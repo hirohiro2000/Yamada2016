@@ -11,8 +11,8 @@ public class UIRadar : MonoBehaviour {
     //private GameObject m_ownFighter      = null;
     [SerializeField]
     private GameObject m_enemyFighter    = null;
-    [SerializeField]
-    private GameObject m_backGround    = null;
+    //[SerializeField]
+    //private GameObject m_backGround    = null;
 
     [SerializeField]
     private float     m_searchRange      = 50.0f;
@@ -21,9 +21,12 @@ public class UIRadar : MonoBehaviour {
     private Color      m_ownColor       = Color.blue;
     [SerializeField]
     private Color      m_enemyColor      = Color.red;
+
+    //  外部へのアクセス
+    private ReferenceWrapper    m_rEnemyShell   =   null;
     
 
-    struct DATA
+    class DATA
     {
         public GameObject reference;
         public GameObject dst;
@@ -37,26 +40,71 @@ public class UIRadar : MonoBehaviour {
         instance = GetComponent<UIRadar>();
 
         m_uiSymbolList = new List<DATA>();
+
+        //  アクセスを取得
+        m_rEnemyShell   =   FunctionManager.GetAccessComponent< ReferenceWrapper >( "EnemySpawnRoot" );
     }
     void OnEnable()
     {
         instance = GetComponent<UIRadar>();
+        
+        //  リストをクリア
+        int loopCount   =   m_uiSymbolList.Count;
+        for( int i = 0; i < loopCount; i++ ){
+            DATA    rData   =   m_uiSymbolList[ 0 ];
 
-        m_uiSymbolList = new List<DATA>();
+            //  表示を削除
+            Destroy( rData.dst );
+            //  項目を削除
+            m_uiSymbolList.Remove( rData );
+        }
     }
 
     void Update()
     {
-        if (m_player == null) return;
+        if( m_player == null )  return;
 
-        Matrix4x4 worldToLocalMatrix = m_player.transform.worldToLocalMatrix;
+        //  アクセスの取得
+        if( !m_rEnemyShell )    m_rEnemyShell   =   FunctionManager.GetAccessComponent< ReferenceWrapper >( "EnemySpawnRoot" );
+        if( !m_rEnemyShell )    return;
+
+        //  リストを更新
+        {
+            //  新しいアクセスを追加
+            for( int i = 0; i < m_rEnemyShell.m_active_enemy_list.Count; i++ ){
+                //  エネミーへのアクセス
+                GameObject  rEnemy  =   m_rEnemyShell.m_active_enemy_list[ i ];
+
+                //  リストに登録されているかチェック
+                if( CheckWhetherRegistedInList( rEnemy ) )  continue;
+                //  登録されていない場合は追加
+                AddEnemy( rEnemy );
+            }
+
+            //  無効になった項目を削除
+            for( int i = 0; i < m_uiSymbolList.Count; i++ ){
+                DATA    rData   =   m_uiSymbolList[ i ];
+                if( rData.reference )   continue;
+
+                //  表示を削除
+                Destroy( rData.dst );
+                //  項目を削除
+                m_uiSymbolList.Remove( rData );
+
+                //  最初に戻る
+                i   =   -1;
+            }
+        }
+
+        //  表示を更新
+        Matrix4x4 worldToLocalMatrix = Camera.main.transform.worldToLocalMatrix;//m_player.transform.worldToLocalMatrix;
         foreach (var item in m_uiSymbolList)
         {
             RectTransform rt = item.dst.GetComponent<RectTransform>();
 
             Vector3 relativePosition = worldToLocalMatrix.MultiplyPoint(item.reference.transform.position);
 
-			item.dst.transform.SetParent( transform );
+            item.dst.transform.SetParent( transform );
 
             Vector3 rtPosition   = relativePosition / m_searchRange;
             float   maxLength    = 70.0f;
@@ -65,11 +113,21 @@ public class UIRadar : MonoBehaviour {
             rt.localPosition = rt.localPosition.normalized * ( Mathf.Min( rt.localPosition.magnitude, maxLength ) );
 
         }
-        {
-            //RectTransform rt = m_backGround.GetComponent<RectTransform>(); 
-            //rt.eulerAngles = new Vector3(rt.eulerAngles.x, rt.eulerAngles.y, m_player.transform.eulerAngles.y);
+        //{
+        //    //RectTransform rt = m_backGround.GetComponent<RectTransform>();  
+        //    //rt.eulerAngles = new Vector3(rt.eulerAngles.x, rt.eulerAngles.y, m_player.transform.eulerAngles.y);
+        //}
+
+    }
+
+    //  リストに登録されているかどうかチェック
+    bool    CheckWhetherRegistedInList( GameObject _rObj )
+    {
+        for( int i = 0; i < m_uiSymbolList.Count; i++ ){
+            if( m_uiSymbolList[ i ].reference == _rObj )    return  true;
         }
 
+        return  false;
     }
 
     static public void SetPlayer(GameObject player)

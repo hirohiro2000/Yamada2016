@@ -19,12 +19,11 @@ public class PlayerCommander_Control : NetworkBehaviour {
             //  カーソルを戻す
             Cursor.lockState    =   CursorLockMode.None;
             Cursor.visible      =   true;
+
+            // BGM再生
+            SoundController bgm = SoundController.Create("BGM1",this.transform);
+            bgm.Play();
         }
-
-        // BGM再生
-        SoundController bgm = SoundController.Create("BGM1",this.transform);
-        bgm.Play();
-
     }
 	
 	// Update is called once per frame
@@ -36,6 +35,9 @@ public class PlayerCommander_Control : NetworkBehaviour {
     {
         //  クローンは処理を行わない
         if( !isLocalPlayer )    return;
+        //  アクセスを取得
+        if( !m_rGameManager )   m_rGameManager      =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
+        if( !m_rGameManager )   return;
 
         //  フレーム
         GUI.Box( new Rect( 43, 212, 130, 123 ), "Select Type" );
@@ -43,11 +45,11 @@ public class PlayerCommander_Control : NetworkBehaviour {
         //  プレイヤータイプ選択
         if( GUI.Button( new Rect( 58, 240, 100, 20 ), "ロボット" ) ){
             //  ロボットに変身
-            CmdLunchTPSPlayer();
+            if( m_rGameManager.GetState() <= GameManager.State.InGame ) CmdLunchTPSPlayer();
         }
         if( GUI.Button( new Rect( 58, 270, 100, 20 ), "女の子" ) ){
             //  女の子に変身
-            CmdLunchRTSPlayer();
+            if( m_rGameManager.GetState() <= GameManager.State.InGame ) CmdLunchRTSPlayer();
         }
     }
 

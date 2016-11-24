@@ -6263,7 +6263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a2eddb069e702941808659448344e23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_always_perception_tag: 00000000
+  m_always_perception_tag: 0100000002000000
   m_fav: 84
   m_use_raycast: 0
 --- !u!114 &11412878
@@ -6596,7 +6596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a2eddb069e702941808659448344e23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_always_perception_tag: 00000000
+  m_always_perception_tag: 0100000002000000
   m_fav: 84
   m_use_raycast: 0
 --- !u!114 &11426808
@@ -6612,7 +6612,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   robo_priority: 5.6
   girl_priority: 1.9
-  defense_base_priority: 3.9
+  defense_base_priority: 0.01
   obstacle_priority: 3.1
   attack_object_priority: 4.5
 --- !u!114 &11429916
@@ -7044,11 +7044,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96db7186b325d394182c084eb35ba915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_ExplodedObj: {fileID: 106676, guid: 665a2285f8096464685e5624d31fe644, type: 2}
+  c_ExplodedObj: {fileID: 102618, guid: c66536897f4a0164e91d83e720dfdd34, type: 2}
   c_Explosion: {fileID: 183870, guid: 2d604258e71134b418a81a7e69a56dcf, type: 2}
   Resource: 10
-  Score: 10
-  MaxHP: 5
+  Score: 30
+  MaxHP: 3
 --- !u!114 &11445762
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7240,7 +7240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a2eddb069e702941808659448344e23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_always_perception_tag: 00000000
+  m_always_perception_tag: 0100000002000000
   m_fav: 84
   m_use_raycast: 0
 --- !u!114 &11451234
@@ -7521,7 +7521,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   robo_priority: 5.6
   girl_priority: 1.9
-  defense_base_priority: 3.9
+  defense_base_priority: 0.01
   obstacle_priority: 3.1
   attack_object_priority: 4.5
 --- !u!114 &11464706
@@ -7620,7 +7620,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   robo_priority: 5.6
   girl_priority: 1.9
-  defense_base_priority: 3.9
+  defense_base_priority: 0.01
   obstacle_priority: 3.1
   attack_object_priority: 4.5
 --- !u!114 &11467884
@@ -7658,11 +7658,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96db7186b325d394182c084eb35ba915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_ExplodedObj: {fileID: 106676, guid: 665a2285f8096464685e5624d31fe644, type: 2}
+  c_ExplodedObj: {fileID: 102618, guid: c66536897f4a0164e91d83e720dfdd34, type: 2}
   c_Explosion: {fileID: 183870, guid: 2d604258e71134b418a81a7e69a56dcf, type: 2}
   Resource: 10
-  Score: 10
-  MaxHP: 5
+  Score: 30
+  MaxHP: 3
 --- !u!114 &11468592
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7711,7 +7711,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a2eddb069e702941808659448344e23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_always_perception_tag: 00000000
+  m_always_perception_tag: 0100000002000000
   m_fav: 84
   m_use_raycast: 0
 --- !u!114 &11469332
@@ -8008,11 +8008,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96db7186b325d394182c084eb35ba915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_ExplodedObj: {fileID: 106676, guid: 665a2285f8096464685e5624d31fe644, type: 2}
+  c_ExplodedObj: {fileID: 102618, guid: c66536897f4a0164e91d83e720dfdd34, type: 2}
   c_Explosion: {fileID: 183870, guid: 2d604258e71134b418a81a7e69a56dcf, type: 2}
   Resource: 10
-  Score: 10
-  MaxHP: 5
+  Score: 30
+  MaxHP: 3
 --- !u!114 &11481986
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8110,11 +8110,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96db7186b325d394182c084eb35ba915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_ExplodedObj: {fileID: 106676, guid: 665a2285f8096464685e5624d31fe644, type: 2}
+  c_ExplodedObj: {fileID: 102618, guid: c66536897f4a0164e91d83e720dfdd34, type: 2}
   c_Explosion: {fileID: 183870, guid: 2d604258e71134b418a81a7e69a56dcf, type: 2}
   Resource: 10
-  Score: 10
-  MaxHP: 5
+  Score: 30
+  MaxHP: 3
 --- !u!114 &11485800
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8260,7 +8260,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   robo_priority: 5.6
   girl_priority: 1.9
-  defense_base_priority: 3.9
+  defense_base_priority: 0.01
   obstacle_priority: 3.1
   attack_object_priority: 4.5
 --- !u!114 &11491186
@@ -8333,7 +8333,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   robo_priority: 5.6
   girl_priority: 1.9
-  defense_base_priority: 3.9
+  defense_base_priority: 0.01
   obstacle_priority: 3.1
   attack_object_priority: 4.5
 --- !u!114 &11493890
@@ -8438,11 +8438,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96db7186b325d394182c084eb35ba915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_ExplodedObj: {fileID: 106676, guid: 665a2285f8096464685e5624d31fe644, type: 2}
+  c_ExplodedObj: {fileID: 102618, guid: c66536897f4a0164e91d83e720dfdd34, type: 2}
   c_Explosion: {fileID: 183870, guid: 2d604258e71134b418a81a7e69a56dcf, type: 2}
   Resource: 10
-  Score: 10
-  MaxHP: 5
+  Score: 30
+  MaxHP: 3
 --- !u!114 &11497948
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8468,7 +8468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a2eddb069e702941808659448344e23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_always_perception_tag: 00000000
+  m_always_perception_tag: 0100000002000000
   m_fav: 84
   m_use_raycast: 0
 --- !u!114 &11498134

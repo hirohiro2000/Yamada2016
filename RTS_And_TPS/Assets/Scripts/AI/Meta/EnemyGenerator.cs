@@ -160,7 +160,7 @@ public class EnemyGenerator : NetworkBehaviour
             for(int i = 0; i < m_num_spawn_one_frame; i++)
             {
                 EnemyData create_enemy_data = m_generate_director.DirectionGenerateEnemy();
-                GameObject new_enemy = CreateEnemyInstance( Random.Range( 1, level ), create_enemy_data );
+                GameObject new_enemy = CreateEnemyInstance( Random.Range( 1, level + 1 ), create_enemy_data );
 
                 if (new_enemy)
                     NetworkServer.Spawn(new_enemy);

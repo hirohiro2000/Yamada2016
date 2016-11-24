@@ -28,7 +28,7 @@ public class TPS_Enemy : NetworkBehaviour {
 
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
 
-        UIRadar.AddEnemy(this.gameObject);
+        //UIRadar.AddEnemy(this.gameObject);
 
 
         //  パラメータ初期化
@@ -111,7 +111,7 @@ public class TPS_Enemy : NetworkBehaviour {
 
     void    OnDestroy()
     {
-        UIRadar.Remove(this.gameObject);
+        //UIRadar.Remove(this.gameObject);
     }
 
 }

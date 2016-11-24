@@ -171,7 +171,7 @@ public class GridPanel_Control : MonoBehaviour {
         m_rHeightText.enabled   =   _IsActive;
         m_IsActive              =   _IsActive;
 
-        m_rHeightMesh.enabled   =   _IsActive && CheckUseHeightColor();
+        m_rHeightMesh.enabled   =   _IsActive && CheckUseHeightColor() && m_rEditManager.m_UseHeightColor;
     }
     private bool    CheckUseHeightColor()
     {

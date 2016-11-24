@@ -1353,6 +1353,7 @@ public class EditManager : MonoBehaviour {
     public  int                 m_MapDepth          =   1;
 
     public  bool                m_VisibleEmpty      =   true;
+    public  bool                m_UseHeightColor    =   true;
 
     public  GameObject          c_PlayTestShell     =   null;
     public  GameObject          c_EnemySpawnPoint   =   null;
@@ -1463,6 +1464,10 @@ public class EditManager : MonoBehaviour {
             if( m_PlayTest )    PT_EndPlayTest();
             else                PT_StartPlayTest();
         }
+        //  高さに色をつける
+        if( Input.GetKeyDown( KeyCode.F1 ) ){
+            m_UseHeightColor    =   !m_UseHeightColor;
+        }
 
         //  プレイテスト中は編集しない
         if( m_PlayTest )    return;
@@ -1471,6 +1476,10 @@ public class EditManager : MonoBehaviour {
         if( Input.GetKeyDown( KeyCode.I ) ){
             SetLargeWall( m_rFocusList );
         }
+
+        //  向きを変更
+        if( Input.GetKeyDown( KeyCode.Comma ) )     AddPlaceBlockAngle( -90 );
+        if( Input.GetKeyDown( KeyCode.Period ) )    AddPlaceBlockAngle(  90 );
 
         //  オブジェクトのアクセス取得
         {
@@ -1707,6 +1716,8 @@ public class EditManager : MonoBehaviour {
             m_rDataConfig.m_MapWidth    =   m_MapWidth;
             m_rDataConfig.m_MapHeight   =   m_MapHeight;
             m_rDataConfig.m_MapDepth    =   m_MapDepth;
+            m_rDataConfig.m_GridWidth   =   c_GridWidth;
+            m_rDataConfig.m_WallHeight  =   m_WallHeight;
         }
 
         //  保存
@@ -1773,9 +1784,11 @@ public class EditManager : MonoBehaviour {
 
         //  マップ情報取得
         {
-            m_MapWidth  =   m_rDataConfig.m_MapWidth;
-            m_MapHeight =   m_rDataConfig.m_MapHeight;
-            m_MapDepth  =   m_rDataConfig.m_MapDepth;
+            m_MapWidth      =   m_rDataConfig.m_MapWidth;
+            m_MapHeight     =   m_rDataConfig.m_MapHeight;
+            m_MapDepth      =   m_rDataConfig.m_MapDepth;
+            c_GridWidth     =   m_rDataConfig.m_GridWidth;
+            m_WallHeight    =   m_rDataConfig.m_WallHeight;
         }
 
         //  グリッド作成
@@ -1816,7 +1829,7 @@ public class EditManager : MonoBehaviour {
                 //  パラメータ設定
                 GridPanel_Control   rControl    =   rMyObj.GetComponent< GridPanel_Control >();
                 rControl.m_GridPos      =   rMyTrans.position;
-                rControl.m_GridPos.y    =   c_GridWidth * z;
+                rControl.m_GridPos.y    =   m_WallHeight * z;
 
                 rControl.m_GridPoint    =   new Vector3( x, y, z );
 
@@ -1869,11 +1882,19 @@ public class EditManager : MonoBehaviour {
         for( int y = 0; y < m_MapHeight; y++ ){
         for( int x = 0; x < m_MapWidth;  x++ ){
             GridPanel_Control   rControl    =   GetGrid_FromPoint( x, y, z );
-            Vector3             checkPos    =   rControl.m_GridPos + Vector3.up * 0.5f * c_GridWidth;
+            Vector3             checkPos    =   rControl.m_GridPos + Vector3.up * 0.5f * m_WallHeight;
             Vector3             boxSize     =   ( Vector3.one * c_GridWidth * 0.5f ) * 0.9f;
+                                boxSize.y   =   m_WallHeight * 0.5f * 0.9f;
             Collider[]          collider    =   Physics.OverlapBox( checkPos, boxSize );
             if( collider.Length > 0 ){
                 rControl.m_rRelatedObj  =   collider[ 0 ].gameObject;
+                //  親をチェック
+                string  parentName      =   rControl.m_rRelatedObj.transform.parent.name;
+                if( parentName.IndexOf( "Home" )   != -1
+                ||  parentName.IndexOf( "Play" )   != -1
+                ||  parentName.IndexOf( "SlopeB" ) != -1 ){
+                    rControl.m_rRelatedObj  =   rControl.m_rRelatedObj.transform.parent.gameObject;
+                }
             }
         }
         }
@@ -1987,7 +2008,7 @@ public class EditManager : MonoBehaviour {
         Vector3 maxPos      =   GetGrid_FromPoint( pointMax ).m_GridPos;
         Vector3 minPos      =   GetGrid_FromPoint( pointMin ).m_GridPos;
         Vector3 objPos      =   minPos + ( maxPos - minPos ) * 0.5f;
-                objPos.y    +=  c_GridWidth * 0.5f;
+                objPos.y    +=  m_WallHeight * 0.5f;
 
         //  生成
         {
@@ -2003,9 +2024,9 @@ public class EditManager : MonoBehaviour {
 
             //  サイズ設定
             Vector3 worldScale  =   new Vector3(
-                c_GridWidth * size.x,
-                c_GridWidth * size.z,
-                c_GridWidth * size.y
+                c_GridWidth  * size.x,
+                m_WallHeight * size.z,
+                c_GridWidth  * size.y
             );
             Vector3 localScale      =   rTrans.InverseTransformVector( worldScale );
                     localScale.x    =   Mathf.Abs( localScale.x );
@@ -2135,7 +2156,7 @@ public class EditManager : MonoBehaviour {
             //  パラメータ設定
             GridPanel_Control   rControl    =   rObj.GetComponent< GridPanel_Control >();
             rControl.m_GridPos      =   rTrans.position;
-            rControl.m_GridPos.y    =   c_GridWidth * z;
+            rControl.m_GridPos.y    =   m_WallHeight * z;
 
             rControl.m_GridPoint    =   new Vector3( x, y, z );
 
@@ -2349,7 +2370,7 @@ public class EditManager : MonoBehaviour {
                     }
 
                 rControl.m_GridPos      =   rTrans.position;
-                rControl.m_GridPos.y    =   c_GridWidth * z;
+                rControl.m_GridPos.y    =   m_WallHeight * z;
 
                 rControl.m_GridPoint    =   new Vector3( x, y, z );
 
@@ -2517,12 +2538,12 @@ public class EditManager : MonoBehaviour {
         Vector3 panelPos    =   _rPanel.transform.position;
         rTrans.position     =   new Vector3(
             panelPos.x,
-            c_GridWidth * _rPanel.m_GridPoint.z,
+            m_WallHeight * _rPanel.m_GridPoint.z,
             panelPos.z
         );
 
         //  パラメータ更新
-        int     baseHeigh   =   4;
+        int     baseHeigh   =   ( int )( 12 / m_WallHeight );
         Vector3 bottom      =   _rPanel.m_GridPoint;
         for( int h = 0; h < baseHeigh; h++ ){
             GridPanel_Control   rControl    =   GetGrid_FromPoint( bottom + new Vector3( 0, 0, h ) );
@@ -2558,7 +2579,7 @@ public class EditManager : MonoBehaviour {
         Vector3 panelPos    =   _rPanel.transform.position;
         rTrans.position     =   new Vector3(
             panelPos.x,
-            rTrans.localScale.y * 0.5f + c_GridWidth * _rPanel.m_GridPoint.z,
+            rTrans.localScale.y * 0.5f + m_WallHeight * _rPanel.m_GridPoint.z,
             panelPos.z
         );
 
@@ -2593,7 +2614,7 @@ public class EditManager : MonoBehaviour {
         Vector3 panelPos    =   _rPanel.transform.position;
         rTrans.position     =   new Vector3(
             panelPos.x,
-            c_GridWidth * _rPanel.m_GridPoint.z,
+            m_WallHeight * _rPanel.m_GridPoint.z,
             panelPos.z
         );
 
@@ -2629,7 +2650,7 @@ public class EditManager : MonoBehaviour {
         Vector3 panelPos    =   _rPanel.transform.position;
         rTrans.position     =   new Vector3(
             panelPos.x,
-            m_WallHeight * 0.5f + c_GridWidth * _rPanel.m_GridPoint.z,
+            m_WallHeight * 0.5f + m_WallHeight * _rPanel.m_GridPoint.z,
             panelPos.z
         );
 
@@ -2672,7 +2693,7 @@ public class EditManager : MonoBehaviour {
         Vector3 panelPos    =   _rPanel.transform.position;
         rTrans.position     =   new Vector3(
             panelPos.x,
-            m_WallHeight * 0.5f + c_GridWidth * _rPanel.m_GridPoint.z,
+            m_WallHeight * 0.5f + m_WallHeight * _rPanel.m_GridPoint.z,
             panelPos.z
         );
 
@@ -2764,7 +2785,7 @@ public class EditManager : MonoBehaviour {
             if( rLast.m_rUP == null
             &&  m_MapDepth  >= 2    )   ++height;
             Vector3 objPos      =   rFirst.m_GridPos + ( rSecLast.m_GridPos - rFirst.m_GridPos ) * 0.5f;
-                    objPos.y    =   rFirst.m_GridPos.y + c_GridWidth * height * 0.5f;
+                    objPos.y    =   rFirst.m_GridPos.y + m_WallHeight * height * 0.5f;
 
 
             //  生成
@@ -2779,7 +2800,7 @@ public class EditManager : MonoBehaviour {
                 //  サイズ設定
                 rTrans.localScale   =   new Vector3(
                     c_GridWidth,
-                    c_GridWidth * height,
+                    m_WallHeight * height,
                     c_GridWidth * length
                 );
 

@@ -67,8 +67,8 @@ public class TPS_CameraController : MonoBehaviour
 
 
 		{
-			float inputH = Input.GetAxis("Mouse X") * m_rotateSpeed;
-			float inputV = Input.GetAxis("Mouse Y") * m_rotateSpeed;
+			float inputH = Input.GetAxis("Mouse X") * m_rotateSpeed * Time.fixedDeltaTime * 330.0f;
+			float inputV = Input.GetAxis("Mouse Y") * m_rotateSpeed * Time.fixedDeltaTime * 330.0f;
 
             if (Input.GetKey(KeyCode.LeftControl))
             {
@@ -90,9 +90,10 @@ public class TPS_CameraController : MonoBehaviour
             RaycastHit  rHit        = new RaycastHit();
             Ray         rRay        = new Ray( m_camLookAt, dir.normalized );
             float       maxDist     = dir.magnitude;
+            int         layerMask   = LayerMask.GetMask( "Field" );
             
             //  レイ判定
-            if( Physics.Raycast( rRay, out rHit, maxDist ) )
+            if( Physics.Raycast( rRay, out rHit, maxDist, layerMask ) )
             {
                 p = rHit.point;
             }

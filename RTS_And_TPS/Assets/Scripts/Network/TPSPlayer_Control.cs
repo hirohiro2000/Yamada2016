@@ -5,15 +5,17 @@ using   System.Collections;
 
 public class TPSPlayer_Control : NetworkBehaviour {
 
-    public  Camera          c_rMyCamera     =   null;
-    public  GameObject      c_Commander     =   null;
+    public  Camera              c_rMyCamera         =   null;
+    public  GameObject          c_Commander         =   null;
 
-    private LinkManager     m_rLinkManager  =   null;
+    public  TPSShotController[] c_ShotController    =   null;
 
-    private bool            m_IsLock        =   true;
+    private LinkManager         m_rLinkManager      =   null;
 
-    private SoundController m_bgm           =   null;
-    private TPSPlayer_HP    m_rHP           =   null;
+    private bool                m_IsLock            =   true;
+
+    private SoundController     m_bgm               =   null;
+    private TPSPlayer_HP        m_rHP               =   null;
 
 	// Use this for initialization
 	void    Start()
@@ -37,7 +39,7 @@ public class TPSPlayer_Control : NetworkBehaviour {
     {
         //  自分のキャラクターのみ処理を行う
         if( !isLocalPlayer )    return;
-
+        
         //  コマンダーに戻る（デバッグ用）
         if( Input.GetKeyDown( KeyCode.Delete ) ){
             //  終了処理
@@ -77,8 +79,8 @@ public class TPSPlayer_Control : NetworkBehaviour {
         }
         UIRadar.SetPlayer( gameObject );
 
-        //  カメラのスクリプト生成
-        TPS_CameraController cam = c_rMyCamera.gameObject.AddComponent<TPS_CameraController>();
+        //  カメラのスクリプト生成 
+        TPS_CameraController cam = c_rMyCamera.transform.parent.gameObject.AddComponent<TPS_CameraController>();
         //  リスナーを有効化
         c_rMyCamera.GetComponent< AudioListener >().enabled     =   true;
 
@@ -113,6 +115,31 @@ public class TPSPlayer_Control : NetworkBehaviour {
             m_bgm.Stop();
         }
     }
+
+    //  弾薬を充填する
+    public  void    SupplyAmmo()
+    {
+        if( c_ShotController == null )  return;
+
+        for( int i = 0; i < c_ShotController.Length; i++ ){
+            c_ShotController[ i ].SupplyAmmo();
+        }
+    }
+    //  弾薬が満タンかどうか
+    public  bool    CheckWhetherIsFullAmmo()
+    {
+        if( c_ShotController == null )                  return  true;
+
+        for( int i = 0; i < c_ShotController.Length; i++ ){
+            if( !c_ShotController[ i ].IsFullAmmo() )   return  false;
+        }
+
+        return  true;
+    }
+
+//=================================================================================
+//      通信
+//=================================================================================
     //  ダメージ送信
     [ Command ]
     public  void    CmdSendDamage( float _Damage )
@@ -136,6 +163,12 @@ public class TPSPlayer_Control : NetworkBehaviour {
     [ Command ]
     public  void    CmdChangeToCommander()
     {
+        //  ゲームオーバー
+        GameManager rGameManager    =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
+        if( rGameManager ){
+            rGameManager.GameOver();
+        }
+
         //  新しいプレイヤーオブジェクト生成
         GameObject  newPlayer   =   Instantiate( c_Commander );
 

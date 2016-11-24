@@ -85,7 +85,7 @@ namespace   UnityEngine.Networking
                     m_rDiscovery.Initialize();
                     m_rDiscovery.StartAsServer();
 
-                    //  ホスト開始
+                    //  ホスト開始 
                     m_rNetworkManager.StartHost();
                 }
 				ypos    +=  spacing;
@@ -188,7 +188,7 @@ namespace   UnityEngine.Networking
             ||  NetworkClient.active
             ||  m_rDiscovery.running )
 			{
-				if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "Stop (X)" ) )
+				if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "Stop" ) )
 				{
 					m_rNetworkManager.StopHost();
                     if( m_rDiscovery.running ){

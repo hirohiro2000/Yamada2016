@@ -197,7 +197,7 @@ public class TPSMoveController : MonoBehaviour
         //rigidBody.velocity += addDir;
                 
         // 加速処理（ブースト＆ステップ）
-        UpdateAdjustMoveForce( forward, right );
+        //UpdateAdjustMoveForce( forward, right );
 
         // アニメーション
         if ( inputDir.sqrMagnitude > 0.0f )
