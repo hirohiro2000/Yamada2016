@@ -3212,6 +3212,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1337441437}
   - 114: {fileID: 1337441438}
+  - 114: {fileID: 1337441439}
   m_Layer: 0
   m_Name: RTSCamera_Shell
   m_TagString: Untagged
@@ -3247,6 +3248,17 @@ MonoBehaviour:
   m_target: {fileID: 0}
   m_dir: {x: 0.05, y: 0.6, z: -0.2}
   m_targetDistance: 80
+--- !u!114 &1337441439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1337441436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23f8946eac511fb4e8b93f755bbe1267, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1341312724
 GameObject:
   m_ObjectHideFlags: 0

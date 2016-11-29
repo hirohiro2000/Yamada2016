@@ -3,15 +3,12 @@ using System.Collections;
 
 //右クリック中にマウスで回転
 [RequireComponent(typeof(RTSCamera))]
-[RequireComponent(typeof(Camera))]
 public class RTSCameraRotater : MonoBehaviour {
 
 	RTSCamera rtsCamera;
-	Camera camera;
 	// Use this for initialization
 	void Awake () {
 		rtsCamera = GetComponent <RTSCamera>();
-		camera = GetComponent<Camera>();
 	}
 	
 	// Update is called once per frame
