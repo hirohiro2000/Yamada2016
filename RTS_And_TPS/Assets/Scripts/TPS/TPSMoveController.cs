@@ -55,7 +55,7 @@ public class TPSMoveController : MonoBehaviour
 	}
 
     // アニメーション用
-    TPS_AnimationController m_animationController = null;
+    TPS_PlayerAnimationController m_animationController = null;
 
     // 加速用
   	float   avoidStepPower  = 15.0f;
@@ -160,7 +160,7 @@ public class TPSMoveController : MonoBehaviour
         m_doublePressKeys[2] = new DoublePress( KeyCode.A );
         m_doublePressKeys[3] = new DoublePress( KeyCode.D );
 
-        m_animationController = GetComponent< TPS_AnimationController >();
+        m_animationController = GetComponent< TPS_PlayerAnimationController >();
 
     }
 
@@ -180,11 +180,12 @@ public class TPSMoveController : MonoBehaviour
 		Vector3 right = Vector3.Cross(Vector3.up, forward);
 		right.Normalize();
 
+        Vector2 controllerAxis = new Vector2( Input.GetAxis("Horizontal"), Input.GetAxis("Vertical") );
 
-		inputDir = Vector3.zero;
+        inputDir = Vector3.zero;
 
-		inputDir += right * (Input.GetAxis("Horizontal") * speed);
-		inputDir += forward * (Input.GetAxis("Vertical") * speed);
+		inputDir += right   * (controllerAxis.x * speed);
+		inputDir += forward * (controllerAxis.y * speed);
 
 		//characterController.Move(inputDir * Time.deltaTime);
 		//characterController.SimpleMove(inputDir);
@@ -200,9 +201,20 @@ public class TPSMoveController : MonoBehaviour
         //UpdateAdjustMoveForce( forward, right );
 
         // アニメーション
-        if ( inputDir.sqrMagnitude > 0.0f )
+        if ( controllerAxis.sqrMagnitude > 0.0f )
         {
-            m_animationController.ChangeStateMove();
+            float expValue = 0.05f;
+
+            if ( controllerAxis.y > expValue )
+                m_animationController.ChangeStateMove(TPS_PlayerAnimationController.InputDpad.eFORWARD);
+            else if ( controllerAxis.y < -expValue )
+                m_animationController.ChangeStateMove(TPS_PlayerAnimationController.InputDpad.eBACK);
+
+            if ( controllerAxis.x > expValue )
+                m_animationController.ChangeStateMove(TPS_PlayerAnimationController.InputDpad.eRIGHT);
+            else if ( controllerAxis.x < -expValue )
+                m_animationController.ChangeStateMove(TPS_PlayerAnimationController.InputDpad.eLEFT);
+
         }
         else
         {

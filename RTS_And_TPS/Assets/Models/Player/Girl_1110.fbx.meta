@@ -1,0 +1,2334 @@
+fileFormatVersion: 2
+guid: 3f1dac36eed23ff48ab284e92d86f375
+timeCreated: 1480131516
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: body
+    100002: bone
+    100004: bone1
+    100006: bone10
+    100008: bone10_NeutralPose
+    100010: bone11
+    100012: bone11_NeutralPose
+    100014: bone12
+    100016: bone12_NeutralPose
+    100018: bone13
+    100020: bone13_NeutralPose
+    100022: bone14
+    100024: bone14_NeutralPose
+    100026: bone15
+    100028: bone15_NeutralPose
+    100030: bone16
+    100032: bone16_NeutralPose
+    100034: bone17
+    100036: bone17_NeutralPose
+    100038: bone18
+    100040: bone18_NeutralPose
+    100042: bone19
+    100044: bone19_NeutralPose
+    100046: bone1_NeutralPose
+    100048: bone2
+    100050: bone20
+    100052: bone20_NeutralPose
+    100054: bone21
+    100056: bone21_NeutralPose
+    100058: bone22
+    100060: bone22_NeutralPose
+    100062: bone23
+    100064: bone23_NeutralPose
+    100066: bone24
+    100068: bone24_NeutralPose
+    100070: bone25
+    100072: bone25_NeutralPose
+    100074: bone26
+    100076: bone26_NeutralPose
+    100078: bone27
+    100080: bone27_NeutralPose
+    100082: bone28
+    100084: bone28_NeutralPose
+    100086: bone29
+    100088: bone29_NeutralPose
+    100090: bone2_NeutralPose
+    100092: bone3
+    100094: bone30
+    100096: bone30_NeutralPose
+    100098: bone31
+    100100: bone31_NeutralPose
+    100102: bone32
+    100104: bone32_NeutralPose
+    100106: bone33
+    100108: bone33_NeutralPose
+    100110: bone34
+    100112: bone34_NeutralPose
+    100114: bone35
+    100116: bone35_NeutralPose
+    100118: bone36
+    100120: bone36_NeutralPose
+    100122: bone3_NeutralPose
+    100124: bone4
+    100126: bone40
+    100128: bone40_NeutralPose
+    100130: bone41
+    100132: bone41_NeutralPose
+    100134: bone42
+    100136: bone42_NeutralPose
+    100138: bone43
+    100140: bone43_NeutralPose
+    100142: bone44
+    100144: bone44_NeutralPose
+    100146: bone45
+    100148: bone45_NeutralPose
+    100150: bone46
+    100152: bone46_NeutralPose
+    100154: bone47
+    100156: bone47_NeutralPose
+    100158: bone48
+    100160: bone48_NeutralPose
+    100162: bone49
+    100164: bone49_NeutralPose
+    100166: bone4_NeutralPose
+    100168: bone5
+    100170: bone5_NeutralPose
+    100172: bone6
+    100174: bone6_NeutralPose
+    100176: bone7
+    100178: bone7_NeutralPose
+    100180: bone8
+    100182: bone8_NeutralPose
+    100184: bone9
+    100186: bone9_NeutralPose
+    100188: bone_NeutralPose
+    100190: eff
+    100192: eff1
+    100194: eff10
+    100196: eff11
+    100198: eff12
+    100200: eff13
+    100202: eff14
+    100204: eff15
+    100206: eff16
+    100208: eff17
+    100210: eff18
+    100212: eff19
+    100214: eff2
+    100216: eff21
+    100218: eff22
+    100220: eff23
+    100222: eff24
+    100224: eff3
+    100226: eff4
+    100228: eff5
+    100230: eff6
+    100232: eff7
+    100234: eff8
+    100236: eff9
+    100238: face
+    100240: //RootNode
+    100242: google
+    100244: hair
+    100246: hair1
+    100248: hair2
+    100250: null
+    100252: null1
+    100254: null2
+    100256: null2_NeutralPose
+    100258: null3
+    100260: null3_NeutralPose
+    100262: null4
+    100264: null4_NeutralPose
+    100266: null5
+    100268: null5_NeutralPose
+    100270: null6
+    100272: null7
+    100274: null7_NeutralPose
+    100276: null_NeutralPose
+    100278: pouch
+    100280: root
+    100282: root1
+    100284: root10
+    100286: root11
+    100288: root12
+    100290: root13
+    100292: root14
+    100294: root15
+    100296: root16
+    100298: root17
+    100300: root18
+    100302: root19
+    100304: root2
+    100306: root21
+    100308: root22
+    100310: root23
+    100312: root24
+    100314: root24_NeutralPose
+    100316: root3
+    100318: root4
+    100320: root5
+    100322: root6
+    100324: root7
+    100326: root8
+    100328: root9
+    100330: waer_in
+    100332: wear
+    100334: wear_weast
+    400000: body
+    400002: bone
+    400004: bone1
+    400006: bone10
+    400008: bone10_NeutralPose
+    400010: bone11
+    400012: bone11_NeutralPose
+    400014: bone12
+    400016: bone12_NeutralPose
+    400018: bone13
+    400020: bone13_NeutralPose
+    400022: bone14
+    400024: bone14_NeutralPose
+    400026: bone15
+    400028: bone15_NeutralPose
+    400030: bone16
+    400032: bone16_NeutralPose
+    400034: bone17
+    400036: bone17_NeutralPose
+    400038: bone18
+    400040: bone18_NeutralPose
+    400042: bone19
+    400044: bone19_NeutralPose
+    400046: bone1_NeutralPose
+    400048: bone2
+    400050: bone20
+    400052: bone20_NeutralPose
+    400054: bone21
+    400056: bone21_NeutralPose
+    400058: bone22
+    400060: bone22_NeutralPose
+    400062: bone23
+    400064: bone23_NeutralPose
+    400066: bone24
+    400068: bone24_NeutralPose
+    400070: bone25
+    400072: bone25_NeutralPose
+    400074: bone26
+    400076: bone26_NeutralPose
+    400078: bone27
+    400080: bone27_NeutralPose
+    400082: bone28
+    400084: bone28_NeutralPose
+    400086: bone29
+    400088: bone29_NeutralPose
+    400090: bone2_NeutralPose
+    400092: bone3
+    400094: bone30
+    400096: bone30_NeutralPose
+    400098: bone31
+    400100: bone31_NeutralPose
+    400102: bone32
+    400104: bone32_NeutralPose
+    400106: bone33
+    400108: bone33_NeutralPose
+    400110: bone34
+    400112: bone34_NeutralPose
+    400114: bone35
+    400116: bone35_NeutralPose
+    400118: bone36
+    400120: bone36_NeutralPose
+    400122: bone3_NeutralPose
+    400124: bone4
+    400126: bone40
+    400128: bone40_NeutralPose
+    400130: bone41
+    400132: bone41_NeutralPose
+    400134: bone42
+    400136: bone42_NeutralPose
+    400138: bone43
+    400140: bone43_NeutralPose
+    400142: bone44
+    400144: bone44_NeutralPose
+    400146: bone45
+    400148: bone45_NeutralPose
+    400150: bone46
+    400152: bone46_NeutralPose
+    400154: bone47
+    400156: bone47_NeutralPose
+    400158: bone48
+    400160: bone48_NeutralPose
+    400162: bone49
+    400164: bone49_NeutralPose
+    400166: bone4_NeutralPose
+    400168: bone5
+    400170: bone5_NeutralPose
+    400172: bone6
+    400174: bone6_NeutralPose
+    400176: bone7
+    400178: bone7_NeutralPose
+    400180: bone8
+    400182: bone8_NeutralPose
+    400184: bone9
+    400186: bone9_NeutralPose
+    400188: bone_NeutralPose
+    400190: eff
+    400192: eff1
+    400194: eff10
+    400196: eff11
+    400198: eff12
+    400200: eff13
+    400202: eff14
+    400204: eff15
+    400206: eff16
+    400208: eff17
+    400210: eff18
+    400212: eff19
+    400214: eff2
+    400216: eff21
+    400218: eff22
+    400220: eff23
+    400222: eff24
+    400224: eff3
+    400226: eff4
+    400228: eff5
+    400230: eff6
+    400232: eff7
+    400234: eff8
+    400236: eff9
+    400238: face
+    400240: //RootNode
+    400242: google
+    400244: hair
+    400246: hair1
+    400248: hair2
+    400250: null
+    400252: null1
+    400254: null2
+    400256: null2_NeutralPose
+    400258: null3
+    400260: null3_NeutralPose
+    400262: null4
+    400264: null4_NeutralPose
+    400266: null5
+    400268: null5_NeutralPose
+    400270: null6
+    400272: null7
+    400274: null7_NeutralPose
+    400276: null_NeutralPose
+    400278: pouch
+    400280: root
+    400282: root1
+    400284: root10
+    400286: root11
+    400288: root12
+    400290: root13
+    400292: root14
+    400294: root15
+    400296: root16
+    400298: root17
+    400300: root18
+    400302: root19
+    400304: root2
+    400306: root21
+    400308: root22
+    400310: root23
+    400312: root24
+    400314: root24_NeutralPose
+    400316: root3
+    400318: root4
+    400320: root5
+    400322: root6
+    400324: root7
+    400326: root8
+    400328: root9
+    400330: waer_in
+    400332: wear
+    400334: wear_weast
+    4300000: wear
+    4300002: wear_weast
+    4300004: pouch
+    4300006: waer_in
+    4300008: google
+    4300010: body
+    4300012: face
+    4300014: hair
+    4300016: hair1
+    4300018: hair2
+    7400000: Walk
+    7400002: Run
+    9500000: //RootNode
+    13700000: body
+    13700002: face
+    13700004: google
+    13700006: hair
+    13700008: hair1
+    13700010: hair2
+    13700012: pouch
+    13700014: waer_in
+    13700016: wear
+    13700018: wear_weast
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Walk
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 80
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: body
+        weight: 1
+      - path: face
+        weight: 1
+      - path: google
+        weight: 1
+      - path: hair
+        weight: 1
+      - path: hair1
+        weight: 1
+      - path: hair2
+        weight: 1
+      - path: null1
+        weight: 1
+      - path: null1/null2_NeutralPose
+        weight: 1
+      - path: null1/null2_NeutralPose/null2
+        weight: 1
+      - path: null1/null3_NeutralPose
+        weight: 1
+      - path: null1/null3_NeutralPose/null3
+        weight: 1
+      - path: null1/null4_NeutralPose
+        weight: 1
+      - path: null1/null4_NeutralPose/null4
+        weight: 1
+      - path: null1/null5_NeutralPose
+        weight: 1
+      - path: null1/null5_NeutralPose/null5
+        weight: 1
+      - path: null1/null6
+        weight: 1
+      - path: null1/null7_NeutralPose
+        weight: 1
+      - path: null1/null7_NeutralPose/null7
+        weight: 1
+      - path: null1/null_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null
+        weight: 1
+      - path: null1/null_NeutralPose/null/root
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/bone2_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/bone2_NeutralPose/bone2
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/bone2_NeutralPose/bone2/bone3_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/bone2_NeutralPose/bone2/bone3_NeutralPose/bone3
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/bone2_NeutralPose/bone2/bone3_NeutralPose/bone3/eff
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/eff1
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/eff3
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root4
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root4/bone8_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root4/bone8_NeutralPose/bone8
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root4/bone8_NeutralPose/bone8/bone9_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root4/bone8_NeutralPose/bone8/bone9_NeutralPose/bone9
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root4/bone8_NeutralPose/bone8/bone9_NeutralPose/bone9/eff4
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root5
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root5/bone10_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root5/bone10_NeutralPose/bone10
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root5/bone10_NeutralPose/bone10/bone11_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root5/bone10_NeutralPose/bone10/bone11_NeutralPose/bone11
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root5/bone10_NeutralPose/bone10/bone11_NeutralPose/bone11/eff5
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root10
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root10/bone20_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root10/bone20_NeutralPose/bone20
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root10/bone20_NeutralPose/bone20/bone21_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root10/bone20_NeutralPose/bone20/bone21_NeutralPose/bone21
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root10/bone20_NeutralPose/bone20/bone21_NeutralPose/bone21/eff10
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/eff18
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/eff17
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root16
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root16/bone30_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root16/bone30_NeutralPose/bone30
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root16/bone30_NeutralPose/bone30/bone31_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root16/bone30_NeutralPose/bone30/bone31_NeutralPose/bone31
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root16/bone30_NeutralPose/bone30/bone31_NeutralPose/bone31/eff14
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root17
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root17/bone32_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root17/bone32_NeutralPose/bone32
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root17/bone32_NeutralPose/bone32/bone33_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root17/bone32_NeutralPose/bone32/bone33_NeutralPose/bone33
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root17/bone32_NeutralPose/bone32/bone33_NeutralPose/bone33/eff15
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root18
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root18/bone34_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root18/bone34_NeutralPose/bone34
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root18/bone34_NeutralPose/bone34/bone35_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root18/bone34_NeutralPose/bone34/bone35_NeutralPose/bone35
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root18/bone34_NeutralPose/bone34/bone35_NeutralPose/bone35/eff16
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root24_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root24_NeutralPose/root24
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root24_NeutralPose/root24/bone49_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root24_NeutralPose/root24/bone49_NeutralPose/bone49
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root24_NeutralPose/root24/bone49_NeutralPose/bone49/eff24
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12/bone13_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/eff6
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/eff6/root7
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/eff6/root7/bone14_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/eff6/root7/bone14_NeutralPose/bone14
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/eff6/root7/bone14_NeutralPose/bone14/bone15_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/eff6/root7/bone14_NeutralPose/bone14/bone15_NeutralPose/bone15
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/eff6/root7/bone14_NeutralPose/bone14/bone15_NeutralPose/bone15/eff7
+        weight: 1
+      - path: null1/null_NeutralPose/null/root8
+        weight: 1
+      - path: null1/null_NeutralPose/null/root8/bone16_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root8/bone16_NeutralPose/bone16
+        weight: 1
+      - path: null1/null_NeutralPose/null/root8/bone16_NeutralPose/bone16/bone17_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root8/bone16_NeutralPose/bone16/bone17_NeutralPose/bone17
+        weight: 1
+      - path: null1/null_NeutralPose/null/root8/bone16_NeutralPose/bone16/bone17_NeutralPose/bone17/eff8
+        weight: 1
+      - path: null1/null_NeutralPose/null/root9
+        weight: 1
+      - path: null1/null_NeutralPose/null/root9/bone18_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root9/bone18_NeutralPose/bone18
+        weight: 1
+      - path: null1/null_NeutralPose/null/root9/bone18_NeutralPose/bone18/bone19_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root9/bone18_NeutralPose/bone18/bone19_NeutralPose/bone19
+        weight: 1
+      - path: null1/null_NeutralPose/null/root9/bone18_NeutralPose/bone18/bone19_NeutralPose/bone19/eff9
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22/bone23_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22/bone23_NeutralPose/bone23
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22/bone23_NeutralPose/bone23/eff11
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22/bone23_NeutralPose/bone23/eff11/root12
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22/bone23_NeutralPose/bone23/eff11/root12/bone24_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22/bone23_NeutralPose/bone23/eff11/root12/bone24_NeutralPose/bone24
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22/bone23_NeutralPose/bone23/eff11/root12/bone24_NeutralPose/bone24/bone25_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22/bone23_NeutralPose/bone23/eff11/root12/bone24_NeutralPose/bone24/bone25_NeutralPose/bone25
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22/bone23_NeutralPose/bone23/eff11/root12/bone24_NeutralPose/bone24/bone25_NeutralPose/bone25/eff12
+        weight: 1
+      - path: null1/null_NeutralPose/null/root19
+        weight: 1
+      - path: null1/null_NeutralPose/null/root19/bone36_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root19/bone36_NeutralPose/bone36
+        weight: 1
+      - path: null1/null_NeutralPose/null/root19/bone36_NeutralPose/bone36/eff19
+        weight: 1
+      - path: null1/null_NeutralPose/null/root21
+        weight: 1
+      - path: null1/null_NeutralPose/null/root21/bone40_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root21/bone40_NeutralPose/bone40
+        weight: 1
+      - path: null1/null_NeutralPose/null/root21/bone40_NeutralPose/bone40/bone41_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root21/bone40_NeutralPose/bone40/bone41_NeutralPose/bone41
+        weight: 1
+      - path: null1/null_NeutralPose/null/root21/bone40_NeutralPose/bone40/bone41_NeutralPose/bone41/bone42_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root21/bone40_NeutralPose/bone40/bone41_NeutralPose/bone41/bone42_NeutralPose/bone42
+        weight: 1
+      - path: null1/null_NeutralPose/null/root21/bone40_NeutralPose/bone40/bone41_NeutralPose/bone41/bone42_NeutralPose/bone42/eff21
+        weight: 1
+      - path: null1/null_NeutralPose/null/root22
+        weight: 1
+      - path: null1/null_NeutralPose/null/root22/bone43_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root22/bone43_NeutralPose/bone43
+        weight: 1
+      - path: null1/null_NeutralPose/null/root22/bone43_NeutralPose/bone43/bone44_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root22/bone43_NeutralPose/bone43/bone44_NeutralPose/bone44
+        weight: 1
+      - path: null1/null_NeutralPose/null/root22/bone43_NeutralPose/bone43/bone44_NeutralPose/bone44/bone45_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root22/bone43_NeutralPose/bone43/bone44_NeutralPose/bone44/bone45_NeutralPose/bone45
+        weight: 1
+      - path: null1/null_NeutralPose/null/root22/bone43_NeutralPose/bone43/bone44_NeutralPose/bone44/bone45_NeutralPose/bone45/eff22
+        weight: 1
+      - path: null1/null_NeutralPose/null/root23
+        weight: 1
+      - path: null1/null_NeutralPose/null/root23/bone46_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root23/bone46_NeutralPose/bone46
+        weight: 1
+      - path: null1/null_NeutralPose/null/root23/bone46_NeutralPose/bone46/bone47_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root23/bone46_NeutralPose/bone46/bone47_NeutralPose/bone47
+        weight: 1
+      - path: null1/null_NeutralPose/null/root23/bone46_NeutralPose/bone46/bone47_NeutralPose/bone47/bone48_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root23/bone46_NeutralPose/bone46/bone47_NeutralPose/bone47/bone48_NeutralPose/bone48
+        weight: 1
+      - path: null1/null_NeutralPose/null/root23/bone46_NeutralPose/bone46/bone47_NeutralPose/bone47/bone48_NeutralPose/bone48/eff23
+        weight: 1
+      - path: pouch
+        weight: 1
+      - path: waer_in
+        weight: 1
+      - path: wear
+        weight: 1
+      - path: wear_weast
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    - serializedVersion: 16
+      name: Run
+      takeName: Take 001
+      firstFrame: 100
+      lastFrame: 140
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: body
+        weight: 1
+      - path: face
+        weight: 1
+      - path: google
+        weight: 1
+      - path: hair
+        weight: 1
+      - path: hair1
+        weight: 1
+      - path: hair2
+        weight: 1
+      - path: null1
+        weight: 1
+      - path: null1/null2_NeutralPose
+        weight: 1
+      - path: null1/null2_NeutralPose/null2
+        weight: 1
+      - path: null1/null3_NeutralPose
+        weight: 1
+      - path: null1/null3_NeutralPose/null3
+        weight: 1
+      - path: null1/null4_NeutralPose
+        weight: 1
+      - path: null1/null4_NeutralPose/null4
+        weight: 1
+      - path: null1/null5_NeutralPose
+        weight: 1
+      - path: null1/null5_NeutralPose/null5
+        weight: 1
+      - path: null1/null6
+        weight: 1
+      - path: null1/null7_NeutralPose
+        weight: 1
+      - path: null1/null7_NeutralPose/null7
+        weight: 1
+      - path: null1/null_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null
+        weight: 1
+      - path: null1/null_NeutralPose/null/root
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/bone2_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/bone2_NeutralPose/bone2
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/bone2_NeutralPose/bone2/bone3_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/bone2_NeutralPose/bone2/bone3_NeutralPose/bone3
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/bone2_NeutralPose/bone2/bone3_NeutralPose/bone3/eff
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/eff1
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/eff3
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root4
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root4/bone8_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root4/bone8_NeutralPose/bone8
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root4/bone8_NeutralPose/bone8/bone9_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root4/bone8_NeutralPose/bone8/bone9_NeutralPose/bone9
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root4/bone8_NeutralPose/bone8/bone9_NeutralPose/bone9/eff4
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root5
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root5/bone10_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root5/bone10_NeutralPose/bone10
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root5/bone10_NeutralPose/bone10/bone11_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root5/bone10_NeutralPose/bone10/bone11_NeutralPose/bone11
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root5/bone10_NeutralPose/bone10/bone11_NeutralPose/bone11/eff5
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root10
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root10/bone20_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root10/bone20_NeutralPose/bone20
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root10/bone20_NeutralPose/bone20/bone21_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root10/bone20_NeutralPose/bone20/bone21_NeutralPose/bone21
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root1/bone4_NeutralPose/bone4/root2/bone5_NeutralPose/bone5/bone6_NeutralPose/bone6/eff2/root3/bone7_NeutralPose/bone7/root10/bone20_NeutralPose/bone20/bone21_NeutralPose/bone21/eff10
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/eff18
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/eff17
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root16
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root16/bone30_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root16/bone30_NeutralPose/bone30
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root16/bone30_NeutralPose/bone30/bone31_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root16/bone30_NeutralPose/bone30/bone31_NeutralPose/bone31
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root16/bone30_NeutralPose/bone30/bone31_NeutralPose/bone31/eff14
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root17
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root17/bone32_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root17/bone32_NeutralPose/bone32
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root17/bone32_NeutralPose/bone32/bone33_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root17/bone32_NeutralPose/bone32/bone33_NeutralPose/bone33
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root17/bone32_NeutralPose/bone32/bone33_NeutralPose/bone33/eff15
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root18
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root18/bone34_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root18/bone34_NeutralPose/bone34
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root18/bone34_NeutralPose/bone34/bone35_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root18/bone34_NeutralPose/bone34/bone35_NeutralPose/bone35
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root13/bone26_NeutralPose/bone26/root14/bone27_NeutralPose/bone27/bone28_NeutralPose/bone28/eff13/root15/bone29_NeutralPose/bone29/root18/bone34_NeutralPose/bone34/bone35_NeutralPose/bone35/eff16
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root24_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root24_NeutralPose/root24
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root24_NeutralPose/root24/bone49_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root24_NeutralPose/root24/bone49_NeutralPose/bone49
+        weight: 1
+      - path: null1/null_NeutralPose/null/root/bone_NeutralPose/bone/bone1_NeutralPose/bone1/root24_NeutralPose/root24/bone49_NeutralPose/bone49/eff24
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12/bone13_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/eff6
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/eff6/root7
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/eff6/root7/bone14_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/eff6/root7/bone14_NeutralPose/bone14
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/eff6/root7/bone14_NeutralPose/bone14/bone15_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/eff6/root7/bone14_NeutralPose/bone14/bone15_NeutralPose/bone15
+        weight: 1
+      - path: null1/null_NeutralPose/null/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/eff6/root7/bone14_NeutralPose/bone14/bone15_NeutralPose/bone15/eff7
+        weight: 1
+      - path: null1/null_NeutralPose/null/root8
+        weight: 1
+      - path: null1/null_NeutralPose/null/root8/bone16_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root8/bone16_NeutralPose/bone16
+        weight: 1
+      - path: null1/null_NeutralPose/null/root8/bone16_NeutralPose/bone16/bone17_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root8/bone16_NeutralPose/bone16/bone17_NeutralPose/bone17
+        weight: 1
+      - path: null1/null_NeutralPose/null/root8/bone16_NeutralPose/bone16/bone17_NeutralPose/bone17/eff8
+        weight: 1
+      - path: null1/null_NeutralPose/null/root9
+        weight: 1
+      - path: null1/null_NeutralPose/null/root9/bone18_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root9/bone18_NeutralPose/bone18
+        weight: 1
+      - path: null1/null_NeutralPose/null/root9/bone18_NeutralPose/bone18/bone19_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root9/bone18_NeutralPose/bone18/bone19_NeutralPose/bone19
+        weight: 1
+      - path: null1/null_NeutralPose/null/root9/bone18_NeutralPose/bone18/bone19_NeutralPose/bone19/eff9
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22/bone23_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22/bone23_NeutralPose/bone23
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22/bone23_NeutralPose/bone23/eff11
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22/bone23_NeutralPose/bone23/eff11/root12
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22/bone23_NeutralPose/bone23/eff11/root12/bone24_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22/bone23_NeutralPose/bone23/eff11/root12/bone24_NeutralPose/bone24
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22/bone23_NeutralPose/bone23/eff11/root12/bone24_NeutralPose/bone24/bone25_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22/bone23_NeutralPose/bone23/eff11/root12/bone24_NeutralPose/bone24/bone25_NeutralPose/bone25
+        weight: 1
+      - path: null1/null_NeutralPose/null/root11/bone22_NeutralPose/bone22/bone23_NeutralPose/bone23/eff11/root12/bone24_NeutralPose/bone24/bone25_NeutralPose/bone25/eff12
+        weight: 1
+      - path: null1/null_NeutralPose/null/root19
+        weight: 1
+      - path: null1/null_NeutralPose/null/root19/bone36_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root19/bone36_NeutralPose/bone36
+        weight: 1
+      - path: null1/null_NeutralPose/null/root19/bone36_NeutralPose/bone36/eff19
+        weight: 1
+      - path: null1/null_NeutralPose/null/root21
+        weight: 1
+      - path: null1/null_NeutralPose/null/root21/bone40_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root21/bone40_NeutralPose/bone40
+        weight: 1
+      - path: null1/null_NeutralPose/null/root21/bone40_NeutralPose/bone40/bone41_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root21/bone40_NeutralPose/bone40/bone41_NeutralPose/bone41
+        weight: 1
+      - path: null1/null_NeutralPose/null/root21/bone40_NeutralPose/bone40/bone41_NeutralPose/bone41/bone42_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root21/bone40_NeutralPose/bone40/bone41_NeutralPose/bone41/bone42_NeutralPose/bone42
+        weight: 1
+      - path: null1/null_NeutralPose/null/root21/bone40_NeutralPose/bone40/bone41_NeutralPose/bone41/bone42_NeutralPose/bone42/eff21
+        weight: 1
+      - path: null1/null_NeutralPose/null/root22
+        weight: 1
+      - path: null1/null_NeutralPose/null/root22/bone43_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root22/bone43_NeutralPose/bone43
+        weight: 1
+      - path: null1/null_NeutralPose/null/root22/bone43_NeutralPose/bone43/bone44_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root22/bone43_NeutralPose/bone43/bone44_NeutralPose/bone44
+        weight: 1
+      - path: null1/null_NeutralPose/null/root22/bone43_NeutralPose/bone43/bone44_NeutralPose/bone44/bone45_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root22/bone43_NeutralPose/bone43/bone44_NeutralPose/bone44/bone45_NeutralPose/bone45
+        weight: 1
+      - path: null1/null_NeutralPose/null/root22/bone43_NeutralPose/bone43/bone44_NeutralPose/bone44/bone45_NeutralPose/bone45/eff22
+        weight: 1
+      - path: null1/null_NeutralPose/null/root23
+        weight: 1
+      - path: null1/null_NeutralPose/null/root23/bone46_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root23/bone46_NeutralPose/bone46
+        weight: 1
+      - path: null1/null_NeutralPose/null/root23/bone46_NeutralPose/bone46/bone47_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root23/bone46_NeutralPose/bone46/bone47_NeutralPose/bone47
+        weight: 1
+      - path: null1/null_NeutralPose/null/root23/bone46_NeutralPose/bone46/bone47_NeutralPose/bone47/bone48_NeutralPose
+        weight: 1
+      - path: null1/null_NeutralPose/null/root23/bone46_NeutralPose/bone46/bone47_NeutralPose/bone47/bone48_NeutralPose/bone48
+        weight: 1
+      - path: null1/null_NeutralPose/null/root23/bone46_NeutralPose/bone46/bone47_NeutralPose/bone47/bone48_NeutralPose/bone48/eff23
+        weight: 1
+      - path: pouch
+        weight: 1
+      - path: waer_in
+        weight: 1
+      - path: wear
+        weight: 1
+      - path: wear_weast
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human:
+    - boneName: null
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone12
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone22
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone13
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone23
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone14
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone24
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone1
+      humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone4
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone26
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone5
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone27
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone6
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone28
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone20
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone29
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone15
+      humanName: LeftToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone25
+      humanName: RightToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: root10
+      humanName: Left Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone20_NeutralPose
+      humanName: Left Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone20
+      humanName: Left Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: root5
+      humanName: Left Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone10_NeutralPose
+      humanName: Left Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone10
+      humanName: Left Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: root4
+      humanName: Left Little Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone8_NeutralPose
+      humanName: Left Little Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone8
+      humanName: Left Little Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: root18
+      humanName: Right Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone34_NeutralPose
+      humanName: Right Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone34
+      humanName: Right Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: root17
+      humanName: Right Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone32_NeutralPose
+      humanName: Right Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone32
+      humanName: Right Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: root16
+      humanName: Right Little Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone30_NeutralPose
+      humanName: Right Little Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: bone30
+      humanName: Right Little Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: Girl_1110(Clone)
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: body
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: face
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: google
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: hair
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: hair1
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: hair2
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: null1
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: null2_NeutralPose
+      position: {x: -0.040039852, y: 0.10480136, z: -0.049999997}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: null2
+      position: {x: 0.021435289, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: null3_NeutralPose
+      position: {x: -0.010277248, y: 0.0412759, z: -0.049999997}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: null3
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: null4_NeutralPose
+      position: {x: 0.040039852, y: 0.10480136, z: -0.049999997}
+      rotation: {x: 6.123234e-17, y: 1, z: -6.123234e-17, w: -6.123234e-17}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: null4
+      position: {x: 0.022237698, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: null5_NeutralPose
+      position: {x: 0.010277248, y: 0.0412759, z: -0.049999997}
+      rotation: {x: 6.123234e-17, y: 1, z: -6.123234e-17, w: -6.123234e-17}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: null5
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: null6
+      position: {x: 0.0060759997, y: 0.01040294, z: 0.01707829}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: null7_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 6.123234e-17, y: 1, z: -6.123234e-17, w: -6.123234e-17}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: null7
+      position: {x: 0.006076408, y: 0.015456229, z: 0.018022928}
+      rotation: {x: -0.3176548, y: 0, z: -0, w: 0.9482065}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: null_NeutralPose
+      position: {x: -0, y: 0.070328094, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: null
+      position: {x: -0, y: -0.002130572, z: 0.005129146}
+      rotation: {x: 0, y: -0.10775444, z: -0, w: 0.9941775}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: root
+      position: {x: -0, y: 0.00039829008, z: 0.0025915366}
+      rotation: {x: -0, y: -0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0.61551195, w: 0.78812754}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: -0.10454379, y: 0.026107863, z: 0.00000011920929, w: 0.9941775}
+      scale: {x: 0.9999987, y: 1, z: 0.9999989}
+      transformModified: 1
+    - name: bone1_NeutralPose
+      position: {x: -0.014536774, y: -9.714452e-19, z: 1.2325951e-34}
+      rotation: {x: -2.7755578e-16, y: 2.775558e-17, z: -0.07237031, w: 0.9973779}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone1
+      position: {x: 4.440892e-18, y: 1.9428903e-18, z: -1.3877787e-19}
+      rotation: {x: 0.000000044703487, y: -0.00000005960465, z: -0.00000007450581,
+        w: 1}
+      scale: {x: 1.0000005, y: 0.9999999, z: 1.0000001}
+      transformModified: 1
+    - name: bone2_NeutralPose
+      position: {x: -0.026032494, y: 1.6653345e-18, z: 0}
+      rotation: {x: -2.220446e-16, y: 4.440892e-16, z: -0.14305285, w: 0.98971504}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone2
+      position: {x: 1.7763568e-17, y: 3.330669e-18, z: -3.2959746e-19}
+      rotation: {x: 0.000000014901163, y: 0, z: -0.000000014901163, w: -1}
+      scale: {x: 0.9999985, y: 0.9999997, z: 0.9999994}
+      transformModified: 1
+    - name: bone3_NeutralPose
+      position: {x: -0.010954754, y: 8.3266725e-19, z: 9.860761e-34}
+      rotation: {x: 5.551115e-17, y: -4.9960036e-16, z: -0.00034931223, w: 0.99999994}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone3
+      position: {x: -0, y: -2.4980017e-18, z: 1.3877787e-19}
+      rotation: {x: 0.000000014901161, y: -0.000000029802322, z: 0.000000014901161,
+        w: -1}
+      scale: {x: 1.0000002, y: 1.0000002, z: 1.0000018}
+      transformModified: 1
+    - name: eff
+      position: {x: -0.037307773, y: 4.440892e-18, z: -2.359224e-18}
+      rotation: {x: 0.000000014901161, y: -0.000000029802322, z: -0.000000014901161,
+        w: 1}
+      scale: {x: 1, y: 0.99999875, z: 1}
+      transformModified: 1
+    - name: root1
+      position: {x: -0.021767225, y: 0.00021274488, z: 0.003360191}
+      rotation: {x: -0.4744227, y: 0.5243311, z: 0.4744227, w: 0.5243311}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone4_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0.1341522, w: 0.9909608}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone4
+      position: {x: 7.39716e-19, y: -2.2252982e-18, z: 5.551115e-19}
+      rotation: {x: 0.00000012460755, y: -0.00000006184856, z: 0.000000029802317,
+        w: 1}
+      scale: {x: 1, y: 1.0000007, z: 1}
+      transformModified: 1
+    - name: root2
+      position: {x: -0.010627695, y: -0.0047036395, z: 0.00022222256}
+      rotation: {x: -0.7025601, y: -0.08005814, z: 0.10961948, w: 0.6985582}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone5_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0.03896006, w: 0.99924076}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone5
+      position: {x: 8.3013944e-19, y: 6.483227e-20, z: -1.6653345e-18}
+      rotation: {x: 0.0000000031723175, y: -0.00000017788261, z: 0.00000008288771,
+        w: 1}
+      scale: {x: 0.99999833, y: 0.9999982, z: 0.99999976}
+      transformModified: 1
+    - name: bone6_NeutralPose
+      position: {x: -0.0252, y: 0, z: -3.1974501e-18}
+      rotation: {x: 4.911436e-17, y: 3.8549496e-33, z: 0.040030193, w: 0.9991985}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone6
+      position: {x: -1.3322676e-17, y: 5.551115e-19, z: 5.1403402e-18}
+      rotation: {x: 0.002527142, y: -0.0028531067, z: -0.12056738, w: 0.9926979}
+      scale: {x: 1.0000005, y: 1.0000015, z: 1.000001}
+      transformModified: 1
+    - name: eff2
+      position: {x: -0.020057563, y: 8.881784e-18, z: -8.881784e-18}
+      rotation: {x: -0.000000056781577, y: 0.00000013038517, z: -0.000000011175872,
+        w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: root3
+      position: {x: -0.0005143529, y: -0.00015621321, z: 0.00033058046}
+      rotation: {x: 0.70666105, y: -0.025104454, z: -0.025104454, w: 0.70666105}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone7_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0.019877117, w: 0.9998024}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone7
+      position: {x: -3.3114892e-18, y: -5.483867e-19, z: -2.220446e-18}
+      rotation: {x: -0.000000019237634, y: 5.497896e-10, z: -0.000000010921895, w: 1}
+      scale: {x: 1.0000011, y: 0.9999994, z: 0.9999996}
+      transformModified: 1
+    - name: root4
+      position: {x: -0.00961178, y: -0.000011694327, z: -0.00040474787}
+      rotation: {x: 0.0008304568, y: -0.041771285, z: 0.019859763, w: 0.9989295}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone8_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0.015800526, w: 0.9998752}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone8
+      position: {x: 4.508834e-18, y: -2.079018e-18, z: -2.220446e-18}
+      rotation: {x: 0.00000022456507, y: 0.086205825, z: 0.017489452, w: 0.9961239}
+      scale: {x: 0.9999991, y: 0.9999989, z: 1.0000018}
+      transformModified: 1
+    - name: bone9_NeutralPose
+      position: {x: -0.0046036756, y: -9.423885e-18, z: -1.110223e-18}
+      rotation: {x: -7.589415e-19, y: -6.7017247e-18, z: 0.06893559, w: 0.9976211}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone9
+      position: {x: -1.6653345e-18, y: 4.0245583e-18, z: 3.330669e-18}
+      rotation: {x: -0.000000080559396, y: 0.000000041647578, z: 0.00000001589069,
+        w: 1}
+      scale: {x: 0.9999993, y: 1.0000006, z: 0.99999994}
+      transformModified: 1
+    - name: eff4
+      position: {x: -0.0036533177, y: 2.220446e-18, z: 0}
+      rotation: {x: -0.000000081956365, y: 0.000000023050228, z: 0.00000019895374,
+        w: 1}
+      scale: {x: 0.9999992, y: 0.99999964, z: 1.0000007}
+      transformModified: 1
+    - name: root5
+      position: {x: -0.009107941, y: 0.000008347302, z: 0.003683969}
+      rotation: {x: -0.001111405, y: 0.055902746, z: 0.019846024, w: 0.9982384}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone10_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0.015800526, w: 0.9998752}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone10
+      position: {x: 2.1754875e-18, y: 1.4572455e-18, z: 0}
+      rotation: {x: -0.00000009353969, y: 0.0000000059744694, z: 0.0000000016225382,
+        w: 1}
+      scale: {x: 0.9999992, y: 0.9999989, z: 1.0000002}
+      transformModified: 1
+    - name: bone11_NeutralPose
+      position: {x: -0.0046036756, y: -1.36734155e-17, z: -8.3266725e-19}
+      rotation: {x: 1.0842022e-19, y: -1.7381116e-17, z: 0.06893559, w: 0.9976211}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone11
+      position: {x: -1.2767564e-17, y: 1.7902346e-17, z: 5.2735593e-18}
+      rotation: {x: 0.0000001399312, y: 0.0000000037689456, z: 0.000000032021486,
+        w: 1}
+      scale: {x: 0.9999994, y: 1.0000006, z: 1.0000008}
+      transformModified: 1
+    - name: eff5
+      position: {x: -0.0036533177, y: -4.440892e-18, z: 8.881784e-18}
+      rotation: {x: -0.00000008638014, y: -0.00000004023603, z: 0.000000059961145,
+        w: 1}
+      scale: {x: 0.99999917, y: 0.9999999, z: 0.9999994}
+      transformModified: 1
+    - name: root10
+      position: {x: -0.0031567472, y: -0.0008672151, z: 0.0040239072}
+      rotation: {x: 0.55742866, y: 0.6767696, z: -0.20043436, w: 0.4371297}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone20_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0.29175457, w: 0.9564932}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone20
+      position: {x: -2.7718946e-18, y: -1.4254461e-19, z: 2.220446e-18}
+      rotation: {x: -0.018340724, y: -0.33060294, z: -0.038996782, w: 0.94278556}
+      scale: {x: 1.000001, y: 0.9999985, z: 0.9999993}
+      transformModified: 1
+    - name: bone21_NeutralPose
+      position: {x: -0.0045, y: 0, z: -8.6042285e-18}
+      rotation: {x: 8.3266733e-17, y: 1.3877789e-16, z: 0.17402332, w: 0.98474157}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone21
+      position: {x: -1.110223e-18, y: -3.0531133e-18, z: 8.6042285e-18}
+      rotation: {x: 0.000000099651515, y: -0.000000027939677, z: 0.000000029802322,
+        w: 1}
+      scale: {x: 0.99999917, y: 1.0000018, z: 1.0000042}
+      transformModified: 1
+    - name: eff10
+      position: {x: -0.0034999999, y: 0, z: -6.661338e-18}
+      rotation: {x: 0.000000008381903, y: 0.000000067055225, z: 0, w: 1}
+      scale: {x: 0.99999905, y: 0.99999905, z: 0.9999975}
+      transformModified: 1
+    - name: eff3
+      position: {x: -0.0087834615, y: -4.440892e-18, z: -8.881784e-18}
+      rotation: {x: -0.00000018734133, y: 0.00000005776746, z: 0.00000007326093, w: 1}
+      scale: {x: 0.9999989, y: 0.9999991, z: 0.99999976}
+      transformModified: 1
+    - name: eff1
+      position: {x: -0.0106293475, y: 1.7763568e-17, z: 0}
+      rotation: {x: -0.000000044046832, y: 0.00000007320908, z: -0.000000044703473,
+        w: 1}
+      scale: {x: 1.0000006, y: 1.0000002, z: 1}
+      transformModified: 1
+    - name: root13
+      position: {x: -0.021767225, y: 0.00021274488, z: -0.003360191}
+      rotation: {x: 0.4744227, y: -0.5243311, z: 0.4744227, w: 0.5243311}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone26_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0.1341522, w: 0.9909608}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone26
+      position: {x: 1.090518e-18, y: -3.8560588e-18, z: 5.551115e-19}
+      rotation: {x: 0.000000047152287, y: 0.000000048295977, z: 0.000000014901158,
+        w: -1}
+      scale: {x: 1.0000037, y: 0.9999994, z: 1.0000029}
+      transformModified: 1
+    - name: root14
+      position: {x: -0.010627695, y: -0.0047036395, z: -0.00022222256}
+      rotation: {x: 0.7025601, y: 0.08005814, z: 0.10961948, w: 0.6985582}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone27_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0.03896006, w: 0.99924076}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone27
+      position: {x: 2.7239696e-19, y: 2.9967459e-19, z: -7.396427e-18}
+      rotation: {x: -0.000000029802322, y: -0.0054119863, z: 0.031577893, w: 0.9994867}
+      scale: {x: 0.9999948, y: 0.9999962, z: 1.000001}
+      transformModified: 1
+    - name: bone28_NeutralPose
+      position: {x: -0.0252, y: 0, z: 4.0038904e-18}
+      rotation: {x: 1.2046718e-34, y: -3.469447e-18, z: 0.040030193, w: 0.9991985}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone28
+      position: {x: 4.440892e-18, y: 3.8857806e-18, z: -1.1810981e-19}
+      rotation: {x: -0.000000029802322, y: 0.000000031664968, z: -0.000000024214387,
+        w: 1}
+      scale: {x: 1.0000007, y: 0.99999887, z: 0.99999887}
+      transformModified: 1
+    - name: eff13
+      position: {x: -0.020057563, y: 0, z: 0}
+      rotation: {x: 0, y: -0.000000049360096, z: 0.000000013969839, w: 1}
+      scale: {x: 1, y: 1, z: 0.99999994}
+      transformModified: 1
+    - name: root15
+      position: {x: -0.0005143529, y: -0.00015621321, z: -0.00033058046}
+      rotation: {x: -0.70666105, y: 0.025104454, z: -0.025104454, w: 0.70666105}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone29_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0.019877117, w: 0.9998024}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone29
+      position: {x: 3.6742916e-18, y: 4.5211157e-18, z: 0}
+      rotation: {x: 0.00000003239256, y: -0.0000000030818224, z: 0.0000000018626449,
+        w: 1}
+      scale: {x: 1.0000027, y: 0.9999998, z: 1.0000007}
+      transformModified: 1
+    - name: root16
+      position: {x: -0.00961178, y: -0.000011694327, z: 0.00040474787}
+      rotation: {x: -0.0008304568, y: 0.041771285, z: 0.019859763, w: 0.9989295}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone30_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0.015800526, w: 0.9998752}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone30
+      position: {x: 3.0954387e-18, y: -1.2906163e-18, z: 1.110223e-18}
+      rotation: {x: -0.000000098399994, y: -0.03719962, z: 0.004313168, w: 0.9992986}
+      scale: {x: 0.99999803, y: 0.9999992, z: 0.999998}
+      transformModified: 1
+    - name: bone31_NeutralPose
+      position: {x: -0.0046036756, y: 1.8622256e-17, z: -5.551115e-19}
+      rotation: {x: -3.6212353e-17, y: 6.457779e-18, z: 0.06893559, w: 0.9976211}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone31
+      position: {x: 1.6653345e-18, y: -1.4571677e-17, z: 5.551115e-19}
+      rotation: {x: 0.00000010547227, y: -0.000000009356881, z: -0.00000001117587,
+        w: 1}
+      scale: {x: 0.99999887, y: 1.0000008, z: 0.9999995}
+      transformModified: 1
+    - name: eff14
+      position: {x: -0.0036533177, y: 2.220446e-18, z: 0}
+      rotation: {x: -0.0000000942964, y: 0.000000072279356, z: -0.00000007823109,
+        w: 1}
+      scale: {x: 1.0000011, y: 0.99999803, z: 1.0000004}
+      transformModified: 1
+    - name: root17
+      position: {x: -0.009107941, y: 0.000008347302, z: -0.003683969}
+      rotation: {x: 0.001111405, y: -0.055902746, z: 0.019846024, w: 0.9982384}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone32_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0.015800526, w: 0.9998752}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone32
+      position: {x: -3.1187507e-18, y: -1.6801633e-19, z: -5.551115e-19}
+      rotation: {x: -0.00000010232905, y: -0.0000000016179907, z: -0.000000016763803,
+        w: 1}
+      scale: {x: 0.99999905, y: 0.9999989, z: 1.0000001}
+      transformModified: 1
+    - name: bone33_NeutralPose
+      position: {x: -0.0046036756, y: -1.37590675e-17, z: 2.7755575e-19}
+      rotation: {x: 3.6429193e-17, y: 1.7103967e-16, z: 0.06893559, w: 0.9976211}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone33
+      position: {x: -1.2212453e-17, y: 2.4702462e-17, z: -2.7755575e-19}
+      rotation: {x: 0.000000023050228, y: -0.0000000012296365, z: 0.000000026077027,
+        w: 1}
+      scale: {x: 0.9999998, y: 1.0000013, z: 1.0000012}
+      transformModified: 1
+    - name: eff15
+      position: {x: -0.0036533177, y: -4.440892e-18, z: 5.551115e-19}
+      rotation: {x: 0.00000013760287, y: 0.000000018830171, z: 0.000000026077023,
+        w: 1}
+      scale: {x: 1.000002, y: 0.999998, z: 1.000002}
+      transformModified: 1
+    - name: root18
+      position: {x: -0.0031567472, y: -0.0008672151, z: -0.0040239072}
+      rotation: {x: 0.55742866, y: 0.6767696, z: 0.20043436, w: -0.4371297}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone34_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0.29175457, w: 0.9564932}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone34
+      position: {x: -3.0042598e-18, y: -4.88001e-19, z: 8.3266725e-19}
+      rotation: {x: 0.00000017881388, y: -0.3355145, z: -0.0152167175, w: -0.9419121}
+      scale: {x: 1.0000017, y: 1.0000006, z: 1.0000005}
+      transformModified: 1
+    - name: bone35_NeutralPose
+      position: {x: -0.0045, y: 5.551115e-19, z: 1.1934897e-17}
+      rotation: {x: 1.1102232e-16, y: -1.04083415e-16, z: 0.17402332, w: 0.98474157}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone35
+      position: {x: -7.771561e-18, y: 2.4980017e-18, z: -1.0824674e-17}
+      rotation: {x: -0.000000029802319, y: -0.000000013038514, z: 0.000000047497444,
+        w: 1}
+      scale: {x: 0.99999565, y: 1.0000008, z: 0.99999976}
+      transformModified: 1
+    - name: eff16
+      position: {x: -0.0034999999, y: 4.440892e-18, z: 4.440892e-18}
+      rotation: {x: 0, y: 0.00000008195638, z: 0.000000066123896, w: 1}
+      scale: {x: 1.0000055, y: 1.0000006, z: 0.99999523}
+      transformModified: 1
+    - name: eff17
+      position: {x: -0.0087834615, y: 0, z: -2.220446e-18}
+      rotation: {x: 0.000000066327615, y: -0.000000007998095, z: 0.00000006705521,
+        w: 1}
+      scale: {x: 0.9999996, y: 1.0000001, z: 0.9999995}
+      transformModified: 1
+    - name: eff18
+      position: {x: -0.0106293475, y: -1.7763568e-17, z: 2.220446e-18}
+      rotation: {x: 0.000000062133424, y: -0.00000007109404, z: 0.000000029802319,
+        w: 1}
+      scale: {x: 0.99999833, y: 0.9999996, z: 0.9999971}
+      transformModified: 1
+    - name: root24_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0.7016881, w: 0.71248424}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: root24
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 5.5511148e-17, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone49_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0.6969428, w: 0.7171267}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone49
+      position: {x: 2.9131481e-18, y: -8.317932e-20, z: -2.515349e-19}
+      rotation: {x: -0.000000044703484, y: 0.000000014901161, z: 0.000000014901161,
+        w: 1}
+      scale: {x: 1.0000011, y: 1.0000001, z: 1.000001}
+      transformModified: 1
+    - name: eff24
+      position: {x: -0.004759344, y: 0, z: 5.551115e-19}
+      rotation: {x: 0.000000029802322, y: 0.000000029802322, z: 0, w: 1}
+      scale: {x: 0.9999998, y: 1, z: 1}
+      transformModified: 1
+    - name: root6
+      position: {x: -0.010277248, y: -0.0014387625, z: -0.0002757626}
+      rotation: {x: -0, y: -0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone12_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0.72119576, w: 0.6927313}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone12
+      position: {x: -0, y: 0, z: -6.938894e-20}
+      rotation: {x: 0.1076671, y: -0.0043367143, z: -0.000000029802319, w: 0.9941775}
+      scale: {x: 1.0000011, y: 1.0000013, z: 1}
+      transformModified: 1
+    - name: bone13_NeutralPose
+      position: {x: -0.027635822, y: 4.1633362e-19, z: -3.5276135e-20}
+      rotation: {x: 5.551115e-17, y: -2.7755576e-17, z: -0.065363556, w: 0.9978615}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone13
+      position: {x: -4.440892e-18, y: -1.110223e-18, z: -3.6371026e-19}
+      rotation: {x: 0.000000014901159, y: -0.0000000745058, z: 0.000000104308114,
+        w: 1}
+      scale: {x: 0.9999993, y: 1, z: 0.9999998}
+      transformModified: 1
+    - name: eff6
+      position: {x: -0.030999998, y: 4.440892e-18, z: -1.6653345e-18}
+      rotation: {x: 0.000000029802319, y: 0.000000029802319, z: -0.000000029802319,
+        w: 1}
+      scale: {x: 0.9999984, y: 1, z: 0.9999995}
+      transformModified: 1
+    - name: root7
+      position: {x: 2.220446e-18, y: -1.1065909e-17, z: -8.400861e-18}
+      rotation: {x: 6.4985337e-16, y: 2.220446e-16, z: -0.6743741, w: 0.73838985}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone14_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0.96980625, w: 0.24387667}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone14
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0.000000014901161, y: -0.000000059604645, z: 0.000000074505806,
+        w: 1}
+      scale: {x: 1.0000004, y: 1.0000005, z: 1.0000002}
+      transformModified: 1
+    - name: bone15_NeutralPose
+      position: {x: -0.0151355155, y: -1.110223e-18, z: 7.7539063e-19}
+      rotation: {x: 1.9262371e-14, y: 6.161738e-15, z: 0.16633692, w: 0.986069}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone15
+      position: {x: 4.440892e-18, y: -2.220446e-18, z: -3.726573e-20}
+      rotation: {x: 0, y: 0, z: 0.00000008195638, w: -1}
+      scale: {x: 0.9999975, y: 1.0000019, z: 1.0000007}
+      transformModified: 1
+    - name: eff7
+      position: {x: -0.008977776, y: -3.8163916e-16, z: 0}
+      rotation: {x: 0.000000018626448, y: 0.00000005960463, z: -0.000000093132236,
+        w: 1}
+      scale: {x: 0.9999994, y: 1, z: 0.99999857}
+      transformModified: 1
+    - name: root8
+      position: {x: -0, y: 0.00097162393, z: 0.012741114}
+      rotation: {x: -0, y: -0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone16_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0.73983383, w: 0.67278975}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone16
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: -0.10727009, y: 0.010205208, z: -0.000000059604638, w: -0.9941776}
+      scale: {x: 1.0000001, y: 1.0000002, z: 1.0000001}
+      transformModified: 1
+    - name: bone17_NeutralPose
+      position: {x: -0.010106188, y: 0, z: 0}
+      rotation: {x: -1.465731e-32, y: 2.220446e-16, z: 0.052536447, w: 0.998619}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone17
+      position: {x: -2.220446e-18, y: 2.4980017e-18, z: -9.860761e-34}
+      rotation: {x: 0, y: 0, z: -0.000000029802326, w: 1}
+      scale: {x: 0.99999976, y: 0.99999964, z: 0.99999976}
+      transformModified: 1
+    - name: eff8
+      position: {x: -0.008432233, y: -4.440892e-18, z: 4.440892e-18}
+      rotation: {x: 0.000000029802315, y: -0.000000029802315, z: -0.000000029802315,
+        w: 1}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1.0000002}
+      transformModified: 1
+    - name: root9
+      position: {x: -0.0064320434, y: -0.0041073207, z: 0.011144091}
+      rotation: {x: -0, y: -0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone18_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0.73983383, w: 0.67278975}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone18
+      position: {x: -0, y: 0, z: -5.551115e-19}
+      rotation: {x: -0.10727009, y: 0.010205208, z: -0.000000059604638, w: -0.9941776}
+      scale: {x: 1.0000001, y: 1.0000002, z: 1.0000001}
+      transformModified: 1
+    - name: bone19_NeutralPose
+      position: {x: -0.008, y: -2.220446e-18, z: -2.415713e-19}
+      rotation: {x: -1.465731e-32, y: 2.220446e-16, z: 0.052536447, w: 0.998619}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone19
+      position: {x: -6.661338e-18, y: 5.1347816e-18, z: 7.966828e-19}
+      rotation: {x: 0.000000029802315, y: -0.000000029802315, z: -0.000000089406946,
+        w: 1}
+      scale: {x: 0.9999998, y: 0.99999964, z: 0.9999999}
+      transformModified: 1
+    - name: eff9
+      position: {x: -0.008432233, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0.000000059604638, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: root11
+      position: {x: 0.010277248, y: -0.0014387625, z: -0.0002757626}
+      rotation: {x: -0, y: -0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone22_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0.72119576, w: 0.6927313}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone22
+      position: {x: -0, y: 0, z: 8.3266725e-19}
+      rotation: {x: 0.1076671, y: -0.0043367143, z: -0.000000029802319, w: 0.9941775}
+      scale: {x: 1.0000011, y: 1.0000011, z: 1}
+      transformModified: 1
+    - name: bone23_NeutralPose
+      position: {x: -0.027635822, y: 1.3877787e-19, z: -1.7829816e-19}
+      rotation: {x: 2.5090745e-33, y: 2.7755576e-17, z: -0.065363556, w: 0.9978615}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone23
+      position: {x: -8.881784e-18, y: -3.330669e-18, z: -3.7681331e-19}
+      rotation: {x: 0.000000014901159, y: -0.0000000745058, z: 0.000000104308114,
+        w: 1}
+      scale: {x: 0.9999995, y: 1, z: 1}
+      transformModified: 1
+    - name: eff11
+      position: {x: -0.030999998, y: 0, z: 0}
+      rotation: {x: 0.000000029802319, y: 0.000000029802319, z: -0.000000029802319,
+        w: 1}
+      scale: {x: 0.999998, y: 1.0000001, z: 0.99999905}
+      transformModified: 1
+    - name: root12
+      position: {x: -0, y: -4.6665685e-17, z: -9.640263e-18}
+      rotation: {x: 5.3883106e-16, y: 2.7755576e-16, z: -0.6743741, w: 0.73838985}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone24_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0.96980625, w: 0.24387667}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone24
+      position: {x: 5.2516456e-19, y: -9.781601e-19, z: -6.938894e-20}
+      rotation: {x: 0.000000014901163, y: -0.00000005960465, z: -0.000000044703487,
+        w: -1}
+      scale: {x: 1.0000001, y: 1.0000014, z: 1.0000008}
+      transformModified: 1
+    - name: bone25_NeutralPose
+      position: {x: -0.0151355155, y: -1.110223e-18, z: -5.9515904e-19}
+      rotation: {x: -1.9227677e-14, y: -5.77316e-15, z: 0.16633692, w: 0.986069}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone25
+      position: {x: 4.440892e-18, y: 0, z: 4.1673041e-19}
+      rotation: {x: 0, y: 0, z: -0.0000000372529, w: 1}
+      scale: {x: 0.9999968, y: 1.0000011, z: 0.99999905}
+      transformModified: 1
+    - name: eff12
+      position: {x: -0.008977776, y: 9.992007e-18, z: 1.110223e-18}
+      rotation: {x: 0.000000011175871, y: -0.00000008940697, z: -0.00000013038516,
+        w: 1}
+      scale: {x: 1.0000011, y: 0.9999988, z: 1}
+      transformModified: 1
+    - name: root19
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: -0, y: -0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone36_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0.66012394, w: 0.7511567}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone36
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: -0.10686144, y: 0.013843445, z: 0.000000029802319, w: 0.9941776}
+      scale: {x: 1.0000002, y: 1.0000013, z: 1.0000012}
+      transformModified: 1
+    - name: eff19
+      position: {x: -0.004, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: -0.000000029802319, w: 1}
+      scale: {x: 0.9999994, y: 0.99999905, z: 0.9999988}
+      transformModified: 1
+    - name: root21
+      position: {x: 0.016881216, y: 0.00029332392, z: 0.0029119519}
+      rotation: {x: 0.05668059, y: -0.1307206, z: -0.0074859057, w: 0.9897694}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone40_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0.79507136, w: 0.60651594}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone40
+      position: {x: -3.747629e-18, y: 1.0269219e-18, z: -2.220446e-18}
+      rotation: {x: 0.10408805, y: -0.02521085, z: -0.011879291, w: 0.9941776}
+      scale: {x: 0.99999994, y: 0.99999976, z: 0.9999999}
+      transformModified: 1
+    - name: bone41_NeutralPose
+      position: {x: -0.013312039, y: 6.9388935e-19, z: -1.3877787e-18}
+      rotation: {x: -8.3266733e-17, y: -6.938895e-18, z: -0.030038524, w: 0.9995488}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone41
+      position: {x: 4.440892e-18, y: 4.0245583e-18, z: 1.3877787e-18}
+      rotation: {x: -0.000000029802319, y: 0.00000002235174, z: -0.000000087544315,
+        w: 1}
+      scale: {x: 1.0000001, y: 1.0000002, z: 1}
+      transformModified: 1
+    - name: bone42_NeutralPose
+      position: {x: -0.012061779, y: -1.4571677e-18, z: -2.4980017e-18}
+      rotation: {x: -1.3877788e-17, y: -4.1633363e-17, z: -0.069222175, w: 0.9976013}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone42
+      position: {x: 2.220446e-18, y: -2.7755574e-18, z: 2.4980017e-18}
+      rotation: {x: 0, y: 0, z: 0.00000006100162, w: 1}
+      scale: {x: 0.9999998, y: 0.9999999, z: 0.99999994}
+      transformModified: 1
+    - name: eff21
+      position: {x: -0.01203894, y: 4.440892e-18, z: -2.220446e-18}
+      rotation: {x: 0.000000014901158, y: -0.000000007450579, z: 0.000000029802315,
+        w: 1}
+      scale: {x: 1.0000001, y: 1, z: 1}
+      transformModified: 1
+    - name: root22
+      position: {x: 0.0034546608, y: 0.00029332392, z: -0.012999814}
+      rotation: {x: 0.016161148, y: 0.66099834, z: -0.009031472, w: 0.75015897}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone43_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0.79507136, w: 0.60651594}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone43
+      position: {x: 2.6099556e-18, y: -7.1517777e-19, z: 0}
+      rotation: {x: 0.10362966, y: -0.029269606, z: -0.0038992465, w: 0.9941776}
+      scale: {x: 0.9999999, y: 0.9999998, z: 0.99999994}
+      transformModified: 1
+    - name: bone44_NeutralPose
+      position: {x: -0.013312039, y: -2.220446e-18, z: 0}
+      rotation: {x: 1.1102232e-16, y: -5.551116e-17, z: -0.030038524, w: 0.9995488}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone44
+      position: {x: -8.881784e-18, y: -2.6367797e-18, z: 1.4791142e-33}
+      rotation: {x: 0.00000011920926, y: -0.000000089406946, z: -0.000000014901158,
+        w: 1}
+      scale: {x: 1.0000005, y: 1.0000004, z: 1.0000002}
+      transformModified: 1
+    - name: bone45_NeutralPose
+      position: {x: -0.012061779, y: 0, z: 2.7755575e-19}
+      rotation: {x: 5.551115e-17, y: 1.110223e-16, z: -0.069222175, w: 0.9976013}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone45
+      position: {x: 8.881784e-18, y: -1.110223e-18, z: -2.7755575e-19}
+      rotation: {x: -0.0000000745058, y: -0.000000029802319, z: 0.000000014901159,
+        w: 1}
+      scale: {x: 0.99999964, y: 0.99999946, z: 0.99999964}
+      transformModified: 1
+    - name: eff22
+      position: {x: -0.01203894, y: 0, z: -1.110223e-18}
+      rotation: {x: -0.000000014901159, y: 0.000000029802319, z: 0.000000014901159,
+        w: 1}
+      scale: {x: 1.0000001, y: 0.9999999, z: 0.99999994}
+      transformModified: 1
+    - name: root23
+      position: {x: 0.013857482, y: 0.00029332392, z: -0.00795937}
+      rotation: {x: 0.0076775467, y: 0.407704, z: 0.011651214, w: 0.91300756}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone46_NeutralPose
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0.79507136, w: 0.60651594}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone46
+      position: {x: -4.4574476e-18, y: 1.06249295e-19, z: -3.122502e-19}
+      rotation: {x: 0.103098765, y: -0.031327587, z: -0.0004870593, w: 0.9941775}
+      scale: {x: 1, y: 1.0000001, z: 1.0000001}
+      transformModified: 1
+    - name: bone47_NeutralPose
+      position: {x: -0.013312039, y: -2.220446e-18, z: 0}
+      rotation: {x: -5.551116e-17, y: -5.551116e-17, z: -0.030038524, w: 0.9995488}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone47
+      position: {x: 2.220446e-18, y: -1.2490008e-18, z: 1.110223e-18}
+      rotation: {x: 0.00000014901161, y: 0.000000029802322, z: 0.00000014901161, w: 1}
+      scale: {x: 0.9999999, y: 0.99999994, z: 0.9999999}
+      transformModified: 1
+    - name: bone48_NeutralPose
+      position: {x: -0.012061779, y: 4.440892e-18, z: 1.110223e-18}
+      rotation: {x: -5.551115e-17, y: -2.7755576e-17, z: -0.069222175, w: 0.9976013}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: bone48
+      position: {x: -4.440892e-18, y: -8.049117e-18, z: -2.220446e-18}
+      rotation: {x: -0.00000007450579, y: 0, z: 0.000000044703473, w: 1}
+      scale: {x: 0.99999994, y: 1, z: 1}
+      transformModified: 1
+    - name: eff23
+      position: {x: -0.01203894, y: 0, z: -3.330669e-18}
+      rotation: {x: 0, y: -0.000000014901159, z: 0, w: 1}
+      scale: {x: 0.9999999, y: 1, z: 1.0000002}
+      transformModified: 1
+    - name: pouch
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: waer_in
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: wear
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: wear_weast
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 3
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
