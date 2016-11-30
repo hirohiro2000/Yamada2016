@@ -91,13 +91,13 @@ public class CollisionInfo
 	}
 
 
-	public CollisionInfo(WorkDamageResults workDamageResults, Transform damagedObject)
+	public CollisionInfo(WorkDamageResults workDamageResults, Transform damagedObject,Vector3 contactPoint)
 	{
 		_attackedObject = workDamageResults.atk.transform;
 		_damagedObject = damagedObject;
 		_weakObject = workDamageResults.weaksObject;     
 		_damagedCollider = workDamageResults.damagedCollider;
-		_contactPoint = workDamageResults.damagedCollider.ClosestPointOnBounds(_attackedObject.position);
+		_contactPoint = contactPoint;
 	}
 }
 //外部公開用クラス
@@ -175,12 +175,12 @@ public class WorkDamageResult : DamageResult
 
 public class WorkDamageResults
 {
-	public WorkDamageResults(AttackPointList atk, Transform weaksObject,Collider damagedCollider,Transform damagedObject)
+	public WorkDamageResults(AttackPointList atk, Transform weaksObject,Collider damagedCollider,Transform damagedObject,Vector3 contactPoint)
 	{
 		this.atk = atk;
 		this.weaksObject = weaksObject;
 		this.damagedCollider = damagedCollider;
-		info = new CollisionInfo(this, damagedObject);
+		info = new CollisionInfo(this, damagedObject, contactPoint);
 	}
 
 	public bool IsSame(WorkDamageResults target)
@@ -271,8 +271,18 @@ public class DamageBank : MonoBehaviour {
 
 		if(weaks.Length > 0)
 		{
+			//衝突点を取得
+			Vector3 contactPoint;
+			if(atk.CalcContactPointBeforeDamege == null)
+			{
+				contactPoint = damagedCollider.ClosestPointOnBounds(atk.transform.position);
+			}
+			else
+			{
+				contactPoint = atk.CalcContactPointBeforeDamege(damagedCollider);
+			}
 			//弱点スクリプトが見つかった時点でWorkDamageResultsを作成
-			WorkDamageResults workDamageResults = new WorkDamageResults(atk, searchTransform,damagedCollider,transform);
+			WorkDamageResults workDamageResults = new WorkDamageResults(atk, searchTransform,damagedCollider,transform,contactPoint);
 
 
 			//かぶっていれば無効
@@ -300,16 +310,16 @@ public class DamageBank : MonoBehaviour {
 			foreach(WeakPointList weak  in weaks)
 			{
 				//ダメージ計算前にデリゲートします
-				WeakPointList copyWeak;
+				WeakPointListData copyWeak;
 				if (weak.BeforeCalcDamegeCallBack != null)
 				{
 					//設定していたら複製
-					copyWeak = new WeakPointList(weak);
+					copyWeak = new WeakPointListData(weak);
 					weak.BeforeCalcDamegeCallBack(ref copyWeak, workDamageResults.info);
 				}
 				else
 				{
-					copyWeak = weak;
+					copyWeak = weak.GetData();
 				}
 				//ダメージを取得(衝突扱いでなければ取得できない)
 				WorkDamageResult damageResult = GetDamageResult(copyAtk, copyWeak);
@@ -498,7 +508,7 @@ public class DamageBank : MonoBehaviour {
 	};
 
 
-	WorkDamageResult GetDamageResult(AttackPointListData atk, WeakPointList weak)
+	WorkDamageResult GetDamageResult(AttackPointListData atk, WeakPointListData weak)
 	{
 		bool isHit = false;
 		WorkDamageResult damageResult = new WorkDamageResult(atk);

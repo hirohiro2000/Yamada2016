@@ -12,7 +12,7 @@ public class TPSNormalGun : NetworkBehaviour
 	float destroyTime;
 
     //  外部へのアクセス
-    private LinkManager m_rLinkManager  =   null;
+    //private LinkManager m_rLinkManager  =   null;
 
 	public void Shot_Start(float time)
 	{
@@ -22,7 +22,7 @@ public class TPSNormalGun : NetworkBehaviour
 	// Use this for initialization
 	void    Start()
 	{
-        m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+        //m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
 	}
 
 	// Update is called once per frame
@@ -54,7 +54,7 @@ public class TPSNormalGun : NetworkBehaviour
 
 		}
         
-        //  オブジェクト破棄
+        //  オブジェクト破棄 
 		Destroy( this.gameObject );
 	}
 }

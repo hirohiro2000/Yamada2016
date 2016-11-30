@@ -6,20 +6,22 @@ using UnityEngine.UI;
 public class AcqScore_Control : MonoBehaviour {
 
     public  string      c_Label         =   "+ ";
+    public  bool        c_UseAnime      =   true;
 
 	public  float       c_CountUpTime   =   0.3f;
     public  float       c_DisplayTime   =   1.0f;
+    public  int         c_Decimal       =   0;
 
     private Text        m_rText         =   null;
     private Animator    m_rAnimator     =   null;
 
-    private int         m_DispScore     =   0;
-    private int         m_UpScore       =   0;
+    private float       m_DispScore     =   0;
+    private float       m_UpScore       =   0;
     private float       m_CUTimer       =   0.0f;
     private float       m_DispTimer     =   0.0f;
 
-    private int         m_PrevScore     =   0;
-    private int         m_StartScore    =   0;
+    private float       m_PrevScore     =   0;
+    private float       m_StartScore    =   0;
 
 	// Use this for initialization
 	void    Awake()
@@ -60,8 +62,12 @@ public class AcqScore_Control : MonoBehaviour {
 
         float   timeRate    =  1.0f - m_CUTimer / c_CountUpTime;
 
-        m_DispScore         =   m_StartScore + ( int )( m_UpScore * timeRate );
+        m_DispScore         =   m_StartScore + m_UpScore * timeRate;
         m_PrevScore         =   m_DispScore;
+
+        if( timeRate >= 1.0f ){
+            m_DispScore     =   ( int )m_DispScore;
+        }
 
         SetDispScore( m_DispScore );
 
@@ -69,12 +75,12 @@ public class AcqScore_Control : MonoBehaviour {
     }
 
     //  アクセス
-    public  void    SetAddScore( int _AddScore ){
+    public  void    SetAddScore( float _AddScore ){
         if( _AddScore < 0.0f )      return;
 
         if( m_DispTimer > 0.0f ){
-            int lastScore   =   m_StartScore + m_UpScore;
-            int curScore    =   m_PrevScore;
+            float lastScore =   m_StartScore + m_UpScore;
+            float curScore  =   m_PrevScore;
             m_UpScore       =   ( lastScore - curScore ) + _AddScore;
             m_StartScore    =   m_PrevScore;
         }
@@ -88,9 +94,26 @@ public class AcqScore_Control : MonoBehaviour {
         m_PrevScore     =   m_StartScore;
 
         //  アニメーション
-        m_rAnimator.SetTrigger( "Appear" );
+        if( c_UseAnime ){
+            m_rAnimator.SetTrigger( "Appear" );
+        }
     }
-    void    SetDispScore( int _Score ){
-        m_rText.text    =   c_Label +   _Score.ToString();
+    void    SetDispScore( float _Score ){
+        float   dispScore   =   _Score;
+        //for( int i = 0; i < c_Decimal; i++ )    dispScore   *=  10;
+
+        //dispScore   =   ( int )dispScore;
+
+        //for( int i = 0; i < c_Decimal; i++ )    dispScore   /=  10;
+
+        string  format  =   "0";
+        if( c_Decimal > 0 ){
+            format  +=  ".";
+            for( int i = 0; i < c_Decimal; i++ ){
+                format  +=  "0";
+            }
+        }
+
+        m_rText.text    =   c_Label +   dispScore.ToString( format );
     }
 }

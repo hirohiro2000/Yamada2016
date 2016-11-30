@@ -15,5 +15,8 @@ public class TPS_AnimationController : MonoBehaviour
     {
         animator.enabled = false;
     }
-
+    public void ChangeSpeed( float _Speed )
+    {
+        animator.speed = _Speed;
+    }
 }

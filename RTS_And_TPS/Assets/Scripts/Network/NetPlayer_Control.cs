@@ -7,6 +7,9 @@ public class NetPlayer_Control : NetworkBehaviour {
 
     [ SyncVar ]
     public  int         c_ClientID      =   0;
+    [ SyncVar ]
+    public  string      c_PlayerName    =   "Null";
+
     public  bool        c_IsMe          =   false;
 
     private LinkManager m_rLinkManager  =   null;
@@ -20,16 +23,24 @@ public class NetPlayer_Control : NetworkBehaviour {
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
         m_rGameManager  =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
         if( m_rLinkManager ){
-            m_rLinkManager.m_LocalPlayerID  =   c_ClientID;
+            m_rLinkManager.m_LocalPlayerID      =   c_ClientID;
         }
         if( m_rLinkManager
         &&  isLocalPlayer ){
-            m_rLinkManager.m_LocalPlayerID  =   c_ClientID;
-            m_rLinkManager.m_rLocalPlayer   =   gameObject;
+            m_rLinkManager.m_LocalPlayerID      =   c_ClientID;
+            m_rLinkManager.m_rLocalPlayer       =   gameObject;
+            m_rLinkManager.m_rLocalNPControl    =   this;
+        }
+
+        if( m_rGameManager
+        &&  m_rGameManager.GetNumItem_PlayerName() > c_ClientID ){
+            c_PlayerName    =   m_rGameManager.GetFromList_PlayerName( c_ClientID );
         }
 	}
     public  override    void    OnStartServer()
     {
+        base.OnStartServer();
+
         c_ClientID      =   connectionToClient.connectionId;
     }
 	
@@ -49,17 +60,17 @@ public class NetPlayer_Control : NetworkBehaviour {
 //      アクセス
 //*********************************************************************************
     //  コマンダーに戻る
-    public  void        ChangeToCommander()
+    public  void        ChangeToCommander( bool _IsFriend )
     {
         TPSPlayer_Control   rTPSControl =   GetComponent< TPSPlayer_Control >();
         RTSPlayer_Control   rRTSControl =   GetComponent< RTSPlayer_Control >();
         if( rTPSControl ){
             rTPSControl.EndProc();
-            rTPSControl.CmdChangeToCommander();
+            rTPSControl.CmdChangeToCommander( _IsFriend );
         }
         if( rRTSControl ){
             rRTSControl.EndProc();
-            rRTSControl.CmdChangeToCommander();
+            rRTSControl.CmdChangeToCommander( _IsFriend );
         }
     }
 //*********************************************************************************
@@ -80,6 +91,28 @@ public class NetPlayer_Control : NetworkBehaviour {
         //  ダメージを与える
         rHaelth.GiveDamage( _Damage, connectionToClient.connectionId, _HitWeak );
     }
+    //  プレイヤーへのダメージを送信
+    [ Command ]
+    public  void    CmdSendDamagePlayer( NetworkInstanceId _NetID, Vector3 _HitDirection, float _Damage )
+    {
+        //  対象オブジェクトを探す
+        NetworkIdentity     rIdentity   =   FunctionManager.FindIdentityAtNetID( _NetID );
+        if( !rIdentity )    return;
+
+        //  コンポーネント取得
+        TPSPlayer_HP        rHaelth     =   rIdentity.GetComponent< TPSPlayer_HP >();
+        if( !rHaelth )      return;
+
+        //  ダメージを与える
+        rHaelth.SetDamage( _Damage );
+
+        //  ダメージをクライアントに通知
+        NetPlayer_Control   rNPControl  =   rIdentity.GetComponent< NetPlayer_Control >();
+        if( !rNPControl )   return;
+
+        //  リクエスト送信
+        RpcDamagedPlayer( _HitDirection, rNPControl.c_ClientID );
+    }
     //  発射コマンドを送信
     [ Command ]
     public  void    CmdFire_Client( Vector3 _Position, Vector3 _Target, int _WeaponID, int _ChildID )
@@ -90,7 +123,7 @@ public class NetPlayer_Control : NetworkBehaviour {
     [ Command ]
     public  void    CmdSend_GMIsReady( bool _IsReady )
     {
-        m_rGameManager.SetIsReady( connectionToClient.connectionId, _IsReady );
+        m_rGameManager.SetToList_IsReady( connectionToClient.connectionId, _IsReady );
     }
     //  ゲームスピード更新
     [ Command ]
@@ -120,5 +153,26 @@ public class NetPlayer_Control : NetworkBehaviour {
 
         //  発射
         rShot.Shot_ByRequest( _Position, _Target, _ShooterID, _WeaponID );
+    }
+    //  ダメージ通知
+    [ ClientRpc ]
+    void    RpcDamagedPlayer( Vector3 _HitDirection, int _ClientID )
+    {
+        //  指定されたクライアントでのみ処理を行う
+        if( m_rLinkManager.m_LocalPlayerID != _ClientID )   return;
+
+        //  ダメージエフェクト
+        m_rGameManager.SetDamageFilterEffect();
+
+        //  カメラシェイク
+        Shaker_Control  rShaker     =   Camera.main.GetComponent< Shaker_Control >();
+        if( rShaker ){
+            Transform   rCamTrans   =   rShaker.transform;
+            Vector3     vShake      =   rCamTrans.InverseTransformDirection( _HitDirection );
+            float       shakePower  =   0.5f;
+                        shakePower  =   Mathf.Min( shakePower, 1.0f );
+            
+            rShaker.SetShake( vShake, 0.5f, 0.1f, shakePower );
+        }
     }
 }

@@ -18,8 +18,8 @@ public class Debris_Control : MonoBehaviour {
 
     //  移動関連
     private Vector3         m_StartPoint    =   Vector3.zero;
-    private float           m_StartScale    =   1.0f;
-    private float           m_StartScaleW   =   1.0f;
+    //private float           m_StartScale    =   1.0f;
+    //private float           m_StartScaleW   =   1.0f;
     private float           m_MoveTimer     =   0.0f;
 
     private float[]         c_MoveCurve     =   new float[]{    0.5f,   0.475f,  0.5f,   1.0f   };//new float[]{    0.5f,   0.35f,   0.5f,   1.0f    };
@@ -31,6 +31,7 @@ public class Debris_Control : MonoBehaviour {
 
     //  アクセス
     private LinkManager     m_rLinkManager  =   null;
+    private GameManager     m_rGameManager  =   null;
     //private Flag_Control    m_rCentral      =   null;
 
 	// Use this for initialization
@@ -38,11 +39,12 @@ public class Debris_Control : MonoBehaviour {
     {
         //  アクセス取得
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+        m_rGameManager  =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
         //m_rCentral      =   FunctionManager.GetAccessComponent< Flag_Control >( "Central_Flag" );
 
         m_BearthTimer   =   c_BirthTime;
-        m_StartScale    =   transform.localScale.x;
-        m_StartScaleW   =   transform.lossyScale.x;
+        //m_StartScale    =   transform.localScale.x;
+        //m_StartScaleW   =   transform.lossyScale.x;
 	}
 	
 	// Update is called once per frame
@@ -86,6 +88,7 @@ public class Debris_Control : MonoBehaviour {
                 if( m_rLinkManager ){
                     if( c_TargetID == m_rLinkManager.m_LocalPlayerID ){
                         if( m_rLinkManager.m_rLocalNPControl )  m_rLinkManager.m_rLocalNPControl.CmdAddResource( c_Score );
+                        if( m_rGameManager )                    m_rGameManager.SetAcqResource( c_Score );
                     }
                 }
 

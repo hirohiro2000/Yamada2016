@@ -32,6 +32,11 @@ public class CharacterMover : MonoBehaviour {
 	{
 		totalSpeed += speed;
     }
+    public  Vector3  GetTotalSpeed()
+    {
+        return  totalSpeed;
+    }
+
 	// Update is called once per frame
 	void Update ()
 	{

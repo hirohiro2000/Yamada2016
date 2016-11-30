@@ -162,8 +162,10 @@ public class EnemyGenerator : NetworkBehaviour
                 EnemyData create_enemy_data = m_generate_director.DirectionGenerateEnemy();
                 GameObject new_enemy = CreateEnemyInstance( Random.Range( 1, level + 1 ), create_enemy_data );
 
-                if (new_enemy)
-                    NetworkServer.Spawn(new_enemy);
+                if (new_enemy){
+                    NetworkIdentity     rIndentity  =   new_enemy.GetComponent< NetworkIdentity >();
+                    if( rIndentity )    NetworkServer.Spawn(new_enemy);
+                }
 
                 respawn_count++;
                 if (respawn_count >= num_spawn)
@@ -215,7 +217,7 @@ public class EnemyGenerator : NetworkBehaviour
 
         var initializer = ret_object.GetComponent<EnemyInitializerBase>();
         initializer.Execute(respawn_point, route_list, level, HPCorrectionRate);
-        ret_object.transform.parent = this.transform;
+        //ret_object.transform.parent = this.transform;
         return ret_object;
     }
 
@@ -237,7 +239,7 @@ public class EnemyGenerator : NetworkBehaviour
             controller.SetRouteData(route_list);
 
             //体力設定
-            var hp = game_object.GetComponent<Health>();
+            //var hp = game_object.GetComponent<Health>();
         }
     }
 }

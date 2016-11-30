@@ -9,7 +9,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 455538}
   - 33: {fileID: 3341652}
-  - 135: {fileID: 13597176}
   - 23: {fileID: 2366106}
   - 54: {fileID: 5454132}
   - 114: {fileID: 11453132}
@@ -18,6 +17,9 @@ GameObject:
   - 114: {fileID: 11472370}
   - 114: {fileID: 11410192}
   - 114: {fileID: 11452834}
+  - 136: {fileID: 13638022}
+  - 114: {fileID: 11463500}
+  - 114: {fileID: 11426266}
   m_Layer: 12
   m_Name: Rifle
   m_TagString: Player_Attack
@@ -144,7 +146,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_Time: 2.7
-  m_StartWidth: 1
+  m_StartWidth: 0.5
   m_EndWidth: 0
   m_Colors:
     m_Color[0]:
@@ -191,6 +193,17 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &11426266
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee0795890d5dd0e4aa27b081f9bc0327, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11452834
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -218,9 +231,9 @@ MonoBehaviour:
   baseReticle:
   - 0.1
   baseRecoil: 10
-  recoveryTimeWithRecoil: 3
-  maxValueWithUpperRecoil: 18
-  maxValueWithHorizontalRecoil: 12
+  recoveryTimeWithRecoil: 6
+  maxValueWithUpperRecoil: 1000
+  maxValueWithHorizontalRecoil: 100
 --- !u!114 &11460164
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -232,8 +245,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422a9e5a638cf004d8fdb61362aeb3a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: {x: 0, y: 0, z: 400}
+  velocity: {x: 0, y: 0, z: 800}
   isWorldSpace: 0
+--- !u!114 &11463500
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b52579dd2a67454488d8f4503c66c976, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11472370
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -274,13 +298,13 @@ MonoBehaviour:
   shot_info_values:
     list:
     - type: 0
-      value: 2
+      value: 0.4
     - type: 2
-      value: 8
+      value: 6
     - type: 4
       value: 5
     - type: 3
-      value: 24
+      value: 18
   m_seFileName: Shot0
 --- !u!114 &11496294
 MonoBehaviour:
@@ -293,8 +317,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ab98f39ae2a04140820d1932b9fc562, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!135 &13597176
-SphereCollider:
+--- !u!136 &13638022
+CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -302,8 +326,9 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
   m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &100100000
 Prefab:

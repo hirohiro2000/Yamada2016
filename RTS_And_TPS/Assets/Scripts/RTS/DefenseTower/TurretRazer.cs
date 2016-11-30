@@ -4,12 +4,12 @@ using UnityEngine.Networking;
 
 public class TurretRazer : MonoBehaviour
 {
-    private LinkManager         m_rLinkManager  =   null;
+    //private LinkManager         m_rLinkManager  =   null;
 
 	// Use this for initialization
 	void Start ()
 	{
-        m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+        //m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
 	}
 	
 	// Update is called once per frame

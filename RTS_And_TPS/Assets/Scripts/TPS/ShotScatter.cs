@@ -15,8 +15,10 @@ public class ShotScatter : MonoBehaviour {
 	Transform bullet = null;
 
 	//発射
-	void Awake()
+	void    Start()
 	{
+        TPSAttack_Net   rMyTPSAttack    =   GetComponent< TPSAttack_Net >();
+
 		for (int i = 0; i < shotNum; i++)
 		{
 
@@ -36,7 +38,12 @@ public class ShotScatter : MonoBehaviour {
 
 			forward = Quaternion.LookRotation(forward) * scatterRadianVector;
 
-			Instantiate(bullet, transform.position, Quaternion.LookRotation(forward));
+            //  生成
+			Transform       rObj        =   Instantiate(bullet, transform.position, Quaternion.LookRotation(forward)) as Transform;
+
+            //  攻撃者を設定 
+            TPSAttack_Net   rTPSAttack  =   rObj.GetComponent< TPSAttack_Net >();
+            rTPSAttack.c_AttackerID     =   rMyTPSAttack.c_AttackerID;
 		}
 	}
 }

@@ -75,13 +75,15 @@ MonoBehaviour:
   shot_info_values:
     list:
     - type: 0
-      value: 0.9
+      value: 0.3
     - type: 2
-      value: 9
+      value: 8
     - type: 4
-      value: 1.5
+      value: 2.5
     - type: 5
       value: 0.5
+    - type: 3
+      value: 24
   m_seFileName: Shot0
 --- !u!114 &11499332
 MonoBehaviour:
@@ -97,8 +99,8 @@ MonoBehaviour:
   armCriticalRateIncrement: 100
   baseReticle:
   - 0.1
-  baseRecoil: 15
-  recoveryTimeWithRecoil: 1
+  baseRecoil: 2
+  recoveryTimeWithRecoil: 0.3
   maxValueWithUpperRecoil: 17
   maxValueWithHorizontalRecoil: 12
 --- !u!1001 &100100000
