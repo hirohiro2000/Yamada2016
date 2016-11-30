@@ -39,7 +39,7 @@ public class RTSPlayer_Control : NetworkBehaviour {
             EndProc();
 
             //  コマンダーに戻る
-            CmdChangeToCommander();
+            CmdChangeToCommander( false );
             return;
         }
 	}
@@ -47,9 +47,15 @@ public class RTSPlayer_Control : NetworkBehaviour {
     //  開始処理
     void    StartProc()
     {
-        //  UI系初期化
-        GameObject.Find( "Canvas" ).transform
-            .FindChild( "TPS_HUD" ).gameObject.SetActive( true );
+        //  ＵＩ初期化
+        {
+            Transform   rCanvasTrans    =   GameObject.Find( "Canvas" ).transform;
+            rCanvasTrans.FindChild( "TPS_HUD" ).gameObject.SetActive( true );
+            rCanvasTrans.FindChild( "DyingMessage" ).gameObject.SetActive( true );
+            rCanvasTrans.FindChild( "RevivalGage" ).gameObject.SetActive( true );
+
+            UIRadar.SetPlayer( gameObject );
+        }
 
         //  リソース情報有効化
         ResourceInformation rResourceInfo   =   GameObject.Find( "ResourceInformation" ).GetComponent< ResourceInformation >();
@@ -80,8 +86,10 @@ public class RTSPlayer_Control : NetworkBehaviour {
     public  void    EndProc()
     {
         //  ＵＩ無効化
-        GameObject.Find( "Canvas" ).transform
-            .FindChild( "TPS_HUD" ).gameObject.SetActive( false );
+        Transform   rCanvasTrans    =   GameObject.Find( "Canvas" ).transform;
+        rCanvasTrans.FindChild( "TPS_HUD" ).gameObject.SetActive( false );
+        rCanvasTrans.FindChild( "DyingMessage" ).gameObject.SetActive( false );
+        rCanvasTrans.FindChild( "RevivalGage" ).gameObject.SetActive( false );
 
         //  メインカメラを復旧
         GameObject  rMainCamera =   GameObject.Find( "Main Camera" );
@@ -108,9 +116,19 @@ public class RTSPlayer_Control : NetworkBehaviour {
         GetComponent< GirlController >().SetActiveButton( false );
     }
 
+    //  死亡通知
+    public  void    Death_InLocal( bool _IsFriend )
+    {
+        //  終了処理
+        EndProc();
+
+        //  サーバーに折り返しコマンドを送る
+        CmdChangeToCommander( _IsFriend );
+    }
+
     //  コマンダーに戻る
     [ ClientRpc ]
-    public  void    RpcChangeToCommander( int _ClientID )
+    public  void    RpcChangeToCommander( int _ClientID, bool _IsFriend )
     {
         //  指定されたプレイヤーのみ処理を行う
         if( m_rLinkManager.m_LocalPlayerID != _ClientID )   return;
@@ -119,15 +137,24 @@ public class RTSPlayer_Control : NetworkBehaviour {
         EndProc();
 
         //  サーバーに折り返しコマンドを送る
-        CmdChangeToCommander();
+        CmdChangeToCommander( _IsFriend );
     }
     [ Command ]
-    public  void    CmdChangeToCommander()
+    public  void    CmdChangeToCommander( bool _IsFriend )
     {
+        //  侵入者が死亡
+        if( !_IsFriend ){
+            GameManager rGameManager    =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
+            if( rGameManager ){
+                rGameManager.RpcRecordNotice_ToOther( "侵入者が撃退されました！", connectionToClient.connectionId );
+            }
+        }
         //  ゲームオーバー
-        GameManager rGameManager    =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
-        if( rGameManager ){
-            rGameManager.GameOver();
+        if( _IsFriend ){
+            GameManager rGameManager    =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
+            if( rGameManager ){
+                rGameManager.GameOver();
+            }
         }
 
         //  新しいプレイヤーオブジェクト生成
@@ -153,6 +180,8 @@ public class RTSPlayer_Control : NetworkBehaviour {
     public  void    CmdSendDamage( float _Damage )
     {
         //  ダメージを受ける
-        m_rHP.SetDamage( _Damage );
+        if( _Damage > 0.0f )    m_rHP.SetDamage( _Damage );
+        //  回復する
+        else                    m_rHP.SetRecovery( -_Damage );
     }
 }

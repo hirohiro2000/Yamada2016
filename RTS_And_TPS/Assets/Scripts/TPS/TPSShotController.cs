@@ -288,6 +288,8 @@ public class TPSShotController : NetworkBehaviour {
 	//  親へのアクセス
 	private NetworkIdentity     m_rParentIdentity   =   null;
     private NetPlayer_Control   m_rNPControl        =   null;
+    private TPSPlayer_HP        m_rTPSHP            =   null;
+
     //  外部へのアクセス
     private LinkManager         m_rLinkManager      =   null;
     private Shaker_Control      m_rShaker           =   null;
@@ -304,12 +306,14 @@ public class TPSShotController : NetworkBehaviour {
         //  アクセスの取得
 	    m_rParentIdentity   =   transform.parent.parent.GetComponent< NetworkIdentity >();
         m_rNPControl        =   transform.parent.parent.GetComponent< NetPlayer_Control >();
+        m_rTPSHP            =   transform.GetComponentInParent< TPSPlayer_HP >();
+
         m_rLinkManager      =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
         m_rShaker           =   Camera.main.GetComponent< Shaker_Control >();
 
 		cntWeaponList = weapons[0];
 
-        //  自分が何番目の子か調べる（他のクライアントで発射させるときにどこから発射されたかを識別するため）
+        //  自分が何番目の子か調べる（他のクライアントで発射させるときにどこから発射されたかを識別するため） 
         m_MyChildID         =   CheckMyChildID();
 
         m_seShot            =   cntWeaponList.data.CreateSoundController(this.gameObject);
@@ -322,6 +326,9 @@ public class TPSShotController : NetworkBehaviour {
 	void    Update () {
         //  自分のキャラクター以外は処理を行わない
         if( !m_rParentIdentity.isLocalPlayer )  return;
+        //  瀕死状態なら処理を行わない
+        if( m_rTPSHP.m_IsDying )                return;
+
         //  アクセスの取得
         if( !m_rShaker )    m_rShaker   =   Camera.main.GetComponent< Shaker_Control >();
 
@@ -456,7 +463,8 @@ public class TPSShotController : NetworkBehaviour {
         if( m_rShaker ){
             Vector3 vShake  =   forward.normalized;
                     vShake  =   -m_rShaker.transform.InverseTransformDirection( vShake );
-            m_rShaker.SetShake( vShake, 1.0f, 0.125f, 0.15f );
+            m_rShaker.SetShake( -vShake, 1.0f, 0.125f, 0.15f );
+            //m_rShaker.SetShake( -vShake, 0.5f, 0.125f, 0.6f ); 
         }
 
         //  他のクライアントでも発射

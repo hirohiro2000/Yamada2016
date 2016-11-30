@@ -11,14 +11,14 @@ public class TurretCannon : MonoBehaviour
 	public GameObject			m_explosionEffect	= null;
 
 	private ReferenceWrapper	m_rEnemyShell   = null;
-    private LinkManager         m_rLinkManager  = null;
+    //private LinkManager         m_rLinkManager  = null;
 	private Transform		    m_target        = null;
 
 	// Use this for initialization
 	void Start ()
 	{
 		m_rEnemyShell   =   GameObject.Find( "EnemySpawnRoot" ).GetComponent< ReferenceWrapper >();
-        m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+        //m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
 		m_target		=	m_rEnemyShell.GetNearEnemyTransform( transform.position, float.MaxValue );
 	}
 	

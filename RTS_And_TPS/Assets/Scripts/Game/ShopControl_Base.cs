@@ -2,31 +2,46 @@
 using   UnityEngine;
 using   System.Collections;
 
-public class ShopControl_LIFE : MonoBehaviour {
+public class ShopControl_Base : MonoBehaviour {
+    
+    public      float       c_InitCost      =   150;
+    public      float       c_UPCost        =   100;
 
-    private GameManager m_rGameManager  =   null;
-    private LinkManager m_rLinkManager  =   null;
+    protected   float       m_Cost          =   0;
 
-    public  float       c_InitCost      =   100;
-    public  float       c_UPCost        =   50;
-    private float       m_Cost          =   0;
+    protected   float       c_ShopingTime   =   3.0f;
+    protected   float       m_ShopTimer     =   0.0f;
 
-    private float       c_ShopingTime   =   3.0f;
-    private float       m_ShopTimer     =   0.0f;
+    protected   float       c_Threshold     =   0.5f;
+    protected   float       m_TouchTimer    =   0.0f;
 
-    private float       c_Threshold     =   0.5f;
-    private float       m_TouchTimer    =   0.0f;
+    protected   TextMesh    m_rCostText     =   null;
+    protected   GameManager m_rGameManager  =   null;
+    protected   LinkManager m_rLinkManager  =   null;
 
-	// Use this for initialization
+	//  Use this for initialization
 	void    Start()
     {
 	    m_rGameManager  =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
 
+        m_rCostText     =   transform.FindChild( "_TextCost" ).GetComponent< TextMesh >();
+
         m_Cost          =   c_InitCost;
+
+        //  コスト表示更新
+        Update_CostText();
+
+        //  初期化処理
+        Initialize();
 	}
+    //  初期化処理（継承用）
+    protected   virtual void    Initialize()
+    {
+
+    }
 	
-	// Update is called once per frame
+	//  Update is called once per frame
 	void    Update()
     {
         //  アクセスを取得
@@ -39,8 +54,22 @@ public class ShopControl_LIFE : MonoBehaviour {
         if( m_TouchTimer >= c_Threshold ){
             m_ShopTimer =   0.0f;
         }
+
+        //  更新処理
+        Update_Proc();
 	}
-    
+    //  更新処理（継承用）
+    protected   virtual void    Update_Proc()
+    {
+
+    }
+
+    //  コスト表示更新
+    void    Update_CostText()
+    {
+        m_rCostText.text    =   "( " + m_Cost + " R )";
+    }
+
     //  当たり判定
     void    OnTriggerStay( Collider _Collider )
     {
@@ -70,36 +99,27 @@ public class ShopControl_LIFE : MonoBehaviour {
         //  タイマーリセット
         m_ShopTimer     =   0.0f;
     }
+    //  購入処理
     void    Shoping( Collider _Collider )
     {
         //  資源が足りているかどうか
-        if( m_rGameManager.GetResource() < m_Cost ) return;
+        if( m_rGameManager.GetResource() < m_Cost )     return;
 
-        //  効果発動
-        {
-            //  体力へのアクセスを取得
-            TPSPlayer_HP        rHP         =   _Collider.GetComponentInParent< TPSPlayer_HP >();
-            if( !rHP )                              return;
-
-            //  体力が満タンなら終了
-            if( rHP.m_CurHP >= rHP.m_MaxHP )        return;
-
-            //  制御を取得
-            TPSPlayer_Control   rTPSControl =   _Collider.GetComponentInParent< TPSPlayer_Control >();
-            RTSPlayer_Control   rRTSControl =   _Collider.GetComponentInParent< RTSPlayer_Control >();
-
-            //  体力を回復
-            if( rTPSControl )   rTPSControl.CmdSendDamage( -rHP.m_MaxHP );
-            if( rRTSControl )   rRTSControl.CmdSendDamage( -rHP.m_MaxHP );
-
-            //  プレイヤーに通知
-            m_rGameManager.SetAcqRecord( "体力が回復した！ - " + m_Cost, m_rLinkManager.m_LocalPlayerID );
-        }
+        //  購入した効果を適用
+        if( !Apply_PurchasedEffect( _Collider ) )       return;
 
         //  購入
         m_rLinkManager.m_rLocalNPControl.CmdAddResource( -m_Cost );
 
         //  購入コスト増加
         m_Cost  +=  c_UPCost;
+
+        //  コスト表示更新
+        Update_CostText();
+    }
+    //  購入した効果を適用（継承用、購入しなかった場合はfalseを返す）
+    protected   virtual bool    Apply_PurchasedEffect( Collider _rCollder )
+    {
+        return  false;
     }
 }

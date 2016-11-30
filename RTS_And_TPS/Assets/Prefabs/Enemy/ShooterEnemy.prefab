@@ -736,7 +736,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 138538}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.48161665, y: -0.5, z: 7.3170238}
+  m_LocalPosition: {x: 1.2749648, y: 12, z: 13.252837}
   m_LocalScale: {x: 1.3042357, y: 1.3042355, z: 1.3042355}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1210,8 +1210,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.41301885, y: 0.28081477, z: 0.5123506}
-  m_Center: {x: 0.01606914, y: 0.77125216, z: 0.014805972}
+  m_Size: {x: 0.5, y: 0.28081477, z: 0.5123506}
+  m_Center: {x: 0, y: 0.77125216, z: 0.014805972}
 --- !u!95 &9536952
 Animator:
   serializedVersion: 3
@@ -1633,7 +1633,7 @@ MonoBehaviour:
   c_Explosion: {fileID: 183870, guid: 2d604258e71134b418a81a7e69a56dcf, type: 2}
   Resource: 10
   Score: 150
-  MaxHP: 6
+  DefaultHP: 6
 --- !u!114 &11475614
 MonoBehaviour:
   m_ObjectHideFlags: 1

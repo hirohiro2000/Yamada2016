@@ -12,8 +12,8 @@ public class WeaponAmmoUIList : MonoBehaviour {
 	static WeaponAmmoUIList[] lists = null;
 	static public WeaponAmmoUIList Aceess(int ID)
 	{
-		if (lists == null)
-			lists = Object.FindObjectsOfType<WeaponAmmoUIList>();
+		//if (lists == null)
+		//	lists = Object.FindObjectsOfType<WeaponAmmoUIList>();
 
 		foreach(WeaponAmmoUIList list in lists)
 		{
@@ -26,6 +26,7 @@ public class WeaponAmmoUIList : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		weaponAmmoUIs = GetComponentsInChildren<WeaponAmmoUI>();
+        lists = Object.FindObjectsOfType<WeaponAmmoUIList>();
 	}
 	
 	// Update is called once per frame

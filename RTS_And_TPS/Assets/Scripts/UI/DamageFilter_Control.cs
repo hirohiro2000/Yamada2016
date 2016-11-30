@@ -21,6 +21,9 @@ public class DamageFilter_Control : MonoBehaviour {
     private List< Data >    m_rDataList =   new List< Data >();
     private Image           m_rImage    =   null;
 
+    private bool            m_IsDying   =   false;
+    private float           m_Timer     =   0.0f;
+
 	// Use this for initialization
 	void    Start()
     {
@@ -33,10 +36,16 @@ public class DamageFilter_Control : MonoBehaviour {
         //if( Input.GetKeyDown( KeyCode.K ) ){
         //    SetEffect( c_TestTime, c_TestPower );
         //}
+        //if( Input.GetKey( KeyCode.K ) ) m_IsDying   =   true;
+        //else                            m_IsDying   =   false;
 
 	    //  データがなければ処理を行わない
         if( m_rDataList.Count == 0
-        &&  m_rImage.enabled  == false )    return;
+        &&  m_rImage.enabled  == false
+        &&  m_IsDying         == false )    return;
+
+        //  タイマー更新
+        m_Timer +=  Time.deltaTime;
 
         //  不透明度を更新
         {
@@ -55,6 +64,14 @@ public class DamageFilter_Control : MonoBehaviour {
 
                 //  不透明度を合算
                 alpha   +=  addAlpha;
+            }
+
+            //  瀕死状態なら明滅させる
+            if( m_IsDying ){
+                float   period  =   2.0f;
+                float   power   =   0.5f;
+                float   min     =   0.2f;
+                alpha   +=  min + ( Mathf.Sin( Mathf.PI * m_Timer * period ) * 0.5f + 0.5f ) * power;
             }
 
             //  不透明度を反映
@@ -87,5 +104,9 @@ public class DamageFilter_Control : MonoBehaviour {
 
         //  リストに登録
         m_rDataList.Add( rData );
+    }
+    public  void    SetEffect_Dying( bool _IsDying )
+    {
+        m_IsDying   =   _IsDying;
     }
 }

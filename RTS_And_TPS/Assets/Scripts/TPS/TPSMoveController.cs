@@ -5,7 +5,162 @@ using   System.Collections;
 
 public class TPSMoveController : MonoBehaviour
 {
-    private NetworkIdentity m_rIdentity =   null;
+    //  ダッシュチェック
+    class   DashChecker
+    {
+        enum    State{
+            Neutral,
+            Push,
+            DoublePush,
+        }
+
+        private KeyCode m_CheckKey      =   KeyCode.W;
+        private float   m_Threshold     =   0.0f;
+        private float   m_PushTimer     =   0.0f;
+        private State   m_State         =   State.Neutral;
+
+        public  DashChecker( KeyCode _CheckKey, float _Threshold ){
+            m_CheckKey  =   _CheckKey;
+            m_Threshold =   _Threshold;
+        }
+
+        public  void    Update(){
+            //  状態に応じた処理を行う
+            switch( m_State ){
+                case    State.Neutral:      Update_Neutral();       break;
+                case    State.Push:         Update_Push();          break;
+                case    State.DoublePush:   Update_DoublePush();    break;
+            }
+        }
+        private void    Update_Neutral(){
+            //  入力があれば一回押された状態へ
+            if( Input.GetKeyDown( m_CheckKey ) ){
+                m_State     =   State.Push;
+                m_PushTimer =   0.0f;
+            }
+        }
+        private void    Update_Push(){
+            //  一定時間以内に入力があれば次の状態へ
+            if( Input.GetKeyDown( m_CheckKey ) ){
+                m_State     =   State.DoublePush;
+                return;
+            }
+
+            //  一回目の入力から一定時間経過でニュートラルに戻る
+            m_PushTimer     +=  Time.deltaTime;
+            m_PushTimer     =   Mathf.Min( m_PushTimer, m_Threshold );
+            if( m_PushTimer >= m_Threshold ){
+                m_State     =   State.Neutral;
+            }
+        }
+        private void    Update_DoublePush(){
+            //  キーが離されたらニュートラルに戻る
+            if( !Input.GetKey( m_CheckKey ) ){
+                m_State     =   State.Neutral;
+            }
+        }
+
+        public  bool    IsDash(){
+            return  m_State == State.DoublePush;
+        }
+    }
+    //  ダッシュ処理
+    class   DashControl
+    {
+        //  状態
+        enum    State{
+            Neutral,    //  通常
+            Dash,       //  ダッシュ
+            Recovery,   //  回復
+        }
+
+        //  固定パラメータ
+        private KeyCode     c_DashKey           =   KeyCode.W;
+        private float       c_DashThreshold     =   0.2f;
+        private float       c_MaxEnergy         =   10.0f;
+        private float       c_RecoveryEnergy    =   2.5f;
+        private float       c_DashEnergy        =   5.0f;
+        private float       c_DashSpeed         =   5.0f;
+        private float       c_StartCost         =   4.0f;
+
+        //  パラメータ
+        private float       m_Energy            =   0.0f;
+        private State       m_State             =   State.Neutral;
+        private DashChecker m_rDashChecker      =   null;
+        
+        //  初期化
+        public  DashControl()
+        {
+            m_rDashChecker  =   new DashChecker( c_DashKey, c_DashThreshold );
+            m_Energy        =   c_MaxEnergy;
+        }
+
+        //  更新
+        public  void    Update( TPSMoveController _rParent )
+        {
+            //  ダッシュ入力チェッカー更新
+            m_rDashChecker.Update();
+
+            //  状態に応じた処理を行う
+            switch( m_State ){
+                case    State.Neutral:  Update_Neutral( _rParent );     break;
+                case    State.Dash:     Update_Dash( _rParent );        break;
+                case    State.Recovery: Update_Recovery( _rParent );    break;
+            }
+
+            //  ＵＩ更新
+            TPSBoosterBar.SetGage( m_Energy / c_MaxEnergy );
+        }
+        private void    Update_Neutral( TPSMoveController _rParent )
+        {
+            //  ダッシュ 
+            if( m_rDashChecker.IsDash()
+            &&  m_Energy >= c_StartCost ){
+                m_State =   State.Dash;
+                return;
+            }
+
+            //  エネルギー回復
+            m_Energy    +=  c_RecoveryEnergy * Time.deltaTime;
+            m_Energy    =   Mathf.Min( m_Energy, c_MaxEnergy );
+        }
+        private void    Update_Dash( TPSMoveController _rParent )
+        {
+            //  消費エネルギー計算
+            float   energyCost  =   c_DashEnergy * Time.deltaTime;
+            //  エネルギーが足りるかどうかチェック
+            if( m_Energy < energyCost
+            ||  !m_rDashChecker.IsDash() ){
+                //  回復状態へ
+                m_State =   State.Recovery;
+                return;
+            }
+
+            //  エネルギー消費
+            m_Energy    -=  energyCost;
+            m_Energy    =   Mathf.Max( m_Energy, 0.0f );
+
+            //  ダッシュ
+            _rParent.characterMover.AddSpeed( _rParent.transform.forward.normalized * c_DashSpeed * Time.deltaTime * 60.0f );
+        }
+        private void    Update_Recovery( TPSMoveController _rParent )
+        {
+            //  エネルギー回復
+            m_Energy    +=  c_RecoveryEnergy * Time.deltaTime;
+            m_Energy    =   Mathf.Min( m_Energy, c_MaxEnergy );
+
+            //  ニュートラルへ
+            if( !m_rDashChecker.IsDash() ){
+                m_State =   State.Neutral;
+                return;
+            }
+        }
+    }
+
+    private float           c_AnimeSpeed    =   0.5f;
+    private float           c_AnimeRatio    =   0.73f;
+    private NetworkIdentity m_rIdentity     =   null;
+    private TPSPlayer_HP    m_rTPSHP        =   null;
 
 	[SerializeField]
 	float speed = .0f;
@@ -63,6 +218,9 @@ public class TPSMoveController : MonoBehaviour
 	float   maxDrivingPower = 45.0f;
     Vector3 impluseForce    = Vector3.zero;
 	float   dampRate        = 2.0f;         
+
+    //  ダッシュ用
+    private DashControl m_rDashControl  =   null;
 
     // ２回連続に押下したかの判定用
     class DoublePress
@@ -153,6 +311,7 @@ public class TPSMoveController : MonoBehaviour
 	void Start()
 	{
         m_rIdentity =   GetComponent< NetworkIdentity >();
+        m_rTPSHP    =   GetComponent< TPSPlayer_HP >();
 
         m_doublePressKeys = new DoublePress[4];
         m_doublePressKeys[0] = new DoublePress( KeyCode.W );
@@ -162,6 +321,8 @@ public class TPSMoveController : MonoBehaviour
 
         m_animationController = GetComponent< TPS_PlayerAnimationController >();
 
+        //  パラメータ初期化
+        m_rDashControl  =   new DashControl();
     }
 
 	// Update is called once per frame
@@ -187,14 +348,23 @@ public class TPSMoveController : MonoBehaviour
 		inputDir += right   * (controllerAxis.x * speed);
 		inputDir += forward * (controllerAxis.y * speed);
 
-		//characterController.Move(inputDir * Time.deltaTime);
-		//characterController.SimpleMove(inputDir);
+        //  瀕死状態なら減速
+        if( m_rTPSHP.m_IsDying ){
+            inputDir    =   inputDir * 0.15f;
+        }
+
 		characterMover.AddSpeed(inputDir);
 
-        //Vector3 addDir = new Vector3();
-        //addDir.x = (inputDir.x - rigidBody.velocity.x) * sensitivity;
-        //addDir.z = (inputDir.z - rigidBody.velocity.z) * sensitivity;
+        //  ダッシュ （瀕死状態は不可）
+        if( !m_rTPSHP.m_IsDying ){
+            m_rDashControl.Update( this );
+        }
 
+        // アニメーション 
+        float   totalSpeed  =   characterMover.GetTotalSpeed().magnitude;
+        //if( totalSpeed > 0.0f
+        //&&  characterController.isGrounded )
+        //{
         //rigidBody.velocity += addDir;
                 
         // 加速処理（ブースト＆ステップ）
@@ -215,10 +385,12 @@ public class TPSMoveController : MonoBehaviour
             else if ( controllerAxis.x < -expValue )
                 m_animationController.ChangeStateMove(TPS_PlayerAnimationController.InputDpad.eLEFT);
 
+            m_animationController.ChangeSpeed( totalSpeed * c_AnimeRatio * c_AnimeSpeed );
         }
         else
         {
             m_animationController.ChangeStateIdle();
+            m_animationController.ChangeSpeed( 1.0f );
         }
 
     }

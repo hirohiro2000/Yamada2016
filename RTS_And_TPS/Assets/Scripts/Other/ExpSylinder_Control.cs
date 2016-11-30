@@ -143,7 +143,7 @@ public class ExpSylinder_Control : MonoBehaviour {
 
         //
         Transform   rTrans  =   transform.GetChild( 0 );
-        float       scale   =   transform.localScale.x * 0.02f;
+        //float       scale   =   transform.localScale.x * 0.02f;
         rTrans.position     =   transform.position + ( _Point - transform.position ) * 1.5f;//_Point;
         rTrans.rotation     =   transform.rotation;
     }
