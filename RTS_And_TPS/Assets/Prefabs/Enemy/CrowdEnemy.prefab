@@ -934,7 +934,7 @@ Transform:
   m_GameObject: {fileID: 123842}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.908937, y: 12, z: 18.49684}
-  m_LocalScale: {x: 1.0834544, y: 1.0834546, z: 1.0834546}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 404770}
@@ -2035,7 +2035,7 @@ NavMeshAgent:
   m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 1.48
-  m_BaseOffset: 0
+  m_BaseOffset: -0.1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 2
 --- !u!222 &22205774

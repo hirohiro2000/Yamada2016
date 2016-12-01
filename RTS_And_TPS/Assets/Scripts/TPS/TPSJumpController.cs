@@ -84,7 +84,7 @@ public class TPSJumpController : MonoBehaviour {
         m_rTPSHP    =   GetComponent< TPSPlayer_HP >();
 
         cntHoverTime = maxHoverTime;
-        TPSBoosterBar.Initialize(maxHoverTime);
+//        TPSBoosterBar.Initialize(maxHoverTime);
 	}
 
     // Update is called once per frame

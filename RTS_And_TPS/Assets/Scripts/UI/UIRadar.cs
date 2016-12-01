@@ -109,8 +109,9 @@ public class UIRadar : MonoBehaviour {
             Vector3 rtPosition   = relativePosition / m_searchRange;
             float   maxLength    = 70.0f;
 
-            rt.localPosition = new Vector3(rtPosition.x, rtPosition.z, 0.0f) * maxLength;
-            rt.localPosition = rt.localPosition.normalized * ( Mathf.Min( rt.localPosition.magnitude, maxLength ) );
+            Vector3 enemyIconPos = new Vector3(rtPosition.x, rtPosition.z, 0.0f) * maxLength;
+
+            rt.localPosition = enemyIconPos.normalized * ( Mathf.Min( enemyIconPos.magnitude, maxLength ) );
 
         }
         //{

@@ -5,17 +5,17 @@ using   System.Collections;
 
 public class TPSCloneAnime_Control : NetworkBehaviour {
 
-    private float           c_AnimeSpeed    =   0.5f;
-    private float           c_AnimeRatio    =   0.73f;
+    private float                   c_AnimeSpeed    =   0.5f;
+    private float                   c_AnimeRatio    =   0.73f;
 
-    TPS_AnimationController m_rAnimeControl =   null;
-    Vector3                 m_PrevPos       =   Vector3.zero;
-    float                   m_PrevYMove     =   0.0f;
+    TPS_PlayerAnimationController   m_rAnimeControl =   null;
+    Vector3                         m_PrevPos       =   Vector3.zero;
+    float                           m_PrevYMove     =   0.0f;
 
 	// Use this for initialization
 	void    Start()
     {
-	    m_rAnimeControl =   GetComponent< TPS_AnimationController >();
+	    m_rAnimeControl =   GetComponent< TPS_PlayerAnimationController >();
 	}
 	
 	// Update is called once per frame
@@ -28,17 +28,35 @@ public class TPSCloneAnime_Control : NetworkBehaviour {
         Vector3 vMove       =   transform.position - m_PrevPos;
         float   moveSpeed   =   vMove.magnitude / Time.deltaTime;
         bool    isGround    =   Mathf.Abs( vMove.y - m_PrevYMove ) <= 0.005f;
+        
+        //  アニメーション
+        if( moveSpeed > 0.1f ){
+            float   axisX   =   Vector3.Dot( transform.right,   vMove );
+            float   axisZ   =   Vector3.Dot( transform.forward, vMove );
 
-        //  速度に応じてモーションを更新
-        if( moveSpeed > 0.0f
-        &&  isGround ){
-            m_rAnimeControl.ChangeStateMove();
+            //  前後
+            if( Mathf.Abs( axisZ ) > Mathf.Abs( axisX ) ){
+                if( axisZ > 0.0f )  m_rAnimeControl.ChangeStateMove( TPS_PlayerAnimationController.InputDpad.eFORWARD );
+                else                m_rAnimeControl.ChangeStateMove( TPS_PlayerAnimationController.InputDpad.eBACK );
+            }
+            //  左右
+            else{
+                if( axisX > 0.0f )  m_rAnimeControl.ChangeStateMove( TPS_PlayerAnimationController.InputDpad.eRIGHT );
+                else                m_rAnimeControl.ChangeStateMove( TPS_PlayerAnimationController.InputDpad.eLEFT );
+            }
+
+            //  アニメーション速度
             m_rAnimeControl.ChangeSpeed( moveSpeed * c_AnimeRatio * c_AnimeSpeed );
         }
-        //  ジャンプ中あるいは停止中は待機
+        //  停止中は待機
         else{
             m_rAnimeControl.ChangeStateIdle();
             m_rAnimeControl.ChangeSpeed( 1.0f );
+        }
+
+        //  浮いている間はアニメーションを再生しない
+        if( !isGround){
+            m_rAnimeControl.ChangeSpeed( 0.0f );
         }
 
         //  現在の座標を保存

@@ -1775,7 +1775,7 @@ MonoBehaviour:
   c_Explosion: {fileID: 183870, guid: 2d604258e71134b418a81a7e69a56dcf, type: 2}
   Resource: 10
   Score: 200
-  MaxHP: 10
+  DefaultHP: 10
 --- !u!114 &11479458
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2223,7 +2223,7 @@ NavMeshAgent:
   m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 1.48
-  m_BaseOffset: 0
+  m_BaseOffset: -0.1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 2
 --- !u!222 &22228268

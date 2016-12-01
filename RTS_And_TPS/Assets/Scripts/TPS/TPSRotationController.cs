@@ -52,7 +52,7 @@ public class TPSRotationController : MonoBehaviour
             
             if( rCamTrans )
             {
-                Vector3 f = m_character.velocity;
+                Vector3 f = rCamTrans.forward;
                 f.y = 0.0f;
                 if (f.sqrMagnitude > 0.0f)
                 {
@@ -64,13 +64,15 @@ public class TPSRotationController : MonoBehaviour
                 // 首と目の処理
                 Vector3 lookDir = rCamTrans.forward.normalized;
 
-                Vector3 lookDirHorizontal = new Vector3( lookDir.x, 0.0f, lookDir.z );
-                if ( lookDirHorizontal.sqrMagnitude > 0.0f )
-                {
-                    m_neckTransform.rotation = Quaternion.LookRotation( lookDirHorizontal.normalized );
-                    m_neckTransform.localEulerAngles += m_neckAdjustEulerAngles;
-                }
+                // 首
+//                Vector3 lookDirHorizontal = new Vector3( lookDir.x, 0.0f, lookDir.z );
+//                if ( lookDirHorizontal.sqrMagnitude > 0.0f )
+//                {
+//                    m_neckTransform.rotation = Quaternion.LookRotation( lookDirHorizontal.normalized );
+//                    m_neckTransform.localEulerAngles += m_neckAdjustEulerAngles;
+//                }
 
+                // 目（サイト）
                 Vector3 eulerAngles = m_eyeAdjustEulerAngles;
                 eulerAngles.y -= Mathf.Asin(lookDir.y)*Mathf.Rad2Deg;
                 m_eyeTransform.localEulerAngles = eulerAngles;

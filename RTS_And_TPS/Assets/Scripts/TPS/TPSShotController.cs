@@ -316,11 +316,9 @@ public class TPSShotController : NetworkBehaviour {
         //  自分が何番目の子か調べる（他のクライアントで発射させるときにどこから発射されたかを識別するため） 
         m_MyChildID         =   CheckMyChildID();
 
-//        TPSWeaponBar.Initialize(100);
-//        m_seShot            =   SoundController.CreateShotController(transform);
-
-        TPSWeaponBar.Initialize(100);
         m_seShot            =   cntWeaponList.data.CreateSoundController(this.gameObject);
+
+//        TPSWeaponBar.Initialize(100);
 
     }
 	
@@ -413,7 +411,7 @@ public class TPSShotController : NetworkBehaviour {
 					fireCnt = 0;
                 }
 
-                TPSWeaponBar.Consumption(1.0f);
+//                TPSWeaponBar.Consumption(1.0f);
 
                 // 発砲音
                 if (m_seShot != null)

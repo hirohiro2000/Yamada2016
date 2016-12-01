@@ -31,6 +31,8 @@ public class AnimationController : MonoBehaviour {
 
     public void SetFloat(string param_name,float val)
     {
+        if( !m_animator )    return;
+
         m_animator.SetFloat(param_name, val);
     }
 

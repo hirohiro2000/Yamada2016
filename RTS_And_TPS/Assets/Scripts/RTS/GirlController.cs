@@ -16,6 +16,7 @@ public class GirlController : NetworkBehaviour
 	private ResourceCreator		m_resourceCreator			= null;
 	private ItemController		m_itemCntroller				= null;
     private Rigidbody           m_rRigid                    = null;
+    private RTS_PlayerAnimationController m_animationController = null;
 
 	private const KeyCode		m_okKey						= KeyCode.J;
 	private const KeyCode		m_cancelKey					= KeyCode.L;
@@ -51,6 +52,14 @@ public class GirlController : NetworkBehaviour
         m_rRigid                        = GetComponent< Rigidbody >();
 
         m_navAgent                      = gameObject.AddComponent<NavMeshAgent>();
+        // 適当に
+        m_navAgent.acceleration = float.MaxValue;
+        m_navAgent.angularSpeed = float.MaxValue;
+        m_navAgent.stoppingDistance = 1.0f;
+        m_navAgent.Warp( transform.position );
+        m_navAgent.ResetPath();
+        
+        m_animationController = GetComponent< RTS_PlayerAnimationController >();
 
     }
 
@@ -63,12 +72,25 @@ public class GirlController : NetworkBehaviour
         //  座標調整（いまだけ）
         {
             //  飛ぶ
-            if( Input.GetKey( KeyCode.M ) ){
-                m_rRigid.AddForce( Vector3.up * m_LiftingForce * Time.deltaTime * 60.0f );
+            if (Input.GetKey(KeyCode.M))
+            {
+                m_rRigid.AddForce(Vector3.up * m_LiftingForce * Time.deltaTime * 60.0f);
+                if (m_navAgent.enabled)
+                {
+                    m_navAgent.ResetPath();
+                    m_navAgent.enabled = false;
+                }
             }
+
             //  浮いてる間はグリッドを表示しない
-            if( Mathf.Abs( m_rRigid.velocity.y ) > 0.01f )  m_resourceInformation.m_gridSplitSpacePlane.SetActive( false );
-            else                                            m_resourceInformation.m_gridSplitSpacePlane.SetActive( true );
+            if (Mathf.Abs(m_rRigid.velocity.y) < 0.1f || m_navAgent.enabled)
+            {
+                m_resourceInformation.m_gridSplitSpacePlane.SetActive(true);
+            }
+            else
+            {
+                m_resourceInformation.m_gridSplitSpacePlane.SetActive(false);
+            }
         }
         
 
@@ -95,9 +117,37 @@ public class GirlController : NetworkBehaviour
     {
         MovedByKey();
         MoveByNavMeshAgent();
+        
+
+        // アニメーション
+        float   speedSq         = 0.0f;
+        float   expValue        = 0.1f;
+
+        // 速度計算
+        if ( m_isMoveByKey )
+        {
+            speedSq = m_moveSpeed*m_moveSpeed;
+        }
+        else if ( m_navAgent.enabled )
+        {
+            Vector2 walkVelocity    = new Vector2( m_navAgent.velocity.x, m_navAgent.velocity.z );
+            speedSq = walkVelocity.sqrMagnitude;
+        }
+
+        // モーション決定
+        if ( speedSq > expValue )
+        {
+            m_animationController.ChangeStateMove(speedSq);
+        }
+        else
+        {
+            m_animationController.ChangeStateIdle();
+        }
+
+
     }
 
-	//---------------------------------------------------------------------
+    //---------------------------------------------------------------------
 	//      すてーと
 	//---------------------------------------------------------------------   	
 	void MovedByKey()
@@ -126,35 +176,47 @@ public class GirlController : NetworkBehaviour
 		}
         
         // Did a player move by a key?
-        m_isMoveByKey = ( direction.sqrMagnitude > 0.0f );
-        		
+        float   expValue        = 0.1f;
+        m_isMoveByKey = ( axis > expValue );
 	}
     void MoveByNavMeshAgent()
     {
-        if (m_isMoveByKey == true)
+        if (m_isMoveByKey == true && m_navAgent.enabled )
         {
-            m_navAgent.Stop();
+            m_navAgent.ResetPath();
+            m_navAgent.enabled = false;
             return;
         }
 
-        if ( m_navAgent.hasPath == false )
+        if (m_navAgent.enabled )
         {
-            m_navAgent.Stop();
+            if ( m_navAgent.hasPath == false )
+            {
+                m_navAgent.enabled = false;
+            }
+            else if ( m_navAgent.hasPath && m_navAgent.remainingDistance < m_navAgent.stoppingDistance)
+            {
+                m_navAgent.ResetPath();
+                m_navAgent.enabled = false;
+            }
         }
 
-        if (Input.GetMouseButtonDown(0))
+
+        if ( RTSCursor.m_curMode == RTSCursor.MODE.eNone && Input.GetMouseButtonDown(0))
         {
             Vector3     mousePosition   = Input.mousePosition;
             Ray         ray             = Camera.main.ScreenPointToRay(mousePosition);
             RaycastHit  hit             = new RaycastHit();
+            int         layerMask       = LayerMask.GetMask( "Field" );
 
-            if ( Physics.Raycast(ray, out hit, float.MaxValue) )
+            if ( Physics.Raycast(ray, out hit, float.MaxValue, layerMask) )
             {                            
-                Vector3 targetPosition  = m_resourceInformation.ComputeGridPosition( hit.point );
-                m_navAgent.SetDestination( targetPosition );
-                m_navAgent.Resume();
+                m_navAgent.enabled      = true;
+                m_navAgent.speed        = m_moveSpeed;
 
-                m_navAgent.speed = m_moveSpeed;
+                NavMeshPath path = new NavMeshPath();
+                m_navAgent.CalculatePath( m_resourceInformation.ComputeGridPosition( hit.point ), path );
+                m_navAgent.SetPath( path );
             }
         }
 
@@ -173,6 +235,12 @@ public class GirlController : NetworkBehaviour
 		//	change state
 		if( !Input.GetKeyDown( m_okKey ))
 			return;
+
+        if (m_navAgent.enabled)
+        {
+            m_navAgent.ResetPath();
+            m_navAgent.enabled = false;
+        }
 
 		if( m_resourceInformation.CheckExistResourceFromPosition( transform.position ) )
 		{
@@ -212,7 +280,7 @@ public class GirlController : NetworkBehaviour
 			m_resourceCreator.AddResource( forcusID );
 			m_itemCntroller.AddResourceCost( -forcusParam.m_createCost );
 			m_actionState = ActionState.Common;
-			return;
+            return;
 		}
 		if( Input.GetKeyDown( m_cancelKey ) )
 		{
@@ -240,7 +308,6 @@ public class GirlController : NetworkBehaviour
 			m_resourceInformation.CheckIfCanUpALevel( transform.position, m_itemCntroller.GetHaveCost() ))
 		{
 			m_actionState = ActionState.Common;
-
     		m_itemCntroller.AddResourceCost( -param.GetCurLevelParam().upCost );
 			CmdLevelUpResource( transform.position );
 			return;
@@ -248,18 +315,16 @@ public class GirlController : NetworkBehaviour
 		if ( Input.GetKeyDown( m_cancelKey ))
 		{
 			m_actionState = ActionState.Common;
-			return;
+            return;
 		}
 		if( Input.GetKeyDown( m_breakKey ))
 		{
 			m_actionState = ActionState.Common;
-
 			m_itemCntroller.AddResourceCost( m_itemCntroller.GetForcusResourceParam().m_breakCost );
             CmdBreakResource( transform.position );
 			return;
 		}
 	}
-
 
 	//---------------------------------------------------------------------
 	//      アクセサ

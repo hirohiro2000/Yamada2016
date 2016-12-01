@@ -210,7 +210,7 @@ public class TPSMoveController : MonoBehaviour
 	}
 
     // アニメーション用
-    TPS_AnimationController m_animationController = null;
+    TPS_PlayerAnimationController m_animationController = null;
 
     // 加速用
   	float   avoidStepPower  = 15.0f;
@@ -319,7 +319,7 @@ public class TPSMoveController : MonoBehaviour
         m_doublePressKeys[2] = new DoublePress( KeyCode.A );
         m_doublePressKeys[3] = new DoublePress( KeyCode.D );
 
-        m_animationController = GetComponent< TPS_AnimationController >();
+        m_animationController = GetComponent< TPS_PlayerAnimationController >();
 
         //  パラメータ初期化
         m_rDashControl  =   new DashControl();
@@ -341,11 +341,12 @@ public class TPSMoveController : MonoBehaviour
 		Vector3 right = Vector3.Cross(Vector3.up, forward);
 		right.Normalize();
 
+        Vector2 controllerAxis = new Vector2( Input.GetAxis("Horizontal"), Input.GetAxis("Vertical") );
 
-		inputDir = Vector3.zero;
+        inputDir = Vector3.zero;
 
-		inputDir += right * (Input.GetAxis("Horizontal") * speed);
-		inputDir += forward * (Input.GetAxis("Vertical") * speed);
+		inputDir += right   * (controllerAxis.x * speed);
+		inputDir += forward * (controllerAxis.y * speed);
 
         //  瀕死状態なら減速
         if( m_rTPSHP.m_IsDying ){
@@ -361,10 +362,29 @@ public class TPSMoveController : MonoBehaviour
 
         // アニメーション 
         float   totalSpeed  =   characterMover.GetTotalSpeed().magnitude;
-        if( totalSpeed > 0.0f
-        &&  characterController.isGrounded )
+        //if( totalSpeed > 0.0f
+        //&&  characterController.isGrounded )
+        //{
+        //rigidBody.velocity += addDir;
+                
+        // 加速処理（ブースト＆ステップ）
+        //UpdateAdjustMoveForce( forward, right );
+
+        // アニメーション
+        if( controllerAxis.sqrMagnitude    >  0.0f )
         {
-            m_animationController.ChangeStateMove();
+            float expValue = 0.05f;
+
+            if ( controllerAxis.y > expValue )
+                m_animationController.ChangeStateMove(TPS_PlayerAnimationController.InputDpad.eFORWARD);
+            else if ( controllerAxis.y < -expValue )
+                m_animationController.ChangeStateMove(TPS_PlayerAnimationController.InputDpad.eBACK);
+
+            if ( controllerAxis.x > expValue )
+                m_animationController.ChangeStateMove(TPS_PlayerAnimationController.InputDpad.eRIGHT);
+            else if ( controllerAxis.x < -expValue )
+                m_animationController.ChangeStateMove(TPS_PlayerAnimationController.InputDpad.eLEFT);
+
             m_animationController.ChangeSpeed( totalSpeed * c_AnimeRatio * c_AnimeSpeed );
         }
         else
@@ -373,6 +393,10 @@ public class TPSMoveController : MonoBehaviour
             m_animationController.ChangeSpeed( 1.0f );
         }
 
+        //  浮いている間はアニメーションを再生しない
+        if( !characterController.isGrounded ){
+            m_animationController.ChangeSpeed( 0.0f );
+        }
     }
 
     void UpdateAdjustMoveForce( Vector3 forward, Vector3 right )
