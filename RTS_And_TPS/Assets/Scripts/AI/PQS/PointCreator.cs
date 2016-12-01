@@ -7,6 +7,75 @@ using System.Collections.Generic;
 */
 public class PointCreator
 {
+    class Circle
+    {
+        private float m_radius = .0f;
+        private float m_current_dist = .0f;
+        private float m_begin_dist = .0f;
+        private float m_end_dist = .0f;
+        private float m_add_dist = .0f; 
+
+        private float m_begin_radius = .0f;
+        private float m_end_radius = .0f;
+        private float m_add_radius = .0f;
+        private float m_current_radius;
+
+        private int m_max_create_point = 0;
+        private int m_current_create_point = 0;
+
+        public void BeginCreate(float radius,
+                                     int dist_detail,
+                                     int rotate_detail,
+                                     float distance_exclusion,
+                                     float fov_exclusion,
+                                     int  max_sampling_point)
+        {
+            //生成除外した角度から有効角度角度を計算する
+            m_begin_radius = fov_exclusion / 180.0f * Mathf.PI;
+            m_end_radius = (Mathf.PI * 2.0f) - m_end_radius;
+            m_add_radius = (Mathf.PI * 2.0f) / rotate_detail;
+
+            //初期の距離と加算していく距離を計算する
+            m_end_dist = radius;
+            m_begin_dist = distance_exclusion;
+            m_add_dist = radius / dist_detail;
+        }
+
+        public bool CreatePoint(ref Vector3 out_pos)
+        {
+
+            out_pos.x = Mathf.Sin(m_current_radius) * m_current_dist;
+            out_pos.y = .0f;
+            out_pos.z = Mathf.Cos(m_current_radius) * m_current_dist;  
+
+            m_current_radius += m_add_radius;
+            m_current_create_point++;
+            if (m_current_create_point > m_max_create_point)
+                return false;
+
+            if(m_current_radius >= m_end_radius)
+            {
+                m_current_dist += m_add_dist;
+                m_current_radius = m_begin_radius;
+                //0.001はradiusが5の場合current_distが5に来たとき誤差で判定を間違えないため
+                if (m_current_dist >= m_radius + 0.001)
+                    return false;
+            }
+            return true;
+        }
+
+        public void EndCreate()
+        {
+
+        }
+
+    }
+
+    class Square
+    {
+        
+    }
+
     class BasicFilter
     {
 
@@ -28,10 +97,12 @@ public class PointCreator
 
     }//BasicFilter
 
+    Circle m_circle_sampler = null;
     BasicFilter m_basic_filter = null;
 
     public void Initialize()
     {
+        m_circle_sampler = new Circle();
         m_basic_filter = new BasicFilter();
     }
 
@@ -52,36 +123,64 @@ public class PointCreator
         float          owner_height,
         List<PointQuerySystem.PointData> out_list)
     {
-        float dist_size = query_info.GetPointFieldSize() / query_info.GetFieldDetailY();
-        float base_radius = (Mathf.PI * 2.0f)  / query_info.GetFieldDetailX();
-        Vector3 base_position = new Vector3();
-        float dist = .0f;
+        //float dist_size = query_info.GetPointFieldSize() / query_info.GetFieldDetailY();
+        //float base_radius = (Mathf.PI * 2.0f)  / query_info.GetFieldDetailX();
+        //Vector3 base_position = new Vector3();
+        //float dist = .0f;
+
+        m_circle_sampler.BeginCreate(query_info.GetPointFieldSize(),
+            query_info.GetFieldDetailY(),
+            query_info.GetFieldDetailX(),
+            query_info.GetDisntaceExclusion(),
+            query_info.GetEularFovExclusion(),
+            query_info.GetMaxSamplingCount());
+
         NavMeshHit hit_data = new NavMeshHit();
-        for (int dist_i = 0; dist_i < query_info.GetFieldDetailY(); dist_i++)
+        Vector3 candidate_pos = new Vector3();
+        while (true)
         {
-            dist = dist_size * dist_i;
-            for(int  rotate_i = 0; rotate_i < query_info.GetFieldDetailX(); rotate_i++)
+
+            if (m_circle_sampler.CreatePoint(ref candidate_pos))
+                break;
+
+            //対象となる位置に対してのフィルタリングを行う
+            if (!IsCanCreate(query_info, target_transform, candidate_pos, target_height))
+                continue;
+
+            //Pointを生成する
+            if (!NavMesh.SamplePosition(candidate_pos, out hit_data, .2f, NavMesh.AllAreas))
             {
-                base_position.x = Mathf.Sin(base_radius * rotate_i) * dist;
-                base_position.y = .0f;
-                base_position.z = Mathf.Cos(base_radius * rotate_i) * dist;
-                Vector3 candidate_pos = base_position + target_transform.position;
+                continue;
+            }
+            out_list.Add(new PointQuerySystem.PointData(hit_data.position));
+        }
+        m_circle_sampler.EndCreate();
+        ////NavMeshHit hit_data = new NavMeshHit();
+        //for (int dist_i = 0; dist_i < query_info.GetFieldDetailY(); dist_i++)
+        //{
+        //    dist = dist_size * dist_i;
+        //    for(int  rotate_i = 0; rotate_i < query_info.GetFieldDetailX(); rotate_i++)
+        //    {
+        //        base_position.x = Mathf.Sin(base_radius * rotate_i) * dist;
+        //        base_position.y = .0f;
+        //        base_position.z = Mathf.Cos(base_radius * rotate_i) * dist;
+        //        Vector3 candidate_pos = base_position + target_transform.position;
 
-                //対象となる位置に対してのフィルタリングを行う
-                if (!IsCanCreate(query_info,target_transform, candidate_pos, target_height))
-                    continue;
+        //        //対象となる位置に対してのフィルタリングを行う
+        //        if (!IsCanCreate(query_info,target_transform, candidate_pos, target_height))
+        //            continue;
 
-                //Pointを生成する
-                if (!NavMesh.SamplePosition(candidate_pos, out hit_data, .2f, NavMesh.AllAreas))
-                {
-                    continue;
-                }
+        //        //Pointを生成する
+        //        if (!NavMesh.SamplePosition(candidate_pos, out hit_data, .2f, NavMesh.AllAreas))
+        //        {
+        //            continue;
+        //        }
 
-                 out_list.Add(new PointQuerySystem.PointData(hit_data.position));
+        //         out_list.Add(new PointQuerySystem.PointData(hit_data.position));
                
-            }//rotate_i
+        //    }//rotate_i
 
-        }//dist_i
+        //}//dist_i
 
       //  m_use_filter_list.Clear();
     }
