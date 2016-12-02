@@ -15,6 +15,8 @@ public class GageControl : MonoBehaviour {
     //  アクセス
     public  void    SetGage( float _GageRate )
     {
+        if( !m_rGageTrans ) m_rGageTrans    =   transform.FindChild( "_Gage" );
+
         //  正規化
         _GageRate   =   Mathf.Clamp( _GageRate, 0.0f, 1.0f );
 

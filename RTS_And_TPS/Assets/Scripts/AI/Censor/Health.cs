@@ -48,7 +48,10 @@ public class Health : NetworkBehaviour {
         base.OnNetworkDestroy();
 
         //  ゲーム終了時は処理を行わない
-        if( m_IsGameQuit )  return;
+        if( m_IsGameQuit )                                          return;
+        //  ゲーム中以外は処理を行わない
+        if( !m_rGameManager )                                       return;
+        if( m_rGameManager.GetState() != GameManager.State.InGame ) return;
 
         //  破砕オブジェクト生成
         if( c_ExplodedObj
@@ -177,7 +180,7 @@ public class Health : NetworkBehaviour {
         HP  =   Mathf.Max( HP, 0.0f );
         if( HP <= 0.0f ){
             //  スコアを獲得
-            m_rGameManager.AddGlobalScore( Score );
+            m_rGameManager.AddGlobalScore( Score, KillerID );
 
             //  スコア獲得通知
             int score   =   ( int )( Score + Score * 0.2f * Mathf.Max( 0, Level - 1 ) );
@@ -189,10 +192,16 @@ public class Health : NetworkBehaviour {
                 if( NetworkServer.active )  m_rGameManager.SetAcqRecord( "ヘッドショットキル！ + 20", KillerID );
                                             m_rGameManager.RpcRecordNotice( "ヘッドショットキル！ + 20", KillerID );
                 //  スコアを獲得
-                m_rGameManager.AddGlobalScore( 20 );
+                m_rGameManager.AddGlobalScore( 20, KillerID );
                 //  獲得リソース増加
                 Resource    +=  2;
+
+                //  ヘッドショットキルを記録
+                m_rGameManager.SetToList_HSKill( KillerID, 1 );
             }
+
+            //  キルを記録
+            m_rGameManager.SetToList_Kill( KillerID, 1 );
 
             //  オブジェクトを破棄
             Destroy( gameObject );

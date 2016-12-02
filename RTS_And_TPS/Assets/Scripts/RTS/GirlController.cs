@@ -40,7 +40,8 @@ public class GirlController : NetworkBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		m_uiGirlTaskSelect				= GameObject.Find("Canvas").transform.FindChild("RTS_HUD").GetComponent<UIGirlTaskSelect>();
+		GameObject g = GameObject.Find("RTS_HUD");
+        m_uiGirlTaskSelect				= g.GetComponent<UIGirlTaskSelect>();
         m_uiGirlTaskSelect.m_rGirl                   = this.gameObject;
         m_uiGirlTaskSelect.m_rResourceInformation    = GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
         m_uiGirlTaskSelect.m_rItemCntroller          = GetComponent<ItemController>();

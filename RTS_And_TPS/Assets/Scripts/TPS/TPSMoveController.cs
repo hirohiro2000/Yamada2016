@@ -79,7 +79,7 @@ public class TPSMoveController : MonoBehaviour
         private float       c_DashThreshold     =   0.2f;
         private float       c_MaxEnergy         =   10.0f;
         private float       c_RecoveryEnergy    =   2.5f;
-        private float       c_DashEnergy        =   5.0f;
+        private float       c_DashEnergy        =   2.5f;
         private float       c_DashSpeed         =   5.0f;
         private float       c_StartCost         =   4.0f;
 
@@ -155,6 +155,14 @@ public class TPSMoveController : MonoBehaviour
                 return;
             }
         }
+
+        public  float   GetEnergy(){
+            return  m_Energy;
+        }
+        public  void    UseEnergy( float _UseEnergy ){
+            m_Energy    -=  _UseEnergy;
+            m_Energy    =   Mathf.Max( m_Energy, 0.0f );
+        }
     }
 
     private float           c_AnimeSpeed    =   0.5f;
@@ -213,11 +221,12 @@ public class TPSMoveController : MonoBehaviour
     TPS_PlayerAnimationController m_animationController = null;
 
     // 加速用
-  	float   avoidStepPower  = 15.0f;
-  	float   boosterPower    = 3.0f;
+  	float   avoidStepPower  = 18.0f;
+  	float   boosterPower    = 0.0f;
 	float   maxDrivingPower = 45.0f;
     Vector3 impluseForce    = Vector3.zero;
-	float   dampRate        = 2.0f;         
+	float   dampRate        = 5.0f;
+    float   avoidEnergy     = 4.0f;
 
     //  ダッシュ用
     private DashControl m_rDashControl  =   null;
@@ -368,10 +377,10 @@ public class TPSMoveController : MonoBehaviour
         //rigidBody.velocity += addDir;
                 
         // 加速処理（ブースト＆ステップ）
-        //UpdateAdjustMoveForce( forward, right );
+        UpdateAdjustMoveForce( forward, right );
 
         // アニメーション
-        if ( controllerAxis.sqrMagnitude > 0.0f )
+        if( controllerAxis.sqrMagnitude    >  0.0f )
         {
             float expValue = 0.05f;
 
@@ -393,6 +402,10 @@ public class TPSMoveController : MonoBehaviour
             m_animationController.ChangeSpeed( 1.0f );
         }
 
+        //  浮いている間はアニメーションを再生しない
+        if( !characterController.isGrounded ){
+            m_animationController.ChangeSpeed( 0.0f );
+        }
     }
 
     void UpdateAdjustMoveForce( Vector3 forward, Vector3 right )
@@ -424,10 +437,10 @@ public class TPSMoveController : MonoBehaviour
         }
 
         // ブーストダッシュによる力取得
-        Vector3 velocity = BoostPower( directions );
+        //Vector3 velocity = BoostPower( directions );
 
         // 移動処理
-        Vector3 totalForce = impluseForce + velocity;   // インパルス + 等加速運動
+        Vector3 totalForce = impluseForce;// + velocity;   // インパルス + 等加速運動
         float   minPower   = 0.5f*0.5f;                 // ※適当な値を設定しています
         if (totalForce.sqrMagnitude > minPower )
         {
@@ -451,7 +464,14 @@ public class TPSMoveController : MonoBehaviour
 
             if (key.GetState() == DoublePress.STATE.eDoublePressDown)
             {
-                outVec += directions[i] * avoidStepPower;
+                //  エネルギーチェック
+                if( m_rDashControl.GetEnergy() >= avoidEnergy ){
+                    //  エネルギー消費
+                    m_rDashControl.UseEnergy( avoidEnergy );
+
+                    //  加速
+                    outVec += directions[i] * avoidStepPower;
+                }
             }
         }
         return outVec;

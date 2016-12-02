@@ -194,12 +194,16 @@ public class TPSPlayer_HP : NetworkBehaviour {
         if( !m_IsDying )    return;
 
         //  蘇生されている
-        if( CheckResuscitatedByFriend() ){
+        GameObject  rRivivalFriend  =   CheckResuscitatedByFriend();
+        if( rRivivalFriend ){
             //  蘇生中
             m_RevivalTimer  +=  Time.deltaTime;
             m_RevivalTimer  =   Mathf.Min( m_RevivalTimer, c_RevivalTime );
             //  蘇生完了チェック
             if( m_RevivalTimer >= c_RevivalTime ){
+                //  蘇生を記録
+                m_rGameManager.SetToList_Rivival( rRivivalFriend.GetComponent< NetPlayer_Control >().c_ClientID, 1 );
+
                 //  復活
                 SetRecovery( m_MaxHP * 0.41f );
 
@@ -287,7 +291,7 @@ public class TPSPlayer_HP : NetworkBehaviour {
             TPSPlayer_HP    rRevivalHP  =   CheckResuscitate();
             if( rRevivalHP )    m_rRevivalGage.SetGage( rRevivalHP.m_RevivalTimer / c_RevivalTime );
             
-            //  アクティブ状態更新
+            //  アクティブ状態更新 
             m_rDMControl.SetActive( false );
             m_rRevivalGage.gameObject.SetActive( rRevivalHP );
         }
@@ -324,7 +328,7 @@ public class TPSPlayer_HP : NetworkBehaviour {
         return  null;
     }
     //  仲間が蘇生しているかどうか
-    bool            CheckResuscitatedByFriend()
+    GameObject      CheckResuscitatedByFriend()
     {
         //  周辺のプレイヤーをチェック
         GameObject[]    rPlayers    =   GameObject.FindGameObjectsWithTag( "Player" );
@@ -347,11 +351,11 @@ public class TPSPlayer_HP : NetworkBehaviour {
                 if( rHealth.m_IsEnemy )     continue;
 
             //  蘇生可能
-            return  true;
+            return  rObj;
         }
 
         //  蘇生されていない
-        return  false;
+        return  null;
     }
     //  生存している味方がいるかどうか
     bool            CheckWhetherAliveFriend()
@@ -389,8 +393,14 @@ public class TPSPlayer_HP : NetworkBehaviour {
         m_CurHP =   Mathf.Max( m_CurHP, 0.0f );
         m_CurHP =   Mathf.Min( m_CurHP, m_MaxHP );
 
+        //  ダメージを記録
+        m_rGameManager.SetToList_Damage( m_rNetPlayer.c_ClientID, Mathf.Max( _Damage, 0 ) );
+
         //  死亡チェック
         if( m_CurHP == 0.0f ){
+            //  死亡をカウント
+            m_rGameManager.SetToList_Death( m_rNetPlayer.c_ClientID, 1 );
+
             //  敵は死んだらすぐにコマンダーに戻る
             if( m_IsEnemy ){
                 //  コマンダーに戻る
@@ -414,7 +424,7 @@ public class TPSPlayer_HP : NetworkBehaviour {
                     if( m_rTPSControl ) m_rTPSControl.RpcChangeToCommander( m_rNetPlayer.c_ClientID, !m_IsEnemy );
                     if( m_rRTSControl ) m_rRTSControl.RpcChangeToCommander( m_rNetPlayer.c_ClientID, !m_IsEnemy );
                 }
-            }            
+            }
         }
     }
     public  void    SetRecovery( float _Recovery )

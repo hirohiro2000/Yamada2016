@@ -55,6 +55,12 @@ public class GameManager : NetworkBehaviour {
     //  共有パラメータ
     private SyncListBool            m_rIsReadyList  =   new SyncListBool();
     private SyncListString          m_rNameList     =   new SyncListString();
+    private SyncListFloat           m_rScoreList    =   new SyncListFloat();
+    private SyncListFloat           m_rDamageList   =   new SyncListFloat();
+    private SyncListInt             m_rKillList     =   new SyncListInt();
+    private SyncListInt             m_rDeathList    =   new SyncListInt();
+    private SyncListInt             m_rRivivalList  =   new SyncListInt();
+    private SyncListInt             m_rHSKillList   =   new SyncListInt();
 
     //  外部へのアクセス
     private LinkManager             m_rLinkManager  =   null;
@@ -327,6 +333,14 @@ public class GameManager : NetworkBehaviour {
             pushQuit    =   _PushQuit;
         }
     };
+    struct  ForSort{
+        public  int id;
+        public  int score;
+        public  ForSort( int _ID, int _Score ){
+            id      =   _ID;
+            score   =   _Score;
+        }
+    };
     ResultButton_Input  PrintResult( float _Timer )
     {
         //  ボタンの入力データ
@@ -355,13 +369,14 @@ public class GameManager : NetworkBehaviour {
             }
 
             //  順位を決定
-            //List< ForSort > rSortList   =   new List< ForSort >();
-            //for( int i = 0; i < 8; i++ ){
-            //    int score   =   ( int )m_rScoreList[ i ];
-            //    if( !m_rLinkManager.CheckActiveClient( i ) )    score   =   -1000000;
-            //    rSortList.Add( new ForSort( i, score ) );
-            //}
-            //rSortList.Sort( ( a, b ) => b.score - a.score );
+            List< ForSort > rSortList   =   new List< ForSort >();
+            {
+                for( int i = 0; i < 8; i++ )    rSortList.Add( new ForSort( i, -100 ) );
+                for( int i = 0; i < m_rNameList.Count; i++ ){
+                    rSortList[ i ]  =   new ForSort( i, ( m_rScoreList.Count > i )? ( int )m_rScoreList[ i ] : 0 );
+                }
+                rSortList.Sort( ( a, b ) => b.score - a.score );
+            }
 
             //  項目の種類
             {
@@ -370,8 +385,8 @@ public class GameManager : NetworkBehaviour {
                 //GUI.Label( new Rect( 174, 0.0f, 480.0f, 26.0f ), "Score" );
                 GUI.Label( new Rect( 264, 0.0f, 480.0f, 26.0f ), "Kill" );
                 GUI.Label( new Rect( 311, 0.0f, 480.0f, 26.0f ), "Death" );
-                GUI.Label( new Rect( 361, 0.0f, 480.0f, 26.0f ), "Capture" );
-                GUI.Label( new Rect( 423, 0.0f, 480.0f, 26.0f ), "Object" );
+                GUI.Label( new Rect( 364, 0.0f, 480.0f, 26.0f ), "Revive" );
+                GUI.Label( new Rect( 420, 0.0f, 480.0f, 26.0f ), "Damage" );
 
                 GUI.EndGroup();
             }
@@ -383,7 +398,7 @@ public class GameManager : NetworkBehaviour {
                 if( i <  3 && _Timer - 0.5f < interval_0 * 5 + interval_1 * ( 3 - i ) )  continue;
                 if( i >= 3 && _Timer - 0.5f < interval_0 * ( 8 - i ) )                   continue;
 
-                int     playerID    =   i;//rSortList[ i ].playerID;
+                int     playerID    =   rSortList[ i ].id;
                 bool    isActiveID  =   m_rLinkManager.CheckActiveClient( playerID );
                 //if( !CheckActiveClient( playerID ) )                                    continue;
 
@@ -396,12 +411,12 @@ public class GameManager : NetworkBehaviour {
 
                 GUI.Label( new Rect( 26.0f, 0.0f, 480.0f, 26.0f ), rankSymbol[ i ] );
 
+                //  スコアを表示 
                 {
                     GUIStyle    fontStyle   =   new GUIStyle( GUI.skin.label );
-        
                     fontStyle.alignment     =   TextAnchor.MiddleRight;
 
-                    string      content     =   ( isActiveID )? ( ( int )0 ).ToString() : "_______";
+                    string      content     =   ( m_rScoreList.Count > playerID )? ( ( int )m_rScoreList[ playerID ] ).ToString() : "_______";
                     Vector2     contentSize =   fontStyle.CalcSize( new GUIContent( content ) );
 
                     GUI.color           =   Color.white;
@@ -412,11 +427,11 @@ public class GameManager : NetworkBehaviour {
 
                 //GUI.Label( new Rect( 168.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )? ( ( int ) m_rScoreList[ playerID ] ).ToString().PadLeft( 7, '_' ) : "_______" );
 
-                GUI.Label( new Rect( 262.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )? ( 0 ).ToString().PadLeft( 3, '_' ) : "___" );
-                GUI.Label( new Rect( 318.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )? ( 0 ).ToString().PadLeft( 3, '_' ) : "___" );
-                GUI.Label( new Rect( 374.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )? ( 0 ).ToString().PadLeft( 3, '_' ) : "___" );
-                GUI.Label( new Rect( 432.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )? ( 0 ).ToString().PadLeft( 3, '_' ) : "___" );
-                if( isActiveID )    GUI.Label( new Rect( 64.0f, 0.0f, 480.0f, 26.0f ), playerName[ i ] );
+                GUI.Label( new Rect( 262.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )?( ( m_rKillList.Count  > playerID )?   m_rKillList[ playerID ].ToString().PadLeft( 3, '_' ) : "__0" )    : "___" );
+                GUI.Label( new Rect( 318.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )?( ( m_rDeathList.Count > playerID )?   m_rDeathList[ playerID ].ToString().PadLeft( 3, '_' ) : "__0" )   : "___" );
+                GUI.Label( new Rect( 374.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )?( ( m_rRivivalList.Count > playerID )? m_rRivivalList[ playerID ].ToString().PadLeft( 3, '_' ) : "__0" ) : "___" );
+                GUI.Label( new Rect( 432.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )?( ( m_rDamageList.Count > playerID )?  ( ( int )m_rDamageList[ playerID ] ).ToString().PadLeft( 3, '_' ) : "__0" )  : "___" );
+                if( isActiveID )    GUI.Label( new Rect( 64.0f, 0.0f, 480.0f, 26.0f ), playerName[ playerID ] );
                 else                GUI.Label( new Rect( 64.0f, 0.0f, 480.0f, 26.0f ), "________" );
 
                 GUI.EndGroup();
@@ -469,6 +484,54 @@ public class GameManager : NetworkBehaviour {
         //  値を設定
         m_rNameList[ _ClientID ] =   _Name;
     }
+    public  void    SetToList_Score( int _ClientID, float _AddScore )
+    {
+        //  項目がなければ拡張する
+        CheckWhetherExist_Float( m_rScoreList, _ClientID + 1 );
+
+        //  値を設定
+        m_rScoreList[ _ClientID ]   +=  _AddScore;
+    }
+    public  void    SetToList_Damage( int _ClientID, float _AddDamage )
+    {
+        //  項目がなければ拡張する
+        CheckWhetherExist_Float( m_rDamageList, _ClientID + 1 );
+
+        //  値を設定
+        m_rDamageList[ _ClientID ]  +=  _AddDamage;
+    }
+    public  void    SetToList_Kill( int _ClientID, int _AddValue )
+    {
+        //  項目がなければ拡張する
+        CheckWhetherExist_Int( m_rKillList, _ClientID + 1 );
+
+        //  値を設定
+        m_rKillList[ _ClientID ]    +=  _AddValue;
+    }
+    public  void    SetToList_Death( int _ClientID, int _AddValue )
+    {
+        //  項目がなければ拡張する
+        CheckWhetherExist_Int( m_rDeathList, _ClientID + 1 );
+
+        //  値を設定
+        m_rDeathList[ _ClientID ]   +=  _AddValue;
+    }
+    public  void    SetToList_Rivival( int _ClientID, int _AddValue )
+    {
+        //  項目がなければ拡張する
+        CheckWhetherExist_Int( m_rRivivalList, _ClientID + 1 );
+
+        //  値を設定
+        m_rRivivalList[ _ClientID ] +=  _AddValue;
+    }
+    public  void    SetToList_HSKill( int _ClientID, int _AddValue )
+    {
+        //  項目がなければ拡張する
+        CheckWhetherExist_Int( m_rHSKillList, _ClientID + 1 );
+
+        //  値を設定
+        m_rHSKillList[ _ClientID ]  +=  _AddValue;
+    }
 
     public  bool    GetFromList_IsReady( int _ClientID )
     {
@@ -478,6 +541,30 @@ public class GameManager : NetworkBehaviour {
     {
         return  m_rNameList[ _ClientID ];
     }
+    public  float   GetFromList_Score( int _ClientID )
+    {
+        return  m_rScoreList[ _ClientID ];
+    }
+    public  float   GetFromList_Damage( int _ClientID )
+    {
+        return  m_rDamageList[ _ClientID ];
+    }
+    public  int     GetFromList_Kill( int _ClientID )
+    {
+        return  m_rKillList[ _ClientID ];
+    }
+    public  int     GetFromList_Death( int _ClientID )
+    {
+        return  m_rDeathList[ _ClientID ];
+    }
+    public  int     GetFromList_Rivival( int _ClientID )
+    {
+        return  m_rRivivalList[ _ClientID ];
+    }
+    public  int     GetFromList_HSKill( int _ClientID )
+    {
+        return  m_rHSKillList[ _ClientID ];
+    }
 
     public  int     GetNumItem_IsReady()
     {
@@ -486,6 +573,30 @@ public class GameManager : NetworkBehaviour {
     public  int     GetNumItem_PlayerName()
     {
         return  m_rNameList.Count;
+    }
+    public  int     GetNumItem_Score()
+    {
+        return  m_rScoreList.Count;
+    }
+    public  int     GetNumItem_Damage()
+    {
+        return  m_rDamageList.Count;
+    }
+    public  int     GetNumItem_Kill()
+    {
+        return  m_rKillList.Count;
+    }
+    public  int     GetNumItem_Death()
+    {
+        return  m_rDeathList.Count;
+    }
+    public  int     GetNumItem_Rivival()
+    {
+        return  m_rRivivalList.Count;
+    }
+    public  int     GetNumItem_HSKill()
+    {
+        return  m_rHSKillList.Count;
     }
 
     //  準備が完了したプレイヤーを数える
@@ -525,6 +636,32 @@ public class GameManager : NetworkBehaviour {
             }
         }
     }
+    void    CheckWhetherExist_Float( SyncListFloat _rList, int _NeedCount )
+    {
+        //  項目がなければ拡張する
+        if( _rList.Count < _NeedCount ){
+            //  必要な項目の数を計算
+            int needItem    =   _NeedCount - _rList.Count;
+
+            //  項目を追加
+            for( int i = 0; i < needItem; i++ ){
+                _rList.Add( 0.0f );
+            }
+        }
+    }
+    void    CheckWhetherExist_Int( SyncListInt _rList, int _NeedCount )
+    {
+        //  項目がなければ拡張する
+        if( _rList.Count < _NeedCount ){
+            //  必要な項目の数を計算
+            int needItem    =   _NeedCount - _rList.Count;
+
+            //  項目を追加
+            for( int i = 0; i < needItem; i++ ){
+                _rList.Add( 0 );
+            }
+        }
+    }    
 
     //  出撃済みプレイヤーの数を調べる
     int     CheckAlreadyPlayer()
@@ -617,9 +754,12 @@ public class GameManager : NetworkBehaviour {
         m_Resource      +=  _AddValue;
         m_Resource      =   Mathf.Max( m_Resource, 0.0f );
     }
-    public  void    AddGlobalScore( float _AddScore )
+    public  void    AddGlobalScore( float _AddScore, int _ClientID )
     {
         m_GlobalScore   +=  _AddScore;
+
+        //  個人スコア加算
+        SetToList_Score( _ClientID, _AddScore );
     }
     public  State   GetState(){
         return  m_State;
