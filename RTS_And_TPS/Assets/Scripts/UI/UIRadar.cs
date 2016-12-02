@@ -15,6 +15,13 @@ public class UIRadar : MonoBehaviour {
     //private GameObject m_backGround    = null;
 
     [SerializeField]
+    private Texture     m_defaultIcon       = null;
+    [SerializeField]
+    private Texture     m_upperIcon         = null;
+    [SerializeField]
+    private Texture     m_lowerIcon         = null;
+
+    [SerializeField]
     private float     m_searchRange      = 50.0f;
 
     [SerializeField]
@@ -25,7 +32,6 @@ public class UIRadar : MonoBehaviour {
     //  外部へのアクセス
     private ReferenceWrapper    m_rEnemyShell   =   null;
     
-
     class DATA
     {
         public GameObject reference;
@@ -60,6 +66,7 @@ public class UIRadar : MonoBehaviour {
         }
     }
 
+    public GameObject rrr;
     void Update()
     {
         if( m_player == null )  return;
@@ -70,6 +77,18 @@ public class UIRadar : MonoBehaviour {
 
         //  リストを更新
         {
+            GameObject[]    playerList  =   GameObject.FindGameObjectsWithTag( "Player" );
+            for( int i = 0; i < playerList.Length; i++ ){
+
+                if ( m_player == playerList[ i ] )  continue;
+
+                //  リストに登録されているかチェック
+                if( CheckWhetherRegistedInList( playerList[ i ] ) )  continue;
+                //  登録されていない場合は追加
+                AddOwnObject( playerList[ i ] );
+
+            }
+            
             //  新しいアクセスを追加
             for( int i = 0; i < m_rEnemyShell.m_active_enemy_list.Count; i++ ){
                 //  エネミーへのアクセス
@@ -96,6 +115,7 @@ public class UIRadar : MonoBehaviour {
             }
         }
 
+
         //  表示を更新
         Matrix4x4 worldToLocalMatrix = Camera.main.transform.worldToLocalMatrix;//m_player.transform.worldToLocalMatrix;
         foreach (var item in m_uiSymbolList)
@@ -104,16 +124,31 @@ public class UIRadar : MonoBehaviour {
 
             Vector3 relativePosition = worldToLocalMatrix.MultiplyPoint(item.reference.transform.position);
 
-            item.dst.transform.SetParent( transform );
+            item.dst.transform.SetParent(transform);
 
-            Vector3 rtPosition   = relativePosition / m_searchRange;
-            float   maxLength    = 70.0f;
+            Vector3 rtPosition = relativePosition / m_searchRange;
+            float maxLength = 70.0f;
 
             Vector3 enemyIconPos = new Vector3(rtPosition.x, rtPosition.z, 0.0f) * maxLength;
 
-            rt.localPosition = enemyIconPos.normalized * ( Mathf.Min( enemyIconPos.magnitude, maxLength ) );
+            rt.localPosition = enemyIconPos.normalized * (Mathf.Min(enemyIconPos.magnitude, maxLength));
 
-        }
+
+            float heightFactor = 10.0f;
+            if (relativePosition.y > heightFactor)
+            {
+                item.dst.GetComponent<RawImage>().texture = m_upperIcon;
+            }
+            else if (relativePosition.y < -heightFactor)
+            {
+                item.dst.GetComponent<RawImage>().texture = m_lowerIcon;
+            }
+            else
+            {
+                item.dst.GetComponent<RawImage>().texture = m_defaultIcon;
+            }
+
+        }    
         //{
         //    //RectTransform rt = m_backGround.GetComponent<RectTransform>();  
         //    //rt.eulerAngles = new Vector3(rt.eulerAngles.x, rt.eulerAngles.y, m_player.transform.eulerAngles.y);

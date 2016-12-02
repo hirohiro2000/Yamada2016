@@ -52,18 +52,10 @@ public class RTSCameraEventTrigger : MonoBehaviour
         m_rtsCamera.m_isForcus = !m_rtsCamera.m_isForcus;
     }
 
-
     void OnGUI()
     {
-        GUI.Label(new Rect(10,120,120,100), RTSCursor.m_curMode.ToString());
-        GUI.Label(new Rect(10,140,120,100), m_rtsCamera.m_actionState.ToString());
-
-        Point p;
-        RTSCursor.GetCursorPos( out p );
-
-        GUI.Label(new Rect(10,160,120,100), p.X.ToString() + ":" + p.Y.ToString() );
-
-        GUI.Label(new Rect(10,180,120,100), Input.mousePosition.x.ToString() + ":" + Input.mousePosition.y.ToString() );
+        GUI.Label(new Rect( 10, 130, 100, 100 ), RTSCursor.m_curMode.ToString() );
+        GUI.Label(new Rect( 10, 150, 100, 100 ), m_rtsCamera.m_actionState.ToString() );
     }
 
 }

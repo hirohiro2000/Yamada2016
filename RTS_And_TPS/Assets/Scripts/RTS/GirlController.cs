@@ -6,11 +6,12 @@ using UnityEngine.UI;
 
 public class GirlController : NetworkBehaviour 
 {
-	private	GameObject			m_buttonOk					= null;
-	private	GameObject			m_buttonCancel				= null;
-	private	GameObject			m_buttonLevel				= null;
-	private	GameObject			m_buttonBreak				= null;
-	private	GameObject			m_towerInfoPanel			= null;
+//	private	GameObject			m_buttonOk					= null;
+//	private	GameObject			m_buttonCancel				= null;
+//	private	GameObject			m_buttonLevel				= null;
+//	private	GameObject			m_buttonBreak				= null;
+//	private	GameObject			m_towerInfoPanel			= null;
+    private UIGirlTaskSelect    m_uiGirlTaskSelect          = null;
 
 	private ResourceInformation	m_resourceInformation		= null;
 	private ResourceCreator		m_resourceCreator			= null;
@@ -39,20 +40,26 @@ public class GirlController : NetworkBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		m_buttonOk						= GameObject.Find("Canvas").transform.FindChild("Button_OK").gameObject;
-		m_buttonCancel					= GameObject.Find("Canvas").transform.FindChild("Button_Cancel").gameObject;
-		m_buttonLevel					= GameObject.Find("Canvas").transform.FindChild("Button_Level").gameObject;
-		m_buttonBreak					= GameObject.Find("Canvas").transform.FindChild("Button_Break").gameObject;
-		m_towerInfoPanel				= GameObject.Find("Canvas").transform.FindChild("Tower_Info").gameObject;
-		UserLog.Kawaguchi(m_towerInfoPanel);
+		m_uiGirlTaskSelect				= GameObject.Find("Canvas").transform.FindChild("RTS_HUD").GetComponent<UIGirlTaskSelect>();
+        m_uiGirlTaskSelect.m_rGirl                   = this.gameObject;
+        m_uiGirlTaskSelect.m_rResourceInformation    = GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
+        m_uiGirlTaskSelect.m_rItemCntroller          = GetComponent<ItemController>();
+        m_uiGirlTaskSelect.Clear();
+
+//		m_buttonOk						= GameObject.Find("Canvas").transform.FindChild("Button_OK").gameObject;
+//		m_buttonCancel					= GameObject.Find("Canvas").transform.FindChild("Button_Cancel").gameObject;
+//		m_buttonLevel					= GameObject.Find("Canvas").transform.FindChild("Button_Level").gameObject;
+//		m_buttonBreak					= GameObject.Find("Canvas").transform.FindChild("Button_Break").gameObject;
+//		m_towerInfoPanel				= GameObject.Find("Canvas").transform.FindChild("Tower_Info").gameObject;
+//		UserLog.Kawaguchi(m_towerInfoPanel);
 
 		m_resourceInformation			= GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
 		m_resourceCreator				= GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
 		m_itemCntroller					= GetComponent<ItemController>();
         m_rRigid                        = GetComponent< Rigidbody >();
 
-        m_navAgent                      = gameObject.AddComponent<NavMeshAgent>();
         // 適当に
+        m_navAgent                      = gameObject.AddComponent<NavMeshAgent>();
         m_navAgent.acceleration = float.MaxValue;
         m_navAgent.angularSpeed = float.MaxValue;
         m_navAgent.stoppingDistance = 1.0f;
@@ -202,7 +209,7 @@ public class GirlController : NetworkBehaviour
         }
 
 
-        if ( RTSCursor.m_curMode == RTSCursor.MODE.eNone && Input.GetMouseButtonDown(0))
+        if ( RTSCursor.m_curMode == RTSCursor.MODE.eNone && Input.GetMouseButton(0))
         {
             Vector3     mousePosition   = Input.mousePosition;
             Ray         ray             = Camera.main.ScreenPointToRay(mousePosition);
@@ -215,8 +222,10 @@ public class GirlController : NetworkBehaviour
                 m_navAgent.speed        = m_moveSpeed;
 
                 NavMeshPath path = new NavMeshPath();
-                m_navAgent.CalculatePath( m_resourceInformation.ComputeGridPosition( hit.point ), path );
-                m_navAgent.SetPath( path );
+                if ( m_navAgent.CalculatePath( m_resourceInformation.ComputeGridPosition( hit.point ), path )) ;
+                {
+                    m_navAgent.SetPath(path);
+                }
             }
         }
 
@@ -225,15 +234,16 @@ public class GirlController : NetworkBehaviour
 
 	void UpdateCommon()
 	{
-		m_buttonOk.SetActive(false);
-		m_buttonLevel.SetActive(false);
-		m_buttonBreak.SetActive(false);
-		m_buttonCancel.SetActive(false);
-		m_towerInfoPanel.SetActive(false);
+//		m_buttonOk.SetActive(false);
+//		m_buttonLevel.SetActive(false);
+//		m_buttonBreak.SetActive(false);
+//		m_buttonCancel.SetActive(false);
+//		m_towerInfoPanel.SetActive(false);
+        m_uiGirlTaskSelect.Clear();
 		m_resourceCreator.SetGuideVisibleDisable();
 
 		//	change state
-		if( !Input.GetKeyDown( m_okKey ))
+		if( !Input.GetKeyDown( m_okKey ) && !Input.GetMouseButtonDown(1) )
 			return;
 
         if (m_navAgent.enabled)
@@ -244,16 +254,16 @@ public class GirlController : NetworkBehaviour
 
 		if( m_resourceInformation.CheckExistResourceFromPosition( transform.position ) )
 		{
-			m_buttonLevel.SetActive(true);
-			m_buttonBreak.SetActive(true);
-			m_buttonCancel.SetActive(true);
+//			m_buttonLevel.SetActive(true);
+//			m_buttonBreak.SetActive(true);
+//			m_buttonCancel.SetActive(true);
 			m_actionState = ActionState.ConvertResource;
 		}
 		else
 		{
-			m_buttonOk.SetActive( true );
-			m_buttonCancel.SetActive( true );
-			m_towerInfoPanel.SetActive(true);
+//			m_buttonOk.SetActive( true );
+//			m_buttonCancel.SetActive( true );
+//			m_towerInfoPanel.SetActive(true);
 			m_actionState = ActionState.CreateResource;
 		}
 	}
@@ -262,19 +272,20 @@ public class GirlController : NetworkBehaviour
 		var forcusID	= m_itemCntroller.GetForcus();
 		var forcusParam = m_itemCntroller.GetForcusResourceParam();
 
-		//	リソースのUI設定
-		m_buttonOk.transform.FindChild("Point").GetComponent<Text>().text = "-" + forcusParam.m_createCost.ToString();
-		m_towerInfoPanel.transform.FindChild("Kind").GetComponent<Text>().text = "種類:　　　" + forcusParam.m_name;
-		m_towerInfoPanel.transform.FindChild("Summary").GetComponent<Text>().text = "概要:　　　" + forcusParam.m_summary;
-		m_towerInfoPanel.transform.FindChild("Power").GetComponent<Text>().text = "攻撃力:　　" + forcusParam.GetLevelParam(0).power;
-		m_towerInfoPanel.transform.FindChild("Interval").GetComponent<Text>().text = "発射間隔:　" + forcusParam.GetLevelParam(0).interval + "秒/発";
+//		//	リソースのUI設定
+//		m_buttonOk.transform.FindChild("Point").GetComponent<Text>().text = "-" + forcusParam.m_createCost.ToString();
+//		m_towerInfoPanel.transform.FindChild("Kind").GetComponent<Text>().text = "種類:　　　" + forcusParam.m_name;
+//		m_towerInfoPanel.transform.FindChild("Summary").GetComponent<Text>().text = "概要:　　　" + forcusParam.m_summary;
+//		m_towerInfoPanel.transform.FindChild("Power").GetComponent<Text>().text = "攻撃力:　　" + forcusParam.GetLevelParam(0).power;
+//		m_towerInfoPanel.transform.FindChild("Interval").GetComponent<Text>().text = "発射間隔:　" + forcusParam.GetLevelParam(0).interval + "秒/発";
 		
 		//	リソースの範囲表示更新
 		m_resourceCreator.UpdateGuideResource( forcusID, transform.position );
 		m_resourceCreator.UpdateGuideRange( forcusID, transform.position );
 
 		//	ステート更新
-		if( Input.GetKeyDown( m_okKey )&&
+        UIGirlTaskSelect.RESULT uiResult = m_uiGirlTaskSelect.ToSelectTheCreateResource();
+		if( ( Input.GetKeyDown( m_okKey )  || uiResult == UIGirlTaskSelect.RESULT.eOK ) &&
 			m_itemCntroller.CheckWhetherTheCostIsEnough() )
 		{
 			m_resourceCreator.AddResource( forcusID );
@@ -282,7 +293,7 @@ public class GirlController : NetworkBehaviour
 			m_actionState = ActionState.Common;
             return;
 		}
-		if( Input.GetKeyDown( m_cancelKey ) )
+		if( Input.GetKeyDown( m_cancelKey ) || uiResult == UIGirlTaskSelect.RESULT.eCancel || Input.GetMouseButtonDown(1)  )
 		{
 			m_actionState = ActionState.Common;
 			return;
@@ -296,15 +307,17 @@ public class GirlController : NetworkBehaviour
             return;
         }
 
-		//	リソースのUI設定
-		m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().upCost.ToString();
-		m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.m_breakCost.ToString();
+//		//	リソースのUI設定
+//		m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().upCost.ToString();
+//		m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.m_breakCost.ToString();
 
 		//	リソースの範囲表示更新
 		m_resourceCreator.UpdateGuideRange( transform.position );
 
 		//	ステート更新
-		if( Input.GetKeyDown( m_okKey ) &&
+        UIGirlTaskSelect.RESULT uiResult = m_uiGirlTaskSelect.ToSelectTheConvertAction();
+
+		if( ( Input.GetKeyDown( m_okKey )  || uiResult == UIGirlTaskSelect.RESULT.eOK ) &&
 			m_resourceInformation.CheckIfCanUpALevel( transform.position, m_itemCntroller.GetHaveCost() ))
 		{
 			m_actionState = ActionState.Common;
@@ -312,18 +325,19 @@ public class GirlController : NetworkBehaviour
 			CmdLevelUpResource( transform.position );
 			return;
 		}
-		if ( Input.GetKeyDown( m_cancelKey ))
+		if( Input.GetKeyDown( m_cancelKey ) || uiResult == UIGirlTaskSelect.RESULT.eCancel || Input.GetMouseButtonDown(1)  )
 		{
 			m_actionState = ActionState.Common;
             return;
 		}
-		if( Input.GetKeyDown( m_breakKey ))
+		if( Input.GetKeyDown( m_breakKey ) || uiResult == UIGirlTaskSelect.RESULT.eBreak )
 		{
 			m_actionState = ActionState.Common;
 			m_itemCntroller.AddResourceCost( m_itemCntroller.GetForcusResourceParam().m_breakCost );
             CmdBreakResource( transform.position );
 			return;
 		}
+
 	}
 
 	//---------------------------------------------------------------------
@@ -331,10 +345,10 @@ public class GirlController : NetworkBehaviour
 	//---------------------------------------------------------------------   
 	public  void    SetActiveButton( bool _IsActive )
     {
-        m_buttonOk.SetActive( _IsActive );
-        m_buttonCancel.SetActive( _IsActive );
-        m_buttonLevel.SetActive( _IsActive );
-        m_buttonBreak.SetActive( _IsActive );
+        m_uiGirlTaskSelect.m_buttonOk.SetActive( _IsActive );
+        m_uiGirlTaskSelect.m_buttonCancel.SetActive( _IsActive );
+        m_uiGirlTaskSelect.m_buttonLevel.SetActive( _IsActive );
+        m_uiGirlTaskSelect.m_buttonBreak.SetActive( _IsActive );
     }
 
 
