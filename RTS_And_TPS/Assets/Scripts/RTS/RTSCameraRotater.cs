@@ -14,7 +14,7 @@ public class RTSCameraRotater : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (Input.GetKey(KeyCode.Mouse1) == false)
+		if (Input.GetKey(KeyCode.C) == false)
 			return;
 		//ホイールでズーム
 		rtsCamera.m_targetDistance -= Input.GetAxis("Mouse ScrollWheel") * 30.0f;

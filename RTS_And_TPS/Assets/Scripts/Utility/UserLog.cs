@@ -1,4 +1,4 @@
-﻿#define DEBUGLOG_ON
+﻿//#define DEBUGLOG_ON
 using UnityEngine;
 using System.Collections;
 

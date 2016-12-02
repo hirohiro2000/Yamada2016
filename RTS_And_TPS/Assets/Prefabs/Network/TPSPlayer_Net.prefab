@@ -1287,7 +1287,7 @@ GameObject:
   - 114: {fileID: 11487934}
   - 114: {fileID: 11422488}
   - 114: {fileID: 11455824}
-  - 114: {fileID: 11482318}
+  - 114: {fileID: 11444610}
   m_Layer: 9
   m_Name: TPSPlayer_Net
   m_TagString: Player
@@ -7658,6 +7658,18 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.39215687}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &11444610
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 139324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01a7ab8d830772a4cbda96a39b27a3af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 9568906}
 --- !u!114 &11455824
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7908,18 +7920,6 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: PlayerName
---- !u!114 &11482318
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 139324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2af6faef7c0e6804495fe4a9814e44dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 9568906}
 --- !u!114 &11487934
 MonoBehaviour:
   m_ObjectHideFlags: 1
