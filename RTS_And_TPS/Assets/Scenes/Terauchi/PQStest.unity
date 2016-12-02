@@ -4254,9 +4254,9 @@ GameObject:
   - 4: {fileID: 2025736499}
   - 114: {fileID: 2025736498}
   - 114: {fileID: 2025736501}
+  - 114: {fileID: 2025736497}
   - 114: {fileID: 2025736500}
   - 114: {fileID: 2025736502}
-  - 114: {fileID: 2025736497}
   m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
@@ -4308,9 +4308,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2025736496}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05cbdeabfc0b0934ca232bbb0a5185a9, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e70f48c696547c47bc7dd3a2d2b0a7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Fov: 40
 --- !u!114 &2025736501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4322,7 +4323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 991433627a81cf043b9ccab7dcc07ce0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DistanceExclusion: 15
+  DistanceExclusion: 10
   EularFovExclusion: 0
   shape: 0
   PointFieldSize: 20
@@ -4338,10 +4339,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2025736496}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e70f48c696547c47bc7dd3a2d2b0a7f, type: 3}
+  m_Script: {fileID: 11500000, guid: 05cbdeabfc0b0934ca232bbb0a5185a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Fov: 40
 --- !u!1 &2029226723 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100230, guid: 7024580966065ba45862bfdc1de1dc1b, type: 3}
