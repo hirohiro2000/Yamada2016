@@ -291,7 +291,7 @@ public class TPSPlayer_HP : NetworkBehaviour {
             TPSPlayer_HP    rRevivalHP  =   CheckResuscitate();
             if( rRevivalHP )    m_rRevivalGage.SetGage( rRevivalHP.m_RevivalTimer / c_RevivalTime );
             
-            //  アクティブ状態更新
+            //  アクティブ状態更新 
             m_rDMControl.SetActive( false );
             m_rRevivalGage.gameObject.SetActive( rRevivalHP );
         }

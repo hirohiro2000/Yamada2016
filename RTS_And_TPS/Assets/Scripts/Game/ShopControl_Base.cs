@@ -9,7 +9,7 @@ public class ShopControl_Base : MonoBehaviour {
 
     protected   float       m_Cost          =   0;
 
-    protected   float       c_ShopingTime   =   3.0f;
+    protected   float       c_ShopingTime   =   2.0f;
     protected   float       m_ShopTimer     =   0.0f;
 
     protected   float       c_Threshold     =   0.5f;

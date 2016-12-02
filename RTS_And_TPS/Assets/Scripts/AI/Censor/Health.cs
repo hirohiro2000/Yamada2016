@@ -48,7 +48,10 @@ public class Health : NetworkBehaviour {
         base.OnNetworkDestroy();
 
         //  ゲーム終了時は処理を行わない
-        if( m_IsGameQuit )  return;
+        if( m_IsGameQuit )                                          return;
+        //  ゲーム中以外は処理を行わない
+        if( !m_rGameManager )                                       return;
+        if( m_rGameManager.GetState() != GameManager.State.InGame ) return;
 
         //  破砕オブジェクト生成
         if( c_ExplodedObj

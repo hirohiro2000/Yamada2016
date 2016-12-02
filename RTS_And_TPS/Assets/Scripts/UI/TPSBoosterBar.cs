@@ -60,6 +60,8 @@ public class TPSBoosterBar : MonoBehaviour
     }
     static public void SetGage( float _GageRate )
     {
+        if( !instance ) return;
+
         //  スケールを取得
         Vector3 scale   =   instance.m_mainImage.transform.localScale;
                 scale.x =   _GageRate;

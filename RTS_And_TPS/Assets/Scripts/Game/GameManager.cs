@@ -372,7 +372,7 @@ public class GameManager : NetworkBehaviour {
             List< ForSort > rSortList   =   new List< ForSort >();
             {
                 for( int i = 0; i < 8; i++ )    rSortList.Add( new ForSort( i, -100 ) );
-                for( int i = 0; i < m_rLinkManager.CheckNumPlayer(); i++ ){
+                for( int i = 0; i < m_rNameList.Count; i++ ){
                     rSortList[ i ]  =   new ForSort( i, ( m_rScoreList.Count > i )? ( int )m_rScoreList[ i ] : 0 );
                 }
                 rSortList.Sort( ( a, b ) => b.score - a.score );
