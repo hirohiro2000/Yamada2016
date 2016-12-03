@@ -132,14 +132,16 @@ public class EditManager : MonoBehaviour {
         public  bool                m_UseTest       =   false;
         public  bool                m_UseSetting    =   false;
         public  bool                m_UseLog        =   false;
+		public	bool		m_UseGameWorldParameter	=	false;
 
-        private Window_ToolBox      m_rToolBox      =   null;
+		private Window_ToolBox      m_rToolBox      =   null;
         private Window_MapConfig    m_rMapConfig    =   null;
         private Window_FileMenu     m_rFileMenu     =   null;
         private Window_Info         m_rInfo         =   null;
         private Window_Block        m_rBlock        =   null;
+		private Window_GameWorldParameter m_rGameWorldParameter = null;
 
-        public  WindowOversee( EditManager _rEditManager )
+		public  WindowOversee( EditManager _rEditManager )
         {
             m_rParent       =   _rEditManager;
             m_WindowRect    =   FunctionManager.AdjustRectCanvasToGUI(
@@ -153,7 +155,8 @@ public class EditManager : MonoBehaviour {
             m_rFileMenu     =   new Window_FileMenu( _rEditManager, this );
             m_rInfo         =   new Window_Info( _rEditManager, this );
             m_rBlock        =   new Window_Block( _rEditManager, this );
-        }
+			m_rGameWorldParameter =	new Window_GameWorldParameter(_rEditManager, this);
+		}
 
         public  void    Update()
         {
@@ -162,7 +165,7 @@ public class EditManager : MonoBehaviour {
                 float   screenRatio =   Screen.width / 1024.0f;
                 m_WindowRect        =   FunctionManager.AdjustRectCanvasToGUI(
                     FunctionManager.AR_TYPE.BOTTOM_LEFT,
-                    new Rect( ( int )( 10 * screenRatio ), ( int )( 50 * screenRatio ), 140, 200 ),
+                    new Rect( ( int )( 10 * screenRatio ), ( int )( 50 * screenRatio ), 190, 230 ),
                     new Vector2( 0, 0 )
                 );
                 GUI.Window( 0, m_WindowRect, WindowProc, "Window" );
@@ -174,7 +177,8 @@ public class EditManager : MonoBehaviour {
             if( m_UseOutput )       m_rFileMenu.Update();
             if( m_UseInfo )         m_rInfo.Update();
             if( m_UseBox )          m_rBlock.Update();
-        }
+			if( m_UseGameWorldParameter ) m_rGameWorldParameter.Update();
+		}
         private void    WindowProc( int _WindowID )
         {
             //  閉じる
@@ -221,12 +225,18 @@ public class EditManager : MonoBehaviour {
                 }
                 offsetY +=  space;
 
-                //  カメラ
-                //m_UseCamera     =   GUI.Toggle( new Rect( 10, offsetY, 100, 20 ), m_UseCamera, "  Camera" );
-                //offsetY +=  space;
+				//  ゲームワールド能力設定
+				if (CheckChangeBool_True(ref m_UseGameWorldParameter, GUI.Toggle(new Rect(10, offsetY, 200, 20), m_UseGameWorldParameter, "  GameWorldParameter"))){
+					m_rGameWorldParameter.InitWindowRect();
+				}
+				offsetY += space;
 
-                //  テスト
-                m_UseTest       =   GUI.Toggle( new Rect( 10, offsetY, 100, 20 ), m_UseTest, "  Play Test" );
+				//  カメラ
+				//m_UseCamera     =   GUI.Toggle( new Rect( 10, offsetY, 100, 20 ), m_UseCamera, "  Camera" );
+				//offsetY +=  space;
+
+				//  テスト
+				m_UseTest       =   GUI.Toggle( new Rect( 10, offsetY, 100, 20 ), m_UseTest, "  Play Test" );
                 offsetY +=  space;
 
                 //  設定
@@ -1071,8 +1081,116 @@ public class EditManager : MonoBehaviour {
             return  m_WindowRect.Overlaps( new Rect( _ScreenPoint.x, _ScreenPoint.y, 1, 1 ), true );
         }
     }
-    //  ブロックウィンドウ
-    class   Window_Block
+	//	ゲームワールド能力設定ウィンドウ
+	class   Window_GameWorldParameter
+	{
+		private EditManager		m_rParent		=	null;
+		private WindowOversee	m_rOversee		=	null;
+		private Rect			m_WindowRect	=	new Rect();
+
+		public Window_GameWorldParameter(EditManager _rParent, WindowOversee _rOversee)
+		{
+			m_rParent = _rParent;
+			m_rOversee = _rOversee;
+
+			InitWindowRect();
+		}
+		public void Update()
+		{
+			m_WindowRect = GUI.Window(6, m_WindowRect, WindowProc, "GameWorldParameter");
+		}
+		private void WindowProc(int _WindowID)
+		{
+			//  閉じるボタン
+			{
+				Rect rect = FunctionManager.AdjustRectCanvasToGUI(
+					FunctionManager.AR_TYPE.TOP_RIGHT,
+					new Rect(-6.0f, -5.0f, 14.0f, 10.0f),
+					new Vector2(1.0f, 1.0f),
+					new Vector2(m_WindowRect.width, m_WindowRect.height)
+				);
+				if (GUI.Button(rect, ""))
+				{
+					m_rOversee.m_UseGameWorldParameter = false;
+				}
+			}
+
+			//  ドラッグできるようにする
+			GUI.DragWindow(new Rect(0, 0, m_WindowRect.width, 18));
+
+			//  項目の表示
+			{
+				float space = 22.0f;
+				float offsetY = 24.0f;
+
+				//  項目の表示
+				{
+					GUI.Label(new Rect(10, offsetY, 200, 20), "Cursor :");
+
+					FunctionManager.GUILabel(
+						FunctionManager.AR_TYPE.TOP_RIGHT,
+						new Vector2(-12.0f, -offsetY),
+						"" + ((int)m_rParent.m_GridCursor.x + 1).ToString().PadLeft(3, '_') + ",  "
+							+ ((int)m_rParent.m_GridCursor.y + 1).ToString().PadLeft(3, '_'),
+						new Vector2(1.0f, 1.0f),
+						new Vector2(m_WindowRect.width, m_WindowRect.height)
+					);
+				}
+				offsetY += space;
+
+				//  項目の表示
+				{
+					GUI.Label(new Rect(10, offsetY, 200, 20), "Select :");
+
+					Vector3 focusSize = m_rParent.CalcFocusSize(m_rParent.m_rFocusList);
+					FunctionManager.GUILabel(
+						FunctionManager.AR_TYPE.TOP_RIGHT,
+						new Vector2(-12.0f, -offsetY),
+						"" + ((int)focusSize.x).ToString().PadLeft(3, '_') + ",  "
+							+ ((int)focusSize.y).ToString().PadLeft(3, '_') + ",  "
+							+ ((int)focusSize.z).ToString().PadLeft(3, '_'),
+						new Vector2(1.0f, 1.0f),
+						new Vector2(m_WindowRect.width, m_WindowRect.height)
+					);
+				}
+				offsetY += space;
+
+				//  項目の表示 
+				{
+					GUI.Label(new Rect(10, offsetY, 200, 20), "MapSize :");
+
+					FunctionManager.GUILabel(
+						FunctionManager.AR_TYPE.TOP_RIGHT,
+						new Vector2(-12.0f, -offsetY),
+						"" + m_rParent.m_MapWidth.ToString().PadLeft(3, '_') + ",  "
+							+ m_rParent.m_MapHeight.ToString().PadLeft(3, '_') + ",  "
+							+ m_rParent.m_MapDepth.ToString().PadLeft(3, '_'),
+						new Vector2(1.0f, 1.0f),
+						new Vector2(m_WindowRect.width, m_WindowRect.height)
+					);
+				}
+				offsetY += space;
+			}
+		}
+
+		public void InitWindowRect()
+		{
+			m_WindowRect = FunctionManager.AdjustRectCanvasToGUI(
+				FunctionManager.AR_TYPE.TOP_RIGHT,
+				new Rect(-20, -20, 180, 94),
+				new Vector2(1.0f, 1.0f)
+			);
+		}
+		public bool CheckOverlap(Vector2 _ScreenPoint)
+		{
+			_ScreenPoint = FunctionManager.ScreenToGUI(_ScreenPoint);
+			return m_WindowRect.Overlaps(new Rect(_ScreenPoint.x, _ScreenPoint.y, 1, 1), true);
+		}
+
+	}
+
+	//  ブロックウィンドウ
+	class   Window_Block
     {
         private EditManager     m_rParent       =   null;
         private WindowOversee   m_rOversee      =   null;

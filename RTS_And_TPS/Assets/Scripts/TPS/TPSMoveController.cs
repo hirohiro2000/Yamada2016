@@ -354,6 +354,12 @@ public class TPSMoveController : MonoBehaviour
 
         inputDir = Vector3.zero;
 
+
+		if(GameWorldParameter.instance != null)
+		{
+			speed = GameWorldParameter.instance.TPSPlayer_WalkSpeed;
+        }
+
 		inputDir += right   * (controllerAxis.x * speed);
 		inputDir += forward * (controllerAxis.y * speed);
 
