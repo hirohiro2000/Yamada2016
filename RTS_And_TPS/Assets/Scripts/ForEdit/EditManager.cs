@@ -1088,6 +1088,9 @@ public class EditManager : MonoBehaviour {
 		private WindowOversee	m_rOversee		=	null;
 		private Rect			m_WindowRect	=	new Rect();
 
+		private Vector2 scrollViewVector = Vector2.zero;
+
+
 		public Window_GameWorldParameter(EditManager _rParent, WindowOversee _rOversee)
 		{
 			m_rParent = _rParent;
@@ -1118,66 +1121,32 @@ public class EditManager : MonoBehaviour {
 			//  ドラッグできるようにする
 			GUI.DragWindow(new Rect(0, 0, m_WindowRect.width, 18));
 
+			scrollViewVector = GUI.BeginScrollView(new Rect(0, 18, m_WindowRect.width, m_WindowRect.height - 18), scrollViewVector, new Rect(0, 0, 0, 300));
+
+
 			//  項目の表示
 			{
 				float space = 22.0f;
-				float offsetY = 24.0f;
+				float offsetY = 24.0f - 18.0f;
 
 				//  項目の表示
 				{
-					GUI.Label(new Rect(10, offsetY, 200, 20), "Cursor :");
+					GUI.Label(new Rect(10, offsetY, 200, 20), "TPSプレイヤーの移動速度");
 
-					FunctionManager.GUILabel(
-						FunctionManager.AR_TYPE.TOP_RIGHT,
-						new Vector2(-12.0f, -offsetY),
-						"" + ((int)m_rParent.m_GridCursor.x + 1).ToString().PadLeft(3, '_') + ",  "
-							+ ((int)m_rParent.m_GridCursor.y + 1).ToString().PadLeft(3, '_'),
-						new Vector2(1.0f, 1.0f),
-						new Vector2(m_WindowRect.width, m_WindowRect.height)
-					);
-				}
-				offsetY += space;
-
-				//  項目の表示
-				{
-					GUI.Label(new Rect(10, offsetY, 200, 20), "Select :");
-
-					Vector3 focusSize = m_rParent.CalcFocusSize(m_rParent.m_rFocusList);
-					FunctionManager.GUILabel(
-						FunctionManager.AR_TYPE.TOP_RIGHT,
-						new Vector2(-12.0f, -offsetY),
-						"" + ((int)focusSize.x).ToString().PadLeft(3, '_') + ",  "
-							+ ((int)focusSize.y).ToString().PadLeft(3, '_') + ",  "
-							+ ((int)focusSize.z).ToString().PadLeft(3, '_'),
-						new Vector2(1.0f, 1.0f),
-						new Vector2(m_WindowRect.width, m_WindowRect.height)
-					);
-				}
-				offsetY += space;
-
-				//  項目の表示 
-				{
-					GUI.Label(new Rect(10, offsetY, 200, 20), "MapSize :");
-
-					FunctionManager.GUILabel(
-						FunctionManager.AR_TYPE.TOP_RIGHT,
-						new Vector2(-12.0f, -offsetY),
-						"" + m_rParent.m_MapWidth.ToString().PadLeft(3, '_') + ",  "
-							+ m_rParent.m_MapHeight.ToString().PadLeft(3, '_') + ",  "
-							+ m_rParent.m_MapDepth.ToString().PadLeft(3, '_'),
-						new Vector2(1.0f, 1.0f),
-						new Vector2(m_WindowRect.width, m_WindowRect.height)
-					);
+					string ret = GUI.TextField(new Rect(200, offsetY, 40, 20), GameWorldParameter.instance.TPSPlayer_WalkSpeed.ToString());
+					GameWorldParameter.instance.TPSPlayer_WalkSpeed = float.Parse(ret);
 				}
 				offsetY += space;
 			}
+			GUI.EndScrollView();
+
 		}
 
 		public void InitWindowRect()
 		{
 			m_WindowRect = FunctionManager.AdjustRectCanvasToGUI(
 				FunctionManager.AR_TYPE.TOP_RIGHT,
-				new Rect(-20, -20, 180, 94),
+				new Rect(-20, -20, 280, 94),
 				new Vector2(1.0f, 1.0f)
 			);
 		}
