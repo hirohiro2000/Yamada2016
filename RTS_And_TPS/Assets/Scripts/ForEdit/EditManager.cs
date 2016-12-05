@@ -1090,6 +1090,9 @@ public class EditManager : MonoBehaviour {
 
 		private Vector2 scrollViewVector = Vector2.zero;
 
+		private bool Resizeing = false;
+		private float ClickY = .0f;
+		private float ClickHeight = .0f;
 
 		public Window_GameWorldParameter(EditManager _rParent, WindowOversee _rOversee)
 		{
@@ -1101,6 +1104,11 @@ public class EditManager : MonoBehaviour {
 		public void Update()
 		{
 			m_WindowRect = GUI.Window(6, m_WindowRect, WindowProc, "GameWorldParameter");
+			if (Input.GetMouseButtonUp(0))
+			{
+				Resizeing = false;
+			}
+
 		}
 		private void WindowProc(int _WindowID)
 		{
@@ -1118,35 +1126,71 @@ public class EditManager : MonoBehaviour {
 				}
 			}
 
+
+
 			//  ドラッグできるようにする
 			GUI.DragWindow(new Rect(0, 0, m_WindowRect.width, 18));
 
-			scrollViewVector = GUI.BeginScrollView(new Rect(0, 18, m_WindowRect.width, m_WindowRect.height - 18), scrollViewVector, new Rect(0, 0, 0, 300));
 
 
 			//  項目の表示
 			{
 				float space = 22.0f;
 				float offsetY = 24.0f - 18.0f;
+				scrollViewVector = GUI.BeginScrollView(new Rect(0, 18, m_WindowRect.width, m_WindowRect.height - 18 - 30), scrollViewVector, new Rect(0, 0, 0, 300));
+				GameWorldParameter param = GameWorldParameter.instance;
 
 				//  項目の表示
 				{
-					GUI.Label(new Rect(10, offsetY, 200, 20), "TPSプレイヤーの移動速度");
 
-					string ret = GUI.TextField(new Rect(200, offsetY, 40, 20), GameWorldParameter.instance.TPSPlayer_WalkSpeed.ToString());
-					GameWorldParameter.instance.TPSPlayer_WalkSpeed = float.Parse(ret);
+					DispValue("TPSプレイヤーの体力", ref param.TPSPlayer.Health, ref offsetY, space);
+					DispValue("TPSプレイヤーの移動速度", ref param.TPSPlayer.WalkSpeed, ref offsetY, space);
+
+					offsetY += space;
 				}
-				offsetY += space;
-			}
-			GUI.EndScrollView();
+				GUI.EndScrollView();
+				#if     UNITY_EDITOR
+				if(GUI.Button(new Rect(10, m_WindowRect.height - 30, 200,20), "インスペクタ表示"))
+				{
+						Selection.objects = new GameObject[] { param.gameObject };
+				}
+				#endif
 
+				if (GUI.RepeatButton(new Rect(0, m_WindowRect.height - 10, m_WindowRect.width, 10), "▼"))
+				{
+
+					Resizeing = true;
+					ClickHeight = m_WindowRect.height;
+					ClickY = Input.mousePosition.y;
+
+				}
+				if (Resizeing == true)
+				{
+					m_WindowRect.height = ClickHeight + (ClickY - Input.mousePosition.y);
+					if (m_WindowRect.height < 60)
+						m_WindowRect.height = 60;
+				}
+
+			}
+
+
+		}
+
+		void DispValue(string name,ref float value ,ref float offsetY,float space)
+		{
+			GUI.Label(new Rect(10, offsetY, 200, 20), name);
+			string ret = GUI.TextField(new Rect(350, offsetY, 90, 20),value.ToString());
+			value = float.Parse(ret);
+
+
+			offsetY += space;
 		}
 
 		public void InitWindowRect()
 		{
 			m_WindowRect = FunctionManager.AdjustRectCanvasToGUI(
 				FunctionManager.AR_TYPE.TOP_RIGHT,
-				new Rect(-20, -20, 280, 94),
+				new Rect(-20, -20, 480, 94),
 				new Vector2(1.0f, 1.0f)
 			);
 		}

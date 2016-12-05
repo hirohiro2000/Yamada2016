@@ -63,6 +63,11 @@ public class TPSPlayer_HP : NetworkBehaviour {
         m_rNetPlayer    =   GetComponent< NetPlayer_Control >();
 
         //  パラメータ初期化
+		if(GameWorldParameter.instance != null)
+		{
+			m_MaxHP = GameWorldParameter.instance.TPSPlayer.Health;
+		}
+		
         m_CurHP         =   m_MaxHP;
 
         //  ローカルでのみ処理を行う
