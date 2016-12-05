@@ -89,8 +89,18 @@ public class TPSJumpController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        //  自分のキャラクター以外は処理を行わない
-        if( !m_rIdentity.isLocalPlayer )    return;
+
+		//GameWorldParameterにより直接書き換える
+		{
+			Power = GameWorldParameter.instance.TPSPlayer.JumpPower;
+			maxHoverTime = GameWorldParameter.instance.TPSPlayer.HoverTime;
+			HoverPower = GameWorldParameter.instance.TPSPlayer.HoverPower;
+			HoverSpeed = GameWorldParameter.instance.TPSPlayer.HoverTime;
+		}
+
+
+		//  自分のキャラクター以外は処理を行わない
+		if ( !m_rIdentity.isLocalPlayer )    return;
 
 		cntEnableTime -= Time.deltaTime;
 		if(cntEnableTime < .0f)
@@ -121,56 +131,56 @@ public class TPSJumpController : MonoBehaviour {
             }
 
 		}
-        //if (Input.GetButton("Jump") == false && characterController.isGrounded == false)
-        //{
-        //    isCanHover = true;
-        //}
+		if (Input.GetButton("Jump") == false && characterController.isGrounded == false)
+		{
+			isCanHover = true;
+		}
 
-        //if (Input.GetButton("Jump") == false)
-        //{
-        //    //　エネルギー回復
-        //    if (cntHoverTime < maxHoverTime)
-        //    {
-        //        float next = cntHoverTime + Time.deltaTime;
-        //        if (next > maxHoverTime)
-        //        {
-        //            next = maxHoverTime;
-        //        }
-        //        float d = next - cntHoverTime;
-        //        cntHoverTime = next;
- 
-        //        // UI更新                
-        //        TPSBoosterBar.Storage(d);
-        //    }
-        //} 
- 
-        //if (Input.GetButton("Jump") == true && characterController.isGrounded == false && isCanHover == true)
-        //{
-        //    if(cntHoverTime > .0f)
-        //    {
-        //        //重力無効
-        //        fallPower -= Time.deltaTime;
-        //        //HoverSpeedになるようにHoverPowerを加算する
-        //        float sub = -HoverSpeed - (fallPower);
-        //        sub = Mathf.Clamp(sub, -HoverPower * Time.deltaTime, HoverPower * Time.deltaTime);
-        //        cntHoverTime -= Time.deltaTime;
-        //        fallPower += sub;
-        //        TPSBoosterBar.Consumption(Time.deltaTime);
-        //    }
+		//if (Input.GetButton("Jump") == false)
+		//{
+		//    //　エネルギー回復
+		//    if (cntHoverTime < maxHoverTime)
+		//    {
+		//        float next = cntHoverTime + Time.deltaTime;
+		//        if (next > maxHoverTime)
+		//        {
+		//            next = maxHoverTime;
+		//        }
+		//        float d = next - cntHoverTime;
+		//        cntHoverTime = next;
 
-        //}
+		//        // UI更新                
+		//        TPSBoosterBar.Storage(d);
+		//    }
+		//} 
 
-        //if(cntEnableTime > .0f)
-        //{
-        //          if (landingChecker.isLanding == true)
-        //	{
-        //		rigidBody.velocity = Vector3.up * Power;
-        //		cntEnableTime = .0f;
-        //          }
-        //}
-        //characterController.Move(Physics.gravity * fallPower * Time.deltaTime);
+		if (Input.GetButton("Jump") == true && characterController.isGrounded == false && isCanHover == true)
+		{
+			if (cntHoverTime > .0f)
+			{
+				//重力無効
+				fallPower -= Time.deltaTime;
+				//HoverSpeedになるようにHoverPowerを加算する
+				float sub = -HoverSpeed - (fallPower);
+				sub = Mathf.Clamp(sub, -HoverPower * Time.deltaTime, HoverPower * Time.deltaTime);
+				cntHoverTime -= Time.deltaTime;
+				fallPower += sub;
+				//TPSBoosterBar.Consumption(Time.deltaTime);
+			}
 
-        characterMover.AddSpeed(Physics.gravity * fallPower);
+		}
+
+		//if(cntEnableTime > .0f)
+		//{
+		//          if (landingChecker.isLanding == true)
+		//	{
+		//		rigidBody.velocity = Vector3.up * Power;
+		//		cntEnableTime = .0f;
+		//          }
+		//}
+		//characterController.Move(Physics.gravity * fallPower * Time.deltaTime);
+
+		characterMover.AddSpeed(Physics.gravity * fallPower);
 
 		if ((characterController.isGrounded == false) && (beforeIsGrounded == true) && isJumped == false)
 		{

@@ -1142,9 +1142,15 @@ public class EditManager : MonoBehaviour {
 
 				//  項目の表示
 				{
+					DispLabel("-----TPSプレイヤー-----", ref offsetY, space);
+					DispValue("体力", ref param.TPSPlayer.Health, ref offsetY, space);
+					DispValue("移動速度", ref param.TPSPlayer.WalkSpeed, ref offsetY, space);
+					DispValue("ジャンプ力", ref param.TPSPlayer.JumpPower, ref offsetY, space);
+					DispValue("ホバー力", ref param.TPSPlayer.HoverPower, ref offsetY, space);
+					DispValue("ホバー速度", ref param.TPSPlayer.HoverSpeed, ref offsetY, space);
+					DispValue("ホバー時間", ref param.TPSPlayer.HoverTime, ref offsetY, space);
 
-					DispValue("TPSプレイヤーの体力", ref param.TPSPlayer.Health, ref offsetY, space);
-					DispValue("TPSプレイヤーの移動速度", ref param.TPSPlayer.WalkSpeed, ref offsetY, space);
+
 
 					offsetY += space;
 				}
@@ -1178,14 +1184,19 @@ public class EditManager : MonoBehaviour {
 
 		void DispValue(string name,ref float value ,ref float offsetY,float space)
 		{
-			GUI.Label(new Rect(10, offsetY, 200, 20), name);
-			string ret = GUI.TextField(new Rect(350, offsetY, 90, 20),value.ToString());
+			GUI.Label(new Rect(10, offsetY, 100, 20), name);
+			string ret = GUI.TextField(new Rect(200, offsetY, 90, 20),value.ToString());
 			value = float.Parse(ret);
 
 
 			offsetY += space;
 		}
+		void DispLabel(string name, ref float offsetY, float space)
+		{
+			GUI.Label(new Rect(10, offsetY, 400, 20), name);
 
+			offsetY += space;
+		}
 		public void InitWindowRect()
 		{
 			m_WindowRect = FunctionManager.AdjustRectCanvasToGUI(
