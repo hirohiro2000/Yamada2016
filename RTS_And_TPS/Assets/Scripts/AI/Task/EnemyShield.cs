@@ -14,7 +14,6 @@ public class EnemyShield : MonoBehaviour {
     {
         if(DeffendTagList.Contains( other.gameObject.tag))
         {
-            UserLog.Terauchi("reach");
             Destroy(other.gameObject);
         }
 
