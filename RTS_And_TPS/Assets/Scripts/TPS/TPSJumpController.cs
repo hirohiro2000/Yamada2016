@@ -95,7 +95,7 @@ public class TPSJumpController : MonoBehaviour {
 			Power = GameWorldParameter.instance.TPSPlayer.JumpPower;
 			maxHoverTime = GameWorldParameter.instance.TPSPlayer.HoverTime;
 			HoverPower = GameWorldParameter.instance.TPSPlayer.HoverPower;
-			HoverSpeed = GameWorldParameter.instance.TPSPlayer.HoverTime;
+			HoverSpeed = GameWorldParameter.instance.TPSPlayer.HoverSpeed;
 		}
 
 

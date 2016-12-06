@@ -53,7 +53,7 @@ public class Facility : MonoBehaviour
                 }
                 else // 仮
                 {
-                    GetComponent<ResourceParameter>().m_createCost = int.MaxValue;
+                    GetComponent<ResourceParameter>().SetCreateCost(int.MaxValue);
                 }
             }
         }

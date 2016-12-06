@@ -13,6 +13,9 @@ public class ItemController : NetworkBehaviour
 	private ResourceCreator		m_resourceCreator		= null;
 	private	List<GameObject>	m_frameList				= null;
 	private	List<GameObject>	m_imageList				= null;
+	private List<Text>			m_textList				= null;
+	private List<ResourceParameter> m_resourceList = null;
+
 	private int					m_kindMax				= 0;
 	private int					m_curForcus				= 0;
 
@@ -29,6 +32,8 @@ public class ItemController : NetworkBehaviour
 		m_kindMax				= m_resourceCreator.m_resources.Length;
 
 		m_frameList = new List<GameObject>();
+		m_textList = new List<Text>();
+		m_resourceList = new List<ResourceParameter>();
 		m_imageList = new List<GameObject>();
 
 		for( int i=0; i<m_kindMax; ++i )
@@ -38,10 +43,15 @@ public class ItemController : NetworkBehaviour
 
 			add.transform.SetParent( GameObject.Find("Canvas").transform );
 			add.transform.position	= new Vector3( ( i*80 + 72 ) * screenRatio, 130 * screenRatio, 0 );
-			add.transform.GetChild(0).GetComponent<Text>().text = m_resourceCreator.m_resources[i].GetComponent<ResourceParameter>().m_createCost.ToString();
+			Text text = add.transform.GetChild(0).GetComponent<Text>();
+			ResourceParameter resource = m_resourceCreator.m_resources[i].GetComponent<ResourceParameter>();
+            text.text = resource.GetCreateCost().ToString();
+			text.transform.SetSiblingIndex(1);
 
 			m_frameList.Add( add );
 
+			m_textList.Add(text);
+			m_resourceList.Add(resource);
 
 			GameObject  image		= Instantiate( m_resourceCreator.m_textures[i] );
 			image.transform.SetParent( GameObject.Find("Canvas").transform );
@@ -70,6 +80,13 @@ public class ItemController : NetworkBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		//GameWorldParameterで強制的に書き換える
+		{
+			for (int i = 0; i < m_textList.Count; i++)
+			{
+				m_textList[i].text = m_resourceList[i].GetCreateCost().ToString();
+			}
+		}
         //  自分のキャラクターの場合のみ処理を行う
         if( !isLocalPlayer ) return;
 
@@ -115,7 +132,7 @@ public class ItemController : NetworkBehaviour
 	}
 	public bool CheckWhetherTheCostIsEnough()
 	{
-		return m_rGameManager.GetResource() >= GetForcusResourceParam().m_createCost;
+		return m_rGameManager.GetResource() >= GetForcusResourceParam().GetCreateCost();
 	}
 
 

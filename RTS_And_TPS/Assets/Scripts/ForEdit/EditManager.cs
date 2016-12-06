@@ -1149,6 +1149,7 @@ public class EditManager : MonoBehaviour {
 					DispValue("ホバー力", ref param.TPSPlayer.HoverPower, ref offsetY, space);
 					DispValue("ホバー速度", ref param.TPSPlayer.HoverSpeed, ref offsetY, space);
 					DispValue("ホバー時間", ref param.TPSPlayer.HoverTime, ref offsetY, space);
+					DispValue("ステップ量", ref param.TPSPlayer.StepPower, ref offsetY, space);
 
 
 

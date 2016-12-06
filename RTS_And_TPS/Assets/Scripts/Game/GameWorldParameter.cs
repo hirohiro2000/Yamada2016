@@ -13,10 +13,31 @@ public class TPSPlayerParam
 
 	public float FallDamageHeight = 10.0f;
 
-	public float StepPower = 7.0f;
+	public float StepPower = 18.0f;
 
 
+}
 
+[System.Serializable]
+public class RTSPlayerParam
+{
+	public float Health = 20.0f;
+	public float WalkSpeed = 5.0f;
+
+	//public float FallDamageHeight = 10.0f;
+
+	public float ResourceCreateCostMultiple = 1.0f;
+	public float ResourceLevelUpCostMultiple = 1.0f;
+	public float ResourceBreakCostMultiple = 1.0f;
+
+}
+
+[System.Serializable]
+public class EnemyParam
+{
+	public float EmitMultiple = 1.0f;
+	public float HealthMultiple = 1.0f;
+	public float WalkSpeedMultiple = 1.0f;
 }
 
 public class GameWorldParameter : MonoBehaviour {
@@ -50,6 +71,8 @@ public class GameWorldParameter : MonoBehaviour {
 	}
 
 	public TPSPlayerParam TPSPlayer = new TPSPlayerParam();
+	public RTSPlayerParam RTSPlayer = new RTSPlayerParam();
+	public EnemyParam Enemy = new EnemyParam();
 
 	// Use this for initialization
 	void Awake () {

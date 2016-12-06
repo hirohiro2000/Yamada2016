@@ -74,6 +74,10 @@ public class GirlController : NetworkBehaviour
 	//	Write to the FixedUpdate if including physical behavior
 	void Update () 
 	{
+		//GameWorldParameterで強制的に書き換える
+		{
+			m_moveSpeed = GameWorldParameter.instance.RTSPlayer.WalkSpeed;
+		}
         //  自分のキャラクターの場合のみ処理を行う
         if( !isLocalPlayer ) return;
 
@@ -290,7 +294,7 @@ public class GirlController : NetworkBehaviour
 			m_itemCntroller.CheckWhetherTheCostIsEnough() )
 		{
 			m_resourceCreator.AddResource( forcusID );
-			m_itemCntroller.AddResourceCost( -forcusParam.m_createCost );
+			m_itemCntroller.AddResourceCost( -forcusParam.GetCreateCost());
 			m_actionState = ActionState.Common;
             return;
 		}
@@ -322,7 +326,7 @@ public class GirlController : NetworkBehaviour
 			m_resourceInformation.CheckIfCanUpALevel( transform.position, m_itemCntroller.GetHaveCost() ))
 		{
 			m_actionState = ActionState.Common;
-    		m_itemCntroller.AddResourceCost( -param.GetCurLevelParam().upCost );
+    		m_itemCntroller.AddResourceCost( -param.GetCurLevelParam().GetUpCost());
 			CmdLevelUpResource( transform.position );
 			return;
 		}
@@ -334,7 +338,7 @@ public class GirlController : NetworkBehaviour
 		if( Input.GetKeyDown( m_breakKey ) || uiResult == UIGirlTaskSelect.RESULT.eBreak )
 		{
 			m_actionState = ActionState.Common;
-			m_itemCntroller.AddResourceCost( m_itemCntroller.GetForcusResourceParam().m_breakCost );
+			m_itemCntroller.AddResourceCost( m_itemCntroller.GetForcusResourceParam().GetBreakCost() );
             CmdBreakResource( transform.position );
 			return;
 		}

@@ -199,7 +199,7 @@ public class ResourceInformation : NetworkBehaviour
 		if( !param.CheckWhetherCanUpALevel() )
 			return false;
 
-		return haveCost >= param.GetCurLevelParam().upCost;
+		return haveCost >= param.GetCurLevelParam().GetUpCost();
 	}
 	public ResourceParameter GetResourceParamFromPosition( Vector3 pos )
 	{

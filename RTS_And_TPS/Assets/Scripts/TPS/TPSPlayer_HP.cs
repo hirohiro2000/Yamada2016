@@ -65,7 +65,11 @@ public class TPSPlayer_HP : NetworkBehaviour {
         //  パラメータ初期化
 		if(GameWorldParameter.instance != null)
 		{
-			m_MaxHP = GameWorldParameter.instance.TPSPlayer.Health;
+			//女の子か
+			if(GetComponent<GirlController>() != null)
+				m_MaxHP = GameWorldParameter.instance.RTSPlayer.Health;
+			else
+				m_MaxHP = GameWorldParameter.instance.TPSPlayer.Health;
 		}
 		
         m_CurHP         =   m_MaxHP;

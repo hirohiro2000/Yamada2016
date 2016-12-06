@@ -46,7 +46,7 @@ public class UIGirlTaskSelect : MonoBehaviour {
 		var forcusParam = m_rItemCntroller.GetForcusResourceParam();
 
 		//	リソースのUI設定
-		m_buttonOk.transform.FindChild("Point").GetComponent<Text>().text = "-" + forcusParam.m_createCost.ToString();
+		m_buttonOk.transform.FindChild("Point").GetComponent<Text>().text = "-" + forcusParam.GetCreateCost().ToString();
 		m_towerInfoPanel.transform.FindChild("Kind").GetComponent<Text>().text = "種類:　　　" + forcusParam.m_name;
 		m_towerInfoPanel.transform.FindChild("Summary").GetComponent<Text>().text = "概要:　　　" + forcusParam.m_summary;
 		m_towerInfoPanel.transform.FindChild("Power").GetComponent<Text>().text = "攻撃力:　　" + forcusParam.GetLevelParam(0).power;
@@ -66,8 +66,8 @@ public class UIGirlTaskSelect : MonoBehaviour {
         }
 
 		//	リソースのUI設定
-		m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().upCost.ToString();
-		m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.m_breakCost.ToString();
+		m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().GetUpCost().ToString();
+		m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.GetBreakCost().ToString();
 
         return result;
     }
