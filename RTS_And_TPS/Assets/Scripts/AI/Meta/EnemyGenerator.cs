@@ -98,8 +98,12 @@ public class EnemyGenerator : NetworkBehaviour
 
     void    Update()
     {
-        //  死亡したエネミーの項目を削除
-        for( int i = 0; i < m_rActiveEnemyList.Count; i++ ){
+		//GameWorldParameterで強制的に書き換える
+		{
+			HPCorrectionRate = GameWorldParameter.instance.Enemy.HealthMultiple;
+		}
+		//  死亡したエネミーの項目を削除
+		for ( int i = 0; i < m_rActiveEnemyList.Count; i++ ){
             m_rActiveEnemyList.Remove( null );
         }
     }

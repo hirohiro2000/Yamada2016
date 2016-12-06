@@ -1137,7 +1137,7 @@ public class EditManager : MonoBehaviour {
 			{
 				float space = 22.0f;
 				float offsetY = 24.0f - 18.0f;
-				scrollViewVector = GUI.BeginScrollView(new Rect(0, 18, m_WindowRect.width, m_WindowRect.height - 18 - 30), scrollViewVector, new Rect(0, 0, 0, 300));
+				scrollViewVector = GUI.BeginScrollView(new Rect(0, 18, m_WindowRect.width, m_WindowRect.height - 18 - 30), scrollViewVector, new Rect(0, 0, 0, 500));
 				GameWorldParameter param = GameWorldParameter.instance;
 
 				//  項目の表示
@@ -1150,6 +1150,24 @@ public class EditManager : MonoBehaviour {
 					DispValue("ホバー速度", ref param.TPSPlayer.HoverSpeed, ref offsetY, space);
 					DispValue("ホバー時間", ref param.TPSPlayer.HoverTime, ref offsetY, space);
 					DispValue("ステップ量", ref param.TPSPlayer.StepPower, ref offsetY, space);
+					DispLabel("", ref offsetY, space);
+					DispLabel("-----RTSプレイヤー-----", ref offsetY, space);
+					DispValue("体力", ref param.RTSPlayer.Health, ref offsetY, space);
+					DispValue("移動速度", ref param.RTSPlayer.WalkSpeed, ref offsetY, space);
+					DispValue("作成コスト倍率", ref param.RTSPlayer.ResourceCreateCostMultiple, ref offsetY, space);
+					DispValue("強化コスト倍率", ref param.RTSPlayer.ResourceLevelUpCostMultiple, ref offsetY, space);
+					DispValue("破壊換金量倍率", ref param.RTSPlayer.ResourceBreakCostMultiple, ref offsetY, space);
+					DispLabel("", ref offsetY, space);
+					DispLabel("-----敵-----", ref offsetY, space);
+					DispValue("出現個数倍率", ref param.RTSPlayer.ResourceCreateCostMultiple, ref offsetY, space);
+					DispValue("体力倍率", ref param.Enemy.HealthMultiple, ref offsetY, space);
+
+
+
+
+
+
+
 
 
 
