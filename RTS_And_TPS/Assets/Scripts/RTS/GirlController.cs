@@ -6,11 +6,6 @@ using UnityEngine.UI;
 
 public class GirlController : NetworkBehaviour 
 {
-//	private	GameObject			m_buttonOk					= null;
-//	private	GameObject			m_buttonCancel				= null;
-//	private	GameObject			m_buttonLevel				= null;
-//	private	GameObject			m_buttonBreak				= null;
-//	private	GameObject			m_towerInfoPanel			= null;
     private UIGirlTaskSelect    m_uiGirlTaskSelect          = null;
     private GameObject          m_symbolShell               = null;
 
@@ -19,6 +14,8 @@ public class GirlController : NetworkBehaviour
 	private ItemController		m_itemCntroller				= null;
     private Rigidbody           m_rRigid                    = null;
     private RTS_PlayerAnimationController m_animationController = null;
+
+	private GirlDroneSwitcher	m_cameraSwitcher			= null;
 
 	private const KeyCode		m_okKey						= KeyCode.J;
 	private const KeyCode		m_cancelKey					= KeyCode.L;
@@ -34,6 +31,7 @@ public class GirlController : NetworkBehaviour
 		Common,
 		CreateResource,
 		ConvertResource,
+		Drone,
 	}
 	private ActionState			m_actionState	= ActionState.Common;
     
@@ -53,30 +51,34 @@ public class GirlController : NetworkBehaviour
 		m_resourceInformation			= GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
 		m_resourceCreator				= GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
 		m_itemCntroller					= GetComponent<ItemController>();
-        m_rRigid                        = GetComponent< Rigidbody >();
-
+  		m_cameraSwitcher				= GetComponent<GirlDroneSwitcher>();
+		m_rRigid                        = GetComponent< Rigidbody >();
+		
         // 適当に
         m_navAgent                      = gameObject.AddComponent<NavMeshAgent>();
-        m_navAgent.acceleration = float.MaxValue;
-        m_navAgent.angularSpeed = float.MaxValue;
-        m_navAgent.stoppingDistance = 1.0f;
+        m_navAgent.acceleration			= float.MaxValue;
+        m_navAgent.angularSpeed			= float.MaxValue;
+        m_navAgent.stoppingDistance		= 1.0f;
         m_navAgent.Warp( transform.position );
         m_navAgent.ResetPath();
         
         m_animationController = GetComponent< RTS_PlayerAnimationController >();
-
     }
 
 	//	Write to the FixedUpdate if including physical behavior
 	void Update () 
 	{
+		//GameWorldParameterで強制的に書き換える
+		{
+			m_moveSpeed = GameWorldParameter.instance.RTSPlayer.WalkSpeed;
+		}
         //  自分のキャラクターの場合のみ処理を行う
         if( !isLocalPlayer ) return;
 
         //  座標調整（いまだけ）
         {
             //  飛ぶ
-            if (Input.GetKey(KeyCode.M))
+            if (Input.GetKey( KeyCode.M ))
             {
                 m_rRigid.AddForce(Vector3.up * m_LiftingForce * Time.deltaTime * 60.0f);
                 if (m_navAgent.enabled)
@@ -104,6 +106,7 @@ public class GirlController : NetworkBehaviour
 		case ActionState.Common:			UpdateCommon();		break;
 		case ActionState.CreateResource:	CreateResource();	break;
 		case ActionState.ConvertResource:	ConvertResource();	break;
+		case ActionState.Drone:				UpdateDrone();		break;
 		}
 	}
 	void FixedUpdate () 
@@ -116,7 +119,6 @@ public class GirlController : NetworkBehaviour
 		case ActionState.Common:    Move();		break;
 		}
 	}
-
     void Move()
     {
         MovedByKey();
@@ -150,6 +152,7 @@ public class GirlController : NetworkBehaviour
 
 
     }
+
 
     //---------------------------------------------------------------------
 	//      すてーと
@@ -273,20 +276,37 @@ public class GirlController : NetworkBehaviour
 		var forcusID	= m_itemCntroller.GetForcus();
 		if ( forcusID != -1 )
         {
+    		//	リソースの範囲表示更新
 		    m_resourceCreator.UpdateGuideResource( forcusID, transform.position );
 		    m_resourceCreator.UpdateGuideRange( forcusID, transform.position );
         }
+
 
 		//	ステート更新
         UIGirlTaskSelect.RESULT uiResult = m_uiGirlTaskSelect.ToSelectTheCreateResource();
 		if( ( Input.GetKeyDown( m_okKey )  || uiResult == UIGirlTaskSelect.RESULT.eOK ) &&
 			m_itemCntroller.CheckWhetherTheCostIsEnough() )
 		{
-    		var forcusParam = m_itemCntroller.GetForcusResourceParam();
-			m_resourceCreator.AddResource( forcusID );
-			m_itemCntroller.AddResourceCost( -forcusParam.m_createCost );
-			m_actionState = ActionState.Common;
-            return;
+			var obj = m_resourceCreator.AddResource( forcusID );
+
+            var forcusParam = m_itemCntroller.GetForcusResourceParam();
+            m_itemCntroller.AddResourceCost( -forcusParam.GetCreateCost());
+			
+            //m_actionState = ActionState.Common;
+
+
+			//	置かれたのがドローンだったらドローン操作に切り替え
+			const int droneID = 8;
+			if( forcusID == droneID )
+			{
+				m_cameraSwitcher.On( obj );
+				m_actionState = ActionState.Drone;
+			}
+			else
+			{
+				m_actionState = ActionState.Common;
+			}
+			return;
 		}
 		if( Input.GetKeyDown( m_cancelKey ) || uiResult == UIGirlTaskSelect.RESULT.eCancel || Input.GetMouseButtonDown(1)  )
 		{
@@ -297,7 +317,10 @@ public class GirlController : NetworkBehaviour
 	void ConvertResource()
 	{
 		var param = m_resourceInformation.GetResourceParamFromPosition( transform.position );
-        if( !param ){
+
+		//	今いるマスにリソースがなかった
+        if( param == null )
+		{
             m_actionState   =   ActionState.Common;
             return;
         }
@@ -306,8 +329,8 @@ public class GirlController : NetworkBehaviour
 		m_resourceCreator.UpdateGuideRange( transform.position );
 
 		//	リソースのUI設定
-	    m_uiGirlTaskSelect.m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().upCost.ToString();
-		m_uiGirlTaskSelect.m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.m_breakCost.ToString();
+	    m_uiGirlTaskSelect.m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().GetUpCost().ToString();
+		m_uiGirlTaskSelect.m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.GetBreakCost().ToString();
 
 		//	ステート更新
         UIGirlTaskSelect.RESULT uiResult = m_uiGirlTaskSelect.ToSelectTheConvertAction();
@@ -316,7 +339,7 @@ public class GirlController : NetworkBehaviour
 			m_resourceInformation.CheckIfCanUpALevel( transform.position, m_itemCntroller.GetHaveCost() ))
 		{
 			m_actionState = ActionState.Common;
-    		m_itemCntroller.AddResourceCost( -param.GetCurLevelParam().upCost );
+    		m_itemCntroller.AddResourceCost( -param.GetCurLevelParam().GetUpCost());
 			CmdLevelUpResource( transform.position );
 			return;
 		}
@@ -328,12 +351,23 @@ public class GirlController : NetworkBehaviour
 		if( ( Input.GetKeyDown( m_breakKey ) || uiResult == UIGirlTaskSelect.RESULT.eBreak ) && m_itemCntroller.GetForcus() != -1 )
 		{
 			m_actionState = ActionState.Common;
-			m_itemCntroller.AddResourceCost( m_itemCntroller.GetForcusResourceParam().m_breakCost );
+			m_itemCntroller.AddResourceCost( m_itemCntroller.GetForcusResourceParam().GetBreakCost() );
             CmdBreakResource( transform.position );
 			return;
 		}
-
 	}
+	void UpdateDrone()
+	{
+		m_uiGirlTaskSelect.Clear();
+
+		if( Input.GetKeyDown( KeyCode.O ))
+		{
+			m_cameraSwitcher.Off();
+			m_actionState = ActionState.Common;
+            return;
+		}
+	}
+
 
 	//---------------------------------------------------------------------
 	//      アクセサ

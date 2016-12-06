@@ -19,7 +19,7 @@ public class TransferFacility : Facility
                 TransferGate    gate  = trans.GetComponent<TransferGate>();
                 if (gate != null)
                 {                    
-                    GetComponent<ResourceParameter>().m_createCost = int.MaxValue;  //　仮
+                    GetComponent<ResourceParameter>().SetCreateCost(int.MaxValue);  //　仮
                     m_gateList.Add(trans.gameObject);
                 }
             }

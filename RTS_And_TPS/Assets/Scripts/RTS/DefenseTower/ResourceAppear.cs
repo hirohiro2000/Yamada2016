@@ -21,44 +21,44 @@ public class ResourceAppear : MonoBehaviour
 
     void Start()
     {
-        timer = 0.0f;
-        originHeight = transform.localPosition.y;
+		timer = 0.0f;
+		originHeight = transform.localPosition.y;
 
-        {
-            plate = Instantiate(originalPlate);
-            plate.transform.parent   = this.transform;
-        }
+		{
+			plate = Instantiate(originalPlate);
+			plate.transform.parent = transform;
+		}
+	
+		//  高さを初期化
+		{
+			Vector3 localHeight = transform.localPosition;
+			localHeight.y = originHeight + height.Evaluate(timer);
 
-        //  高さを初期化
-        {
-            Vector3 localHeight = transform.localPosition;
-            localHeight.y = originHeight + height.Evaluate( timer );
-
-            transform.localPosition = localHeight;
-        }
+			transform.localPosition = localHeight;
+		}
 
 
-    }
+	}
     void Update()
     {
-        Vector3 localPosition = transform.localPosition;
+		Vector3 localPosition = transform.localPosition;
 
-        // update tower
-        localPosition.y = originHeight + height.Evaluate( timer );
-        transform.localPosition = localPosition;
+		// update tower
+		localPosition.y = originHeight + height.Evaluate(timer);
+		transform.localPosition = localPosition;
 
-        // update grid
-        float adjusHeight = 0.05f;
-        localPosition.y = originHeight + height.Evaluate( 1.0f ) + adjusHeight;
-        plate.transform.position    = localPosition;
-        plate.transform.eulerAngles = Vector3.zero;
+		// update grid
+		float adjusHeight = 0.05f;
+		localPosition.y = originHeight + height.Evaluate(1.0f) + adjusHeight;
+		plate.transform.position = localPosition;
+		plate.transform.eulerAngles = Vector3.zero;
 
-        timer += timeSpeed*Time.deltaTime;
+		timer += timeSpeed * Time.deltaTime;
 
-        this.enabled = ( timer <= 1.0f );
-        plate.SetActive( timer <= 1.0f );
+		this.enabled = (timer <= 1.0f);
+		plate.SetActive(timer <= 1.0f);
 
-    }
+	}
     public void End()
     {
         timer = 1.0f;

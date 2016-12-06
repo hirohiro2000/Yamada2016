@@ -337,8 +337,13 @@ public class TPSMoveController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-        //  自分のキャラクター以外は処理を行わない
-        if( !m_rIdentity.isLocalPlayer )    return;
+		//GameWorldParameterで強制的に書き換える
+		{
+			speed = GameWorldParameter.instance.TPSPlayer.WalkSpeed;
+			avoidStepPower = GameWorldParameter.instance.TPSPlayer.StepPower;
+		}
+		//  自分のキャラクター以外は処理を行わない
+		if ( !m_rIdentity.isLocalPlayer )    return;
 
         if ( Camera.main == null )          return;
         Transform camTransform = Camera.main.transform;
@@ -353,6 +358,8 @@ public class TPSMoveController : MonoBehaviour
         Vector2 controllerAxis = new Vector2( Input.GetAxis("Horizontal"), Input.GetAxis("Vertical") );
 
         inputDir = Vector3.zero;
+
+
 
 		inputDir += right   * (controllerAxis.x * speed);
 		inputDir += forward * (controllerAxis.y * speed);

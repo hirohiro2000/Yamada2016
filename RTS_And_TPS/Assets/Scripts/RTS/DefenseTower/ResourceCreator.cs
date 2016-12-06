@@ -15,6 +15,7 @@ public class ResourceCreator : NetworkBehaviour
 
 	public	GameObject				m_resourceRangeGuide		= null;
 	private	GameObject				m_resourceRangeGuideRef		= null;
+	private	GameObject				m_prevAddResource			= null;
 
 	private float					m_rotateAngle				= 0;
 
@@ -146,7 +147,7 @@ public class ResourceCreator : NetworkBehaviour
 	//---------------------------------------------------------------------
 	//	アクセサ
 	//---------------------------------------------------------------------
-	public  void    AddResource( int resourceID )
+	public  GameObject    AddResource( int resourceID )
 	{
 		//  サーバーにコマンドを送信
 		Transform rTrans = m_staticResources.transform.GetChild( resourceID );
@@ -154,7 +155,8 @@ public class ResourceCreator : NetworkBehaviour
         //  プレイヤーオブジェクトを経由してコマンドを送信
         m_rLinkManager.m_rLocalPlayer.GetComponent< RTSPlayer_Control >()
             .CmdAddResource( resourceID, rTrans.position, rTrans.rotation );
-		//CmdAddResource( resourceID, rTrans.position, rTrans.rotation );
+
+		return m_prevAddResource;
 	}
     public  void    AddResource_CallByCommand( int resourceID, Vector3 _Position, Quaternion _Rotation, int _OwnerID )
 	{
@@ -165,6 +167,9 @@ public class ResourceCreator : NetworkBehaviour
 		rTrans.position = _Position;
 		rTrans.rotation = _Rotation;
 
+		//	保存
+		m_prevAddResource = rObj;
+
         //  所有者を登録
         RTSResourece_Control    rControl    =   rObj.GetComponent< RTSResourece_Control >();
         rControl.c_OwnerID  =   _OwnerID;
@@ -174,18 +179,6 @@ public class ResourceCreator : NetworkBehaviour
 
 		//	リソース配置フラグをセット
 		m_resourcesInformation.SetGridInformation( rObj, _Position, true );
-
-        if ( rObj == null )
-        {
-            return;
-        }
-
-        //ResourceAppear apper = rObj.GetComponent<ResourceAppear>();
-        //if (apper != null)
-        //{
-        //    apper.enabled = true;
-        //}
-
     }
 
 	public void SetGuideVisibleDisable()

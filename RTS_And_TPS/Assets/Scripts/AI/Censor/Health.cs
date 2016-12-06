@@ -161,9 +161,9 @@ public class Health : NetworkBehaviour {
         }
     }
 
-    public  void    CorrectionHP(int level,float correcion_rate)
+    public  void   CorrectionHP(int level,float correcion_rate)
     {
-        MaxHP   =   DefaultHP * level * correcion_rate;
+        MaxHP   =   DefaultHP + (level * correcion_rate);
         HP      =   MaxHP;
         Level   =   level;
     }

@@ -132,14 +132,16 @@ public class EditManager : MonoBehaviour {
         public  bool                m_UseTest       =   false;
         public  bool                m_UseSetting    =   false;
         public  bool                m_UseLog        =   false;
+		public	bool		m_UseGameWorldParameter	=	false;
 
-        private Window_ToolBox      m_rToolBox      =   null;
+		private Window_ToolBox      m_rToolBox      =   null;
         private Window_MapConfig    m_rMapConfig    =   null;
         private Window_FileMenu     m_rFileMenu     =   null;
         private Window_Info         m_rInfo         =   null;
         private Window_Block        m_rBlock        =   null;
+		private Window_GameWorldParameter m_rGameWorldParameter = null;
 
-        public  WindowOversee( EditManager _rEditManager )
+		public  WindowOversee( EditManager _rEditManager )
         {
             m_rParent       =   _rEditManager;
             m_WindowRect    =   FunctionManager.AdjustRectCanvasToGUI(
@@ -153,7 +155,8 @@ public class EditManager : MonoBehaviour {
             m_rFileMenu     =   new Window_FileMenu( _rEditManager, this );
             m_rInfo         =   new Window_Info( _rEditManager, this );
             m_rBlock        =   new Window_Block( _rEditManager, this );
-        }
+			m_rGameWorldParameter =	new Window_GameWorldParameter(_rEditManager, this);
+		}
 
         public  void    Update()
         {
@@ -162,7 +165,7 @@ public class EditManager : MonoBehaviour {
                 float   screenRatio =   Screen.width / 1024.0f;
                 m_WindowRect        =   FunctionManager.AdjustRectCanvasToGUI(
                     FunctionManager.AR_TYPE.BOTTOM_LEFT,
-                    new Rect( ( int )( 10 * screenRatio ), ( int )( 50 * screenRatio ), 140, 200 ),
+                    new Rect( ( int )( 10 * screenRatio ), ( int )( 50 * screenRatio ), 190, 230 ),
                     new Vector2( 0, 0 )
                 );
                 GUI.Window( 0, m_WindowRect, WindowProc, "Window" );
@@ -174,7 +177,8 @@ public class EditManager : MonoBehaviour {
             if( m_UseOutput )       m_rFileMenu.Update();
             if( m_UseInfo )         m_rInfo.Update();
             if( m_UseBox )          m_rBlock.Update();
-        }
+			if( m_UseGameWorldParameter ) m_rGameWorldParameter.Update();
+		}
         private void    WindowProc( int _WindowID )
         {
             //  閉じる
@@ -221,12 +225,18 @@ public class EditManager : MonoBehaviour {
                 }
                 offsetY +=  space;
 
-                //  カメラ
-                //m_UseCamera     =   GUI.Toggle( new Rect( 10, offsetY, 100, 20 ), m_UseCamera, "  Camera" );
-                //offsetY +=  space;
+				//  ゲームワールド能力設定
+				if (CheckChangeBool_True(ref m_UseGameWorldParameter, GUI.Toggle(new Rect(10, offsetY, 200, 20), m_UseGameWorldParameter, "  GameWorldParameter"))){
+					m_rGameWorldParameter.InitWindowRect();
+				}
+				offsetY += space;
 
-                //  テスト
-                m_UseTest       =   GUI.Toggle( new Rect( 10, offsetY, 100, 20 ), m_UseTest, "  Play Test" );
+				//  カメラ
+				//m_UseCamera     =   GUI.Toggle( new Rect( 10, offsetY, 100, 20 ), m_UseCamera, "  Camera" );
+				//offsetY +=  space;
+
+				//  テスト
+				m_UseTest       =   GUI.Toggle( new Rect( 10, offsetY, 100, 20 ), m_UseTest, "  Play Test" );
                 offsetY +=  space;
 
                 //  設定
@@ -1071,8 +1081,159 @@ public class EditManager : MonoBehaviour {
             return  m_WindowRect.Overlaps( new Rect( _ScreenPoint.x, _ScreenPoint.y, 1, 1 ), true );
         }
     }
-    //  ブロックウィンドウ
-    class   Window_Block
+	//	ゲームワールド能力設定ウィンドウ
+	class   Window_GameWorldParameter
+	{
+		private EditManager		m_rParent		=	null;
+		private WindowOversee	m_rOversee		=	null;
+		private Rect			m_WindowRect	=	new Rect();
+
+		private Vector2 scrollViewVector = Vector2.zero;
+
+		private bool Resizeing = false;
+		private float ClickY = .0f;
+		private float ClickHeight = .0f;
+
+		public Window_GameWorldParameter(EditManager _rParent, WindowOversee _rOversee)
+		{
+			m_rParent = _rParent;
+			m_rOversee = _rOversee;
+
+			InitWindowRect();
+		}
+		public void Update()
+		{
+			m_WindowRect = GUI.Window(6, m_WindowRect, WindowProc, "GameWorldParameter");
+			if (Input.GetMouseButtonUp(0))
+			{
+				Resizeing = false;
+			}
+
+		}
+		private void WindowProc(int _WindowID)
+		{
+			//  閉じるボタン
+			{
+				Rect rect = FunctionManager.AdjustRectCanvasToGUI(
+					FunctionManager.AR_TYPE.TOP_RIGHT,
+					new Rect(-6.0f, -5.0f, 14.0f, 10.0f),
+					new Vector2(1.0f, 1.0f),
+					new Vector2(m_WindowRect.width, m_WindowRect.height)
+				);
+				if (GUI.Button(rect, ""))
+				{
+					m_rOversee.m_UseGameWorldParameter = false;
+				}
+			}
+
+
+
+			//  ドラッグできるようにする
+			GUI.DragWindow(new Rect(0, 0, m_WindowRect.width, 18));
+
+
+
+			//  項目の表示
+			{
+				float space = 22.0f;
+				float offsetY = 24.0f - 18.0f;
+				scrollViewVector = GUI.BeginScrollView(new Rect(0, 18, m_WindowRect.width, m_WindowRect.height - 18 - 30), scrollViewVector, new Rect(0, 0, 0, 500));
+				GameWorldParameter param = GameWorldParameter.instance;
+
+				//  項目の表示
+				{
+					DispLabel("-----TPSプレイヤー-----", ref offsetY, space);
+					DispValue("体力", ref param.TPSPlayer.Health, ref offsetY, space);
+					DispValue("移動速度", ref param.TPSPlayer.WalkSpeed, ref offsetY, space);
+					DispValue("ジャンプ力", ref param.TPSPlayer.JumpPower, ref offsetY, space);
+					DispValue("ホバー力", ref param.TPSPlayer.HoverPower, ref offsetY, space);
+					DispValue("ホバー速度", ref param.TPSPlayer.HoverSpeed, ref offsetY, space);
+					DispValue("ホバー時間", ref param.TPSPlayer.HoverTime, ref offsetY, space);
+					DispValue("ステップ量", ref param.TPSPlayer.StepPower, ref offsetY, space);
+					DispLabel("", ref offsetY, space);
+					DispLabel("-----RTSプレイヤー-----", ref offsetY, space);
+					DispValue("体力", ref param.RTSPlayer.Health, ref offsetY, space);
+					DispValue("移動速度", ref param.RTSPlayer.WalkSpeed, ref offsetY, space);
+					DispValue("作成コスト倍率", ref param.RTSPlayer.ResourceCreateCostMultiple, ref offsetY, space);
+					DispValue("強化コスト倍率", ref param.RTSPlayer.ResourceLevelUpCostMultiple, ref offsetY, space);
+					DispValue("破壊換金量倍率", ref param.RTSPlayer.ResourceBreakCostMultiple, ref offsetY, space);
+					DispLabel("", ref offsetY, space);
+					DispLabel("-----敵-----", ref offsetY, space);
+					DispValue("出現個数倍率", ref param.RTSPlayer.ResourceCreateCostMultiple, ref offsetY, space);
+					DispValue("体力倍率", ref param.Enemy.HealthMultiple, ref offsetY, space);
+
+
+
+
+
+
+
+
+
+
+					offsetY += space;
+				}
+				GUI.EndScrollView();
+				#if     UNITY_EDITOR
+				if(GUI.Button(new Rect(10, m_WindowRect.height - 30, 200,20), "インスペクタ表示"))
+				{
+						Selection.objects = new GameObject[] { param.gameObject };
+				}
+				#endif
+
+				if (GUI.RepeatButton(new Rect(0, m_WindowRect.height - 10, m_WindowRect.width, 10), "▼"))
+				{
+
+					Resizeing = true;
+					ClickHeight = m_WindowRect.height;
+					ClickY = Input.mousePosition.y;
+
+				}
+				if (Resizeing == true)
+				{
+					m_WindowRect.height = ClickHeight + (ClickY - Input.mousePosition.y);
+					if (m_WindowRect.height < 60)
+						m_WindowRect.height = 60;
+				}
+
+			}
+
+
+		}
+
+		void DispValue(string name,ref float value ,ref float offsetY,float space)
+		{
+			GUI.Label(new Rect(10, offsetY, 100, 20), name);
+			string ret = GUI.TextField(new Rect(200, offsetY, 90, 20),value.ToString());
+			value = float.Parse(ret);
+
+
+			offsetY += space;
+		}
+		void DispLabel(string name, ref float offsetY, float space)
+		{
+			GUI.Label(new Rect(10, offsetY, 400, 20), name);
+
+			offsetY += space;
+		}
+		public void InitWindowRect()
+		{
+			m_WindowRect = FunctionManager.AdjustRectCanvasToGUI(
+				FunctionManager.AR_TYPE.TOP_RIGHT,
+				new Rect(-20, -20, 480, 94),
+				new Vector2(1.0f, 1.0f)
+			);
+		}
+		public bool CheckOverlap(Vector2 _ScreenPoint)
+		{
+			_ScreenPoint = FunctionManager.ScreenToGUI(_ScreenPoint);
+			return m_WindowRect.Overlaps(new Rect(_ScreenPoint.x, _ScreenPoint.y, 1, 1), true);
+		}
+
+	}
+
+	//  ブロックウィンドウ
+	class   Window_Block
     {
         private EditManager     m_rParent       =   null;
         private WindowOversee   m_rOversee      =   null;

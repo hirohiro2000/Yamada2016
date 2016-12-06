@@ -21,13 +21,12 @@ public class EnemyTaskDirector : MonoBehaviour {
     public GameObject            m_owner { get; private set; }
     public AnimationController m_anime_controller { get; private set; }
 
-   // Text test_text = null;
-    //Text task_text = null;
-
     void Awake()
     {
-        //test_text = GameObject.Find("TargetText").GetComponent<Text>();
-        //task_text = GameObject.Find("TaskText").GetComponent<Text>();
+        m_task_folder = transform.FindChild("TaskHolder").gameObject;
+        m_anime_controller = GetComponent<AnimationController>();
+        m_owner = gameObject;
+        InitializeTaskArray();
     }
 
     void InitializeTaskArray()
@@ -47,10 +46,10 @@ public class EnemyTaskDirector : MonoBehaviour {
 	// なぜかEnemyController::Updateが先に呼ばれている現象が発生
 	void Start ()
     {
-        m_task_folder = transform.FindChild("TaskHolder").gameObject;
-        m_anime_controller = GetComponent<AnimationController>();
-        m_owner = gameObject;
-        InitializeTaskArray();
+        //m_task_folder = transform.FindChild("TaskHolder").gameObject;
+        //m_anime_controller = GetComponent<AnimationController>();
+        //m_owner = gameObject;
+        //InitializeTaskArray();
         //m_task_folder = transform.FindChild("TaskHolder").gameObject;
         //m_anime_controller = GetComponent<AnimationController>();
         //m_owner = gameObject;
@@ -149,5 +148,12 @@ public class EnemyTaskDirector : MonoBehaviour {
        
     }
 
+    public void SetWaveparamtor(EnemyWaveParametor param)
+    {
+        foreach(var task in m_task_array)
+        {
+            task.SetWaveParametor(param);
+        }
+    }
 
 }

@@ -63,6 +63,15 @@ public class TPSPlayer_HP : NetworkBehaviour {
         m_rNetPlayer    =   GetComponent< NetPlayer_Control >();
 
         //  パラメータ初期化
+		if(GameWorldParameter.instance != null)
+		{
+			//女の子か
+			if(GetComponent<GirlController>() != null)
+				m_MaxHP = GameWorldParameter.instance.RTSPlayer.Health;
+			else
+				m_MaxHP = GameWorldParameter.instance.TPSPlayer.Health;
+		}
+		
         m_CurHP         =   m_MaxHP;
 
         //  ローカルでのみ処理を行う
@@ -172,8 +181,12 @@ public class TPSPlayer_HP : NetworkBehaviour {
 	//  Update is called once per frame
 	void    Update()
     {
-        //  サーバー側での処理
-        if( NetworkServer.active )  Update_InServer();
+		//GameWorldParameterにより直接書き換える
+		{
+			c_DamageHeight = GameWorldParameter.instance.TPSPlayer.FallDamageHeight;
+		}
+		//  サーバー側での処理
+		if ( NetworkServer.active )  Update_InServer();
 	    //  ローカルでの処理（サーバーと重複する）
         if( isLocalPlayer )         Update_InLocal();
 	}

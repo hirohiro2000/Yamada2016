@@ -12,7 +12,13 @@ public class LevelParam
 	public int			power		= 0;
 	public float		range		= 1.0f;
 	public float		interval	= 0;
-	public int			upCost		= 0;
+	[SerializeField]
+	private int			upCost		= 0;
+
+	public int GetUpCost()
+	{
+		return (int)(upCost * GameWorldParameter.instance.RTSPlayer.ResourceLevelUpCostMultiple);
+	}
 }
 
 
@@ -27,8 +33,10 @@ public class ResourceParameter : NetworkBehaviour
 	public string		m_name;
 	public string		m_summary;
 
-	public int			m_createCost		= 0;
-	public int			m_breakCost			= 0;
+	[SerializeField]
+	private int			m_createCost		= 0;
+	[SerializeField]
+	private int			m_breakCost			= 0;
 
 	[HideInInspector, SyncVar]
 	public int			m_level				= 0;
@@ -89,8 +97,16 @@ public class ResourceParameter : NetworkBehaviour
 	{
 		return m_levelInformations.Length-1 > m_level;
 	}
-	
-	
+	public int GetCreateCost()
+	{
+		return (int)(m_createCost * GameWorldParameter.instance.RTSPlayer.ResourceCreateCostMultiple);
+    }
+	public int GetBreakCost()
+	{
+		return (int)(m_breakCost * GameWorldParameter.instance.RTSPlayer.ResourceBreakCostMultiple);
+	}
+
+
 	//-------------------------------------------------------------
 	//	set
 	//-------------------------------------------------------------
@@ -127,8 +143,13 @@ public class ResourceParameter : NetworkBehaviour
 		}
 	}
 
-    //  リクエスト
-    [ ClientRpc ]
+	public void SetCreateCost(int value)
+	{
+		m_createCost = value;
+	}
+
+	//  リクエスト
+	[ ClientRpc ]
     void    RpcSetActive( bool _IsActive )
     {
         gameObject.SetActive( _IsActive );
