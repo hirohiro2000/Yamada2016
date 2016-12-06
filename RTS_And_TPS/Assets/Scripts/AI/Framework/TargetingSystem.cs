@@ -5,13 +5,14 @@ using System.Linq;
 
 public class TargetingSystem : MonoBehaviour {
 
-    public GameObject                                          m_current_target { get; private set; }
-    public  float                                                    m_score { get; private set; }
-    public ViewMessageWrapper.MessageType      m_message_type { get; private set; }
-    public bool                                                     m_is_static{ get; private set; }
+    public GameObject                                         m_current_target { get; private set; }
+    public  float                                                     m_score { get; private set; }
+    public ViewMessageWrapper.MessageType  m_message_type { get; private set; }
+    public bool                                                      m_is_static{ get; private set; }
     public PerceiveTag                                          m_target_tag { get; private set; }
     private TargetingParam                                   m_param;
     private readonly float                                      m_base_score = 100.0f;
+    public PointQuerySystem                                m_pqs { get; private set; }
 
     private VisibilitySystem m_visibility;
 
@@ -19,6 +20,7 @@ public class TargetingSystem : MonoBehaviour {
     {
         m_param = GetComponent<TargetingParam>();
         m_visibility = GetComponent<VisibilitySystem>();
+        m_pqs = GetComponent<PointQuerySystem>();
     }
 
     // Use this for initialization
@@ -62,18 +64,16 @@ public class TargetingSystem : MonoBehaviour {
         bool is_static,
         PerceiveTag target_tag)
     {
-       // if (m_current_target)
-       // {
-         //   var temp = m_current_target.GetComponent<RendererSwitch>();
-         //   temp.Disable();
-        //}
         m_current_target = next_target;
         m_message_type = message_type;
         m_score = score;
         m_is_static = is_static;
         m_target_tag = target_tag;
         //var render_switch = m_current_target.GetComponent<RendererSwitch>();
-       // render_switch.Activate();
+        // render_switch.Activate();
+
+        if (m_pqs)
+            m_pqs.ClearPointList();
     }
         
 
@@ -133,6 +133,9 @@ public class TargetingSystem : MonoBehaviour {
         m_current_target = null;
         m_message_type = ViewMessageWrapper.MessageType.Error;
         m_score = .0f;
+
+        if (m_pqs)
+            m_pqs.ClearPointList();
     }
 
     /**

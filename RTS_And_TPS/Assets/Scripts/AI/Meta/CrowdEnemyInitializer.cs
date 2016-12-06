@@ -8,18 +8,13 @@ public class CrowdEnemyInitializer : EnemyInitializerBase {
     public  int         c_PopCount      =   5;
 
     IEnumerator Init(Vector3 respawn_pos,
-        StringList route_list,
-        int level,
-        float HPCorrectionRate)
+                               EnemyWaveParametor param)
     {
-        yield return null;
-        //transform.position = respawn_pos;
-
         //  エネミーを生成
         for( int i = 0; i < c_PopCount; i++ ){
             GameObject      rObj    =   Instantiate( c_GenerateEnemy );
             NavMeshAgent    rAgent  =   rObj.GetComponent< NavMeshAgent >();
-
+            yield return null;
             //  初期座標にワープ 
             rAgent.Warp( respawn_pos );
 
@@ -28,8 +23,11 @@ public class CrowdEnemyInitializer : EnemyInitializerBase {
             
             //  体力設定     
             Health  rHealth =   rObj.GetComponent< Health >();
-            if( rHealth )   rHealth.CorrectionHP( level, HPCorrectionRate );
+            if( rHealth )   rHealth.CorrectionHP(param.m_current_level, param.GetHPUpPoint());
             else            UserLog.ErrorTerauchi( rObj.name + "no attach Health !!" );
+
+            var controller = rObj.GetComponent<EnemyController>();
+            controller.SetWaveParametor(param);
         }
 
         //  殻は破棄する
@@ -73,11 +71,9 @@ public class CrowdEnemyInitializer : EnemyInitializerBase {
     }
 
     public override void Execute(Vector3 respawn_pos,
-        StringList route_list,
-        int level,
-        float HPCorrectionRate)
+                                        EnemyWaveParametor param)
     {
-        StartCoroutine(Init(respawn_pos, route_list, level, HPCorrectionRate));
+        StartCoroutine(Init(respawn_pos, param));
     }
 
 }

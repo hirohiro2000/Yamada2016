@@ -4,7 +4,8 @@ using System.Collections;
 public class NormalEnemyInitializer : EnemyInitializerBase {
 
 
-    public override void Execute(Vector3 respawn_pos, StringList route_list, int level, float HPCorrectionRate)
+    public override void Execute(Vector3 respawn_pos,
+        EnemyWaveParametor param)
     {
         var nav_agent = gameObject.GetComponent<NavMeshAgent>();
         nav_agent.Warp(respawn_pos);
@@ -17,7 +18,7 @@ public class NormalEnemyInitializer : EnemyInitializerBase {
         }
         else
         {
-            controller.SetRouteData(route_list);
+            //controller.SetRouteData(route_list);
         }
         //体力設定     
         var health = gameObject.GetComponent<Health>();
@@ -27,8 +28,10 @@ public class NormalEnemyInitializer : EnemyInitializerBase {
         }
         else
         {
-            health.CorrectionHP(level, HPCorrectionRate);
+            health.CorrectionHP(param.m_current_level -1, param.GetHPUpPoint());
         }
+        //taskに対してのInitialize(awake語)
+        controller.SetWaveParametor(param);
     }
 
 }

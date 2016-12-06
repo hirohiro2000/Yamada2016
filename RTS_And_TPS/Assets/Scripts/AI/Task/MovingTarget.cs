@@ -104,12 +104,12 @@ public class MovingTarget : TaskBase
         {
             UserLog.Terauchi("Target lost");
         }
-        foreach(var it in m_navmesh_cost_dictionary)
-        {
-            NavMesh.SetAreaCost(NavMesh.GetAreaFromName(it.Key), it.Value);
-        }
-        //コスト設定を行った後、ゴールを更新する（経路探索が走る）
-        m_cost_function();
+        //foreach(var it in m_navmesh_cost_dictionary)
+        //{
+        //    NavMesh.SetAreaCost(NavMesh.GetAreaFromName(it.Key), it.Value);
+        //}
+        ////コスト設定を行った後、ゴールを更新する（経路探索が走る）
+       // m_cost_function();
         m_navmesh_accessor.SetDestination(m_target_point);
         //m_path_renderer.SetVertexCount(m_navmesh_accessor.path.corners.Length);
         //m_path_renderer.SetPositions(m_navmesh_accessor.path.corners);
@@ -174,7 +174,7 @@ public class MovingTarget : TaskBase
             m_cost_function = AllNormalCost;
         }
         CalculateUpdateInterval(target_system);
-        m_cost_function();
+      //  m_cost_function();
         m_navmesh_accessor.SetDestination(m_target_point);
         
     }

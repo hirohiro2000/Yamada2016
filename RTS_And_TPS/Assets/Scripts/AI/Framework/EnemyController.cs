@@ -16,6 +16,9 @@ public class EnemyController : NetworkBehaviour {
     public delegate void          Deadlistener(GameObject dead_enemy);
     private Deadlistener           m_dead_callback;   //死んだときにEnemyGeneratorに通知するためのコールバック
     
+    /**
+    *@note　現在未使用
+    */
     public void SetRouteData(StringList route_data)
     {
         var move_target = GetComponentInChildren<MovingTarget>();
@@ -103,4 +106,9 @@ public class EnemyController : NetworkBehaviour {
             m_task_director.PlanningTask(m_target_director);
         }
 	}
+
+    public void SetWaveParametor(EnemyWaveParametor param)
+    {
+        m_task_director.SetWaveparamtor(param);
+    }
 }

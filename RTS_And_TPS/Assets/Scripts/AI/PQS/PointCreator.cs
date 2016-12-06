@@ -173,11 +173,6 @@ public class PointCreator
         Transform target,
         Vector3 candidate_pos,float target_height)
     {
-        //まずは計算の軽いBaseFilterでフィルタリングを行う
-        //if (!m_basic_filter.IsCanCreate(query_info,target, candidate_pos))
-        //{
-        //    return false;
-        //}
         //Queryのフィルタをパスすれば生成可能とする
         return query_info.FilteringCandidatePoint(target, candidate_pos, target_height);
     }

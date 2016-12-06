@@ -48,6 +48,7 @@ public class EnemyGenerator : NetworkBehaviour
     private float m_sparn_interval = 1.0f;
     private static readonly int CanAllRoute = 0;
     private bool m_is_running = false;
+    private EnemyWaveParametor m_parametor = null;
 
     //private List<GameObject> m_current_hierarchy_list = new List<GameObject>();
     private List< GameObject >  m_rActiveEnemyList  =   new List< GameObject >();
@@ -76,6 +77,11 @@ public class EnemyGenerator : NetworkBehaviour
     public void BeginGenerate(int wave_level,int num_spawn,float delay_second)
     {
         m_is_running = true;
+        m_parametor.LevelUp();
+        num_spawn = Mathf.Clamp(
+            m_parametor.GetNumStartSpawnEnemy() + (m_parametor.GetNumIncrementSpawnEnemy() * (m_parametor.m_current_level -1)),
+            1,
+            m_parametor.GetNumMaxSpawnEnemy());
         StartCoroutine(Execute(wave_level, num_spawn,delay_second));
     }
 
@@ -120,6 +126,7 @@ public class EnemyGenerator : NetworkBehaviour
         }
 
         m_generate_director = GetComponent<EnemyDirectorBase>();
+        m_parametor = GetComponent<EnemyWaveParametor>();
         m_navigation_data_list = new List<NavigationRouteData>();
         InitializeSpawnPoint();
     }
@@ -220,7 +227,7 @@ public class EnemyGenerator : NetworkBehaviour
         }
 
         var initializer = ret_object.GetComponent<EnemyInitializerBase>();
-        initializer.Execute(respawn_point, route_list, level, HPCorrectionRate);
+        initializer.Execute(respawn_point, m_parametor);
         //ret_object.transform.parent = this.transform;
         return ret_object;
     }

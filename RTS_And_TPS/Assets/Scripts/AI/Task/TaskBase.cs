@@ -20,6 +20,11 @@ public class TaskBase : MonoBehaviour {
       
     }
     
+    public virtual void SetWaveParametor(EnemyWaveParametor param)
+    {
+        
+    }
+
     public virtual Status Execute(TargetingSystem target_system,
                                            EnemyTaskDirector task_director
                                            )
