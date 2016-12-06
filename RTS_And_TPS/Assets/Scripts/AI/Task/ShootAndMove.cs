@@ -14,7 +14,7 @@ public class ShootAndMove : TaskBase {
     private GameObject BulletObject = null;
 
     [SerializeField, HeaderAttribute("弾を発射する間隔(秒)")]
-    private float ShotIntarvalSecond = 1.0f;
+    private float ShotIntarvalSecond = 3.0f;
 
     [SerializeField, HeaderAttribute("弾の速度")]
     private float ShotPower = 2.0f;
@@ -46,6 +46,9 @@ public class ShootAndMove : TaskBase {
     delegate void TargetingPointFunction(TargetingSystem target_system);
     private TargetingPointFunction m_targeting_function;
 
+    //変更するかも
+    private float m_target_height = 0.3f;
+ 
     void Awake()
     {
       //  m_navmesh_accessor = transform.root.GetComponent<NavMeshAgent>();
@@ -71,8 +74,8 @@ public class ShootAndMove : TaskBase {
         if (!target_system.m_pqs.CalculateNewPoint(m_pqs_info,
             target_system.m_current_target.transform,
             m_owner_object.transform,
-            0.3f,
-            0.3f,
+            m_target_height,
+            m_target_height,
            out result))
         {
             m_move_point = Vector3.zero;
@@ -101,7 +104,7 @@ public class ShootAndMove : TaskBase {
        if(!target_system.m_pqs.IsValidCurrentPoint(target_system.m_current_target.transform,
            m_move_point,
            m_pqs_info,
-           0.3f))
+           m_target_height))
         {
             CalculateNewMovePoint(target_system);
             return;
@@ -164,7 +167,7 @@ public class ShootAndMove : TaskBase {
     {
         while(m_is_active)
         {
-            StartCoroutine(BurstShoot(target_system));
+            StartCoroutine(BurstShoot(target_system,0.3f));
             yield return new WaitForSeconds(ShotIntarvalSecond);
         }
     }
@@ -246,20 +249,32 @@ public class ShootAndMove : TaskBase {
     //    }
     //}
 
-    IEnumerator BurstShoot(TargetingSystem target_system)
+    private bool IsCanLineofFire(TargetingSystem target_system,
+        float target_height)
+    {
+        var line_of_fire = GetComponent<PFilterLineofFire>();
+        return line_of_fire.IsCanCreate(target_system.m_current_target.transform, m_owner_object.transform.position, target_height);
+    }
+
+    IEnumerator BurstShoot(TargetingSystem target_system,float target_height)
     {
 
         for (int i = 0; i < m_num_burstshot; i++)
         {
+            //射線が通ってなかったら射撃しない
+            if(!IsCanLineofFire(target_system,target_height))
+            {
+                break;
+            }
             GameObject shot_object = Instantiate(BulletObject);
             shot_object.transform.position = m_shoot_object.transform.position;
             Vector3 target_position = target_system.m_current_target.transform.position;
             //とりあえずちょっと上にあげた後に散らばらせる
             //ここの散らばらせ方はそのうち帰るかも
             target_position += new Vector3(
-                UnityEngine.Random.Range(-0.3f, 0.3f),
-                 0.7f + UnityEngine.Random.Range(-0.3f, 0.3f),
-                 UnityEngine.Random.Range(-0.3f, 0.3f));
+                UnityEngine.Random.Range(-0.5f, 0.5f),
+                 0.7f + UnityEngine.Random.Range(-0.4f, 0.4f),
+                 UnityEngine.Random.Range(-0.5f, 0.5f));
          
             Vector3 vec = (target_position - shot_object.transform.position).normalized * ShotPower;
             var rigid_body = shot_object.GetComponent<Rigidbody>();
@@ -272,9 +287,7 @@ public class ShootAndMove : TaskBase {
             {
                 UserLog.ErrorTerauchi(m_owner_object.name + "ShootAndMove Bullet No attach RigidBody!!");
             }
-
-            //Debug.Log("Fire!!");
-            yield return new WaitForSeconds((1.0f / 60.0f) * 3.0f);
+            yield return new WaitForSeconds(ShotIntarvalSecond);
         }
 
     }
