@@ -210,6 +210,7 @@ public class ResourceInformation : NetworkBehaviour
         else		    return  rObj.GetComponent< ResourceParameter >();
 	}
 
+
 	
 	//---------------------------------------------------------------------
 	//  set
