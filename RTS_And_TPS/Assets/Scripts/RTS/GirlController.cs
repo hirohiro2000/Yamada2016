@@ -6,11 +6,6 @@ using UnityEngine.UI;
 
 public class GirlController : NetworkBehaviour 
 {
-//	private	GameObject			m_buttonOk					= null;
-//	private	GameObject			m_buttonCancel				= null;
-//	private	GameObject			m_buttonLevel				= null;
-//	private	GameObject			m_buttonBreak				= null;
-//	private	GameObject			m_towerInfoPanel			= null;
     private UIGirlTaskSelect    m_uiGirlTaskSelect          = null;
 
 	private ResourceInformation	m_resourceInformation		= null;
@@ -18,6 +13,8 @@ public class GirlController : NetworkBehaviour
 	private ItemController		m_itemCntroller				= null;
     private Rigidbody           m_rRigid                    = null;
     private RTS_PlayerAnimationController m_animationController = null;
+
+	private GirlDroneSwitcher	m_cameraSwitcher			= null;
 
 	private const KeyCode		m_okKey						= KeyCode.J;
 	private const KeyCode		m_cancelKey					= KeyCode.L;
@@ -31,6 +28,7 @@ public class GirlController : NetworkBehaviour
 		Common,
 		CreateResource,
 		ConvertResource,
+		Drone,
 	}
 	private ActionState			m_actionState	= ActionState.Common;
     
@@ -47,28 +45,22 @@ public class GirlController : NetworkBehaviour
         m_uiGirlTaskSelect.m_rItemCntroller          = GetComponent<ItemController>();
         m_uiGirlTaskSelect.Clear();
 
-//		m_buttonOk						= GameObject.Find("Canvas").transform.FindChild("Button_OK").gameObject;
-//		m_buttonCancel					= GameObject.Find("Canvas").transform.FindChild("Button_Cancel").gameObject;
-//		m_buttonLevel					= GameObject.Find("Canvas").transform.FindChild("Button_Level").gameObject;
-//		m_buttonBreak					= GameObject.Find("Canvas").transform.FindChild("Button_Break").gameObject;
-//		m_towerInfoPanel				= GameObject.Find("Canvas").transform.FindChild("Tower_Info").gameObject;
-//		UserLog.Kawaguchi(m_towerInfoPanel);
-
+		//
 		m_resourceInformation			= GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
 		m_resourceCreator				= GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
 		m_itemCntroller					= GetComponent<ItemController>();
-        m_rRigid                        = GetComponent< Rigidbody >();
-
+  		m_cameraSwitcher				= GetComponent<GirlDroneSwitcher>();
+		m_rRigid                        = GetComponent< Rigidbody >();
+		
         // 適当に
         m_navAgent                      = gameObject.AddComponent<NavMeshAgent>();
-        m_navAgent.acceleration = float.MaxValue;
-        m_navAgent.angularSpeed = float.MaxValue;
-        m_navAgent.stoppingDistance = 1.0f;
+        m_navAgent.acceleration			= float.MaxValue;
+        m_navAgent.angularSpeed			= float.MaxValue;
+        m_navAgent.stoppingDistance		= 1.0f;
         m_navAgent.Warp( transform.position );
         m_navAgent.ResetPath();
         
         m_animationController = GetComponent< RTS_PlayerAnimationController >();
-
     }
 
 	//	Write to the FixedUpdate if including physical behavior
@@ -84,7 +76,7 @@ public class GirlController : NetworkBehaviour
         //  座標調整（いまだけ）
         {
             //  飛ぶ
-            if (Input.GetKey(KeyCode.M))
+            if (Input.GetKey( KeyCode.M ))
             {
                 m_rRigid.AddForce(Vector3.up * m_LiftingForce * Time.deltaTime * 60.0f);
                 if (m_navAgent.enabled)
@@ -112,6 +104,7 @@ public class GirlController : NetworkBehaviour
 		case ActionState.Common:			UpdateCommon();		break;
 		case ActionState.CreateResource:	CreateResource();	break;
 		case ActionState.ConvertResource:	ConvertResource();	break;
+		case ActionState.Drone:				UpdateDrone();		break;
 		}
 	}
 	void FixedUpdate () 
@@ -124,7 +117,6 @@ public class GirlController : NetworkBehaviour
 		case ActionState.Common:    Move();		break;
 		}
 	}
-
     void Move()
     {
         MovedByKey();
@@ -158,6 +150,7 @@ public class GirlController : NetworkBehaviour
 
 
     }
+
 
     //---------------------------------------------------------------------
 	//      すてーと
@@ -227,7 +220,7 @@ public class GirlController : NetworkBehaviour
                 m_navAgent.speed        = m_moveSpeed;
 
                 NavMeshPath path = new NavMeshPath();
-                if ( m_navAgent.CalculatePath( m_resourceInformation.ComputeGridPosition( hit.point ), path )) ;
+                if ( m_navAgent.CalculatePath( m_resourceInformation.ComputeGridPosition( hit.point ), path ))
                 {
                     m_navAgent.SetPath(path);
                 }
@@ -239,11 +232,6 @@ public class GirlController : NetworkBehaviour
 
 	void UpdateCommon()
 	{
-//		m_buttonOk.SetActive(false);
-//		m_buttonLevel.SetActive(false);
-//		m_buttonBreak.SetActive(false);
-//		m_buttonCancel.SetActive(false);
-//		m_towerInfoPanel.SetActive(false);
         m_uiGirlTaskSelect.Clear();
 		m_resourceCreator.SetGuideVisibleDisable();
 
@@ -259,16 +247,10 @@ public class GirlController : NetworkBehaviour
 
 		if( m_resourceInformation.CheckExistResourceFromPosition( transform.position ) )
 		{
-//			m_buttonLevel.SetActive(true);
-//			m_buttonBreak.SetActive(true);
-//			m_buttonCancel.SetActive(true);
 			m_actionState = ActionState.ConvertResource;
 		}
 		else
 		{
-//			m_buttonOk.SetActive( true );
-//			m_buttonCancel.SetActive( true );
-//			m_towerInfoPanel.SetActive(true);
 			m_actionState = ActionState.CreateResource;
 		}
 	}
@@ -277,13 +259,6 @@ public class GirlController : NetworkBehaviour
 		var forcusID	= m_itemCntroller.GetForcus();
 		var forcusParam = m_itemCntroller.GetForcusResourceParam();
 
-//		//	リソースのUI設定
-//		m_buttonOk.transform.FindChild("Point").GetComponent<Text>().text = "-" + forcusParam.m_createCost.ToString();
-//		m_towerInfoPanel.transform.FindChild("Kind").GetComponent<Text>().text = "種類:　　　" + forcusParam.m_name;
-//		m_towerInfoPanel.transform.FindChild("Summary").GetComponent<Text>().text = "概要:　　　" + forcusParam.m_summary;
-//		m_towerInfoPanel.transform.FindChild("Power").GetComponent<Text>().text = "攻撃力:　　" + forcusParam.GetLevelParam(0).power;
-//		m_towerInfoPanel.transform.FindChild("Interval").GetComponent<Text>().text = "発射間隔:　" + forcusParam.GetLevelParam(0).interval + "秒/発";
-		
 		//	リソースの範囲表示更新
 		m_resourceCreator.UpdateGuideResource( forcusID, transform.position );
 		m_resourceCreator.UpdateGuideRange( forcusID, transform.position );
@@ -293,10 +268,23 @@ public class GirlController : NetworkBehaviour
 		if( ( Input.GetKeyDown( m_okKey )  || uiResult == UIGirlTaskSelect.RESULT.eOK ) &&
 			m_itemCntroller.CheckWhetherTheCostIsEnough() )
 		{
-			m_resourceCreator.AddResource( forcusID );
+			var obj = m_resourceCreator.AddResource( forcusID );
 			m_itemCntroller.AddResourceCost( -forcusParam.GetCreateCost());
-			m_actionState = ActionState.Common;
-            return;
+			//m_actionState = ActionState.Common;
+
+
+			//	置かれたのがドローンだったらドローン操作に切り替え
+			const int droneID = 8;
+			if( forcusID == droneID )
+			{
+				m_cameraSwitcher.On( obj );
+				m_actionState = ActionState.Drone;
+			}
+			else
+			{
+				m_actionState = ActionState.Common;
+			}
+			return;
 		}
 		if( Input.GetKeyDown( m_cancelKey ) || uiResult == UIGirlTaskSelect.RESULT.eCancel || Input.GetMouseButtonDown(1)  )
 		{
@@ -307,14 +295,13 @@ public class GirlController : NetworkBehaviour
 	void ConvertResource()
 	{
 		var param = m_resourceInformation.GetResourceParamFromPosition( transform.position );
-        if( !param ){
+
+		//	今いるマスにリソースがなかった
+        if( param == null )
+		{
             m_actionState   =   ActionState.Common;
             return;
         }
-
-//		//	リソースのUI設定
-//		m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().upCost.ToString();
-//		m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.m_breakCost.ToString();
 
 		//	リソースの範囲表示更新
 		m_resourceCreator.UpdateGuideRange( transform.position );
@@ -342,8 +329,19 @@ public class GirlController : NetworkBehaviour
             CmdBreakResource( transform.position );
 			return;
 		}
-
 	}
+	void UpdateDrone()
+	{
+		m_uiGirlTaskSelect.Clear();
+
+		if( Input.GetKeyDown( KeyCode.O ))
+		{
+			m_cameraSwitcher.Off();
+			m_actionState = ActionState.Common;
+            return;
+		}
+	}
+
 
 	//---------------------------------------------------------------------
 	//      アクセサ

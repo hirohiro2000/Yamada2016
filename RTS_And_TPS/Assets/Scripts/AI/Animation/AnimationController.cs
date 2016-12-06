@@ -19,7 +19,7 @@ public class AnimationController : MonoBehaviour {
        m_animator = transform.FindChild("ModelRoot").GetComponent<Animator>();
         if(!m_animator)
         {
-            Debug.Log(gameObject.name + "AnimationController::m_animator is null!");
+            //Debug.Log(gameObject.name + "AnimationController::m_animator is null!");
         }
         
     }
