@@ -159,8 +159,6 @@ public class ShootAndMove : TaskBase {
                  0.7f + UnityEngine.Random.Range(-0.3f, 0.3f),
                  UnityEngine.Random.Range(-0.3f, 0.3f));
          
-            
-
             Vector3 vec = (target_position - shot_object.transform.position).normalized * ShotPower;
             var rigid_body = shot_object.GetComponent<Rigidbody>();
             shot_object.transform.parent = m_attack_object_root.transform;

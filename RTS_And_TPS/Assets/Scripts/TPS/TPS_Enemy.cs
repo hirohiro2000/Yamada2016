@@ -17,7 +17,7 @@ public class TPS_Enemy : NetworkBehaviour {
 
 
     //  外部へのアクセス
-    private LinkManager m_rLinkManager  =   null;
+    //private LinkManager m_rLinkManager  =   null;
 
 
 	// Use this for initialization
@@ -26,7 +26,7 @@ public class TPS_Enemy : NetworkBehaviour {
 		if (healthBar3D != null)
 			healthBar3D.setValue(1.0f);
 
-        m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+        //m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
 
         //UIRadar.AddEnemy(this.gameObject);
 

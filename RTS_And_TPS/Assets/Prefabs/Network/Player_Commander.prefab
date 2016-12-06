@@ -44,6 +44,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_TPSPlayer: {fileID: 139324, guid: ac0234c790d1a4e429d184d663db879b, type: 2}
   c_RTSPlayer: {fileID: 185506, guid: ef62698dc89114541a6189b4ec9fc0a9, type: 2}
+  c_TPSPlayerE: {fileID: 139324, guid: 5253034c0d6530747aaa3030a2efd505, type: 2}
 --- !u!114 &11422346
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -56,6 +57,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_ClientID: 0
+  c_PlayerName: Null
   c_IsMe: 0
 --- !u!114 &11491786
 MonoBehaviour:

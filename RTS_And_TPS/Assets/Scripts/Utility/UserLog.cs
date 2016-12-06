@@ -20,7 +20,7 @@ public class UserLog
 	static public void Sengoku(object message)
 	{
 #if DEBUGLOG_ON
-		Debug.Log(message);
+		//Debug.Log(message);
 #endif
 	}
 
@@ -34,14 +34,14 @@ public class UserLog
 	static public void Oki(object message)
 	{
 #if DEBUGLOG_ON
-		Debug.Log(message);
+		//Debug.Log(message);
 #endif
 	}
 
 	static public void Terauchi(object message)
 	{
 #if DEBUGLOG_ON
-        Debug.Log("tera : " + message);
+       Debug.Log("tera : " + message);
 #endif
 	}
 

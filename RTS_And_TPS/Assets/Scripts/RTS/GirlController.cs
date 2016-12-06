@@ -12,6 +12,7 @@ public class GirlController : NetworkBehaviour
 //	private	GameObject			m_buttonBreak				= null;
 //	private	GameObject			m_towerInfoPanel			= null;
     private UIGirlTaskSelect    m_uiGirlTaskSelect          = null;
+    private GameObject          m_symbolShell               = null;
 
 	private ResourceInformation	m_resourceInformation		= null;
 	private ResourceCreator		m_resourceCreator			= null;
@@ -25,6 +26,8 @@ public class GirlController : NetworkBehaviour
 
 	public float				m_moveSpeed					= 1.0f;
     public float                m_LiftingForce              = 1.0f;
+    public GameObject           m_symbolPivot               = null;
+
 
 	private enum ActionState
 	{
@@ -40,18 +43,12 @@ public class GirlController : NetworkBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		m_uiGirlTaskSelect				= GameObject.Find("Canvas").transform.FindChild("RTS_HUD").GetComponent<UIGirlTaskSelect>();
-        m_uiGirlTaskSelect.m_rGirl                   = this.gameObject;
-        m_uiGirlTaskSelect.m_rResourceInformation    = GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
-        m_uiGirlTaskSelect.m_rItemCntroller          = GetComponent<ItemController>();
+        Transform   rHUD                            = GameObject.Find( "Canvas" ).transform.FindChild("RTS_HUD");
+        m_uiGirlTaskSelect                          = rHUD.GetComponent<UIGirlTaskSelect>();
+        m_uiGirlTaskSelect.m_rResourceInformation   = GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
+        m_uiGirlTaskSelect.m_itemCntroller          = GetComponent<ItemController>();
         m_uiGirlTaskSelect.Clear();
-
-//		m_buttonOk						= GameObject.Find("Canvas").transform.FindChild("Button_OK").gameObject;
-//		m_buttonCancel					= GameObject.Find("Canvas").transform.FindChild("Button_Cancel").gameObject;
-//		m_buttonLevel					= GameObject.Find("Canvas").transform.FindChild("Button_Level").gameObject;
-//		m_buttonBreak					= GameObject.Find("Canvas").transform.FindChild("Button_Break").gameObject;
-//		m_towerInfoPanel				= GameObject.Find("Canvas").transform.FindChild("Tower_Info").gameObject;
-//		UserLog.Kawaguchi(m_towerInfoPanel);
+        m_symbolShell = new GameObject();
 
 		m_resourceInformation			= GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
 		m_resourceCreator				= GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
@@ -211,10 +208,10 @@ public class GirlController : NetworkBehaviour
 
         if ( RTSCursor.m_curMode == RTSCursor.MODE.eNone && Input.GetMouseButton(0))
         {
-            Vector3     mousePosition   = Input.mousePosition;
-            Ray         ray             = Camera.main.ScreenPointToRay(mousePosition);
             RaycastHit  hit             = new RaycastHit();
             int         layerMask       = LayerMask.GetMask( "Field" );
+            Vector3     mousePosition   = Input.mousePosition;
+            Ray         ray             = Camera.main.ScreenPointToRay(mousePosition);
 
             if ( Physics.Raycast(ray, out hit, float.MaxValue, layerMask) )
             {                            
@@ -222,7 +219,7 @@ public class GirlController : NetworkBehaviour
                 m_navAgent.speed        = m_moveSpeed;
 
                 NavMeshPath path = new NavMeshPath();
-                if ( m_navAgent.CalculatePath( m_resourceInformation.ComputeGridPosition( hit.point ), path )) ;
+                if ( m_navAgent.CalculatePath( m_resourceInformation.ComputeGridPosition( hit.point ), path ))
                 {
                     m_navAgent.SetPath(path);
                 }
@@ -234,13 +231,23 @@ public class GirlController : NetworkBehaviour
 
 	void UpdateCommon()
 	{
-//		m_buttonOk.SetActive(false);
-//		m_buttonLevel.SetActive(false);
-//		m_buttonBreak.SetActive(false);
-//		m_buttonCancel.SetActive(false);
-//		m_towerInfoPanel.SetActive(false);
         m_uiGirlTaskSelect.Clear();
 		m_resourceCreator.SetGuideVisibleDisable();
+
+        if ( RTSCursor.m_curMode == RTSCursor.MODE.eNone && Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            RaycastHit  hit             = new RaycastHit();
+            int         layerMask       = LayerMask.GetMask( "Field" );
+            Vector3     mousePosition   = Input.mousePosition;
+            Ray         ray             = Camera.main.ScreenPointToRay(mousePosition);
+
+            if ( Physics.Raycast(ray, out hit, float.MaxValue, layerMask) )
+            {                            
+                GameObject pivot = Instantiate( m_symbolPivot );
+                pivot.transform.position = hit.point;
+                pivot.transform.SetParent( m_symbolShell.transform );
+            }
+        }
 
 		//	change state
 		if( !Input.GetKeyDown( m_okKey ) && !Input.GetMouseButtonDown(1) )
@@ -254,40 +261,28 @@ public class GirlController : NetworkBehaviour
 
 		if( m_resourceInformation.CheckExistResourceFromPosition( transform.position ) )
 		{
-//			m_buttonLevel.SetActive(true);
-//			m_buttonBreak.SetActive(true);
-//			m_buttonCancel.SetActive(true);
 			m_actionState = ActionState.ConvertResource;
 		}
 		else
 		{
-//			m_buttonOk.SetActive( true );
-//			m_buttonCancel.SetActive( true );
-//			m_towerInfoPanel.SetActive(true);
 			m_actionState = ActionState.CreateResource;
 		}
 	}
 	void CreateResource()
 	{
 		var forcusID	= m_itemCntroller.GetForcus();
-		var forcusParam = m_itemCntroller.GetForcusResourceParam();
-
-//		//	リソースのUI設定
-//		m_buttonOk.transform.FindChild("Point").GetComponent<Text>().text = "-" + forcusParam.m_createCost.ToString();
-//		m_towerInfoPanel.transform.FindChild("Kind").GetComponent<Text>().text = "種類:　　　" + forcusParam.m_name;
-//		m_towerInfoPanel.transform.FindChild("Summary").GetComponent<Text>().text = "概要:　　　" + forcusParam.m_summary;
-//		m_towerInfoPanel.transform.FindChild("Power").GetComponent<Text>().text = "攻撃力:　　" + forcusParam.GetLevelParam(0).power;
-//		m_towerInfoPanel.transform.FindChild("Interval").GetComponent<Text>().text = "発射間隔:　" + forcusParam.GetLevelParam(0).interval + "秒/発";
-		
-		//	リソースの範囲表示更新
-		m_resourceCreator.UpdateGuideResource( forcusID, transform.position );
-		m_resourceCreator.UpdateGuideRange( forcusID, transform.position );
+		if ( forcusID != -1 )
+        {
+		    m_resourceCreator.UpdateGuideResource( forcusID, transform.position );
+		    m_resourceCreator.UpdateGuideRange( forcusID, transform.position );
+        }
 
 		//	ステート更新
         UIGirlTaskSelect.RESULT uiResult = m_uiGirlTaskSelect.ToSelectTheCreateResource();
 		if( ( Input.GetKeyDown( m_okKey )  || uiResult == UIGirlTaskSelect.RESULT.eOK ) &&
 			m_itemCntroller.CheckWhetherTheCostIsEnough() )
 		{
+    		var forcusParam = m_itemCntroller.GetForcusResourceParam();
 			m_resourceCreator.AddResource( forcusID );
 			m_itemCntroller.AddResourceCost( -forcusParam.m_createCost );
 			m_actionState = ActionState.Common;
@@ -307,12 +302,12 @@ public class GirlController : NetworkBehaviour
             return;
         }
 
-//		//	リソースのUI設定
-//		m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().upCost.ToString();
-//		m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.m_breakCost.ToString();
-
 		//	リソースの範囲表示更新
 		m_resourceCreator.UpdateGuideRange( transform.position );
+
+		//	リソースのUI設定
+	    m_uiGirlTaskSelect.m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().upCost.ToString();
+		m_uiGirlTaskSelect.m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.m_breakCost.ToString();
 
 		//	ステート更新
         UIGirlTaskSelect.RESULT uiResult = m_uiGirlTaskSelect.ToSelectTheConvertAction();
@@ -330,7 +325,7 @@ public class GirlController : NetworkBehaviour
 			m_actionState = ActionState.Common;
             return;
 		}
-		if( Input.GetKeyDown( m_breakKey ) || uiResult == UIGirlTaskSelect.RESULT.eBreak )
+		if( ( Input.GetKeyDown( m_breakKey ) || uiResult == UIGirlTaskSelect.RESULT.eBreak ) && m_itemCntroller.GetForcus() != -1 )
 		{
 			m_actionState = ActionState.Common;
 			m_itemCntroller.AddResourceCost( m_itemCntroller.GetForcusResourceParam().m_breakCost );
@@ -365,4 +360,5 @@ public class GirlController : NetworkBehaviour
     {
         m_resourceInformation.SetGridInformation( null, _Position, false );
     }
+
 }

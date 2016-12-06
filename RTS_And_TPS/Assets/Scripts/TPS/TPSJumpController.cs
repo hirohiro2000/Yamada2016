@@ -5,6 +5,7 @@ using System.Collections;
 public class TPSJumpController : MonoBehaviour {
 
     private NetworkIdentity m_rIdentity =   null;
+    private TPSPlayer_HP    m_rTPSHP    =   null;
 
 	//[SerializeField]
 	//TPSLandingChecker landingChecker;
@@ -80,6 +81,8 @@ public class TPSJumpController : MonoBehaviour {
 	void    Start()
     {
 	    m_rIdentity =   GetComponent< NetworkIdentity >();
+        m_rTPSHP    =   GetComponent< TPSPlayer_HP >();
+
         cntHoverTime = maxHoverTime;
 //        TPSBoosterBar.Initialize(maxHoverTime);
 	}
@@ -105,7 +108,9 @@ public class TPSJumpController : MonoBehaviour {
 			fallPower += Time.deltaTime;
         }
 
-        if (Input.GetButtonDown("Jump"))
+        //  瀕死状態の場合はジャンプできない
+        if( Input.GetButtonDown( "Jump" )
+        &&  !m_rTPSHP.m_IsDying )
 		{
 			//cntEnableTime = maxEnableTime;
 			if (characterController.isGrounded == true || (characterController.collisionFlags & CollisionFlags.Below) != 0)
@@ -121,23 +126,23 @@ public class TPSJumpController : MonoBehaviour {
         //    isCanHover = true;
         //}
 
-        if (Input.GetButton("Jump") == false)
-        {
-            //　エネルギー回復
-            if (cntHoverTime < maxHoverTime)
-            {
-                float next = cntHoverTime + Time.deltaTime;
-                if (next > maxHoverTime)
-                {
-                    next = maxHoverTime;
-                }
-                float d = next - cntHoverTime;
-                cntHoverTime = next;
+        //if (Input.GetButton("Jump") == false)
+        //{
+        //    //　エネルギー回復
+        //    if (cntHoverTime < maxHoverTime)
+        //    {
+        //        float next = cntHoverTime + Time.deltaTime;
+        //        if (next > maxHoverTime)
+        //        {
+        //            next = maxHoverTime;
+        //        }
+        //        float d = next - cntHoverTime;
+        //        cntHoverTime = next;
  
-                // UI更新                
-//                TPSBoosterBar.Storage(d);
-            }
-        } 
+        //        // UI更新                
+        //        TPSBoosterBar.Storage(d);
+        //    }
+        //} 
  
         //if (Input.GetButton("Jump") == true && characterController.isGrounded == false && isCanHover == true)
         //{

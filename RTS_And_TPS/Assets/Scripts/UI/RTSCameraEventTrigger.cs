@@ -13,7 +13,7 @@ public class RTSCameraEventTrigger : MonoBehaviour
     private Point m_cursorPoint;
     public void EventCameraMoveHorizontalStart()
     {
-        m_cursor.Require(gameObject, RTSCursor.MODE.eCamera);
+//        m_cursor.Require(gameObject, RTSCursor.MODE.eCamera);
         m_rtsCamera.m_actionState = RTSCamera.ActionState.eMoveHorizontal;
         
         RTSCursor.GetCursorPos( out m_cursorPoint );
@@ -22,7 +22,7 @@ public class RTSCameraEventTrigger : MonoBehaviour
     }
     public void EventCameraMoveHorizontalEnd()
     {
-        m_cursor.Destruction(gameObject);
+//        m_cursor.Destruction(gameObject);
         m_rtsCamera.m_actionState = RTSCamera.ActionState.eNone;
 
         Cursor.lockState = CursorLockMode.None;
@@ -31,7 +31,7 @@ public class RTSCameraEventTrigger : MonoBehaviour
     }
     public void EventCameraMoveVerticalStart()
     {
-        m_cursor.Require(gameObject, RTSCursor.MODE.eCamera);
+//        m_cursor.Require(gameObject, RTSCursor.MODE.eCamera);
         m_rtsCamera.m_actionState = RTSCamera.ActionState.eMoveVertical;
 
         RTSCursor.GetCursorPos( out m_cursorPoint );
@@ -40,7 +40,7 @@ public class RTSCameraEventTrigger : MonoBehaviour
     }
     public void EventCameraMoveVerticalEnd()
     {
-        m_cursor.Destruction(gameObject);
+//        m_cursor.Destruction(gameObject);
         m_rtsCamera.m_actionState = RTSCamera.ActionState.eNone;
 
         Cursor.lockState = CursorLockMode.None;
@@ -50,6 +50,15 @@ public class RTSCameraEventTrigger : MonoBehaviour
     public void EventCameraSwitchCurrentForcus()
     {
         m_rtsCamera.m_isForcus = !m_rtsCamera.m_isForcus;
+    }
+
+    public void EventCursorLock()
+    {
+        m_cursor.Require(gameObject, RTSCursor.MODE.eCamera);
+    }
+    public void EventCursorUnLock()
+    {
+        m_cursor.Destruction(gameObject);
     }
 
     void OnGUI()

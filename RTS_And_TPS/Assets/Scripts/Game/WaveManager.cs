@@ -10,7 +10,7 @@ public class WaveManager : NetworkBehaviour {
     private int                 m_WaveLevel     =   0;
 
     //  関連アクセス
-    private EnemyShell_Control  m_rEnemyShell   =   null;
+    //private EnemyShell_Control  m_rEnemyShell   =   null;
 
     //  外部へのアクセスr
     private GameManager         m_rGameManager  =   null;
@@ -21,13 +21,8 @@ public class WaveManager : NetworkBehaviour {
     {
         //  アクセスを取得 
 	    m_rGameManager  =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
-        m_rEnemyShell   =   FunctionManager.GetAccessComponent< EnemyShell_Control >( "Enemy_Shell" );
+        //m_rEnemyShell   =   FunctionManager.GetAccessComponent< EnemyShell_Control >( "Enemy_Shell" );
         m_ganerator     =   GetComponent<EnemyGenerator>();
-
-        //  ウェーブ情報用意
-        if( NetworkServer.active ){
-            //StandbyWave();
-        }
 	}
 	
 	// Update is called once per frame

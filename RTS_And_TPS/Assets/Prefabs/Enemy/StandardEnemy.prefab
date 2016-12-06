@@ -757,7 +757,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 109252}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.17089117, y: -0.5, z: 6.860245}
+  m_LocalPosition: {x: 5.0394187, y: 12, z: 13.409174}
   m_LocalScale: {x: 2.4277558, y: 2.4277565, z: 2.4277565}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -834,7 +834,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 131572}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.117, z: -0.2501299}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
   m_LocalScale: {x: 0.41701123, y: 0.56836647, z: 0.43034244}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1251,7 +1251,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.4852962, y: 0.2234536, z: 0.5186862}
-  m_Center: {x: 0.027947273, y: 0.7917259, z: 0.014576024}
+  m_Center: {x: 0, y: 0.7917259, z: 0.014576024}
 --- !u!65 &6549870
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1365,7 +1365,7 @@ MonoBehaviour:
   c_Explosion: {fileID: 183870, guid: 2d604258e71134b418a81a7e69a56dcf, type: 2}
   Resource: 8
   Score: 150
-  MaxHP: 10
+  DefaultHP: 10
 --- !u!114 &11426922
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2132,7 +2132,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1.48
-  m_BaseOffset: 0
+  m_BaseOffset: -0.1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 2
 --- !u!222 &22203096

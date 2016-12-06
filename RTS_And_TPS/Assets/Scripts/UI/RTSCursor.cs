@@ -21,6 +21,7 @@ public class RTSCursor : MonoBehaviour
     {
         eNone,
         eCamera,
+        eUI,
     }
 
     static public MODE        m_curMode    { get; private set; }
@@ -51,6 +52,7 @@ public class RTSCursor : MonoBehaviour
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
     
+
     [DllImport("user32.dll")]
     public static extern bool SetCursorPos(int X, int Y);
     [DllImport("user32.dll")]

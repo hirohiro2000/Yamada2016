@@ -46,6 +46,10 @@ public class TPS_PlayerAnimationController : MonoBehaviour
         currentMoveDir = InputDpad.eNONE;
     }
 
+	public void ChangeSpeed( float _Speed )
+	{
+		animator.speed	=	_Speed;
+	}
 
 //   public void Update()
 //   {

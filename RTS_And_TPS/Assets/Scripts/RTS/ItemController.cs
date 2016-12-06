@@ -12,9 +12,8 @@ public class ItemController : NetworkBehaviour
 
 	private ResourceCreator		m_resourceCreator		= null;
 	private	List<GameObject>	m_frameList				= null;
-	private	List<GameObject>	m_imageList				= null;
 	private int					m_kindMax				= 0;
-	private int					m_curForcus				= 0;
+	private int					m_curForcus				= -1;
 
     private GameManager         m_rGameManager          = null;
 
@@ -29,8 +28,6 @@ public class ItemController : NetworkBehaviour
 		m_kindMax				= m_resourceCreator.m_resources.Length;
 
 		m_frameList = new List<GameObject>();
-		m_imageList = new List<GameObject>();
-
 		for( int i=0; i<m_kindMax; ++i )
 		{
 			GameObject  add			= Instantiate( m_itemFrame );
@@ -38,16 +35,15 @@ public class ItemController : NetworkBehaviour
 
 			add.transform.SetParent( GameObject.Find("Canvas").transform );
 			add.transform.position	= new Vector3( ( i*80 + 72 ) * screenRatio, 130 * screenRatio, 0 );
-			add.transform.GetChild(0).GetComponent<Text>().text = m_resourceCreator.m_resources[i].GetComponent<ResourceParameter>().m_createCost.ToString();
+			add.transform.GetChild(1).GetComponent<Text>().text = m_resourceCreator.m_resources[i].GetComponent<ResourceParameter>().m_createCost.ToString();
+            
+            RTSOnItemFrame onFrame = add.GetComponent<RTSOnItemFrame>();
+            onFrame.id = i;
+            onFrame.m_itemController = this;
+
+            add.transform.GetChild(0).GetComponent<RawImage>().texture = m_resourceCreator.m_textures[i].GetComponent<Image>().mainTexture;
 
 			m_frameList.Add( add );
-
-
-			GameObject  image		= Instantiate( m_resourceCreator.m_textures[i] );
-			image.transform.SetParent( GameObject.Find("Canvas").transform );
-			image.transform.position = new Vector3( ( i*80 + 72 ) * screenRatio, 130 * screenRatio, 0 );
-
-			m_imageList.Add( image );
 		}
 	}
 	public  override    void    OnNetworkDestroy()
@@ -60,11 +56,6 @@ public class ItemController : NetworkBehaviour
 				Destroy( m_frameList[ i ].gameObject );
 		}
 
-		 if( m_imageList != null )
-		{
-			for( int i = 0; i < m_imageList.Count; i++ )
-				Destroy( m_imageList[ i ].gameObject );
-		}
 	}
 
 	// Update is called once per frame
@@ -74,13 +65,12 @@ public class ItemController : NetworkBehaviour
         if( !isLocalPlayer ) return;
 
 		{
-			const float forcus	= 1.1f;
+			const float forcus	= 1.2f;
 			const float basic	= 0.8f;
 		
 			for( int i=0; i<m_kindMax; ++i )
 			{
 				m_frameList[i].transform.localScale = ( m_curForcus==i )? new Vector3( forcus,forcus,forcus ):new Vector3( basic,basic,basic );
-				m_imageList[i].transform.localScale = ( m_curForcus==i )? new Vector3( forcus,forcus,forcus ):new Vector3( basic,basic,basic );
 			}
 		}
 		{
@@ -90,11 +80,6 @@ public class ItemController : NetworkBehaviour
 				m_curForcus %= m_kindMax;
 			}
 		}
-        //{
-        //    var cr = GameObject.Find("Canvas");
-        //    var tx = GameObjectExtension.GetComponentInParentAndChildren<Text>( cr );
-        //    tx.text = "Resource  " + ( ( int )m_rGameManager.GetResource() ).ToString();
-        //}
 	}
 	
 
@@ -111,6 +96,7 @@ public class ItemController : NetworkBehaviour
 	}
 	public ResourceParameter GetForcusResourceParam()
 	{
+        if ( m_curForcus == -1 )            return null;
 		return m_resourceCreator.m_resources[ m_curForcus ].GetComponent<ResourceParameter>();
 	}
 	public bool CheckWhetherTheCostIsEnough()
@@ -126,4 +112,17 @@ public class ItemController : NetworkBehaviour
 	{
         m_rGameManager.AddResource( cost );
 	}
+    public void SetActive( bool isActive )
+    {
+		for( int i=0; i<m_kindMax; ++i )
+		{
+            m_frameList[i].SetActive( isActive );
+//            m_imageList[i].SetActive( isActive );
+        }
+    }
+    public void SetForcus( int forcusID )
+    {
+        m_curForcus = forcusID;
+    }
+
 }

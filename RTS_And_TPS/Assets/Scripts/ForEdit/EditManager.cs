@@ -1311,14 +1311,14 @@ public class EditManager : MonoBehaviour {
     //  設定ウィンドウ 
     class   Window_Setting
     {
-        private EditManager     m_rParent       =   null;
-        private WindowOversee   m_rOversee      =   null;
+        //private EditManager     m_rParent       =   null;
+        //private WindowOversee   m_rOversee      =   null;
         private Rect            m_WindowRect    =   new Rect();
 
         public  Window_Setting( EditManager _rParent, WindowOversee _rOversee )
         {
-            m_rParent   =   _rParent;
-            m_rOversee  =   _rOversee;
+            //m_rParent   =   _rParent;
+            //m_rOversee  =   _rOversee;
         }
 
         public  bool    CheckOverlap( Vector2 _ScreenPoint )
@@ -1800,7 +1800,7 @@ public class EditManager : MonoBehaviour {
             float   gridTop     =   c_Center.z - wholeHeight * 0.5f + c_GridWidth * 0.5f;
 
             //  グリッド配置
-            Transform   rDataTrans  =   m_rDataConfig.transform;
+            //Transform   rDataTrans  =   m_rDataConfig.transform;
             for( int z = 0; z < m_MapDepth;  z++ ){
             for( int y = 0; y < m_MapHeight; y++ ){
             for( int x = 0; x < m_MapWidth;  x++ ){
@@ -2038,7 +2038,7 @@ public class EditManager : MonoBehaviour {
             rTrans.position         =   objPos;
 
             //  ＵＶ設定
-            MeshFilter  rFilter     =   rObj.GetComponent< MeshFilter >();
+            //MeshFilter  rFilter     =   rObj.GetComponent< MeshFilter >();
             
 
             //  パラメータ更新 
@@ -3110,7 +3110,7 @@ public class EditManager : MonoBehaviour {
             Transform   rLinkTrans      =   m_rPlayTestShell.FindChild( "LinkManager" );
             LinkManager rLinkManager    =   rLinkTrans.GetComponent< LinkManager >();
 
-            rLinkManager.m_rLocalNPControl.ChangeToCommander();
+            rLinkManager.m_rLocalNPControl.ChangeToCommander( false );
         }
 
         //  ネットワーク終了

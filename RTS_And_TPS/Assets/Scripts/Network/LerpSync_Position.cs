@@ -32,7 +32,7 @@ public class LerpSync_Position : NetworkBehaviour {
                 transform.position  =   m_SyncPosition;
                 m_SyncState         =   SyncState.SyncStart;
             }
-            //  開始以降は反映を少し遅らせる
+            //  開始以降は反映を少し遅らせる 
             else    if( m_SyncState == SyncState.SyncStart ){
                 transform.position  +=  ( m_SyncPosition - transform.position ) * c_LerpRatio;
             }

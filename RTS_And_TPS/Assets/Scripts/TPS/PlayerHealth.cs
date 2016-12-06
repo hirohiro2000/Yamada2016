@@ -6,7 +6,7 @@ using   System.Collections;
 public class PlayerHealth : NetworkBehaviour
 {
     private NetworkIdentity     m_rIdentity     =   null;
-    private TPSPlayer_Control   m_rTPSControl   =   null;
+    //private TPSPlayer_Control   m_rTPSControl   =   null;
 
 	[SerializeField]
 	float maxHp = 0;
@@ -31,7 +31,7 @@ public class PlayerHealth : NetworkBehaviour
         TPSHpBar.Initialize(maxHp);
 
         m_rIdentity     =   GetComponent< NetworkIdentity >();
-        m_rTPSControl   =   GetComponent< TPSPlayer_Control >();
+        //m_rTPSControl   =   GetComponent< TPSPlayer_Control >();
 	}
 
 	// Update is called once per frame
@@ -56,8 +56,8 @@ public class PlayerHealth : NetworkBehaviour
 			isDeath = true;
 
             //  コマンダーに戻る
-            NetPlayer_Control   rNPControl  =   GetComponent< NetPlayer_Control >();
-            m_rTPSControl.RpcChangeToCommander( rNPControl.c_ClientID );
+            //NetPlayer_Control   rNPControl  =   GetComponent< NetPlayer_Control >();
+            //m_rTPSControl.RpcChangeToCommander( rNPControl.c_ClientID, true );
 			//ゲームオーバー
             //GameSystemManager systemManager = FindObjectOfType<GameSystemManager>();
             //if(systemManager != null)
