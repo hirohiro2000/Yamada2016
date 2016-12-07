@@ -11,6 +11,16 @@ public class GirlController : NetworkBehaviour
 //	private	GameObject			m_buttonLevel				= null;
 //	private	GameObject			m_buttonBreak				= null;
 //	private	GameObject			m_towerInfoPanel			= null;
+
+    public  GameObject          c_Drum                      = null;
+    private float               c_DrumCost                  = 15.0f;
+
+    public  GameObject          c_TimeBomb                  = null;
+    private float               c_TimeBombCost              = 25.0f;
+
+    public  GameObject          c_C4                        = null;
+    private float               c_C4Cost                    = 35.0f;
+
     private UIGirlTaskSelect    m_uiGirlTaskSelect          = null;
 
 	private ResourceInformation	m_resourceInformation		= null;
@@ -18,6 +28,10 @@ public class GirlController : NetworkBehaviour
 	private ItemController		m_itemCntroller				= null;
     private Rigidbody           m_rRigid                    = null;
     private RTS_PlayerAnimationController m_animationController = null;
+
+    private GameManager         m_rGameManager              = null;
+    private LinkManager         m_rLinkManager              = null;
+    private Transform           m_rC4Shell                  = null;
 
 	private const KeyCode		m_okKey						= KeyCode.J;
 	private const KeyCode		m_cancelKey					= KeyCode.L;
@@ -40,8 +54,9 @@ public class GirlController : NetworkBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		GameObject g = GameObject.Find("RTS_HUD");
-        m_uiGirlTaskSelect				= g.GetComponent<UIGirlTaskSelect>();
+        GameObject  rCanvas =   GameObject.Find( "Canvas" );
+		Transform   rRTSHUD =   rCanvas.transform.FindChild( "RTS_HUD" );
+        m_uiGirlTaskSelect				             = rRTSHUD.GetComponent<UIGirlTaskSelect>();
         m_uiGirlTaskSelect.m_rGirl                   = this.gameObject;
         m_uiGirlTaskSelect.m_rResourceInformation    = GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
         m_uiGirlTaskSelect.m_rItemCntroller          = GetComponent<ItemController>();
@@ -56,6 +71,9 @@ public class GirlController : NetworkBehaviour
 
 		m_resourceInformation			= GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
 		m_resourceCreator				= GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
+        m_rGameManager                  = GameObject.Find("GameManager").GetComponent<GameManager>();
+        m_rLinkManager                  = GameObject.Find("LinkManager").GetComponent<LinkManager>();
+        m_rC4Shell                      = GameObject.Find("C4_Shell").transform;
 		m_itemCntroller					= GetComponent<ItemController>();
         m_rRigid                        = GetComponent< Rigidbody >();
 
@@ -101,7 +119,28 @@ public class GirlController : NetworkBehaviour
             }
         }
         
-
+        //  ドラム缶を置く
+        if( Input.GetKeyDown( KeyCode.B )
+        &&  m_rGameManager.GetResource() >= c_DrumCost ){
+            CmdPlaceDrum( transform.position + transform.forward * 2.0f, new Vector3( 0.0f, transform.eulerAngles.y, 0.0f ) );
+            m_rLinkManager.m_rLocalNPControl.CmdAddResource( -c_DrumCost );
+        }
+        //  時限爆弾を置く
+        if( Input.GetKeyDown( KeyCode.N )
+        &&  m_rGameManager.GetResource() >= c_TimeBombCost ){
+            CmdPlaceTimeBomb( transform.position + transform.forward * 2.0f + Vector3.up * 2.0f, new Vector3( 0.0f, transform.eulerAngles.y, 0.0f ) );
+            m_rLinkManager.m_rLocalNPControl.CmdAddResource( -c_TimeBombCost );
+        }
+        //  C4爆弾を置く
+        if( Input.GetKeyDown( KeyCode.Comma ) 
+        &&  m_rGameManager.GetResource() >= c_C4Cost ){
+            m_rLinkManager.m_rLocalNPControl.CmdAddResource( -c_C4Cost );
+            CmdPlaceC4( transform.position + transform.forward * 2.0f + Vector3.up * 2.0f, transform.forward );
+        }
+        //  C4爆弾を起動する
+        if( Input.GetKeyDown( KeyCode.Period ) ){
+            CmdExplodingC4();
+        }
 
 		switch( m_actionState )
 		{
@@ -365,5 +404,78 @@ public class GirlController : NetworkBehaviour
     void    CmdBreakResource( Vector3 _Position )
     {
         m_resourceInformation.SetGridInformation( null, _Position, false );
+    }
+    [ Command ]
+    void    CmdPlaceDrum( Vector3 _Position, Vector3 _Angle )
+    {
+        //  オブジェクト生成
+        GameObject  rObj    =   Instantiate( c_Drum );
+        Transform   rTrans  =   rObj.transform;
+
+        //  配置設定
+        rTrans.position     =   _Position;
+        rTrans.eulerAngles  =   _Angle;
+
+        //  ネットワーク上で共有
+        NetworkServer.Spawn( rObj );
+    }
+    [ Command ]
+    void    CmdPlaceTimeBomb( Vector3 _Position, Vector3 _Angle )
+    {
+        //  オブジェクト生成
+        GameObject  rObj    =   Instantiate( c_TimeBomb );
+        Transform   rTrans  =   rObj.transform;
+
+        //  配置設定
+        rTrans.position     =   _Position;
+        rTrans.eulerAngles  =   _Angle;
+
+        //  オーナー設定
+        TimeBomb_Control    rTBControl  =   rObj.GetComponent< TimeBomb_Control >();
+        DetonationObject    rDOControl  =   rObj.GetComponent< DetonationObject >();
+        rTBControl.c_OwnerID        =   connectionToClient.connectionId;
+        rDOControl.m_DestroyerID    =   connectionToClient.connectionId;
+
+        //  ネットワーク上で共有
+        NetworkServer.Spawn( rObj );
+    }
+    [ Command ]
+    void    CmdPlaceC4( Vector3 _Position, Vector3 _Foward )
+    {
+        //  オブジェクト生成
+        GameObject  rObj    =   Instantiate( c_C4 );
+        Transform   rTrans  =   rObj.transform;
+
+        //  配置設定
+        rTrans.position     =   _Position;
+        rTrans.eulerAngles  =   new Vector3( 90.0f, Mathf.Atan2( _Foward.x, _Foward.z ) * Mathf.Rad2Deg + 180.0f, 0.0f );
+
+        //  移動量設定 
+        Rigidbody   rRigid  =   rObj.GetComponent< Rigidbody >();
+        Vector3     vForce  =   _Foward.normalized    * 0.25f
+                            +   Vector3.up.normalized * 1.0f;
+                    vForce  *=  10.0f;
+        rRigid.AddForce( vForce, ForceMode.Impulse );
+
+        //  ネットワーク上で共有
+        NetworkServer.Spawn( rObj );
+
+        //  オーナー設定
+        C4_Control          rC4Control  =   rObj.GetComponent< C4_Control >();
+        DetonationObject    rDOControl  =   rObj.GetComponent< DetonationObject >();
+        rC4Control.c_OwnerID        =   connectionToClient.connectionId;
+        rDOControl.m_DestroyerID    =   connectionToClient.connectionId;
+    }
+    [ Command ]
+    void    CmdExplodingC4()
+    {
+        for( int i = 0; i < m_rC4Shell.childCount; i++ ){
+            C4_Control  rControl    =   m_rC4Shell.GetChild( i ).GetComponent< C4_Control >();
+            //  オーナーチェック
+            if( rControl.c_OwnerID != connectionToClient.connectionId ) continue;
+
+            //  起爆
+            rControl.SetExploding();
+        }
     }
 }

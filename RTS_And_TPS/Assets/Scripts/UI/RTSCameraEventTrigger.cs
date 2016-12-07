@@ -11,6 +11,14 @@ public class RTSCameraEventTrigger : MonoBehaviour
     private RTSCursor m_cursor      = null;
 
     private Point m_cursorPoint;
+
+    void    Start()
+    {
+        if( !m_rtsCamera ){
+            m_rtsCamera =   FunctionManager.GetAccessComponent< RTSCamera >( "RTSCamera_Shell" );
+        }
+    }
+
     public void EventCameraMoveHorizontalStart()
     {
         m_cursor.Require(gameObject, RTSCursor.MODE.eCamera);

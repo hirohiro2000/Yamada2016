@@ -348,7 +348,7 @@ MonoBehaviour:
   m_MapWidth: 20
   m_MapHeight: 10
   m_MapDepth: 10
-  m_VisibleEmpty: 1
+  m_VisibleEmpty: 0
   m_UseHeightColor: 0
   c_PlayTestShell: {fileID: 123146, guid: 852eb73959ba6954b8088c39250488c4, type: 2}
   c_EnemySpawnPoint: {fileID: 133072, guid: 2d27e4cc466f69143a23cf970f7e4cd5, type: 2}
@@ -379,6 +379,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 545653750}
   - 114: {fileID: 545653749}
+  - 114: {fileID: 545653751}
   m_Layer: 0
   m_Name: RTSCamera_Shell
   m_TagString: Untagged
@@ -416,6 +417,17 @@ Transform:
   - {fileID: 573023921}
   m_Father: {fileID: 0}
   m_RootOrder: 2
+--- !u!114 &545653751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 545653748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23f8946eac511fb4e8b93f755bbe1267, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &573023915
 GameObject:
   m_ObjectHideFlags: 0

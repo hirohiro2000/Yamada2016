@@ -267,7 +267,8 @@ public class GameManager : NetworkBehaviour {
         //  リザルト画面表示
         if( m_State == State.Reuslt
         &&  m_StateTimer >= 1.7f
-        &&  !GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) ){
+        &&  !GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) )
+        {
             ResultButton_Input  input;
             input   =   PrintResult( m_StateTimer - 1.7f );
 
