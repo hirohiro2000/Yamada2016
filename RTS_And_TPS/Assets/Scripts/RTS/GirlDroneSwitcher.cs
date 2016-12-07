@@ -11,9 +11,9 @@ public class GirlDroneSwitcher : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-//		m_rtsCamera		= GameObject.Find("RTSCamera_Shell").transform.FindChild("RTSCamera").GetComponent<Camera>();
-//		m_droneCamera	= GameObject.Find("DroneCamera").GetComponent<Camera>();
-//		m_script		= GameObject.Find("DroneCamera").GetComponent<DroneCamera>();
+		m_rtsCamera = GameObject.Find("RTSCamera_Shell").transform.FindChild("RTSCamera").GetComponent<Camera>();
+		m_droneCamera = GameObject.Find("DroneCamera").GetComponent<Camera>();
+		m_script = GameObject.Find("DroneCamera").GetComponent<DroneCamera>();
 	}
 	
 	// Update is called once per frame

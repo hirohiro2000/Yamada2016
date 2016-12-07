@@ -50,7 +50,11 @@ public class RTSPlayer_Control : NetworkBehaviour {
         //  ＵＩ初期化
         {
             Transform   rCanvasTrans    =   GameObject.Find( "Canvas" ).transform;
-            rCanvasTrans.FindChild( "RTS_HUD" ).gameObject.SetActive( true );
+		    Transform   rRTSHUD         =   rCanvasTrans.FindChild( "RTS_HUD" );
+
+            rRTSHUD.gameObject.SetActive( true );
+
+            //rCanvasTrans.FindChild( "TPS_HUD" ).gameObject.SetActive( true );
             rCanvasTrans.FindChild( "DyingMessage" ).gameObject.SetActive( true );
             rCanvasTrans.FindChild( "RevivalGage" ).gameObject.SetActive( true );
 
@@ -87,6 +91,10 @@ public class RTSPlayer_Control : NetworkBehaviour {
     {
         //  ＵＩ無効化
         Transform   rCanvasTrans    =   GameObject.Find( "Canvas" ).transform;
+        Transform   rRTSHUD         =   rCanvasTrans.FindChild( "RTS_HUD" );
+
+        rRTSHUD.gameObject.SetActive( false );
+
         //rCanvasTrans.FindChild( "TPS_HUD" ).gameObject.SetActive( false );
         rCanvasTrans.FindChild( "DyingMessage" ).gameObject.SetActive( false );
         rCanvasTrans.FindChild( "RevivalGage" ).gameObject.SetActive( false );

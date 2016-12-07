@@ -6425,7 +6425,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 139324}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000016292068}
-  m_LocalPosition: {x: 19.143093, y: 30.000002, z: -20.953602}
+  m_LocalPosition: {x: -16.736895, y: 30.000002, z: 75.68848}
   m_LocalScale: {x: 1.4, y: 1.4, z: 1.4}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_Children:
@@ -7265,7 +7265,7 @@ BoxCollider:
   m_GameObject: {fileID: 133280}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.6, y: 0.2, z: 0.6}
   m_Center: {x: 0, y: 1.28, z: 0}
@@ -7429,7 +7429,7 @@ MonoBehaviour:
   excludeLayers:
     serializedVersion: 2
     m_Bits: 2816
-  weaponChangeKey: 101
+  weaponChangeKey: 99
   shotKey: 324
   weapons:
     list:
@@ -7526,12 +7526,13 @@ MonoBehaviour:
   excludeLayers:
     serializedVersion: 2
     m_Bits: 2816
-  weaponChangeKey: 113
+  weaponChangeKey: 120
   shotKey: 323
   weapons:
     list:
     - weapon: {fileID: 494120, guid: b99fe1000ac85ba4a9ce9923ef0f4b00, type: 2}
     - weapon: {fileID: 455538, guid: 28bf1086f5201d0409607a16e581115d, type: 2}
+    - weapon: {fileID: 493186, guid: 3e56443d03e1e354c877fd5b215e7df6, type: 2}
   playerRecoil: {fileID: 11456446}
 --- !u!114 &11422488
 MonoBehaviour:

@@ -113,6 +113,21 @@ public class NetPlayer_Control : NetworkBehaviour {
         //  リクエスト送信
         RpcDamagedPlayer( _HitDirection, rNPControl.c_ClientID );
     }
+    //  オブジェクトへのダメージを送信
+    [ Command ]
+    public  void    CmdSendDamageExpObj( NetworkInstanceId _NetID, float _Damage )
+    {
+        //  対象オブジェクトを探す
+        NetworkIdentity     rIdentity   =   FunctionManager.FindIdentityAtNetID( _NetID );
+        if( !rIdentity )    return;
+
+        //  コンポーネント取得
+        DetonationObject    rHaelth     =   rIdentity.GetComponent< DetonationObject >();
+        if( !rHaelth )      return;
+
+        //  ダメージを与える
+        rHaelth.GiveDamage( _Damage, connectionToClient.connectionId );
+    }
     //  発射コマンドを送信
     [ Command ]
     public  void    CmdFire_Client( Vector3 _Position, Vector3 _Target, int _WeaponID, int _ChildID )

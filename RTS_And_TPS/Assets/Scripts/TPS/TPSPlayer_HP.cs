@@ -37,6 +37,12 @@ public class TPSPlayer_HP : NetworkBehaviour {
     private float                   m_RevivalTimer  =   0.0f;
     [ SyncVar ]
     private float                   m_DeathTimer    =   0.0f;
+
+    //  回復用パラメータ
+    private float                   c_RecoveryTime  =   3.0f;
+    private float                   c_RecoverySpeed =   5.0f;
+    private float                   m_PrevHP        =   0.0f;
+    private float                   m_NoDamageTimer =   0.0f;
     
     //  外部へのアクセス
     private DamageFilter_Control    m_rDFCtrl       =   null;
@@ -203,44 +209,64 @@ public class TPSPlayer_HP : NetworkBehaviour {
     }
     void    Update_InServer()
     {
-        //  瀕死時のみ処理を行う
-        if( !m_IsDying )    return;
-
-        //  蘇生されている
-        GameObject  rRivivalFriend  =   CheckResuscitatedByFriend();
-        if( rRivivalFriend ){
-            //  蘇生中
-            m_RevivalTimer  +=  Time.deltaTime;
-            m_RevivalTimer  =   Mathf.Min( m_RevivalTimer, c_RevivalTime );
-            //  蘇生完了チェック
-            if( m_RevivalTimer >= c_RevivalTime ){
-                //  蘇生を記録
-                m_rGameManager.SetToList_Rivival( rRivivalFriend.GetComponent< NetPlayer_Control >().c_ClientID, 1 );
-
-                //  復活
-                SetRecovery( m_MaxHP * 0.41f );
-
-                //  タイマーリセット
-                m_RevivalTimer  =   0.0f;
+        //  回復処理
+        if( !m_IsDying ){
+            //  ダメージを受けていない場合は自動回復
+            if( m_CurHP >= m_PrevHP ){
+                m_NoDamageTimer +=  Time.deltaTime;
+                if( m_NoDamageTimer >= c_RecoveryTime ){
+                    //  体力を回復
+                    m_CurHP +=  Time.deltaTime * c_RecoverySpeed;
+                    m_CurHP =   Mathf.Min( m_CurHP, m_MaxHP );
+                }
             }
+            //  ダメージを受けたら自動回復中止
+            else{
+                m_NoDamageTimer =   0.0f;
+            }
+
+            //  現在の体力を保存
+            m_PrevHP    =   m_CurHP;
         }
-        //  蘇生されていない
-        else{
-            //  蘇生タイマーリセット
-            m_RevivalTimer  =   0.0f;
 
-            //  死亡タイマー更新
-            m_DeathTimer    -=  Time.deltaTime;
-            m_DeathTimer    =   Mathf.Max( m_DeathTimer, 0.0f );
-            //  死亡チェック（一定時間経過または全滅した場合）
-            if( m_DeathTimer <= 0.0f
-            ||  CheckWhetherAliveFriend() == false ){
-                //  死亡
-                if( m_rRTSControl ) m_rRTSControl.RpcChangeToCommander( m_rNetPlayer.c_ClientID, !m_IsEnemy );
-                if( m_rTPSControl ) m_rTPSControl.RpcChangeToCommander( m_rNetPlayer.c_ClientID, !m_IsEnemy );
+        //  瀕死時の処理
+        if( m_IsDying ){
+            //  蘇生されている
+            GameObject  rRivivalFriend  =   CheckResuscitatedByFriend();
+            if( rRivivalFriend ){
+                //  蘇生中
+                m_RevivalTimer  +=  Time.deltaTime;
+                m_RevivalTimer  =   Mathf.Min( m_RevivalTimer, c_RevivalTime );
+                //  蘇生完了チェック
+                if( m_RevivalTimer >= c_RevivalTime ){
+                    //  蘇生を記録
+                    m_rGameManager.SetToList_Rivival( rRivivalFriend.GetComponent< NetPlayer_Control >().c_ClientID, 1 );
 
-                //  スクリプト制御停止
-                this.enabled    =   false;
+                    //  復活
+                    SetRecovery( m_MaxHP * 0.41f );
+
+                    //  タイマーリセット
+                    m_RevivalTimer  =   0.0f;
+                }
+            }
+            //  蘇生されていない
+            else{
+                //  蘇生タイマーリセット
+                m_RevivalTimer  =   0.0f;
+
+                //  死亡タイマー更新
+                m_DeathTimer    -=  Time.deltaTime;
+                m_DeathTimer    =   Mathf.Max( m_DeathTimer, 0.0f );
+                //  死亡チェック（一定時間経過または全滅した場合）
+                if( m_DeathTimer <= 0.0f
+                ||  CheckWhetherAliveFriend() == false ){
+                    //  死亡
+                    if( m_rRTSControl ) m_rRTSControl.RpcChangeToCommander( m_rNetPlayer.c_ClientID, !m_IsEnemy );
+                    if( m_rTPSControl ) m_rTPSControl.RpcChangeToCommander( m_rNetPlayer.c_ClientID, !m_IsEnemy );
+
+                    //  スクリプト制御停止
+                    this.enabled    =   false;
+                }
             }
         }
     }
