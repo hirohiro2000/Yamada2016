@@ -132,7 +132,8 @@ public class GameManager : NetworkBehaviour {
             if( m_rScoreText )      m_rScoreText.text       =   "Score  "    + ( ( int )m_GlobalScore ).ToString();
 
             //  ダメージフィルター更新
-            {
+            if( m_rLinkManager
+            &&  m_rLinkManager.m_rLocalPlayer ){
                 GameObject      rMyPlayer   =   m_rLinkManager.m_rLocalPlayer;
                 TPSPlayer_HP    rHealth     =   ( rMyPlayer )? rMyPlayer.GetComponent< TPSPlayer_HP >() : null;
                 float           dyingLine   =   0.4f;

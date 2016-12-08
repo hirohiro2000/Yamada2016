@@ -99,6 +99,8 @@ public class RTSPlayer_Control : NetworkBehaviour {
         rCanvasTrans.FindChild( "DyingMessage" ).gameObject.SetActive( false );
         rCanvasTrans.FindChild( "RevivalGage" ).gameObject.SetActive( false );
 
+        UIRadar.SetPlayer( gameObject );
+
         //  メインカメラを復旧
         GameObject  rMainCamera =   GameObject.Find( "Main Camera" );
         rMainCamera.GetComponent< Camera >().enabled            =   true;

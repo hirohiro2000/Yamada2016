@@ -231,7 +231,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100258}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.38, y: 0, z: 0.1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -378,6 +378,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7275336c8ec92449cdf44756cb5f57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_DestroyCounter: 0
+  c_UseExplosionForce: 0
   hitPowerLengthRate:
     serializedVersion: 2
     m_Curve:

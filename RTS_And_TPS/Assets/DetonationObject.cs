@@ -37,10 +37,10 @@ public class DetonationObject : NetworkBehaviour {
 	}
     public  override    void    OnNetworkDestroy()
     {
-        base.OnNetworkDestroy();
-
         m_rBomb.c_AttackerID    =   m_DestroyerID;
         m_rBomb.Explosion();
+
+        base.OnNetworkDestroy();
     }
 
     //  ダメージ処理 

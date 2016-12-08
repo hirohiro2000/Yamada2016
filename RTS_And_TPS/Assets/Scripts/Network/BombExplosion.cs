@@ -28,10 +28,10 @@ public class BombExplosion : MonoBehaviour {
     public  void    Explosion()
     {
         //  ゲーム終了時は処理を行わない
-        if( m_IsGameQuit )                                          return;
+        if( m_IsGameQuit )                                              return;
         //  ゲーム中以外は処理を行わない
-        if( !m_rGameManager )                                       return;
-        if( m_rGameManager.GetState() > GameManager.State.InGame )  return;
+        if( !m_rGameManager )                                           return;
+        if( m_rGameManager.GetState() > GameManager.State.GameOver )    return;
 
         //  爆発オブジェクト生成 
         GameObject  rObj    =   Instantiate( c_Explosion );

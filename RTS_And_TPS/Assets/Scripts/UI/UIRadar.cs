@@ -117,37 +117,37 @@ public class UIRadar : MonoBehaviour {
 
 
         //  表示を更新
-        Matrix4x4 worldToLocalMatrix = Camera.main.transform.worldToLocalMatrix;//m_player.transform.worldToLocalMatrix;
+        Vector3     cameraPos       =   Camera.main.transform.position;
+        Vector3     vCamera         =   Camera.main.transform.forward.normalized;
+        float       cameraHAngle    =   Mathf.Atan2( vCamera.x, vCamera.z ) * Mathf.Rad2Deg;
+
+        //  ワールド→カメラ（縦回転無効）
+        Matrix4x4   transMatrix     =   new Matrix4x4();
+        transMatrix.SetTRS( cameraPos, Quaternion.Euler( 0.0f, cameraHAngle, 0.0f ), Vector3.one );
+        transMatrix =   transMatrix.inverse;
+
         foreach (var item in m_uiSymbolList)
         {
             RectTransform rt = item.dst.GetComponent<RectTransform>();
 
-            Vector3 relativePosition = worldToLocalMatrix.MultiplyPoint(item.reference.transform.position);
+            Vector3 relativePosition = transMatrix.MultiplyPoint(item.reference.transform.position);
 
             item.dst.transform.SetParent(transform);
 
             Vector3 rtPosition = relativePosition / m_searchRange;
-            float maxLength = 70.0f;
+            float maxLength = 90.0f; 
 
             Vector3 enemyIconPos = new Vector3(rtPosition.x, rtPosition.z, 0.0f) * maxLength;
 
             rt.localPosition = enemyIconPos.normalized * (Mathf.Min(enemyIconPos.magnitude, maxLength));
 
 
-            float heightFactor = 10.0f;
-            if (relativePosition.y > heightFactor)
-            {
-                item.dst.GetComponent<RawImage>().texture = m_upperIcon;
-            }
-            else if (relativePosition.y < -heightFactor)
-            {
-                item.dst.GetComponent<RawImage>().texture = m_lowerIcon;
-            }
-            else
-            {
-                item.dst.GetComponent<RawImage>().texture = m_defaultIcon;
-            }
-
+            float   relativeHeight  =   item.reference.transform.position.y
+                                    -   m_player.transform.position.y;
+            float   heightFactor    =   5.0f;
+                    if( relativeHeight > heightFactor ) item.dst.GetComponent< RawImage >().texture =   m_upperIcon;
+            else    if( relativeHeight < -heightFactor) item.dst.GetComponent< RawImage >().texture =   m_lowerIcon;
+            else                                        item.dst.GetComponent< RawImage >().texture =   m_defaultIcon;
         }    
         //{
         //    //RectTransform rt = m_backGround.GetComponent<RectTransform>();  

@@ -9,10 +9,14 @@ public class RTSResourece_Control : NetworkBehaviour {
 
 	public  override    void    OnStartServer()
     {
+        base.OnStartServer();
+
         transform.parent    =   GameObject.Find( "FieldResources" ).transform;
     }
     public  override    void    OnStartClient()
     {
+        base.OnStartClient();
+
         transform.parent    =   GameObject.Find( "FieldResources" ).transform;
     }
 }

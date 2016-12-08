@@ -16,6 +16,11 @@ public class TPSCloneAnime_Control : NetworkBehaviour {
 	void    Start()
     {
 	    m_rAnimeControl =   GetComponent< TPS_PlayerAnimationController >();
+
+        //  本体側では処理を行わない
+        if( isLocalPlayer ){
+            this.enabled    =   false;
+        }
 	}
 	
 	// Update is called once per frame
