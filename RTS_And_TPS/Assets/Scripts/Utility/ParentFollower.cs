@@ -19,7 +19,7 @@ public class ParentFollower : MonoBehaviour {
 
 	void Awake()
 	{
-		followParent = transform.parent;
+		_followParent = transform.parent;
 		transform.parent = followParent.parent;
 	}
 	
