@@ -38,6 +38,7 @@ GameObject:
   - 4: {fileID: 405638}
   - 96: {fileID: 9645172}
   - 114: {fileID: 11472876}
+  - 114: {fileID: 11469590}
   m_Layer: 12
   m_Name: Trail
   m_TagString: Untagged
@@ -191,6 +192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee0795890d5dd0e4aa27b081f9bc0327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myCollider: {fileID: 0}
 --- !u!114 &11445088
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -202,7 +204,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f25afd9c1ced10e4c937ebf8a6b10a27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_LastSendTime: 0
+  m_SyncVarGuard: 0
+  m_MyView: {fileID: 0}
   particle: {fileID: 175374, guid: 8931ad398a75c2c4c8b694f005800976, type: 2}
+  cntTime: 0
+  destroyTime: 0
 --- !u!114 &11450980
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -240,7 +247,7 @@ MonoBehaviour:
       value: 18
     - type: 3
       value: 0
-  m_seFileName: Shot0
+  m_seFileName: 53686f7430
 --- !u!114 &11459674
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -252,6 +259,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b52579dd2a67454488d8f4503c66c976, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beforePos: {x: 0, y: 0, z: 0}
+  defCenter: {x: 0, y: 0, z: 0}
+  col: {fileID: 0}
 --- !u!114 &11463520
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -281,8 +291,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43e7d831188778b4b906f45d73c6ff5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackPointList: {fileID: 0}
   PowerlossCurve:
-    serializedVersion: 2
     m_Curve:
     - time: 0
       value: 1
@@ -297,6 +307,21 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+  cntDistance: 0
+  BeforePos: {x: 0, y: 0, z: 0}
+--- !u!114 &11469590
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 121082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aa9681714bc25e458b9799cfbe0d1e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  follower: {fileID: 0}
+  c: 1
 --- !u!114 &11472876
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -308,6 +333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ab98f39ae2a04140820d1932b9fc562, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _followParent: {fileID: 0}
 --- !u!114 &11478656
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -320,16 +346,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseAttackPoint: 1.5
+  Destroyed: 0
+  DestroyPos: {x: 0, y: 0, z: 0}
   attack_list:
     list:
     - type: 3
       multiple: 0.23
     - type: 155
       multiple: 1
+  data:
+    baseAttackPoint: 1
+    attack_list:
+      list: []
   autoDestroyObject: {fileID: 494120}
   autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 490204, guid: 8931ad398a75c2c4c8b694f005800976,
     type: 2}
+  ColliderResetRequest: 0
 --- !u!136 &13614226
 CapsuleCollider:
   m_ObjectHideFlags: 1
