@@ -6,8 +6,17 @@ using System.Collections;
  */
 public class ParentFollower : MonoBehaviour {
 
-	Transform followParent;
- 
+	[HideInInspector]
+	public Transform _followParent;
+
+	public Transform followParent
+	{
+		get
+		{
+			return _followParent;
+        }
+	}
+
 	void Awake()
 	{
 		followParent = transform.parent;
