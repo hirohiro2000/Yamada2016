@@ -146,7 +146,7 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Time: 2.7
+  m_Time: 4
   m_StartWidth: 0.5
   m_EndWidth: 0
   m_Colors:
@@ -155,13 +155,13 @@ TrailRenderer:
       rgba: 4294967295
     m_Color[1]:
       serializedVersion: 2
-      rgba: 3372220415
+      rgba: 4294967295
     m_Color[2]:
       serializedVersion: 2
-      rgba: 1895825407
+      rgba: 4294967295
     m_Color[3]:
       serializedVersion: 2
-      rgba: 352321535
+      rgba: 4294967295
     m_Color[4]:
       serializedVersion: 2
       rgba: 16777215
@@ -178,8 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa9681714bc25e458b9799cfbe0d1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  follower: {fileID: 0}
-  c: 1
+  alphaMat: {fileID: 2100000, guid: 32ce0ee5ef9aaf342ab937f39eff4a6a, type: 2}
 --- !u!114 &11410192
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -191,8 +190,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43e7d831188778b4b906f45d73c6ff5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackPointList: {fileID: 0}
   PowerlossCurve:
+    serializedVersion: 2
     m_Curve:
     - time: 0
       value: 1
@@ -207,8 +206,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  cntDistance: 0
-  BeforePos: {x: 0, y: 0, z: 0}
 --- !u!114 &11426266
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -220,7 +217,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee0795890d5dd0e4aa27b081f9bc0327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCollider: {fileID: 0}
 --- !u!114 &11452834
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -275,9 +271,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b52579dd2a67454488d8f4503c66c976, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  beforePos: {x: 0, y: 0, z: 0}
-  defCenter: {x: 0, y: 0, z: 0}
-  col: {fileID: 0}
 --- !u!114 &11472370
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -290,23 +283,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseAttackPoint: 30
-  Destroyed: 0
-  DestroyPos: {x: 0, y: 0, z: 0}
   attack_list:
     list:
     - type: 1
       multiple: 1
     - type: 155
       multiple: 1
-  data:
-    baseAttackPoint: 1
-    attack_list:
-      list: []
   autoDestroyObject: {fileID: 455538}
   autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 490204, guid: 8931ad398a75c2c4c8b694f005800976,
     type: 2}
-  ColliderResetRequest: 0
 --- !u!114 &11478388
 MonoBehaviour:
   m_ObjectHideFlags: 1

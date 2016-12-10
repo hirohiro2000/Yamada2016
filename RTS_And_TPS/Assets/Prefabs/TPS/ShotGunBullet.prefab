@@ -131,7 +131,7 @@ TrailRenderer:
   - {fileID: 2100000, guid: 731c393017a052f4b83f84072e551d49, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
+  m_UseLightProbes: 1
   m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
@@ -144,7 +144,7 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Time: 0.1
+  m_Time: 0.3
   m_StartWidth: 0.3
   m_EndWidth: 0
   m_Colors:
@@ -153,13 +153,13 @@ TrailRenderer:
       rgba: 4294967295
     m_Color[1]:
       serializedVersion: 2
-      rgba: 1627389951
+      rgba: 3187671039
     m_Color[2]:
       serializedVersion: 2
-      rgba: 620756991
+      rgba: 2147483647
     m_Color[3]:
       serializedVersion: 2
-      rgba: 251658239
+      rgba: 1124073471
     m_Color[4]:
       serializedVersion: 2
       rgba: 16777215
@@ -176,8 +176,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43e7d831188778b4b906f45d73c6ff5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackPointList: {fileID: 0}
   PowerlossCurve:
+    serializedVersion: 2
     m_Curve:
     - time: 0
       value: 1
@@ -197,8 +197,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  cntDistance: 0
-  BeforePos: {x: 0, y: 0, z: 0}
 --- !u!114 &11427688
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -210,7 +208,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee0795890d5dd0e4aa27b081f9bc0327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCollider: {fileID: 0}
 --- !u!114 &11437240
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -235,23 +232,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseAttackPoint: 6
-  Destroyed: 0
-  DestroyPos: {x: 0, y: 0, z: 0}
   attack_list:
     list:
     - type: 1
       multiple: 1
     - type: 155
       multiple: 1
-  data:
-    baseAttackPoint: 1
-    attack_list:
-      list: []
   autoDestroyObject: {fileID: 493922}
   autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 490204, guid: 8931ad398a75c2c4c8b694f005800976,
     type: 2}
-  ColliderResetRequest: 0
 --- !u!114 &11441818
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -263,8 +253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa9681714bc25e458b9799cfbe0d1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  follower: {fileID: 0}
-  c: 1
+  alphaMat: {fileID: 2100000, guid: 32ce0ee5ef9aaf342ab937f39eff4a6a, type: 2}
 --- !u!114 &11448242
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -301,9 +290,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b52579dd2a67454488d8f4503c66c976, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  beforePos: {x: 0, y: 0, z: 0}
-  defCenter: {x: 0, y: 0, z: 0}
-  col: {fileID: 0}
 --- !u!136 &13616794
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -150,16 +150,16 @@ TrailRenderer:
   m_Colors:
     m_Color[0]:
       serializedVersion: 2
-      rgba: 2516582399
+      rgba: 3271557119
     m_Color[1]:
       serializedVersion: 2
-      rgba: 1291845631
+      rgba: 2466250751
     m_Color[2]:
       serializedVersion: 2
-      rgba: 620756991
+      rgba: 1426063359
     m_Color[3]:
       serializedVersion: 2
-      rgba: 251658239
+      rgba: 704643071
     m_Color[4]:
       serializedVersion: 2
       rgba: 16777215
@@ -217,22 +217,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseAttackPoint: 0
-  Destroyed: 0
-  DestroyPos: {x: 0, y: 0, z: 0}
   attack_list:
     list:
     - type: 1
       multiple: 1
     - type: 155
       multiple: 1
-  data:
-    baseAttackPoint: 1
-    attack_list:
-      list: []
   autoDestroyObject: {fileID: 493186}
   autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 0}
-  ColliderResetRequest: 0
 --- !u!114 &11446926
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -244,8 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa9681714bc25e458b9799cfbe0d1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  follower: {fileID: 0}
-  c: 1
+  alphaMat: {fileID: 2100000, guid: 32ce0ee5ef9aaf342ab937f39eff4a6a, type: 2}
 --- !u!114 &11447414
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -275,8 +267,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43e7d831188778b4b906f45d73c6ff5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackPointList: {fileID: 0}
   PowerlossCurve:
+    serializedVersion: 2
     m_Curve:
     - time: 0
       value: 1
@@ -291,8 +283,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  cntDistance: 0
-  BeforePos: {x: 0, y: 0, z: 0}
 --- !u!114 &11486514
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -307,8 +297,6 @@ MonoBehaviour:
   c_AttackerID: 0
   c_Explosion: {fileID: 183870, guid: 073c9ebb652abdf4187690414a9e6e15, type: 2}
   c_CallOnDestroy: 1
-  m_rGameManager: {fileID: 0}
-  m_IsGameQuit: 0
 --- !u!114 &11494436
 MonoBehaviour:
   m_ObjectHideFlags: 1
