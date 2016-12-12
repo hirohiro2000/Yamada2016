@@ -161,7 +161,7 @@ public class ShootAndMove : TaskBase {
             m_shoot_object.LookAt(m_shoot_point);
             if(m_use_bone_controller)
             {
-                m_bone_controller.m_target_direction = (m_shoot_point - m_owner_object.transform.position).normalized;
+                m_bone_controller.m_target_direction = m_shoot_point;
             }
                 
 
