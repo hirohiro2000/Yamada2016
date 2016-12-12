@@ -50,6 +50,10 @@ public class EnemyGenerator : NetworkBehaviour
     private bool m_is_running = false;
     private EnemyWaveParametor m_parametor = null;
 
+    [SerializeField]
+    bool DebugMode = false;
+
+
     //private List<GameObject> m_current_hierarchy_list = new List<GameObject>();
     private List< GameObject >  m_rActiveEnemyList  =   new List< GameObject >();
 
@@ -165,7 +169,8 @@ public class EnemyGenerator : NetworkBehaviour
         int respawn_count = 0;
 
         //test
-       // num_spawn = 1;
+       if(DebugMode)
+            num_spawn = 1;
         while (respawn_count < num_spawn)
         {
             for(int i = 0; i < m_num_spawn_one_frame; i++)

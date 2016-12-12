@@ -25,6 +25,9 @@ public class ShootAndMove : TaskBase {
     [SerializeField, HeaderAttribute("trueにするとPQSを使った位置取りを行う(基本触るな)")]
     private bool m_use_pqs = false;
 
+    [SerializeField, HeaderAttribute("trueにするとBodylControllerを使ったAnimation制御が行われる")]
+    private bool m_use_bone_controller = false;
+
     [SerializeField, HeaderAttribute("Defaultの弾バースト数")]
     private int NumDefaultBurstShot = 3;
     private int m_num_burstshot;
@@ -42,6 +45,7 @@ public class ShootAndMove : TaskBase {
     private float m_agent_speed = .0f;
 
     private PQSQuery m_pqs_info = null;
+    private BoneController m_bone_controller = null;
 
     delegate void TargetingPointFunction(TargetingSystem target_system);
     private TargetingPointFunction m_targeting_function;
@@ -155,7 +159,13 @@ public class ShootAndMove : TaskBase {
             //   m_owner_object.transform.LookAt(m_shoot_point);
             //射撃位置更新
             m_shoot_object.LookAt(m_shoot_point);
-            
+            if(m_use_bone_controller)
+            {
+                m_bone_controller.m_target_direction = (m_shoot_point - m_owner_object.transform.position).normalized;
+            }
+                
+
+
             //移動位置更新
             m_targeting_function(target_system);
            
@@ -185,6 +195,8 @@ public class ShootAndMove : TaskBase {
         m_home_base = enemy_root.GetComponent<ReferenceWrapper>().m_home_base;
         m_navmesh_accessor = owner.GetComponent<NavMeshAgent>();
         m_agent_speed = m_navmesh_accessor.speed;
+        if (m_use_bone_controller)
+            m_bone_controller = GetComponent<BoneController>();
     }
 
     public override void SetWaveParametor(EnemyWaveParametor param)
@@ -198,10 +210,18 @@ public class ShootAndMove : TaskBase {
         m_is_active = true;
         StartCoroutine(UpdateLookPointAndMovePoint(target_system));
         StartCoroutine(Attack(target_system));
-
+        //task_director.m_anime_controller.SetLayerWeight("BaseLayer", .0f);
+        //task_director.m_anime_controller.SetLayerWeight("DownBody", 1.0f);
+        task_director.m_anime_controller.SetTrigger("ToShootAndMove");
+        if (m_use_bone_controller)
+        {
+            //m_body_controller.SetControlLayerWeight(task_director, 1.0f, .0f);
+          
+        }
+            
 
         //ほかのキャラクターのルートをたどる可能性があるから改良する
-     //   m_navmesh_accessor.SetDestination(m_home_base.transform.position);
+        //   m_navmesh_accessor.SetDestination(m_home_base.transform.position);
     }
 
     public override Status Execute(TargetingSystem target_system, EnemyTaskDirector task_director)
@@ -229,25 +249,6 @@ public class ShootAndMove : TaskBase {
 
         return Status.Active;
     }
-
-    //private void UpdateIsReachHomeBase(TargetingSystem m_current_target)
-    //{
-    //    //現在ホームベースがないからターゲットにする
-    //    //float dist = (m_owner_object.transform.position - m_home_base.transform.position).magnitude;
-    //    float dist = (m_owner_object.transform.position - m_current_target.transform.position).magnitude;
-    //    if (dist < m_navmesh_agent_stop_dist)
-    //    {
-    //        m_navmesh_accessor.Stop();
-    //        m_navmesh_accessor.updateRotation = true;
-    //        Quaternion look_rotation = Quaternion.LookRotation((m_shoot_point - m_owner_object.transform.position).normalized);
-    //        m_owner_object.transform.rotation = Quaternion.Slerp(m_owner_object.transform.rotation, look_rotation, 0.1f);
-    //    }
-    //    else
-    //    {
-    //       // m_navmesh_accessor.speed = m_agent_speed;
-    //        m_navmesh_accessor.Resume();
-    //    }
-    //}
 
     private bool IsCanLineofFire(TargetingSystem target_system,
         float target_height)
