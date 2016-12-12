@@ -20,18 +20,19 @@ public class BoneController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	   target_rotation = ControllBone.transform.localRotation;
+	   target_rotation = ControllBone.transform.rotation;
 	}
 	
 	// Update is called once per frame
 	void LateUpdate ()
     {
-        //target_rotation *=  Quaternion.FromToRotation(ControllBone.InverseTransformDirection(ControllBone.transform.forward.normalized),
-        //    ControllBone.InverseTransformDirection(m_target_direction.normalized));
+       // target_rotation *=  Quaternion.FromToRotation(ControllBone.InverseTransformDirection(ControllBone.transform.forward.normalized),
+         //   ControllBone.InverseTransformDirection(m_target_direction.normalized));
 
-        ControllBone.LookAt(m_target_direction);
-
-        //ControllBone.transform.localRotation = Quaternion.Slerp(ControllBone.transform.localRotation, target_rotation, m_slerp_speed);
+        //ControllBone.LookAt(m_target_direction);
+        //Quaternion.LookRotation()
+        target_rotation =  Quaternion.LookRotation(m_target_direction.normalized);
+        ControllBone.transform.rotation = Quaternion.Slerp(ControllBone.transform.rotation, target_rotation, m_slerp_speed);
 	}
 
 

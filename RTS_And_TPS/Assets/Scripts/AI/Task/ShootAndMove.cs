@@ -161,7 +161,7 @@ public class ShootAndMove : TaskBase {
             m_shoot_object.LookAt(m_shoot_point);
             if(m_use_bone_controller)
             {
-                m_bone_controller.m_target_direction = m_shoot_point;
+                m_bone_controller.m_target_direction = m_shoot_point - m_owner_object.transform.position;
             }
                 
 
@@ -228,6 +228,7 @@ public class ShootAndMove : TaskBase {
     {
         //UpdateIsReachHomeBase(target_system);
         Status current_status = EvaluteStatus(target_system, task_director);
+        task_director.m_anime_controller.SetFloat("MoveSpeed", m_navmesh_accessor.velocity.magnitude);
         return current_status;
     }
 
