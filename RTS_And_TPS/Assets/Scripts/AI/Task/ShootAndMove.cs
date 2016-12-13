@@ -159,10 +159,10 @@ public class ShootAndMove : TaskBase {
             //   m_owner_object.transform.LookAt(m_shoot_point);
             //射撃位置更新
             m_shoot_object.LookAt(m_shoot_point);
-            if(m_use_bone_controller)
-            {
-                m_bone_controller.m_target_direction = m_shoot_point - m_owner_object.transform.position;
-            }
+            //if(m_use_bone_controller)
+            //{
+            //    m_bone_controller.m_target_direction = m_shoot_point - m_owner_object.transform.position;
+            //}
                 
 
 
@@ -229,6 +229,13 @@ public class ShootAndMove : TaskBase {
         //UpdateIsReachHomeBase(target_system);
         Status current_status = EvaluteStatus(target_system, task_director);
         task_director.m_anime_controller.SetFloat("MoveSpeed", m_navmesh_accessor.velocity.magnitude);
+        //targeting_systemでもcheckしているがなぜかエラーでるのでとりあえず
+        if (target_system.IsTargetArive())
+            m_shoot_point = target_system.m_current_target.transform.position;
+        if (m_use_bone_controller)
+        {
+            m_bone_controller.m_target_direction = m_shoot_point - m_owner_object.transform.position;
+        }
         return current_status;
     }
 
