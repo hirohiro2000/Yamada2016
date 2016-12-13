@@ -1,0 +1,557 @@
+fileFormatVersion: 2
+guid: 1b6a116a854c4d94d8fb0bc7ec82c5a5
+timeCreated: 1481529465
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: bone
+    100002: bone1
+    100004: bone10
+    100006: bone11
+    100008: bone12
+    100010: bone13
+    100012: bone14
+    100014: bone2
+    100016: bone9
+    100018: cube
+    100020: cube2
+    100022: cube3
+    100024: cube4
+    100026: cube6
+    100028: cube7
+    100030: cylinder
+    100032: cylinder10
+    100034: cylinder11
+    100036: cylinder6
+    100038: cylinder8
+    100040: cylinder9
+    100042: eff
+    100044: eff1
+    100046: eff10
+    100048: eff11
+    100050: eff12
+    100052: eff2
+    100054: eff9
+    100056: null
+    100058: null1
+    100060: null2
+    100062: null3
+    100064: null3_NeutralPose
+    100066: null4
+    100068: null4_NeutralPose
+    100070: polymsh6
+    100072: polymsh_detached
+    100074: polymsh_detached1
+    100076: root
+    100078: root1
+    100080: root10
+    100082: root11
+    100084: root12
+    100086: root2
+    100088: root9
+    100090: //RootNode
+    400000: bone
+    400002: bone1
+    400004: bone10
+    400006: bone11
+    400008: bone12
+    400010: bone13
+    400012: bone14
+    400014: bone2
+    400016: bone9
+    400018: cube
+    400020: cube2
+    400022: cube3
+    400024: cube4
+    400026: cube6
+    400028: cube7
+    400030: cylinder
+    400032: cylinder10
+    400034: cylinder11
+    400036: cylinder6
+    400038: cylinder8
+    400040: cylinder9
+    400042: eff
+    400044: eff1
+    400046: eff10
+    400048: eff11
+    400050: eff12
+    400052: eff2
+    400054: eff9
+    400056: null
+    400058: null1
+    400060: null2
+    400062: null3
+    400064: null3_NeutralPose
+    400066: null4
+    400068: null4_NeutralPose
+    400070: polymsh6
+    400072: polymsh_detached
+    400074: polymsh_detached1
+    400076: root
+    400078: root1
+    400080: root10
+    400082: root11
+    400084: root12
+    400086: root2
+    400088: root9
+    400090: //RootNode
+    4300000: cube
+    4300002: cube2
+    4300004: cube3
+    4300006: cube4
+    4300008: cube6
+    4300010: cube7
+    4300012: cylinder
+    4300014: cylinder6
+    4300016: cylinder8
+    4300018: cylinder9
+    4300020: cylinder10
+    4300022: cylinder11
+    4300024: polymsh6
+    4300026: polymsh_detached
+    4300028: polymsh_detached1
+    7400000: Walk
+    7400002: Run
+    7400004: Wait
+    9500000: //RootNode
+    13700000: cube
+    13700002: cube2
+    13700004: cube3
+    13700006: cube4
+    13700008: cube6
+    13700010: cube7
+    13700012: cylinder
+    13700014: cylinder10
+    13700016: cylinder11
+    13700018: cylinder6
+    13700020: cylinder8
+    13700022: cylinder9
+    13700024: polymsh6
+    13700026: polymsh_detached
+    13700028: polymsh_detached1
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Walk
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: cube
+        weight: 1
+      - path: cube2
+        weight: 1
+      - path: cube3
+        weight: 1
+      - path: cube4
+        weight: 1
+      - path: cube6
+        weight: 1
+      - path: cube7
+        weight: 1
+      - path: cylinder
+        weight: 1
+      - path: cylinder6
+        weight: 1
+      - path: cylinder8
+        weight: 1
+      - path: cylinder9
+        weight: 1
+      - path: cylinder10
+        weight: 1
+      - path: cylinder11
+        weight: 1
+      - path: null
+        weight: 1
+      - path: null/root1
+        weight: 1
+      - path: null/root1/bone1
+        weight: 1
+      - path: null/root1/bone1/eff1
+        weight: 1
+      - path: null/root1/bone1/eff1/root
+        weight: 1
+      - path: null/root1/bone1/eff1/root/bone
+        weight: 1
+      - path: null/root1/bone1/eff1/root/bone/eff
+        weight: 1
+      - path: null/root2
+        weight: 1
+      - path: null/root2/bone2
+        weight: 1
+      - path: null/root2/bone2/eff2
+        weight: 1
+      - path: null/root2/bone2/eff2/root9
+        weight: 1
+      - path: null/root2/bone2/eff2/root9/bone9
+        weight: 1
+      - path: null/root2/bone2/eff2/root9/bone9/bone10
+        weight: 1
+      - path: null/root2/bone2/eff2/root9/bone9/bone10/eff9
+        weight: 1
+      - path: null/root2/bone2/eff2/root9/bone9/bone10/eff9/root10
+        weight: 1
+      - path: null/root2/bone2/eff2/root9/bone9/bone10/eff9/root10/bone11
+        weight: 1
+      - path: null/root2/bone2/eff2/root9/bone9/bone10/eff9/root10/bone11/eff10
+        weight: 1
+      - path: null/root2/bone2/eff2/root11
+        weight: 1
+      - path: null/root2/bone2/eff2/root11/bone12
+        weight: 1
+      - path: null/root2/bone2/eff2/root11/bone12/bone13
+        weight: 1
+      - path: null/root2/bone2/eff2/root11/bone12/bone13/eff11
+        weight: 1
+      - path: null/root2/bone2/eff2/root11/bone12/bone13/eff11/root12
+        weight: 1
+      - path: null/root2/bone2/eff2/root11/bone12/bone13/eff11/root12/bone14
+        weight: 1
+      - path: null/root2/bone2/eff2/root11/bone12/bone13/eff11/root12/bone14/eff12
+        weight: 1
+      - path: null1
+        weight: 1
+      - path: null2
+        weight: 1
+      - path: null3_NeutralPose
+        weight: 1
+      - path: null3_NeutralPose/null3
+        weight: 1
+      - path: null4_NeutralPose
+        weight: 1
+      - path: null4_NeutralPose/null4
+        weight: 1
+      - path: polymsh6
+        weight: 1
+      - path: polymsh_detached
+        weight: 1
+      - path: polymsh_detached1
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Run
+      takeName: Take 001
+      firstFrame: 100
+      lastFrame: 140
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: cube
+        weight: 1
+      - path: cube2
+        weight: 1
+      - path: cube3
+        weight: 1
+      - path: cube4
+        weight: 1
+      - path: cube6
+        weight: 1
+      - path: cube7
+        weight: 1
+      - path: cylinder
+        weight: 1
+      - path: cylinder6
+        weight: 1
+      - path: cylinder8
+        weight: 1
+      - path: cylinder9
+        weight: 1
+      - path: cylinder10
+        weight: 1
+      - path: cylinder11
+        weight: 1
+      - path: null
+        weight: 1
+      - path: null/root1
+        weight: 1
+      - path: null/root1/bone1
+        weight: 1
+      - path: null/root1/bone1/eff1
+        weight: 1
+      - path: null/root1/bone1/eff1/root
+        weight: 1
+      - path: null/root1/bone1/eff1/root/bone
+        weight: 1
+      - path: null/root1/bone1/eff1/root/bone/eff
+        weight: 1
+      - path: null/root2
+        weight: 1
+      - path: null/root2/bone2
+        weight: 1
+      - path: null/root2/bone2/eff2
+        weight: 1
+      - path: null/root2/bone2/eff2/root9
+        weight: 1
+      - path: null/root2/bone2/eff2/root9/bone9
+        weight: 1
+      - path: null/root2/bone2/eff2/root9/bone9/bone10
+        weight: 1
+      - path: null/root2/bone2/eff2/root9/bone9/bone10/eff9
+        weight: 1
+      - path: null/root2/bone2/eff2/root9/bone9/bone10/eff9/root10
+        weight: 1
+      - path: null/root2/bone2/eff2/root9/bone9/bone10/eff9/root10/bone11
+        weight: 1
+      - path: null/root2/bone2/eff2/root9/bone9/bone10/eff9/root10/bone11/eff10
+        weight: 1
+      - path: null/root2/bone2/eff2/root11
+        weight: 1
+      - path: null/root2/bone2/eff2/root11/bone12
+        weight: 1
+      - path: null/root2/bone2/eff2/root11/bone12/bone13
+        weight: 1
+      - path: null/root2/bone2/eff2/root11/bone12/bone13/eff11
+        weight: 1
+      - path: null/root2/bone2/eff2/root11/bone12/bone13/eff11/root12
+        weight: 1
+      - path: null/root2/bone2/eff2/root11/bone12/bone13/eff11/root12/bone14
+        weight: 1
+      - path: null/root2/bone2/eff2/root11/bone12/bone13/eff11/root12/bone14/eff12
+        weight: 1
+      - path: null1
+        weight: 1
+      - path: null2
+        weight: 1
+      - path: null3_NeutralPose
+        weight: 1
+      - path: null3_NeutralPose/null3
+        weight: 1
+      - path: null4_NeutralPose
+        weight: 1
+      - path: null4_NeutralPose/null4
+        weight: 1
+      - path: polymsh6
+        weight: 1
+      - path: polymsh_detached
+        weight: 1
+      - path: polymsh_detached1
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Wait
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: cube
+        weight: 1
+      - path: cube2
+        weight: 1
+      - path: cube3
+        weight: 1
+      - path: cube4
+        weight: 1
+      - path: cube6
+        weight: 1
+      - path: cube7
+        weight: 1
+      - path: cylinder
+        weight: 1
+      - path: cylinder6
+        weight: 1
+      - path: cylinder8
+        weight: 1
+      - path: cylinder9
+        weight: 1
+      - path: cylinder10
+        weight: 1
+      - path: cylinder11
+        weight: 1
+      - path: null
+        weight: 1
+      - path: null/root1
+        weight: 1
+      - path: null/root1/bone1
+        weight: 1
+      - path: null/root1/bone1/eff1
+        weight: 1
+      - path: null/root1/bone1/eff1/root
+        weight: 1
+      - path: null/root1/bone1/eff1/root/bone
+        weight: 1
+      - path: null/root1/bone1/eff1/root/bone/eff
+        weight: 1
+      - path: null/root2
+        weight: 1
+      - path: null/root2/bone2
+        weight: 1
+      - path: null/root2/bone2/eff2
+        weight: 1
+      - path: null/root2/bone2/eff2/root9
+        weight: 1
+      - path: null/root2/bone2/eff2/root9/bone9
+        weight: 1
+      - path: null/root2/bone2/eff2/root9/bone9/bone10
+        weight: 1
+      - path: null/root2/bone2/eff2/root9/bone9/bone10/eff9
+        weight: 1
+      - path: null/root2/bone2/eff2/root9/bone9/bone10/eff9/root10
+        weight: 1
+      - path: null/root2/bone2/eff2/root9/bone9/bone10/eff9/root10/bone11
+        weight: 1
+      - path: null/root2/bone2/eff2/root9/bone9/bone10/eff9/root10/bone11/eff10
+        weight: 1
+      - path: null/root2/bone2/eff2/root11
+        weight: 1
+      - path: null/root2/bone2/eff2/root11/bone12
+        weight: 1
+      - path: null/root2/bone2/eff2/root11/bone12/bone13
+        weight: 1
+      - path: null/root2/bone2/eff2/root11/bone12/bone13/eff11
+        weight: 1
+      - path: null/root2/bone2/eff2/root11/bone12/bone13/eff11/root12
+        weight: 1
+      - path: null/root2/bone2/eff2/root11/bone12/bone13/eff11/root12/bone14
+        weight: 1
+      - path: null/root2/bone2/eff2/root11/bone12/bone13/eff11/root12/bone14/eff12
+        weight: 1
+      - path: null1
+        weight: 1
+      - path: null2
+        weight: 1
+      - path: null3_NeutralPose
+        weight: 1
+      - path: null3_NeutralPose/null3
+        weight: 1
+      - path: null4_NeutralPose
+        weight: 1
+      - path: null4_NeutralPose/null4
+        weight: 1
+      - path: polymsh6
+        weight: 1
+      - path: polymsh_detached
+        weight: 1
+      - path: polymsh_detached1
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 10
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
