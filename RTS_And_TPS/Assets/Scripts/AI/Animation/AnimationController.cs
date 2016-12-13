@@ -43,6 +43,13 @@ public class AnimationController : MonoBehaviour {
             m_animator.SetTrigger(trigger_name);
     }
 
+    public void SetLayerWeight(string layer_name, float weight)
+    {
+        if (m_animator)
+            m_animator.SetLayerWeight(m_animator.GetLayerIndex(layer_name), weight);
+    }
+
+
     public AnimatorStateInfo GetCurrentAnimatorStateInfo()
     {
         return m_animator.GetCurrentAnimatorStateInfo(0);
