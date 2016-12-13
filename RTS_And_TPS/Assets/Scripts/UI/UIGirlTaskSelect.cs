@@ -4,7 +4,10 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 // 女の子のタワーの作成や破壊の選択をクリックでも行えるようにするクラス
-public class UIGirlTaskSelect : MonoBehaviour {
+public class UIGirlTaskSelect : MonoBehaviour
+{
+    [SerializeField]
+    private RTSCursor           m_cursor                    = null;
 
 //    public  GameObject          m_rGirl                     = null;
 	public	GameObject			m_buttonOk					= null;
@@ -70,7 +73,6 @@ public class UIGirlTaskSelect : MonoBehaviour {
         return result;
     }
     
-
     public void SelectOK()
     {
         result = RESULT.eOK;

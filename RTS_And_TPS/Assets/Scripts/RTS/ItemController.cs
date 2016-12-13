@@ -54,6 +54,8 @@ public class ItemController : NetworkBehaviour
 
             add.transform.GetChild(0).GetComponent<RawImage>().texture = m_resourceCreator.m_textures[i].GetComponent<Image>().mainTexture;
 
+            add.SetActive( false );
+
 			m_frameList.Add( add );
 
 			m_textList.Add(text);
@@ -139,7 +141,6 @@ public class ItemController : NetworkBehaviour
 		for( int i=0; i<m_kindMax; ++i )
 		{
             m_frameList[i].SetActive( isActive );
-//            m_imageList[i].SetActive( isActive );
         }
     }
     public void SetForcus( int forcusID )
