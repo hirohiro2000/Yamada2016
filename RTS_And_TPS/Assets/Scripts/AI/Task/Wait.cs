@@ -8,7 +8,10 @@ public class Wait : TaskBase
         TargetingSystem target_system,
         EnemyTaskDirector task_director)
     {
-        task_director.m_anime_controller.SetTrigger("ToWait");
+        AnimationController rAnimeCtrl  =   task_director.m_anime_controller;
+        if( rAnimeCtrl ){
+            rAnimeCtrl.SetTrigger("ToWait");
+        }
     }
 
     public override Status Execute(TargetingSystem target_system, EnemyTaskDirector task_director)

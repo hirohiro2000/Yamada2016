@@ -134,6 +134,21 @@ public class NetPlayer_Control : NetworkBehaviour {
     {
         RpcFire_Client( _Position, _Target, connectionToClient.connectionId, _WeaponID, _ChildID );
     }
+    //  オブジェクトの破壊を通知
+    [ Command ]
+    public  void    CmdDestroyResourceObj( NetworkInstanceId _NetID )
+    {
+        //  対象オブジェクトを探す
+        NetworkIdentity     rIdentity   =   FunctionManager.FindIdentityAtNetID( _NetID );
+        if( !rIdentity )    return;
+
+        //  コンポーネントを取得
+        ResourceObject_Control  rControl    =   rIdentity.GetComponent< ResourceObject_Control >();
+        if( !rControl )     return;
+
+        //  破壊処理
+        rControl.Destroy( connectionToClient.connectionId );
+    }
     //  データ更新
     [ Command ]
     public  void    CmdSend_GMIsReady( bool _IsReady )

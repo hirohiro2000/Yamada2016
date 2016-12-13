@@ -149,6 +149,11 @@ public class EditBox_Control : MonoBehaviour {
         transform.localScale    =   prevScale;
         transform.eulerAngles   =   prevAngle;
         transform.position      =   prevPos;
+
+        //  子オブジェクトを削除
+        for( int i = 0; i < transform.childCount; i++ ){
+            Destroy( transform.GetChild( i ).gameObject );
+        }
         
         //  アクティブ化
         gameObject.SetActive( true );

@@ -13,6 +13,11 @@ public class Debris_Control : MonoBehaviour {
     public  float           c_Score         =   0.0f;
     public  bool            c_ForMe         =   false;
 
+    
+    public  bool            c_UseSpeedLimit =   false;
+    public  float           c_SpeedLimit    =   0.0f;
+    public  float           c_LimitTime     =   0.0f;
+
     private float           c_MoveTime      =   1.0f;
     private State           m_State         =   State.Stay;
 
@@ -29,10 +34,14 @@ public class Debris_Control : MonoBehaviour {
     private float           c_BirthTime     =   1.5f;
     private float           m_BearthTimer   =   0.0f;
 
+    private float           m_Timer         =   0.0f;
+
     //  アクセス
     private LinkManager     m_rLinkManager  =   null;
     private GameManager     m_rGameManager  =   null;
     //private Flag_Control    m_rCentral      =   null;
+    private Rigidbody       m_rRigid        =   null;
+    private Vector3         m_ChargeVector  =   Vector3.zero;
 
 	// Use this for initialization
 	void    Start()
@@ -41,6 +50,8 @@ public class Debris_Control : MonoBehaviour {
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
         m_rGameManager  =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
         //m_rCentral      =   FunctionManager.GetAccessComponent< Flag_Control >( "Central_Flag" );
+
+        m_rRigid        =   GetComponent< Rigidbody >();
 
         m_BearthTimer   =   c_BirthTime;
         //m_StartScale    =   transform.localScale.x;
@@ -56,6 +67,14 @@ public class Debris_Control : MonoBehaviour {
         //  タイマー更新
         m_BearthTimer   -=  Time.deltaTime;
         m_BearthTimer   =   Mathf.Max( m_BearthTimer, 0.0f );
+
+        if( m_Timer < c_LimitTime ){
+            m_Timer     +=  Time.deltaTime;
+            m_Timer     =   Mathf.Min( m_Timer, c_LimitTime );
+            if( m_Timer >= c_LimitTime ){
+                //m_rRigid.velocity   =   m_ChargeVector * 2.0f;
+            }
+        }
 
         //  状態ごとの処理
 	    switch( m_State ){
@@ -98,6 +117,32 @@ public class Debris_Control : MonoBehaviour {
             }
         }
     }
+
+    void    FixedUpdate()
+    {
+        if( !c_UseSpeedLimit )  return;
+        if( !m_rRigid ){
+            c_UseSpeedLimit =   false;
+            return;
+        }
+        //  一定時間経過
+        if( m_Timer >= c_LimitTime ){
+            c_UseSpeedLimit =   false;
+            return;
+        }
+
+        //  速度制限 
+        Vector3 velocity    =   m_rRigid.velocity;
+        float   curSpeed    =   velocity.magnitude;
+        if( curSpeed > c_SpeedLimit ){
+            //m_rRigid.velocity   =   velocity.normalized * c_SpeedLimit;
+            m_rRigid.velocity   =   Vector3.zero;
+            if( curSpeed > m_ChargeVector.magnitude ){
+                m_ChargeVector  =   velocity;
+            }
+        }
+    }
+
     public  void    SetMove( Transform _rTrans )
     {
         m_State         =   State.Move;

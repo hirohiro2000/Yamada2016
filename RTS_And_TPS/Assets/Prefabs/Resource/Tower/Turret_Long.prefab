@@ -617,18 +617,18 @@ MonoBehaviour:
     list:
     - hp: 15
       power: 16
-      range: 8
-      interval: 2
+      range: 32
+      interval: 0.3
       upCost: 117
     - hp: 20
       power: 24
-      range: 9
-      interval: 1.75
+      range: 36
+      interval: 0.5
       upCost: 161
     - hp: 40
       power: 40
-      range: 10
-      interval: 1.5
+      range: 40
+      interval: 0.5
       upCost: 0
 --- !u!114 &11492536
 MonoBehaviour:

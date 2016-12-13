@@ -5,7 +5,7 @@ using System.Collections;
 
 public class RTSResourece_Control : NetworkBehaviour {
     [ SyncVar ]
-    public  int     c_OwnerID   =   0;
+    public  int     c_OwnerID   =   -1;
 
 	public  override    void    OnStartServer()
     {
