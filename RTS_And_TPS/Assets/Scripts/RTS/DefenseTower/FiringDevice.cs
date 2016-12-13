@@ -59,6 +59,11 @@ public class FiringDevice : NetworkBehaviour
         }
 	}
 
+    //bool    CheckShielding()
+    //{
+
+    //}
+
 	//
 	void UpdateRotation()
     {

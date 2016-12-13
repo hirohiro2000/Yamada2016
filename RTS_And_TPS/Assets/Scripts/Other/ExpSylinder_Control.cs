@@ -22,12 +22,13 @@ public class ExpSylinder_Control : MonoBehaviour {
     private int                 c_SavingLine    =   3;
     private ExplodedManager     m_rExpManager   =   null;
     private bool                m_Removed       =   false;
+    private int                 m_NumDebris     =   0;
 
 
 	// Use this for initialization
     void    Awake()
     {
-
+        m_NumDebris =   transform.childCount - 1;
     }
 	void    Start()
     {
@@ -88,7 +89,7 @@ public class ExpSylinder_Control : MonoBehaviour {
 
                     rControl.SetMove( m_rTargetTrans );
                     rControl.c_TargetID =   c_PartnerID;
-                    rControl.c_Score    =   ( float )c_Score / Mathf.Max( 1, ( transform.childCount - 1 ) );
+                    rControl.c_Score    =   ( float )c_Score / Mathf.Max( 1, m_NumDebris );
                     rControl.c_ForMe    =   m_ForMe;
 
                     isAllMoved          =   false;

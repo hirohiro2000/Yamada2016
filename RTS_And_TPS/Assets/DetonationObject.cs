@@ -39,8 +39,10 @@ public class DetonationObject : NetworkBehaviour {
     {
         base.OnNetworkDestroy();
 
-        m_rBomb.c_AttackerID    =   m_DestroyerID;
-        m_rBomb.Explosion();
+        if( m_DestroyerID != -1 ){
+            m_rBomb.c_AttackerID    =   m_DestroyerID;
+            m_rBomb.Explosion();
+        }
     }
 
     //  ダメージ処理 
@@ -82,6 +84,9 @@ public class DetonationObject : NetworkBehaviour {
 
         //  オーナー設定
         //m_rBomb.c_AttackerID    =   m_DestroyerID;
+
+        //  削除準備中は非アクティブ化
+        if( m_DestroyerID == -1 )   gameObject.SetActive( false );
 
         //  サーバーでの更新処理
         if( NetworkServer.active )  Update_InServer();

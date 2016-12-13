@@ -123,10 +123,13 @@ public class ResourceParameter : NetworkBehaviour
 		m_curHp -= damage;
         m_curHp =  Mathf.Max( m_curHp, 0 );
         if( m_curHp <= 0 ){
-            //  破壊されたら非アクティブ化
-            gameObject.SetActive( false );
-            //  クライアントでも非アクティブ化するようリクエストを飛ばす
-            RpcSetActive( false );
+            ////  破壊されたら非アクティブ化
+            //gameObject.SetActive( false );
+            ////  クライアントでも非アクティブ化するようリクエストを飛ばす
+            //RpcSetActive( false );
+
+            //  オブジェクトを破棄
+            Destroy( gameObject );
         }
 	}
 	public void Copy( ResourceParameter param )

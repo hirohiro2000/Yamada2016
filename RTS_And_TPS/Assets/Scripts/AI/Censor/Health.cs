@@ -74,7 +74,7 @@ public class Health : NetworkBehaviour {
 
 		//ここで爆発
         if( c_Explosion ){
-            //Instantiate(c_Explosion, transform.position, Quaternion.identity);  
+            Instantiate(c_Explosion, transform.position, Quaternion.identity);  
         }
 
         //  カメラシェイク（撃破したプレイヤーのクライアントだけ）

@@ -31,6 +31,7 @@ public class GameManager : NetworkBehaviour {
     //  公開パラメータ
     public  string                  c_RetryScene    =   "";
     public  Font                    c_Font          =   null;
+    public  GameObject              c_StageDrum     =   null;
 
     //  固定パラメータ
     public  float                   c_StartCDTime   =   3.0f;
@@ -51,6 +52,7 @@ public class GameManager : NetworkBehaviour {
     public  float                   m_GlobalScore   =   0.0f;
 
     private Queue< MainMessage >    m_MainMessageQ  =   new Queue< MainMessage >();
+    private float                   m_SDPlaceTimer  =   0.0f;
 
     //  共有パラメータ
     private SyncListBool            m_rIsReadyList  =   new SyncListBool();
@@ -65,6 +67,7 @@ public class GameManager : NetworkBehaviour {
     //  外部へのアクセス
     private LinkManager             m_rLinkManager  =   null;
     private WaveManager             m_rWaveManager  =   null;
+    private SkyManager              m_rSkyManager   =   null;
     private Transform               m_rResources    =   null;
 
     private Text                    m_rWaveText     =   null;
@@ -75,12 +78,15 @@ public class GameManager : NetworkBehaviour {
     private AcqScore_Control        m_rAcqResource  =   null;
     private DamageFilter_Control    m_rDFControl    =   null;
 
+    private StageDrum_Control       m_rSDrumControl =   null;
+
 	// Use this for initialization
 	void    Start()
     {
         //  アクセスを取得 
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
         m_rWaveManager  =   FunctionManager.GetAccessComponent< WaveManager >( "EnemySpawnRoot" );
+        m_rSkyManager   =   FunctionManager.GetAccessComponent< SkyManager >( "SkyManager" );
         m_rResources    =   FunctionManager.GetAccessComponent< Transform >( "FieldResources" );
 
         m_rWaveText     =   FunctionManager.GetAccessComponent< Text >( "Canvas/Column_Wave/Text_Score" );
@@ -93,6 +99,15 @@ public class GameManager : NetworkBehaviour {
 
         //  パラメータを初期化
         m_Resource      =   c_StartResource;
+
+        //  共通の処理
+        {
+            m_rSkyManager.ChangeSky( 0 );
+        }
+        //  サーバーでの処理
+        if( NetworkServer.active ){
+            ReplaceStageDrum();
+        }
 	}
 	
 	// Update is called once per frame
@@ -125,6 +140,9 @@ public class GameManager : NetworkBehaviour {
             }
         }
 
+        //  空模様を更新
+        m_rSkyManager.ChangeSky( Mathf.Max( m_WaveLevel - 1, 0 ) );
+
         //  ＵＩの更新
         {
             if( m_rWaveText )       m_rWaveText.text        =   "Wave  "     + m_WaveLevel.ToString();
@@ -132,7 +150,8 @@ public class GameManager : NetworkBehaviour {
             if( m_rScoreText )      m_rScoreText.text       =   "Score  "    + ( ( int )m_GlobalScore ).ToString();
 
             //  ダメージフィルター更新
-            {
+            if( m_rLinkManager
+            &&  m_rLinkManager.m_rLocalPlayer ){
                 GameObject      rMyPlayer   =   m_rLinkManager.m_rLocalPlayer;
                 TPSPlayer_HP    rHealth     =   ( rMyPlayer )? rMyPlayer.GetComponent< TPSPlayer_HP >() : null;
                 float           dyingLine   =   0.4f;
@@ -147,6 +166,15 @@ public class GameManager : NetworkBehaviour {
     {
         //  リストの項目数を調整
         UpdateListItem();
+
+        //  ドラム缶配置タイマー更新
+        if( m_SDPlaceTimer > 0.0f ){
+            m_SDPlaceTimer  -=  Time.deltaTime;
+            m_SDPlaceTimer  =   Mathf.Max( m_SDPlaceTimer, 0.0f );
+            if( m_SDPlaceTimer <= 0.0f ){
+                ReplaceStageDrum();
+            }
+        }
 
         //  状態に応じて処理を行う
 	    switch( m_State ){
@@ -689,6 +717,17 @@ public class GameManager : NetworkBehaviour {
             rObj.SetActive( false );
             rObj.SetActive( true );
         }
+
+        ////  空を模様を更新
+        //if( NetworkServer.active )  m_rSkyManager.ChangeSky( m_WaveLevel - 1 );
+        //else                        m_rSkyManager.ChangeSky( m_WaveLevel );
+    }
+    void    StandbyProc_NewWaveInServer()
+    {
+        //  一定ウェーブごとにドラム缶を再配置
+        if( m_WaveLevel % 3 == 1 ){
+            ReplaceStageDrum();
+        }
     }
 
     //  外部からの操作
@@ -702,6 +741,7 @@ public class GameManager : NetworkBehaviour {
     {
         //  ウェーブ開始処理
         StandbyProc_NewWave();
+        StandbyProc_NewWaveInServer();
 
         //  クライアントにも同じ処理をリクエスト
         RpcStartNewWave_StandbyProc();
@@ -748,6 +788,21 @@ public class GameManager : NetworkBehaviour {
         m_rDFControl.SetEffect( _Time, _Power );
     }
     
+    public  void    ReplaceStageDrum()
+    {
+        //  既に配置されている場合は不足分を補充
+        if( m_rSDrumControl ){
+            m_rSDrumControl.Supple();
+        }
+        //  まだ配置されていない場合は新しく生成
+        else{
+            //  新しいドラムを生成
+            GameObject  rObj    =   Instantiate( c_StageDrum );
+
+            //  アクセスを取得
+            m_rSDrumControl     =   rObj.GetComponent< StageDrum_Control >();
+        }
+    }
 
     //  アクセス
     public  void    AddResource( float _AddValue )

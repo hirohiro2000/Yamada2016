@@ -243,7 +243,7 @@ public class TPSPlayer_HP : NetworkBehaviour {
                     m_rGameManager.SetToList_Rivival( rRivivalFriend.GetComponent< NetPlayer_Control >().c_ClientID, 1 );
 
                     //  復活
-                    SetRecovery( m_MaxHP * 0.41f );
+                    SetRecovery( m_MaxHP * 1.0f );
 
                     //  タイマーリセット
                     m_RevivalTimer  =   0.0f;

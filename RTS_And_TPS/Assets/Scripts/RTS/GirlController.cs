@@ -1,8 +1,9 @@
 ﻿
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
-using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class GirlController : NetworkBehaviour 
 {
@@ -23,13 +24,14 @@ public class GirlController : NetworkBehaviour
 	private ResourceCreator		m_resourceCreator			= null;
 	private ItemController		m_itemCntroller				= null;
     private Rigidbody           m_rRigid                    = null;
+    private TPSPlayer_HP        m_rPlayerHP                 = null;
     private RTS_PlayerAnimationController m_animationController = null;
 
 	private GirlDroneSwitcher	m_cameraSwitcher			= null;
 
     private GameManager         m_rGameManager              = null;
     private LinkManager         m_rLinkManager              = null;
-    private Transform           m_rC4Shell                  = null;
+    private C4Shell_Control     m_rC4Shell                  = null;
 
 	private const KeyCode		m_okKey						= KeyCode.J;
 	private const KeyCode		m_cancelKey					= KeyCode.L;
@@ -38,7 +40,6 @@ public class GirlController : NetworkBehaviour
 	public float				m_moveSpeed					= 1.0f;
     public float                m_LiftingForce              = 1.0f;
     public GameObject           m_symbolPivot               = null;
-
 
 	private enum ActionState
 	{
@@ -51,6 +52,8 @@ public class GirlController : NetworkBehaviour
     
     private bool                m_isMoveByKey   = false;
     private NavMeshAgent        m_navAgent      = null;
+
+    
     
 	// Use this for initialization
 	void Start ()
@@ -66,18 +69,21 @@ public class GirlController : NetworkBehaviour
 		m_resourceCreator				= GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
         m_rGameManager                  = GameObject.Find("GameManager").GetComponent<GameManager>();
         m_rLinkManager                  = GameObject.Find("LinkManager").GetComponent<LinkManager>();
-        m_rC4Shell                      = GameObject.Find("C4_Shell").transform;
+        m_rC4Shell                      = GameObject.Find("C4_Shell").GetComponent<C4Shell_Control>();
 		m_itemCntroller					= GetComponent<ItemController>();
   		m_cameraSwitcher				= GetComponent<GirlDroneSwitcher>();
 		m_rRigid                        = GetComponent< Rigidbody >();
+        m_rPlayerHP                     = GetComponent< TPSPlayer_HP >();
 		
-        // 適当に
-        m_navAgent                      = gameObject.AddComponent<NavMeshAgent>();
-        m_navAgent.acceleration			= float.MaxValue;
-        m_navAgent.angularSpeed			= float.MaxValue;
-        m_navAgent.stoppingDistance		= 1.0f;
-        m_navAgent.Warp( transform.position );
-        m_navAgent.ResetPath();
+        //  ローカルでのみエージェントを追加
+        if( isLocalPlayer ){
+            m_navAgent                      = gameObject.AddComponent<NavMeshAgent>();
+            m_navAgent.acceleration			= float.MaxValue;
+            m_navAgent.angularSpeed			= float.MaxValue;
+            m_navAgent.stoppingDistance		= 1.0f;
+            m_navAgent.Warp( transform.position );
+            m_navAgent.ResetPath();
+        }
         
         m_animationController = GetComponent< RTS_PlayerAnimationController >();
     }
@@ -90,20 +96,22 @@ public class GirlController : NetworkBehaviour
 			m_moveSpeed = GameWorldParameter.instance.RTSPlayer.WalkSpeed;
 		}
         //  自分のキャラクターの場合のみ処理を行う
-        if( !isLocalPlayer ) return;
+        if( !isLocalPlayer )        return;
+        //  瀕死状態では処理を行わない
+        if( m_rPlayerHP.m_IsDying ) return;
 
         //  座標調整（いまだけ）
         {
             //  飛ぶ
-            if (Input.GetKey( KeyCode.M ))
-            {
-                m_rRigid.AddForce(Vector3.up * m_LiftingForce * Time.deltaTime * 60.0f);
-                if (m_navAgent.enabled)
-                {
-                    m_navAgent.ResetPath();
-                    m_navAgent.enabled = false;
-                }
-            }
+            //if (Input.GetKey( KeyCode.M ))
+            //{
+            //    m_rRigid.AddForce(Vector3.up * m_LiftingForce * Time.deltaTime * 60.0f);
+            //    if (m_navAgent.enabled)
+            //    {
+            //        m_navAgent.ResetPath();
+            //        m_navAgent.enabled = false;
+            //    }
+            //}
 
             //  浮いてる間はグリッドを表示しない
             if (Mathf.Abs(m_rRigid.velocity.y) < 0.1f || m_navAgent.enabled)
@@ -206,8 +214,11 @@ public class GirlController : NetworkBehaviour
 
 		direction.Normalize();
 
-		float axis				= ( Mathf.Abs(v) > Mathf.Abs(h) )? Mathf.Abs(v) : Mathf.Abs(h);
-		transform.localPosition += direction * axis * m_moveSpeed * Time.deltaTime;
+		float   axis		    =   ( Mathf.Abs(v) > Mathf.Abs(h) )? Mathf.Abs(v) : Mathf.Abs(h);
+        Vector3 moveAmount      =   direction * axis * m_moveSpeed * Time.deltaTime;
+            //  瀕死状態なら減速 
+            if( m_rPlayerHP.m_IsDying ) moveAmount  =   moveAmount * 0.2f;
+		transform.localPosition +=  moveAmount;
 
 		
 		//	rotate
@@ -232,6 +243,10 @@ public class GirlController : NetworkBehaviour
             m_navAgent.enabled = false;
             return;
         }
+
+        //  速度設定
+        if( m_rPlayerHP.m_IsDying ) m_navAgent.speed    =   m_moveSpeed * 0.2f;
+        else                        m_navAgent.speed    =   m_moveSpeed;
 
         if (m_navAgent.enabled )
         {
@@ -476,28 +491,31 @@ public class GirlController : NetworkBehaviour
         //  配置設定
         rTrans.position     =   _Position;
         rTrans.eulerAngles  =   new Vector3( 90.0f, Mathf.Atan2( _Foward.x, _Foward.z ) * Mathf.Rad2Deg + 180.0f, 0.0f );
-
-        //  移動量設定 
-        Rigidbody   rRigid  =   rObj.GetComponent< Rigidbody >();
-        Vector3     vForce  =   _Foward.normalized    * 0.25f
-                            +   Vector3.up.normalized * 1.0f;
-                    vForce  *=  10.0f;
-        rRigid.AddForce( vForce, ForceMode.Impulse );
-
-        //  ネットワーク上で共有
-        NetworkServer.Spawn( rObj );
-
+        
         //  オーナー設定
         C4_Control          rC4Control  =   rObj.GetComponent< C4_Control >();
         DetonationObject    rDOControl  =   rObj.GetComponent< DetonationObject >();
         rC4Control.c_OwnerID        =   connectionToClient.connectionId;
         rDOControl.m_DestroyerID    =   connectionToClient.connectionId;
+
+        //  移動量設定 
+        Vector3     vForce      =   _Foward.normalized    * 0.25f
+                                +   Vector3.up.normalized * 1.0f;
+                    vForce      *=  10.0f;
+        rC4Control.m_StartForce =   vForce;
+
+        //  ネットワーク上で共有
+        NetworkServer.Spawn( rObj );        
     }
     [ Command ]
     void    CmdExplodingC4()
     {
-        for( int i = 0; i < m_rC4Shell.childCount; i++ ){
-            C4_Control  rControl    =   m_rC4Shell.GetChild( i ).GetComponent< C4_Control >();
+        List< GameObject >  rC4List =   m_rC4Shell.m_rC4List;
+        for( int i = 0; i < m_rC4Shell.m_rC4List.Count; i++ ){
+            GameObject  rObj        =   rC4List[ i ];
+            if( !rObj ) continue;
+
+            C4_Control  rControl    =   rObj.GetComponent< C4_Control >();
             //  オーナーチェック
             if( rControl.c_OwnerID != connectionToClient.connectionId ) continue;
 

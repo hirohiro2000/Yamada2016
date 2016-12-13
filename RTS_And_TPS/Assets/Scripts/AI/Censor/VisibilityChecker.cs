@@ -65,6 +65,9 @@ public class VisibilityChecker : MonoBehaviour
         {
             var target_pos = m_raycast_target[target_i].position;
             var eye_to_target = (target_pos - eye_position).normalized;
+                //  高さを無視
+                eye_to_target = new Vector3( eye_to_target.x, 0.0f, eye_to_target.z ).normalized;
+
             float angle = Vector3.Dot(eye_vec, eye_to_target);
             angle = Mathf.Acos(angle);
             angle = angle / Mathf.PI * 180.0f;

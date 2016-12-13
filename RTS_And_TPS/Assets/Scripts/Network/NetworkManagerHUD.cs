@@ -1,8 +1,9 @@
 
 #if ENABLE_UNET
 
-using System;
-using System.Collections.Generic;
+using   System;
+using   System.Collections.Generic;
+using   UnityEngine.SceneManagement;
 
 namespace   UnityEngine.Networking
 {
@@ -78,15 +79,16 @@ namespace   UnityEngine.Networking
 			if( !NetworkClient.active
             &&  !NetworkServer.active
             &&  m_rNetworkManager.matchMaker == null
-            &&  !m_rDiscovery.running )
+            &&  !m_rDiscovery.running
+            &&  ( !NetworkTransport.IsStarted || !NetworkTransport.IsBroadcastDiscoveryRunning() ) )
 			{
 				if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "LAN Host(H)" ) ){
                     //  ブロードキャスト開始 
                     m_rDiscovery.Initialize();
-                    m_rDiscovery.StartAsServer();
-
-                    //  ホスト開始 
-                    m_rNetworkManager.StartHost();
+                    if( m_rDiscovery.StartAsServer() ){
+                        //  ホスト開始 
+                        m_rNetworkManager.StartHost();
+                    }
                 }
 				ypos    +=  spacing;
 
@@ -191,9 +193,11 @@ namespace   UnityEngine.Networking
 				if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "Stop" ) )
 				{
 					m_rNetworkManager.StopHost();
-                    if( m_rDiscovery.running ){
-                        m_rDiscovery.StopBroadcast();
-                    }
+                    if( m_rDiscovery.running )          m_rDiscovery.StopBroadcast();
+                    if( NetworkTransport.IsStarted )    NetworkTransport.Shutdown();
+
+                    //  シーンをリロード
+                    SceneManager.LoadScene( SceneManager.GetActiveScene().name );
 				}
 				ypos += spacing;
 			}

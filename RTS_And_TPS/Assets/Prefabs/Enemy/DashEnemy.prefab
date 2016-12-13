@@ -472,7 +472,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 196732}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.7790565, y: 30, z: -57.314713}
+  m_LocalPosition: {x: -18.71386, y: 29.110382, z: 70.40761}
   m_LocalScale: {x: 1.3042357, y: 1.3042355, z: 1.3042355}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -925,7 +925,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_ExplodedObj: {fileID: 102618, guid: c66536897f4a0164e91d83e720dfdd34, type: 2}
-  c_Explosion: {fileID: 183870, guid: 2d604258e71134b418a81a7e69a56dcf, type: 2}
+  c_Explosion: {fileID: 0}
   Resource: 10
   Score: 150
   DefaultHP: 6
@@ -1007,7 +1007,7 @@ MonoBehaviour:
   ShotPower: 120
   ShotRange: 5
   m_use_pqs: 0
-  NumDefaultBurstShot: 3
+  NumDefaultBurstShot: 2
 --- !u!114 &11475158
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1049,22 +1049,22 @@ MonoBehaviour:
   m_SceneId:
     m_Value: 0
   m_AssetId:
-    i0: 137
-    i1: 71
-    i2: 161
-    i3: 117
-    i4: 79
-    i5: 156
-    i6: 242
-    i7: 52
-    i8: 136
-    i9: 5
-    i10: 10
-    i11: 201
-    i12: 85
-    i13: 238
-    i14: 38
-    i15: 104
+    i0: 154
+    i1: 149
+    i2: 196
+    i3: 251
+    i4: 198
+    i5: 67
+    i6: 109
+    i7: 196
+    i8: 216
+    i9: 110
+    i10: 51
+    i11: 140
+    i12: 6
+    i13: 11
+    i14: 212
+    i15: 32
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
 --- !u!114 &11485130
