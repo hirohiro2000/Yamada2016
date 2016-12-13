@@ -136,6 +136,9 @@ public class ResourceCreator : NetworkBehaviour
 		if (obj.GetComponent<Pauser>())
 			obj.GetComponent<Pauser>().Enable(ena);
 
+		if (obj.GetComponent<NavMeshObstacle>())
+			obj.GetComponent<NavMeshObstacle>().enabled = ena;
+
 		for (int i = 0; i < obj.transform.childCount; ++i)
 		{
 			if( obj.transform.GetChild(i).GetComponent<Collider>())
@@ -189,6 +192,11 @@ public class ResourceCreator : NetworkBehaviour
 		}
 
 		m_resourceRangeGuideRef.SetActive( false );
+	}
+	public void SetGuideResourcePosition( int resourceID, Vector3 pos )
+	{
+		Transform guide = m_staticResources.transform.GetChild( resourceID );
+		guide.position = m_resourcesInformation.ComputeGridPosition( pos );
 	}
 
 

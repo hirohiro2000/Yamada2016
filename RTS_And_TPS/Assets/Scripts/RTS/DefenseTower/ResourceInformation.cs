@@ -72,8 +72,8 @@ public class ResourceInformation : NetworkBehaviour
         //  
         if( !m_gridSplitSpacePlaneTargetTransform ) return;
 
-		m_gridSplitSpacePlane.transform.position = ComputeGridPosition( m_gridSplitSpacePlaneTargetTransform.position);
-		m_gridSplitSpacePlane.transform.position += new Vector3( 0, 0.04f, 0 );
+//		m_gridSplitSpacePlane.transform.position = ComputeGridPosition( m_gridSplitSpacePlaneTargetTransform.position);
+//		m_gridSplitSpacePlane.transform.position += new Vector3( 0, 0.04f, 0 );
 	}
 
     //---------------------------------------------------------------------

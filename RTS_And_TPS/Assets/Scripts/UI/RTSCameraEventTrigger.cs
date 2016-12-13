@@ -62,10 +62,12 @@ public class RTSCameraEventTrigger : MonoBehaviour
 
     public void EventCursorLock()
     {
+        if ( m_rtsCamera.m_actionState != RTSCamera.ActionState.eNone ) return;
         m_cursor.Require(gameObject, RTSCursor.MODE.eCamera);
     }
     public void EventCursorUnLock()
     {
+        if ( m_rtsCamera.m_actionState != RTSCamera.ActionState.eNone ) return;
         m_cursor.Destruction(gameObject);
     }
 

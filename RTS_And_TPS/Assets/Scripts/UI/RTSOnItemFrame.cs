@@ -31,14 +31,12 @@ public class RTSOnItemFrame : MonoBehaviour,
         m_uiGirlTaskSelect.SetForcus(id);
         m_cursor.Require(this.transform.parent.gameObject, RTSCursor.MODE.eUI);
     }
-
     public void OnPointerExit(PointerEventData eventData)
     {
         m_itemController.SetForcus(-1);
         m_uiGirlTaskSelect.SetForcus(-1);
         m_cursor.Destruction(this.transform.parent.gameObject);
     }
-
     public void OnPointerClick(PointerEventData eventData)
     {
         m_uiGirlTaskSelect.SelectOK();
