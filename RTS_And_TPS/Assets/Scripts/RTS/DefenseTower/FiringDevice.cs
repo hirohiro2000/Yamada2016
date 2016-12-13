@@ -38,9 +38,14 @@ public class FiringDevice : NetworkBehaviour
                 UpdateRotation();
 
 				GameObject g			= Instantiate( m_bullet );
-				g.transform.position	= transform.position;
 				g.transform.rotation	= transform.rotation;
 
+				//	射出位置を決める
+				var firePoint = transform.FindChild("FirePoint");
+				if( firePoint != null )	g.transform.position	= firePoint.position;
+				else					g.transform.position	= transform.position;
+
+				//
                 AttackPointList rATKPL  =   g.GetComponentInChildren< AttackPointList >();
                 GameObject      rObj    =   rATKPL.gameObject;
                 rATKPL.baseAttackPoint  *=  m_resourceParam.GetCurLevelParam().power;
