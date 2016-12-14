@@ -136,6 +136,7 @@ GameObject:
   - 114: {fileID: 11409232}
   - 114: {fileID: 11437196}
   - 114: {fileID: 11401638}
+  - 114: {fileID: 11490980}
   m_Layer: 0
   m_Name: CrowdEnemyS
   m_TagString: Enemy
@@ -1351,6 +1352,7 @@ MonoBehaviour:
   ShotPower: 120
   ShotRange: 5
   m_use_pqs: 0
+  m_use_bone_controller: 0
   NumDefaultBurstShot: 3
 --- !u!114 &11430314
 MonoBehaviour:
@@ -1490,7 +1492,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_always_perception_tag: 0100000002000000
-  m_fav: 84
+  m_fav: 180
   m_use_raycast: 0
 --- !u!114 &11463804
 MonoBehaviour:
@@ -1628,6 +1630,22 @@ MonoBehaviour:
   m_health: {fileID: 11480596}
   m_healthBar: {fileID: 11403266}
   m_text: {fileID: 11495468}
+--- !u!114 &11490980
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 123842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 424eb86e768c73d479649ba3c2cbcf23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HPUpMultipleRate: 1
+  MoveSpeedUpMultipleRate: 1.1
+  AttackPowerIncrementRate: 0
+  BurstIncrementRate: 0.2
+  MaxBurstShot: 6
 --- !u!114 &11495468
 MonoBehaviour:
   m_ObjectHideFlags: 1

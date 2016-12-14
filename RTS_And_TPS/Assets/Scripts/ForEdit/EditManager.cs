@@ -1160,7 +1160,7 @@ public class EditManager : MonoBehaviour {
 					DispLabel("", ref offsetY, space);
 					DispLabel("-----敵-----", ref offsetY, space);
 					DispValue("出現個数倍率", ref param.RTSPlayer.ResourceCreateCostMultiple, ref offsetY, space);
-					DispValue("体力倍率", ref param.Enemy.HealthMultiple, ref offsetY, space);
+					//DispValue("体力倍率", ref param.Enemy.HealthMultiple, ref offsetY, space);
 
 
 

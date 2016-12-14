@@ -309,6 +309,7 @@ GameObject:
   - 114: {fileID: 11449572}
   - 114: {fileID: 11450462}
   - 65: {fileID: 6522082}
+  - 114: {fileID: 11448156}
   m_Layer: 0
   m_Name: DashEnemy
   m_TagString: Enemy
@@ -879,6 +880,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_adjust_max_steering_radius: 0.63
+--- !u!114 &11448156
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 196732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 424eb86e768c73d479649ba3c2cbcf23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HPUpMultipleRate: 1.3
+  MoveSpeedUpMultipleRate: 1.05
+  AttackPowerIncrementRate: 0
+  BurstIncrementRate: 0.2
+  MaxBurstShot: 6
 --- !u!114 &11449572
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1007,6 +1024,7 @@ MonoBehaviour:
   ShotPower: 120
   ShotRange: 5
   m_use_pqs: 0
+  m_use_bone_controller: 0
   NumDefaultBurstShot: 2
 --- !u!114 &11475158
 MonoBehaviour:

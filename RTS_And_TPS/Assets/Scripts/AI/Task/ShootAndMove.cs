@@ -50,6 +50,9 @@ public class ShootAndMove : TaskBase {
     delegate void TargetingPointFunction(TargetingSystem target_system);
     private TargetingPointFunction m_targeting_function;
 
+    private float m_original_move_speed = .0f;
+    private float m_move_speed = .0f;
+
     //変更するかも
     private float m_target_height = 0.3f;
  
@@ -194,15 +197,23 @@ public class ShootAndMove : TaskBase {
         var enemy_root = GameObject.Find("EnemySpawnRoot");
         m_home_base = enemy_root.GetComponent<ReferenceWrapper>().m_home_base;
         m_navmesh_accessor = owner.GetComponent<NavMeshAgent>();
+        m_original_move_speed = m_navmesh_accessor.speed;
+        m_move_speed = m_original_move_speed;
         m_agent_speed = m_navmesh_accessor.speed;
         if (m_use_bone_controller)
             m_bone_controller = GetComponent<BoneController>();
     }
 
-    public override void SetWaveParametor(EnemyWaveParametor param)
+    public override void SetWaveParametor(
+        EnemyWaveParametor wave_param,
+        EnemyPersonalParametor personal_param)
     {
-        float temp= param.m_current_level * param.GetBurstIncrementRate();
-        m_num_burstshot = NumDefaultBurstShot + (int)temp; 
+        int rate = wave_param.m_current_level - personal_param.m_emearge_level;
+        float temp= rate * personal_param.GetBurstIncrementRate();
+        m_num_burstshot = NumDefaultBurstShot + (int)temp;
+        m_num_burstshot = Mathf.Clamp(m_num_burstshot, 1, personal_param.GetMaxBurstShot());
+         rate = wave_param.m_current_level - personal_param.m_emearge_level;
+        m_move_speed = m_original_move_speed + (personal_param.GetMoveSpeedUpMultipleRate() * rate);
     }
 
     public override void Enter(TargetingSystem target_system, EnemyTaskDirector task_director)
@@ -210,16 +221,9 @@ public class ShootAndMove : TaskBase {
         m_is_active = true;
         StartCoroutine(UpdateLookPointAndMovePoint(target_system));
         StartCoroutine(Attack(target_system));
-        //task_director.m_anime_controller.SetLayerWeight("BaseLayer", .0f);
-        //task_director.m_anime_controller.SetLayerWeight("DownBody", 1.0f);
         task_director.m_anime_controller.SetTrigger("ToShootAndMove");
-        if (m_use_bone_controller)
-        {
-            //m_body_controller.SetControlLayerWeight(task_director, 1.0f, .0f);
-          
-        }
-            
 
+        m_navmesh_accessor.speed = m_move_speed;
         //ほかのキャラクターのルートをたどる可能性があるから改良する
         //   m_navmesh_accessor.SetDestination(m_home_base.transform.position);
     }
@@ -296,7 +300,8 @@ public class ShootAndMove : TaskBase {
             {
                 UserLog.ErrorTerauchi(m_owner_object.name + "ShootAndMove Bullet No attach RigidBody!!");
             }
-            yield return new WaitForSeconds(ShotIntarvalSecond);
+            yield return null;
+          //  yield return new WaitForSeconds(ShotIntarvalSecond);
         }
 
     }

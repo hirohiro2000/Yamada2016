@@ -51,11 +51,14 @@ public class EnemyGenerator : NetworkBehaviour
     private EnemyWaveParametor m_parametor = null;
 
     [SerializeField]
-    bool DebugMode = false;
+    bool OneSpawnMove = false;
 
 
     //private List<GameObject> m_current_hierarchy_list = new List<GameObject>();
     private List< GameObject >  m_rActiveEnemyList  =   new List< GameObject >();
+
+    [SerializeField, HeaderAttribute("wave")]
+    public List<GenericList<GameObject>> temp = new List<GenericList<GameObject>>();
 
     public  List< GameObject >  GetCurrentHierachyList()
     {
@@ -82,10 +85,11 @@ public class EnemyGenerator : NetworkBehaviour
     {
         m_is_running = true;
         m_parametor.LevelUp();
-        num_spawn = Mathf.Clamp(
-            m_parametor.GetNumStartSpawnEnemy() + (m_parametor.GetNumIncrementSpawnEnemy() * (m_parametor.m_current_level -1)),
-            1,
-            m_parametor.GetNumMaxSpawnEnemy());
+        //出現数はWavemanagerが管理してたので
+        //num_spawn = Mathf.Clamp(
+        //    m_parametor.GetNumStartSpawnEnemy() + (m_parametor.GetNumIncrementSpawnEnemy() * (m_parametor.m_current_level -1)),
+        //    1,
+        //    m_parametor.GetNumMaxSpawnEnemy());
         StartCoroutine(Execute(wave_level, num_spawn,delay_second));
     }
 
@@ -110,8 +114,9 @@ public class EnemyGenerator : NetworkBehaviour
     {
 		//GameWorldParameterで強制的に書き換える
 		{
-			HPCorrectionRate = GameWorldParameter.instance.Enemy.HealthMultiple;
+			//HPCorrectionRate = GameWorldParameter.instance.Enemy.HealthMultiple;
 		}
+
 		//  死亡したエネミーの項目を削除
 		for ( int i = 0; i < m_rActiveEnemyList.Count; i++ ){
             m_rActiveEnemyList.Remove( null );
@@ -169,7 +174,7 @@ public class EnemyGenerator : NetworkBehaviour
         int respawn_count = 0;
 
         //test
-       if(DebugMode)
+       if(OneSpawnMove)
             num_spawn = 1;
         while (respawn_count < num_spawn)
         {
