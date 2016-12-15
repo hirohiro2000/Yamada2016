@@ -10,8 +10,8 @@ using System;
 public class MovingTarget : TaskBase
 {
     //private readonly float one_frame = 1.0f / 60.0f;
-    private readonly float m_normal_cost = 1.0f;
-    private readonly float m_detor_cost = 10.0f;
+ //   private readonly float m_normal_cost = 1.0f;
+   // private readonly float m_detor_cost = 10.0f;
     //ここからゴール更新間隔に関するparameter
     private readonly float m_update_adjust_static_object_min = 0.9f;
     private readonly float m_update_adjust_static_object_max = 2.0f;
@@ -45,6 +45,9 @@ public class MovingTarget : TaskBase
     delegate void CostFunction();
     private CostFunction m_cost_function;
 
+    private float m_original_move_speed = .0f; //このタスクが実行される前のMoveSpeed
+    private float m_move_speed = .0f;   //このタスクに対するMoveSpeed（現在はどのタスクも移動速度は同じになるが一応）
+
     void Awake()
     {
         m_navmesh_cost_dictionary = new Dictionary<string, float>();
@@ -53,23 +56,22 @@ public class MovingTarget : TaskBase
 
     void InitializeCostArray()
     {
-        var enemy_root = GameObject.Find("EnemySpawnRoot");
-        var component = enemy_root.GetComponent<CostNameContainer>();
-        var layer_name_array = component.GetLayerNameArray();
+       // var enemy_root = GameObject.Find("EnemySpawnRoot");
+       // var component = enemy_root.GetComponent<CostNameContainer>();
+       // var layer_name_array = component.GetLayerNameArray();
 
-        //通過できる場所だけNormalCostを挿入
-       foreach(var name in layer_name_array.data)
-        {
-            if(m_can_passing_route.data.Contains(name))
-            {
-                m_navmesh_cost_dictionary.Add(name, m_normal_cost);
-            }
-            else
-            {
-                m_navmesh_cost_dictionary.Add(name, m_detor_cost);
-            }
-
-        }//name
+       // //通過できる場所だけNormalCostを挿入
+       //foreach(var name in layer_name_array.data)
+       // {
+       //     if(m_can_passing_route.data.Contains(name))
+       //     {
+       //         m_navmesh_cost_dictionary.Add(name, m_normal_cost);
+       //     }
+       //     else
+       //     {
+       //         m_navmesh_cost_dictionary.Add(name, m_detor_cost);
+       //     }
+       // }//name
     }
 
     void Start()
@@ -117,10 +119,21 @@ public class MovingTarget : TaskBase
       //  target_point_object.transform.localPosition = m_target_point;
     }
 
+    public override void SetWaveParametor(EnemyWaveParametor wave_param, 
+        EnemyPersonalParametor personal_param)
+    {
+
+        int rate = wave_param.m_current_level - personal_param.m_emearge_level;
+        m_move_speed = m_original_move_speed + (personal_param.GetMoveSpeedUpMultipleRate() * rate);
+        m_move_speed = Mathf.Clamp(m_move_speed, .01f, personal_param.GetMaxmoveSpeed());
+    }
+
     public override void Initialize(GameObject owner)
     {
         base.Initialize(owner);
         m_navmesh_accessor = owner.GetComponent<NavMeshAgent>();
+        m_original_move_speed = m_navmesh_accessor.speed;
+        m_move_speed = m_original_move_speed;
         m_default_steering_radius += UnityEngine.Random.Range(.0f, m_adjust_max_steering_radius);
         m_navmesh_accessor.radius = m_default_steering_radius;
         m_path_renderer = GetComponent<LineRenderer>();
@@ -129,18 +142,18 @@ public class MovingTarget : TaskBase
 
     private void AllNormalCost()
     {
-        foreach (var it in m_navmesh_cost_dictionary)
-        {
-            NavMesh.SetAreaCost(NavMesh.GetAreaFromName(it.Key), m_normal_cost);
-        }
+        //foreach (var it in m_navmesh_cost_dictionary)
+        //{
+        //    NavMesh.SetAreaCost(NavMesh.GetAreaFromName(it.Key), m_normal_cost);
+        //}
     }
 
     private void RouteCost()
     {
-        foreach (var it in m_navmesh_cost_dictionary)
-        {
-            NavMesh.SetAreaCost(NavMesh.GetAreaFromName(it.Key), it.Value);
-        }
+        //foreach (var it in m_navmesh_cost_dictionary)
+        //{
+        //    NavMesh.SetAreaCost(NavMesh.GetAreaFromName(it.Key), it.Value);
+        //}
     }
 
     private void CalculateUpdateInterval(TargetingSystem target_system)
@@ -157,8 +170,6 @@ public class MovingTarget : TaskBase
 
     public override void Enter(TargetingSystem target_system, EnemyTaskDirector task_director)
     {
-      //  var renderer_switch = target_system.m_current_target;
-
         m_target_director = target_system;
         m_target_point = target_system.m_current_target.transform.position;
         //m_coroutine_flg = true;
@@ -176,17 +187,16 @@ public class MovingTarget : TaskBase
         CalculateUpdateInterval(target_system);
       //  m_cost_function();
         m_navmesh_accessor.SetDestination(m_target_point);
-        
+        //m_original_move_speed = m_navmesh_accessor.speed;
+        m_navmesh_accessor.speed = m_move_speed;
+     
     }
 
     public override Status Execute(
         TargetingSystem target_system,
         EnemyTaskDirector task_director)
     {
-        //var path_status = m_navmesh_accessor.pathStatus;
-        //Debug.Log("path is " + path_status);
-
-        task_director.m_anime_controller.SetFloat("MoveSpeed", m_navmesh_accessor.velocity.sqrMagnitude);
+        task_director.m_anime_controller.SetFloat("MoveSpeed", m_navmesh_accessor.velocity.magnitude);
         UpdateGoalPoint();
         if (IsReachingGoalPoint())
         {
@@ -200,6 +210,7 @@ public class MovingTarget : TaskBase
     {
         m_navmesh_accessor.Stop();
         m_navmesh_accessor.ResetPath();
+        m_navmesh_accessor.speed = m_original_move_speed;
     }
 
     public Status ReachingGoalPoint()

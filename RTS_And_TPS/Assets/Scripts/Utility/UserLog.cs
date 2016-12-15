@@ -1,4 +1,4 @@
-﻿//#define DEBUGLOG_ON
+﻿#define DEBUGLOG_ON
 using UnityEngine;
 using System.Collections;
 
@@ -12,7 +12,7 @@ public class UserLog
 	{
 
 #if DEBUGLOG_ON
-		Debug.Log(message);
+		//Debug.Log(message);
 #endif
 
 	}
@@ -48,7 +48,7 @@ public class UserLog
     static public void ErrorTerauchi(object msg)
     {
 #if DEBUGLOG_ON
-        Debug.LogError("tera : " +  msg);
+    //    Debug.LogError("tera : " +  msg);
 #endif
     }
 
@@ -59,7 +59,7 @@ public class UserLog
     static public void NakanoWarning(object message)
 	{
 #if DEBUGLOG_ON
-		Debug.LogWarning(message);
+		//Debug.LogWarning(message);
 #endif
 	}
 

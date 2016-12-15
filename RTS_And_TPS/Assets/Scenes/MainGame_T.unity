@@ -70448,8 +70448,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9014a6ac1daba2a45880d7e3ae37d7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GenerateType: 0
-  HPCorrectionRate: 1.25
   GenerateEnemyList:
   - {fileID: 180630, guid: 05cbac0e8191b564ab7a2e952b3212f4, type: 2}
   - {fileID: 180630, guid: 05cbac0e8191b564ab7a2e952b3212f4, type: 2}
@@ -70473,7 +70471,19 @@ MonoBehaviour:
   - {fileID: 106616, guid: b4f515bc3cb44374bbe26302fba9174a, type: 2}
   - {fileID: 196732, guid: 5a3005ecbc5fa9c4c954da1578c119a7, type: 2}
   m_num_spawn_one_frame: 4
-  DebugMode: 0
+  OneSpawnMove: 0
+  m_unlock_enemy_block_list:
+  - m_list:
+    - {fileID: 109252, guid: e1d173af6d18d3946a25bbede42ca9d2, type: 2}
+    - {fileID: 180630, guid: 05cbac0e8191b564ab7a2e952b3212f4, type: 2}
+  - m_list:
+    - {fileID: 196732, guid: 9a95c4fbc6436dc4d86e338c060bd420, type: 2}
+    - {fileID: 106616, guid: b4f515bc3cb44374bbe26302fba9174a, type: 2}
+  - m_list:
+    - {fileID: 196732, guid: 9a95c4fbc6436dc4d86e338c060bd420, type: 2}
+  - m_list:
+    - {fileID: 196732, guid: 5a3005ecbc5fa9c4c954da1578c119a7, type: 2}
+  m_enemy_unlock_wave_list: 01000000020000000400000005000000
 --- !u!114 &2128173538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70558,13 +70568,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87bc4ab6be1b7a34bacd1b8b3ca6bc71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NumMaxSpawnEnemy: 20
-  NumStartSpawnEnemy: 4
-  NumIncrementSpawnEnemy: 4
-  HPUpPoint: 4
-  MaxBurstShot: 6
-  BurstIncrementRate: 0.2
-  AttackPowerIncrementRate: 0
 --- !u!1 &2128735672
 GameObject:
   m_ObjectHideFlags: 0

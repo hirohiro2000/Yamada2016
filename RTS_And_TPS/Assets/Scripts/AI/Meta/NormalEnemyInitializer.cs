@@ -20,16 +20,7 @@ public class NormalEnemyInitializer : EnemyInitializerBase {
         {
             //controller.SetRouteData(route_list);
         }
-        //体力設定     
-        var health = gameObject.GetComponent<Health>();
-        if (!health)
-        {
-            UserLog.ErrorTerauchi(gameObject.name + "no attach Health !!");
-        }
-        else
-        {
-            health.CorrectionHP(param.m_current_level -1, param.GetHPUpPoint());
-        }
+
         //taskに対してのInitialize(awake語)
         controller.SetWaveParametor(param);
     }

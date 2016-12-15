@@ -14,20 +14,32 @@ public class CrowdEnemyInitializer : EnemyInitializerBase {
         for( int i = 0; i < c_PopCount; i++ ){
             GameObject      rObj    =   Instantiate( c_GenerateEnemy );
             NavMeshAgent    rAgent  =   rObj.GetComponent< NavMeshAgent >();
+            var controller = rObj.GetComponent<EnemyController>();
+            controller.SetWaveParametor(param);
             yield return null;
             //  初期座標にワープ 
-            rAgent.Warp( respawn_pos );
+            //ばらつきを入れる
+            Vector3 random_point = new Vector3(UnityEngine.Random.Range(-0.5f, 0.5f),
+                .0f,
+                UnityEngine.Random.Range(-0.5f, 0.5f));
+            rAgent.Warp( respawn_pos + random_point);
 
             //  ネットワーク上でオブジェクトを共有
             NetworkServer.Spawn( rObj );
-            
-            //  体力設定     
-            Health  rHealth =   rObj.GetComponent< Health >();
-            if( rHealth )   rHealth.CorrectionHP(/*param.m_current_level*/1, param.GetHPUpPoint());
-            else            UserLog.ErrorTerauchi( rObj.name + "no attach Health !!" );
 
-            var controller = rObj.GetComponent<EnemyController>();
-            controller.SetWaveParametor(param);
+            //個体別のparameter取得
+            //var personal_param = rObj.GetComponent<EnemyPersonalParametor>();
+            //if(personal_param == null)
+            //{
+            //    UserLog.Terauchi(rObj.name + "not attach EnemyPersonalParametor!!");
+            //}
+            
+            ////  体力設定     
+            //Health  rHealth =   rObj.GetComponent< Health >();
+            //if( rHealth )   rHealth.CorrectionHP(param.m_current_level - personal_param.m_emearge_level, personal_param.GetHPUpMultipleRate());
+            //else            UserLog.ErrorTerauchi( rObj.name + "no attach Health !!" );
+
+    
         }
 
         //  殻は破棄する

@@ -148,11 +148,12 @@ public class EnemyTaskDirector : MonoBehaviour {
        
     }
 
-    public void SetWaveparamtor(EnemyWaveParametor param)
+    public void SetWaveparamtor(EnemyWaveParametor wave_param,
+        EnemyPersonalParametor personal_param)
     {
         foreach(var task in m_task_array)
         {
-            task.SetWaveParametor(param);
+            task.SetWaveParametor(wave_param,personal_param);
         }
     }
 
