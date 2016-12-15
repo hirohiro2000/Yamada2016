@@ -1,8 +1,12 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿
+using   UnityEngine;
+using   UnityEngine.Networking;
+using   System.Collections;
 
-public class BombExplosion : MonoBehaviour {
+public class BombExplosion : NetworkBehaviour {
+    [ SyncVar ]
     public  int         c_AttackerID    =   0;
+    public  bool        c_Spawn         =   false;
     public  GameObject  c_Explosion     =   null;
     public  bool        c_CallOnDestroy =   true;
 

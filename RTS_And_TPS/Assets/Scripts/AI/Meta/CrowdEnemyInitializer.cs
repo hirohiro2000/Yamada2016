@@ -23,7 +23,7 @@ public class CrowdEnemyInitializer : EnemyInitializerBase {
             
             //  体力設定     
             Health  rHealth =   rObj.GetComponent< Health >();
-            if( rHealth )   rHealth.CorrectionHP(/*param.m_current_level*/1, param.GetHPUpPoint());
+            if( rHealth )   rHealth.CorrectionHP(/*param.m_current_level*/param.m_current_level - 1, param.GetHPUpPoint());
             else            UserLog.ErrorTerauchi( rObj.name + "no attach Health !!" );
 
             var controller = rObj.GetComponent<EnemyController>();

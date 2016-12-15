@@ -48,7 +48,7 @@ public class DetonationObject : NetworkBehaviour {
     //  ダメージ処理 
 	void    DamageProc_CallBack( DamageResult _rDamageResult, CollisionInfo _rInfo )
     {
-        //  受けたダメージ
+        //  受けたダメージ 
         float   damage  =   _rDamageResult.GetTotalDamage();
 
         //  既に力尽きている場合は処理を行わない
@@ -63,7 +63,7 @@ public class DetonationObject : NetworkBehaviour {
         //  ＴＰＳプレイヤーの攻撃コンポーネント
         TPSAttack_Net   rTPSATK     =   rAttacker.GetComponent< TPSAttack_Net >();
 
-        //  TPSプレイヤーの攻撃以外は無視する 
+        //  TPSプレイヤーの攻撃以外は無視する  
         if( !rTPSATK )                                                  return;
 
         //  発射したプレイヤーのクライアント以外では処理を行わない 

@@ -134,6 +134,11 @@ public class NetPlayer_Control : NetworkBehaviour {
     {
         RpcFire_Client( _Position, _Target, connectionToClient.connectionId, _WeaponID, _ChildID );
     }
+    [ Command ]
+    public  void    CmdFire_Server( Vector3 _Position, Vector3 _Target, int _WeaponID, int _ChildID )
+    {
+        Fire_InServer( _Position, _Target, connectionToClient.connectionId, _WeaponID, _ChildID );
+    }
     //  オブジェクトの破壊を通知
     [ Command ]
     public  void    CmdDestroyResourceObj( NetworkInstanceId _NetID )
@@ -166,6 +171,21 @@ public class NetPlayer_Control : NetworkBehaviour {
     public  void    CmdAddResource( float _AddResource )
     {
         m_rGameManager.AddResource( _AddResource );
+    }
+    //  地雷を起爆
+    [ Command ]
+    public  void    CmdDetonationMine( NetworkInstanceId _NetID )
+    {
+        //  対象オブジェクトを探す
+        NetworkIdentity     rIdentity   =   FunctionManager.FindIdentityAtNetID( _NetID );
+        if( !rIdentity )    return;
+
+        //  コンポーネント取得
+        Mine_Control        rMine       =   rIdentity.GetComponent< Mine_Control >();
+        if( !rMine )        return;
+
+        //  爆破
+        rMine.Exploding( connectionToClient.connectionId );
     }
 //*********************************************************************************
 //      リクエスト
@@ -204,5 +224,18 @@ public class NetPlayer_Control : NetworkBehaviour {
             
             rShaker.SetShake( vShake, 0.5f, 0.1f, shakePower );
         }
+    }
+//*********************************************************************************
+//      サーバー処理
+//*********************************************************************************
+    [ Server ]
+    void    Fire_InServer( Vector3 _Position, Vector3 _Target, int _ShooterID, int _WeaponID, int _ChildID )
+    {
+        //  アクセス取得
+        TPSShotController   rShot   =   transform.FindChild( "Weapons" ).GetChild( _ChildID ).GetComponent< TPSShotController >();
+        if( !rShot )                                        return;
+
+        //  発射
+        rShot.Shot_InServer( _Position, _Target, _ShooterID, _WeaponID );
     }
 }

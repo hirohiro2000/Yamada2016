@@ -430,7 +430,23 @@ public class TPSShotController : NetworkBehaviour {
 
     void    Shot( Vector3 firePoint, Vector3 target )
 	{
-		//リコイル再設定
+        //  サーバーで生成するかどうか
+        bool    shotSpawn       =   false;
+
+        //  アクセスの取得
+        GameObject      rObj    =   cntWeaponList.weapon.gameObject;
+        BombExplosion   rBomb   =   rObj.GetComponent< BombExplosion >();
+        if( rBomb ){
+            shotSpawn   =   rBomb.c_Spawn;
+        }
+
+        //  発射処理
+        if( shotSpawn ) Shot_Spawn( firePoint, target );
+        else            Shot_Client( firePoint, target );		
+    }
+    void    Shot_Client( Vector3 firePoint, Vector3 target )
+    {
+        //リコイル再設定
 		playerRecoil.holdingWeapon = cntWeaponList.data.weaponRecoilData;
 
 		Vector3 forward;
@@ -470,6 +486,11 @@ public class TPSShotController : NetworkBehaviour {
         //  他のクライアントでも発射
         m_rNPControl.CmdFire_Client( firePoint, target, cntWeaponIndex, m_MyChildID );
     }
+    void    Shot_Spawn( Vector3 firePoint, Vector3 target )
+    {
+        //  サーバーで生成
+        m_rNPControl.CmdFire_Server( firePoint, target, cntWeaponIndex, m_MyChildID );
+    }
     public  void    Shot_ByRequest( Vector3 firePoint, Vector3 target, int _ShooterID, int _WeaponID )
     {
         Vector3 forward;
@@ -491,6 +512,31 @@ public class TPSShotController : NetworkBehaviour {
         if( rAttack )   rAttack.c_AttackerID    =   _ShooterID;
         BombExplosion   rBomb   =   emit.GetComponent< BombExplosion >();
         if( rBomb )     rBomb.c_AttackerID      =   _ShooterID;
+    }
+    public  void    Shot_InServer( Vector3 firePoint, Vector3 target, int _ShooterID, int _WeaponID )
+    {
+        Vector3 forward;
+		forward = (target - firePoint).normalized;
+
+		GameObject  emit  = Instantiate( weapons[ _WeaponID ].weapon.gameObject, firePoint, Quaternion.LookRotation(forward)) as GameObject;
+
+		//cloneをまとめる
+        string parentName = emit.name + "s";
+		GameObject parent = GameObject.Find(parentName);
+		if (parent == null)
+		{
+			parent = new GameObject(parentName);
+		}
+		emit.transform.parent = parent.transform;
+
+        //  所属を設定
+        TPSAttack_Net   rAttack =   emit.GetComponent< TPSAttack_Net >();
+        if( rAttack )   rAttack.c_AttackerID    =   _ShooterID;
+        BombExplosion   rBomb   =   emit.GetComponent< BombExplosion >();
+        if( rBomb )     rBomb.c_AttackerID      =   _ShooterID;
+
+        //  ネットワークで共有
+        NetworkServer.Spawn( emit );
     }
 
 	void WeaponChange()

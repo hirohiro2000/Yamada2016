@@ -86,7 +86,7 @@ public class EnemyGenerator : NetworkBehaviour
             m_parametor.GetNumStartSpawnEnemy() + (m_parametor.GetNumIncrementSpawnEnemy() * (m_parametor.m_current_level -1)),
             1,
             m_parametor.GetNumMaxSpawnEnemy());
-        //StartCoroutine(Execute(wave_level, num_spawn,delay_second));
+        StartCoroutine(Execute(wave_level, num_spawn,delay_second));
     }
 
     /**
