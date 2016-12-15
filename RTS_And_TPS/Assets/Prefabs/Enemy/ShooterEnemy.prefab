@@ -1706,6 +1706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85ef7ca19dcb5c54db0f6f2034f8a2c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _slider: {fileID: 0}
 --- !u!114 &11403302
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1732,6 +1733,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particle: {fileID: 19810104, guid: 1b3f5250cf3f5f3469fe5ebf17a609fe, type: 2}
+  damageBank: {fileID: 0}
 --- !u!114 &11413798
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1751,6 +1753,9 @@ MonoBehaviour:
       multiple: 1
     - type: 4
       multiple: 1
+  data:
+    weak_lists:
+      list: []
 --- !u!114 &11415864
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1809,7 +1814,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24eba62b96da7a54baca528d3863f4ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_rater: {fileID: 0}
+  m_owner_object: {fileID: 0}
+  m_navmesh_accessor: {fileID: 0}
+  m_default_steering_radius: 0.8
   m_adjust_max_steering_radius: 0.63
+  m_path_update_interval: 0
+  m_target_point: {x: 0, y: 0, z: 0}
+  m_target_director: {fileID: 0}
+  m_path_renderer: {fileID: 0}
+  m_can_passing_route:
+    data: []
+  m_last_path_update_time: 0
+  m_original_move_speed: 0
+  m_move_speed: 0
 --- !u!114 &11419566
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1821,6 +1839,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6bc01d89edee240bb8ee76843e5e01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_rater: {fileID: 0}
+  m_owner_object: {fileID: 0}
   BulletObject: {fileID: 162058, guid: eb1cd25c2ec9863418960ad35d169c7a, type: 2}
   ShotIntarvalSecond: 2
   ShotPower: 120
@@ -1828,6 +1848,21 @@ MonoBehaviour:
   m_use_pqs: 1
   m_use_bone_controller: 1
   NumDefaultBurstShot: 3
+  m_num_burstshot: 0
+  m_shoot_object: {fileID: 0}
+  m_shoot_point: {x: 0, y: 0, z: 0}
+  m_move_point: {x: 0, y: 0, z: 0}
+  m_navmesh_accessor: {fileID: 0}
+  m_is_active: 0
+  m_navmesh_agent_stop_dist: 5
+  m_attack_object_root: {fileID: 0}
+  m_shot_pos_update_intarval: 1
+  m_agent_speed: 0
+  m_pqs_info: {fileID: 0}
+  m_bone_controller: {fileID: 0}
+  m_original_move_speed: 0
+  m_move_speed: 0
+  m_target_height: 0.3
 --- !u!114 &11421112
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1916,6 +1951,9 @@ MonoBehaviour:
       multiple: 1
     - type: 4
       multiple: 1
+  data:
+    weak_lists:
+      list: []
 --- !u!114 &11432040
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1960,6 +1998,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adcc575f232cb7d43b8e5f4eb972fa64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_param: {fileID: 0}
+  m_visibility: {fileID: 0}
+  <m_current_target>k__BackingField: {fileID: 0}
+  <m_score>k__BackingField: 0
+  <m_message_type>k__BackingField: 0
+  <m_is_static>k__BackingField: 0
+  <m_target_tag>k__BackingField: 0
+  <m_pqs>k__BackingField: {fileID: 0}
 --- !u!114 &11440948
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1971,9 +2017,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a2eddb069e702941808659448344e23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_eye_position: {fileID: 0}
   m_always_perception_tag: 0200000001000000
   m_fav: 180
   m_use_raycast: 0
+  visibility_range_text: {fileID: 0}
+  near_range_text: {fileID: 0}
+  can_visibility_text: {fileID: 0}
+  visibility_text: 
+  can_visibility: 0
 --- !u!114 &11443850
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2058,6 +2110,8 @@ MonoBehaviour:
   FieldDetailY: 5
   IsRamdomPoint: 0
   MaxSamplingCount: -1
+  m_point_rater: {fileID: 0}
+  m_filter_list: []
 --- !u!114 &11448276
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2069,7 +2123,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1123b1504b7505441bc15c3f6cc0460d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_LastSendTime: 0
+  m_SyncVarGuard: 0
+  m_MyView: {fileID: 0}
   m_update_intarval_socond: 0.5
+  m_task_director: {fileID: 0}
+  m_visibility_censor: {fileID: 0}
+  m_target_director: {fileID: 0}
+  m_coroutine_flg: 0
+  m_personal_param: {fileID: 0}
 --- !u!114 &11453122
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2083,6 +2145,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AlwaysEvalutionTask:
   - {fileID: 11419566}
+  m_current_task: {fileID: 0}
+  m_task_array: []
+  m_task_folder: {fileID: 0}
+  <m_owner>k__BackingField: {fileID: 0}
+  <m_anime_controller>k__BackingField: {fileID: 0}
 --- !u!114 &11454930
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2110,11 +2177,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96db7186b325d394182c084eb35ba915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_LastSendTime: 0
+  m_SyncVarGuard: 0
+  m_MyView: {fileID: 0}
   c_ExplodedObj: {fileID: 102618, guid: c66536897f4a0164e91d83e720dfdd34, type: 2}
   c_Explosion: {fileID: 0}
   Resource: 10
   Score: 150
   DefaultHP: 6
+  MaxHP: 10
+  HP: 0
+  Level: 0
+  KillerID: 0
+  m_damage_bank: {fileID: 0}
+  m_rLinkManager: {fileID: 0}
+  m_rGameManager: {fileID: 0}
+  m_IsGameQuit: 0
 --- !u!114 &11459226
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2138,6 +2216,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14d6be84caae7e94a82b4a40d002ee9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_rater: {fileID: 0}
+  m_owner_object: {fileID: 0}
 --- !u!114 &11464704
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2197,6 +2277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf5aa4dbdf1dd49834a576bc521b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_animator: {fileID: 0}
 --- !u!114 &11473802
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2209,6 +2290,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recieveDamageType: 0
+  ListClearRequest: 0
+  CheckedListNum: 0
 --- !u!114 &11476266
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2231,6 +2314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db00184e682b0904a92a79f0b9c7832d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_shot_range: 5
 --- !u!114 &11487614
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2242,7 +2326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08e157a94c3e4554db5f289e0f987a88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_ParentName: EnemySpawnRoot
+  c_ParentName: 456e656d79537061776e526f6f74
 --- !u!114 &11488398
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2272,6 +2356,7 @@ MonoBehaviour:
   AttackPowerIncrementRate: 0
   BurstIncrementRate: 5
   MaxBurstShot: 10
+  <m_emearge_level>k__BackingField: 0
 --- !u!114 &11498598
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2284,7 +2369,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ControllBone: {fileID: 473578}
+  m_slerp_speed: 0.1
   m_target_direction: {x: 1, y: 1, z: 1}
+  target_rotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!120 &12041760
 LineRenderer:
   m_ObjectHideFlags: 1

@@ -1160,6 +1160,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_InitCost: 150
   c_UPCost: 100
+  m_Cost: 0
+  c_ShopingTime: 2
+  m_ShopTimer: 0
+  c_Threshold: 0.5
+  m_TouchTimer: 0
+  m_rCostText: {fileID: 0}
+  m_rGameManager: {fileID: 0}
+  m_rLinkManager: {fileID: 0}
 --- !u!1 &36405464
 GameObject:
   m_ObjectHideFlags: 0
@@ -1411,6 +1419,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_mainImage: {fileID: 1464497491}
+  m_hp: 0
+  m_maxHP: 0
 --- !u!1 &48700872
 GameObject:
   m_ObjectHideFlags: 0
@@ -3001,6 +3011,9 @@ MonoBehaviour:
     list:
     - type: 155
       multiple: 0
+  data:
+    weak_lists:
+      list: []
 --- !u!1 &102099861 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: 36ebb9a9e2bbff843b92cc95e0cdc972, type: 2}
@@ -3016,6 +3029,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bff1e5f5dece984a8d13260bf2547fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_CloudSpeed: 0
+  m_rRenderer: {fileID: 0}
 --- !u!4 &102099865 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 36ebb9a9e2bbff843b92cc95e0cdc972, type: 2}
@@ -4278,11 +4293,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad3c6b9257e154142afa67d4f8fcf8f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_Label: '+ '
+  c_Label: 2b20
   c_UseAnime: 1
   c_CountUpTime: 0.3
   c_DisplayTime: 1
   c_Decimal: 0
+  m_rText: {fileID: 0}
+  m_rAnimator: {fileID: 0}
+  m_DispScore: 0
+  m_UpScore: 0
+  m_CUTimer: 0
+  m_DispTimer: 0
+  m_PrevScore: 0
+  m_StartScore: 0
 --- !u!114 &147726190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8888,6 +8911,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_mainImage: {fileID: 732839337}
+  m_mainImageDefaultPosition: {x: 0, y: 0, z: 0}
+  m_curValue: 0
+  m_capacity: 0
 --- !u!1 &261850566
 GameObject:
   m_ObjectHideFlags: 0
@@ -11611,11 +11637,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad3c6b9257e154142afa67d4f8fcf8f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_Label: '+ '
+  c_Label: 2b20
   c_UseAnime: 0
   c_CountUpTime: 0.3
   c_DisplayTime: 1
   c_Decimal: 2
+  m_rText: {fileID: 0}
+  m_rAnimator: {fileID: 0}
+  m_DispScore: 0
+  m_UpScore: 0
+  m_CUTimer: 0
+  m_DispTimer: 0
+  m_PrevScore: 0
+  m_StartScore: 0
 --- !u!114 &334279778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13344,6 +13378,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f9003c306f7fcf47a47ed1ea6280b3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_IsActive: 0
+  m_rMessage: {fileID: 0}
+  m_rTimeLimit: {fileID: 0}
+  m_rAnimeMessage: {fileID: 0}
+  m_rAnimeTimeLimit: {fileID: 0}
 --- !u!1 &403439912
 GameObject:
   m_ObjectHideFlags: 0
@@ -14347,15 +14386,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e121861b3bc54d9449433852c1666b87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_RetryScene: MainGame_T
+  m_LastSendTime: 0
+  m_SyncVarGuard: 0
+  m_MyView: {fileID: 0}
+  c_RetryScene: 4d61696e47616d655f54
   c_Font: {fileID: 12800000, guid: 277513cdc6cb369499683a94d1762948, type: 3}
   c_StageDrum: {fileID: 103424, guid: 20235f254621df44b80042b9eb84ff61, type: 2}
   c_StartCDTime: 5
+  c_WaveInterval: 30
   c_StartResource: 150
+  m_State: 0
+  m_StateTimer: 0
   m_GameSpeed: 1
   m_WaveLevel: 0
   m_Resource: 0
   m_GlobalScore: 0
+  m_SDPlaceTimer: 0
+  m_rLinkManager: {fileID: 0}
+  m_rWaveManager: {fileID: 0}
+  m_rSkyManager: {fileID: 0}
+  m_rResources: {fileID: 0}
+  m_rWaveText: {fileID: 0}
+  m_rResourceText: {fileID: 0}
+  m_rScoreText: {fileID: 0}
+  m_rAcqScore: {fileID: 0}
+  m_rAcqRecord: {fileID: 0}
+  m_rAcqResource: {fileID: 0}
+  m_rDFControl: {fileID: 0}
+  m_rSDrumControl: {fileID: 0}
 --- !u!4 &420201046
 Transform:
   m_ObjectHideFlags: 0
@@ -14684,6 +14742,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad0434356ca95c14f93c526d8a2acda8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_Curve:
+  - 0
+  - 1
+  - 0
+  - 0
+  - 0
+  - 0
+  c_MaxAlpha: 0.74509805
+  m_rImage: {fileID: 0}
+  m_IsDying: 0
+  m_Timer: 0
 --- !u!114 &426633356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15734,6 +15803,7 @@ MonoBehaviour:
   ammoText: {fileID: 461911404}
   reloadProgress: {fileID: 1360513939}
   havingAmmoText: {fileID: 1991327133}
+  group: {fileID: 0}
 --- !u!225 &452741411
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -15937,6 +16007,7 @@ MonoBehaviour:
   ammoText: {fileID: 958031028}
   reloadProgress: {fileID: 1041299013}
   havingAmmoText: {fileID: 563500039}
+  group: {fileID: 0}
 --- !u!225 &455857332
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -16293,6 +16364,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_InitCost: 100
   c_UPCost: 150
+  m_Cost: 0
+  c_ShopingTime: 2
+  m_ShopTimer: 0
+  c_Threshold: 0.5
+  m_TouchTimer: 0
+  m_rCostText: {fileID: 0}
+  m_rGameManager: {fileID: 0}
+  m_rLinkManager: {fileID: 0}
 --- !u!1 &467540907
 GameObject:
   m_ObjectHideFlags: 0
@@ -17071,8 +17150,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_DisplayTime: 1.3
   c_Color:
-  - {r: 1, g: 0.80222845, b: 0, a: 0.9607843}
-  - {r: 1, g: 0.41782728, b: 0, a: 0.9607843}
+  - r: 1
+    g: 0.80222845
+    b: 0
+    a: 0.9607843
+  - r: 1
+    g: 0.41782728
+    b: 0
+    a: 0.9607843
+  m_rText: {fileID: 0}
+  m_rAnimator: {fileID: 0}
+  m_DefaultColor:
+    r: 1
+    g: 1
+    b: 1
+    a: 1
+  m_DispTimer: 0
 --- !u!114 &494167187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18539,8 +18632,17 @@ MonoBehaviour:
   m_upperIcon: {fileID: 2800000, guid: 20a1f30ce1f2b8745a6b938ab4cd62c4, type: 3}
   m_lowerIcon: {fileID: 2800000, guid: 50917b96717be2f4c96e67764047a539, type: 3}
   m_searchRange: 120
-  m_ownColor: {r: 0, g: 0, b: 1, a: 1}
-  m_enemyColor: {r: 1, g: 0, b: 0, a: 1}
+  m_ownColor:
+    r: 0
+    g: 0
+    b: 1
+    a: 1
+  m_enemyColor:
+    r: 1
+    g: 0
+    b: 0
+    a: 1
+  m_rEnemyShell: {fileID: 0}
   rrr: {fileID: 0}
 --- !u!4 &528457435 stripped
 Transform:
@@ -18869,6 +18971,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ca8c0daa085b6442be8ac68205d2e94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_LastSendTime: 0
+  m_SyncVarGuard: 0
+  m_MyView: {fileID: 0}
   m_resources:
   - {fileID: 155278, guid: d19a93d3d3057024988ce426a473e6ae, type: 2}
   - {fileID: 155426, guid: ccbd33b8d935e4c4ba895088bef2f948, type: 2}
@@ -18881,7 +18986,14 @@ MonoBehaviour:
   - {fileID: 190030, guid: 244be48ca496fd94d8dc40140e9cda30, type: 2}
   - {fileID: 190030, guid: 244be48ca496fd94d8dc40140e9cda30, type: 2}
   - {fileID: 190030, guid: 244be48ca496fd94d8dc40140e9cda30, type: 2}
+  m_resourcesInformation: {fileID: 0}
+  m_fieldResources: {fileID: 0}
+  m_staticResources: {fileID: 0}
   m_resourceRangeGuide: {fileID: 194204, guid: 55ad082cb22a2d344b213f3dc299b6fb, type: 2}
+  m_resourceRangeGuideRef: {fileID: 0}
+  m_prevAddResource: {fileID: 0}
+  m_rotateAngle: 0
+  m_rLinkManager: {fileID: 0}
 --- !u!114 &538702161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19481,6 +19593,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_mainImage: {fileID: 1963151746}
+  m_mainImageDefaultPosition: {x: 0, y: 0, z: 0}
+  m_curValue: 0
+  m_capacity: 0
 --- !u!1001 &554659860
 Prefab:
   m_ObjectHideFlags: 0
@@ -20398,6 +20513,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recieveDamageType: 0
+  ListClearRequest: 0
+  CheckedListNum: 0
 --- !u!1 &575983462
 GameObject:
   m_ObjectHideFlags: 0
@@ -22145,7 +22262,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_Shader: {fileID: 4800000, guid: ad6b90e9990a6304a94f254e667f19e3, type: 3}
-  c_Color: {r: 1, g: 0.7019608, b: 0, a: 0.9607843}
+  c_Color:
+    r: 1
+    g: 0.7019608
+    b: 0
+    a: 0.9607843
 --- !u!1 &621076688
 GameObject:
   m_ObjectHideFlags: 0
@@ -22641,11 +22762,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce23e10e9c6e3ee45a18f8efc7225afb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_LastSendTime: 0
+  m_SyncVarGuard: 0
+  m_MyView: {fileID: 0}
   m_gridSplitSpacePlane: {fileID: 194784, guid: e2978cde2e51c3f42bda4aad65e85c72,
     type: 2}
   m_gridSplitSpacePlaneTargetTransform: {fileID: 0}
   m_gridSplitSpaceScale: 3
   m_GridOffset: {x: 1.5, y: 0, z: 1.5}
+  m_rFieldResources: {fileID: 0}
 --- !u!4 &637293231
 Transform:
   m_ObjectHideFlags: 0
@@ -25082,7 +25207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac464e4c19066a4ca441bdd98e86be9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_SetName: SpawnPoint
+  c_SetName: 537061776e506f696e74
 --- !u!64 &706948818
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -26593,7 +26718,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_Shader: {fileID: 4800000, guid: ad6b90e9990a6304a94f254e667f19e3, type: 3}
-  c_Color: {r: 1, g: 0.7019608, b: 0, a: 0.9607843}
+  c_Color:
+    r: 1
+    g: 0.7019608
+    b: 0
+    a: 0.9607843
 --- !u!102 &756033442
 TextMesh:
   serializedVersion: 3
@@ -27204,7 +27333,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_Shader: {fileID: 4800000, guid: ad6b90e9990a6304a94f254e667f19e3, type: 3}
-  c_Color: {r: 1, g: 0.7019608, b: 0, a: 0.9607843}
+  c_Color:
+    r: 1
+    g: 0.7019608
+    b: 0
+    a: 0.9607843
 --- !u!1 &783080899
 GameObject:
   m_ObjectHideFlags: 0
@@ -29500,6 +29633,9 @@ MonoBehaviour:
     list:
     - type: 155
       multiple: 0
+  data:
+    weak_lists:
+      list: []
 --- !u!114 &857859099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29513,6 +29649,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recieveDamageType: 0
+  ListClearRequest: 0
+  CheckedListNum: 0
 --- !u!4 &857859100
 Transform:
   m_ObjectHideFlags: 0
@@ -30107,7 +30245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac464e4c19066a4ca441bdd98e86be9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_SetName: SpawnPoint
+  c_SetName: 537061776e506f696e74
 --- !u!64 &870023541
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -31979,7 +32117,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_Shader: {fileID: 4800000, guid: ad6b90e9990a6304a94f254e667f19e3, type: 3}
-  c_Color: {r: 1, g: 0.7019608, b: 0, a: 0.9607843}
+  c_Color:
+    r: 1
+    g: 0.7019608
+    b: 0
+    a: 0.9607843
 --- !u!1 &919457803
 GameObject:
   m_ObjectHideFlags: 0
@@ -34697,6 +34839,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 0
+  weaponAmmoUIs: []
 --- !u!4 &1009384717 stripped
 Transform:
   m_PrefabParentObject: {fileID: 402346, guid: 616566c80c0b1b841beddb6acb04dcc9, type: 2}
@@ -40105,6 +40248,7 @@ MonoBehaviour:
   ammoText: {fileID: 1131860872}
   reloadProgress: {fileID: 734752155}
   havingAmmoText: {fileID: 132724427}
+  group: {fileID: 0}
 --- !u!225 &1171303623
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -40810,13 +40954,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_route_data:
   - data:
-    - 526f6f7432
-    - 526f6f7433
-    - 436f6d6d6f6e526f6f74
+    - 35323666366637343332
+    - 35323666366637343333
+    - 3433366636643664366636653532366636663734
   - data:
-    - 526f6f7432
-    - 526f6f7435
-    - 436f6d6d6f6e526f6f74
+    - 35323666366637343332
+    - 35323666366637343335
+    - 3433366636643664366636653532366636663734
   - data: []
 --- !u!1 &1200389579
 GameObject:
@@ -45314,6 +45458,7 @@ MonoBehaviour:
   m_dir: {x: 1, y: 1, z: 1}
   m_targetDistance: 31
   m_isForcus: 1
+  m_camLookAt: {x: 0, y: 0, z: 0}
   m_actionState: 0
 --- !u!114 &1337441439
 MonoBehaviour:
@@ -45326,6 +45471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23f8946eac511fb4e8b93f755bbe1267, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rtsCamera: {fileID: 0}
 --- !u!1 &1339648049
 GameObject:
   m_ObjectHideFlags: 0
@@ -45419,9 +45565,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3576631438663a6469c78a1318fe56e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_LastSendTime: 0
+  m_SyncVarGuard: 0
+  m_MyView: {fileID: 0}
   m_LocalPlayerID: 0
   m_rLocalPlayer: {fileID: 0}
   m_rLocalNPControl: {fileID: 0}
+  m_rNetManager: {fileID: 0}
 --- !u!4 &1341312726
 Transform:
   m_ObjectHideFlags: 0
@@ -45723,6 +45873,9 @@ MonoBehaviour:
     list:
     - type: 155
       multiple: 0
+  data:
+    weak_lists:
+      list: []
 --- !u!114 &1350152231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45735,6 +45888,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recieveDamageType: 0
+  ListClearRequest: 0
+  CheckedListNum: 0
 --- !u!64 &1350152232
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -46002,6 +46157,7 @@ MonoBehaviour:
   ammoText: {fileID: 234847896}
   reloadProgress: {fileID: 894731927}
   havingAmmoText: {fileID: 1168756289}
+  group: {fileID: 0}
 --- !u!225 &1357639568
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -47433,6 +47589,9 @@ MonoBehaviour:
     list:
     - type: 155
       multiple: 0
+  data:
+    weak_lists:
+      list: []
 --- !u!1 &1393541172
 GameObject:
   m_ObjectHideFlags: 0
@@ -47885,7 +48044,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_Shader: {fileID: 4800000, guid: ad6b90e9990a6304a94f254e667f19e3, type: 3}
-  c_Color: {r: 1, g: 0.7019608, b: 0, a: 0.9607843}
+  c_Color:
+    r: 1
+    g: 0.7019608
+    b: 0
+    a: 0.9607843
 --- !u!102 &1403650610
 TextMesh:
   serializedVersion: 3
@@ -49321,7 +49484,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_Shader: {fileID: 4800000, guid: ad6b90e9990a6304a94f254e667f19e3, type: 3}
-  c_Color: {r: 1, g: 0.7019608, b: 0, a: 0.9607843}
+  c_Color:
+    r: 1
+    g: 0.7019608
+    b: 0
+    a: 0.9607843
 --- !u!1 &1441673014
 GameObject:
   m_ObjectHideFlags: 0
@@ -50042,7 +50209,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_Shader: {fileID: 4800000, guid: ad6b90e9990a6304a94f254e667f19e3, type: 3}
-  c_Color: {r: 1, g: 0.7019608, b: 0, a: 0.9607843}
+  c_Color:
+    r: 1
+    g: 0.7019608
+    b: 0
+    a: 0.9607843
 --- !u!102 &1456067740
 TextMesh:
   serializedVersion: 3
@@ -51091,6 +51262,8 @@ MonoBehaviour:
   m_life: 0.5
   m_uiCircle: 100
   m_guideOriginal: {fileID: 810652809}
+  m_parentTrans: {fileID: 0}
+  m_uiCamera: {fileID: 0}
 --- !u!1 &1506159036
 GameObject:
   m_ObjectHideFlags: 0
@@ -52115,7 +52288,7 @@ MonoBehaviour:
   m_NetworkPort: 7777
   m_ServerBindToIP: 0
   m_ServerBindAddress: 
-  m_NetworkAddress: localhost
+  m_NetworkAddress: 6c6f63616c686f7374
   m_DontDestroyOnLoad: 1
   m_RunInBackground: 1
   m_ScriptCRCCheck: 1
@@ -52160,42 +52333,26 @@ MonoBehaviour:
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
-    m_PacketSize: 1500
-    m_FragmentSize: 500
-    m_ResendTimeout: 1200
-    m_DisconnectTimeout: 2000
-    m_ConnectTimeout: 2000
-    m_MinUpdateTimeout: 10
-    m_PingTimeout: 500
-    m_ReducedPingTimeout: 100
-    m_AllCostTimeout: 20
     m_NetworkDropThreshold: 5
     m_OverflowDropThreshold: 5
     m_MaxConnectionAttempt: 10
-    m_AckDelay: 33
-    m_MaxCombinedReliableMessageSize: 100
-    m_MaxCombinedReliableMessageCount: 10
-    m_MaxSentMessageQueueSize: 128
     m_IsAcksLong: 0
     m_UsePlatformSpecificProtocols: 0
     m_Channels: []
   m_GlobalConfig:
-    m_ThreadAwakeTimeout: 1
     m_ReactorModel: 0
-    m_ReactorMaximumReceivedMessages: 1024
-    m_ReactorMaximumSentMessages: 1024
-    m_MaxPacketSize: 2000
   m_Channels: 
   m_UseWebSockets: 0
   m_UseSimulator: 0
   m_SimulatedLatency: 1
   m_PacketLossPercentage: 0
-  m_MatchHost: mm.unet.unity3d.com
+  m_MatchHost: 6d6d2e756e65742e756e69747933642e636f6d
   m_MatchPort: 443
+  m_MigrationManager: {fileID: 0}
+  m_ClientLoadedScene: 0
   isNetworkActive: 0
   matchMaker: {fileID: 0}
-  matchName: 64656661756c74
-  matchSize: 4
+  matchName: 3634363536363631373536633734
 --- !u!114 &1551213988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52213,10 +52370,27 @@ MonoBehaviour:
   m_BroadcastSubVersion: 1
   m_BroadcastInterval: 1000
   m_UseNetworkManager: 1
-  m_BroadcastData: HELLO
+  m_BroadcastData: 48454c4c4f
   m_ShowGUI: 0
   m_OffsetX: 220
   m_OffsetY: 0
+  m_HostId: -1
+  m_Running: 0
+  m_IsServer: 0
+  m_IsClient: 0
+  m_MsgOutBuffer: []
+  m_MsgInBuffer: []
+  m_DefaultTopology:
+    m_DefConfig:
+      m_NetworkDropThreshold: 5
+      m_OverflowDropThreshold: 5
+      m_MaxConnectionAttempt: 10
+      m_IsAcksLong: 0
+      m_UsePlatformSpecificProtocols: 0
+      m_Channels: []
+    m_MaxDefConnections: 0
+    m_SpecialConnections: []
+    m_MessagePoolSizeGrowthFactor: 0.75
 --- !u!4 &1551213989
 Transform:
   m_ObjectHideFlags: 0
@@ -52242,8 +52416,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_rNetworkManager: {fileID: 0}
-  m_MatchSize: 20
   showGUI: 1
+  offsetX: 0
+  offsetY: 0
+  m_RoomPass: 
+  m_JoinPass: 
+  m_NameFilter: 
+  m_rDiscovery: {fileID: 0}
 --- !u!1 &1553781120
 GameObject:
   m_ObjectHideFlags: 0
@@ -54659,7 +54838,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_Shader: {fileID: 4800000, guid: ad6b90e9990a6304a94f254e667f19e3, type: 3}
-  c_Color: {r: 1, g: 0.7019608, b: 0, a: 0.9607843}
+  c_Color:
+    r: 1
+    g: 0.7019608
+    b: 0
+    a: 0.9607843
 --- !u!1 &1619835385
 GameObject:
   m_ObjectHideFlags: 0
@@ -56947,6 +57130,11 @@ MonoBehaviour:
   - skyMaterial: {fileID: 2100000, guid: d07d2172e76d3fa429e80a14d2ae3616, type: 2}
     cloudMaterial: {fileID: 2100000, guid: 02442b67474e987468122afa72663de2, type: 2}
     cloudSpeed: 6
+  m_rCurData:
+    skyMaterial: {fileID: 0}
+    cloudMaterial: {fileID: 0}
+    cloudSpeed: 0
+  m_rCloudControl: {fileID: 0}
 --- !u!4 &1702293414
 Transform:
   m_ObjectHideFlags: 0
@@ -58361,6 +58549,7 @@ MonoBehaviour:
   ammoText: {fileID: 1294465761}
   reloadProgress: {fileID: 1003227815}
   havingAmmoText: {fileID: 605568284}
+  group: {fileID: 0}
 --- !u!225 &1733525683
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -59930,7 +60119,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_Shader: {fileID: 4800000, guid: ad6b90e9990a6304a94f254e667f19e3, type: 3}
-  c_Color: {r: 1, g: 0.7019608, b: 0, a: 0.9607843}
+  c_Color:
+    r: 1
+    g: 0.7019608
+    b: 0
+    a: 0.9607843
 --- !u!1 &1800430712
 GameObject:
   m_ObjectHideFlags: 0
@@ -60487,6 +60680,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 1
+  weaponAmmoUIs: []
 --- !u!1 &1814742617
 GameObject:
   m_ObjectHideFlags: 0
@@ -62832,7 +63026,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_Shader: {fileID: 4800000, guid: ad6b90e9990a6304a94f254e667f19e3, type: 3}
-  c_Color: {r: 1, g: 0.7019608, b: 0, a: 0.9607843}
+  c_Color:
+    r: 1
+    g: 0.7019608
+    b: 0
+    a: 0.9607843
 --- !u!102 &1872580390
 TextMesh:
   serializedVersion: 3
@@ -63062,6 +63260,7 @@ MonoBehaviour:
   ammoText: {fileID: 560435872}
   reloadProgress: {fileID: 705085193}
   havingAmmoText: {fileID: 289846498}
+  group: {fileID: 0}
 --- !u!225 &1877807097
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -66810,7 +67009,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac464e4c19066a4ca441bdd98e86be9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_SetName: SpawnPoint
+  c_SetName: 537061776e506f696e74
 --- !u!64 &2014955257
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -67712,7 +67911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac464e4c19066a4ca441bdd98e86be9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_SetName: SpawnPoint
+  c_SetName: 537061776e506f696e74
 --- !u!64 &2048506632
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -69785,7 +69984,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_Shader: {fileID: 4800000, guid: ad6b90e9990a6304a94f254e667f19e3, type: 3}
-  c_Color: {r: 1, g: 0.7019608, b: 0, a: 0.9607843}
+  c_Color:
+    r: 1
+    g: 0.7019608
+    b: 0
+    a: 0.9607843
 --- !u!102 &2101050270
 TextMesh:
   serializedVersion: 3
@@ -70485,6 +70688,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65fea32d9129f8847b2656b393653589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <m_attack_object_root>k__BackingField: {fileID: 0}
+  <m_active_enemy_list>k__BackingField: []
 --- !u!114 &2128173537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70496,6 +70701,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9014a6ac1daba2a45880d7e3ae37d7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_LastSendTime: 0
+  m_SyncVarGuard: 0
+  m_MyView: {fileID: 0}
   GenerateEnemyList:
   - {fileID: 180630, guid: 05cbac0e8191b564ab7a2e952b3212f4, type: 2}
   - {fileID: 180630, guid: 05cbac0e8191b564ab7a2e952b3212f4, type: 2}
@@ -70519,7 +70727,13 @@ MonoBehaviour:
   - {fileID: 106616, guid: b4f515bc3cb44374bbe26302fba9174a, type: 2}
   - {fileID: 196732, guid: 5a3005ecbc5fa9c4c954da1578c119a7, type: 2}
   m_num_spawn_one_frame: 4
+  m_generate_director: {fileID: 0}
+  m_navigation_data_list: []
+  m_sparn_interval: 1
+  m_is_running: 0
+  m_parametor: {fileID: 0}
   OneSpawnMove: 0
+  m_rActiveEnemyList: []
   m_unlock_enemy_block_list:
   - m_list:
     - {fileID: 109252, guid: e1d173af6d18d3946a25bbede42ca9d2, type: 2}
@@ -70532,6 +70746,7 @@ MonoBehaviour:
   - m_list:
     - {fileID: 196732, guid: 5a3005ecbc5fa9c4c954da1578c119a7, type: 2}
   m_enemy_unlock_wave_list: 01000000020000000400000005000000
+  m_current_generate_list: []
 --- !u!114 &2128173538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70543,6 +70758,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07a74a728d612984a8e4341a652d2ea8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_LastSendTime: 0
+  m_SyncVarGuard: 0
+  m_MyView: {fileID: 0}
   LayerNameArray:
     data: []
 --- !u!114 &2128173539
@@ -70588,6 +70806,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e17b9fcf7a47b944a941ced90c32f755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_LastSendTime: 0
+  m_SyncVarGuard: 0
+  m_MyView: {fileID: 0}
+  m_WaveLevel: 0
+  m_rGameManager: {fileID: 0}
+  m_ganerator: {fileID: 0}
 --- !u!4 &2128173541
 Transform:
   m_ObjectHideFlags: 0
@@ -70616,6 +70840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87bc4ab6be1b7a34bacd1b8b3ca6bc71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <m_current_level>k__BackingField: 0
 --- !u!1 &2128735672
 GameObject:
   m_ObjectHideFlags: 0

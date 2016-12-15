@@ -48,7 +48,7 @@ public class TaskBase : MonoBehaviour {
       //  Debug.Log("TaskBase::Exit call");
     }
 
-    public float EvalutionScore(
+    public virtual float EvalutionScore(
         TargetingSystem current_target_info,
         EnemyTaskDirector director
         )

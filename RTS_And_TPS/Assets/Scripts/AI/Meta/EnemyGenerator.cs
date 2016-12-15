@@ -28,11 +28,6 @@ public class EnemyGenerator : NetworkBehaviour
         ForText,
     }
 
-
-
-    [SerializeField, HeaderAttribute("生成する敵Prefab")]
-    private GameObject[] GenerateEnemyList = new GameObject[1] { null };
-
     [SerializeField, HeaderAttribute("デバッグ中　いじるな")]
     private int m_num_spawn_one_frame = 1;  //一度にわく敵の数
 
@@ -65,7 +60,7 @@ public class EnemyGenerator : NetworkBehaviour
 
     public int GetNumEnemyType()
     {
-        return GenerateEnemyList.Length;
+        return m_current_generate_list.Count;
     }
 
     public int GetNumSpawnPointList()
@@ -215,8 +210,8 @@ public class EnemyGenerator : NetworkBehaviour
         if (m_navigation_data_list.Count == 0) return null;
 
         //このエラーチェックは最終的に消す
-        if (data.type >= GenerateEnemyList.Length)
-            UserLog.ErrorTerauchi("Enemygenerator::CreateEnemyInstance type_index error !! max_enemy_type is " + GenerateEnemyList.Length + "type_index is" + data.type);
+        //if (data.type >= GenerateEnemyList.Length)
+        //    UserLog.ErrorTerauchi("Enemygenerator::CreateEnemyInstance type_index error !! max_enemy_type is " + GenerateEnemyList.Length + "type_index is" + data.type);
         if (data.respawn_point_index >= m_navigation_data_list.Count)
             UserLog.ErrorTerauchi("Enemygenerator::CreateEnemyInstance respawan_index error !! max_respawn_point_index is " + GenerateEnemyList.Length + "type_index is" + data.respawn_point_index);
 
