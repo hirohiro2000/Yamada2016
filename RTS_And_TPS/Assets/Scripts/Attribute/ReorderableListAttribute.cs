@@ -14,7 +14,8 @@ public class ReorderableList<type>
 		}
 		set
 		{
-			list.ToArray()[index] = value;
+			list.Insert(index, value);
+			list.RemoveAt(index +1);
 		}
 	}
 
