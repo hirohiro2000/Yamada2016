@@ -39,20 +39,20 @@ public class WaveManager : NetworkBehaviour {
         if( CheckWhetherEmptyAllSpawner()
         &&  m_ganerator.GetCurrentAliveEnemyCount() <= 0 ){
             //  次のウェーブを用意
-            StandbyWave( 4.0f );
+            //StandbyWave( 4.0f );
 
             //  ウェーブクリア
-            if( NetworkServer.active )      m_rGameManager.SetMainMassage( "第 " + ( m_WaveLevel - 1 ) +  " ウェーブクリア！", 3.7f, 1.7f );
-                                            m_rGameManager.RpcMainMessage( "第 " + ( m_WaveLevel - 1 ) +  " ウェーブクリア！", 3.7f, 1.7f );
+            if( NetworkServer.active )      m_rGameManager.SetMainMassage( "第 " + ( m_WaveLevel ) +  " ウェーブクリア！", 3.7f, 1.7f );
+                                            m_rGameManager.RpcMainMessage( "第 " + ( m_WaveLevel ) +  " ウェーブクリア！", 3.7f, 1.7f );
             //  敵の襲来を通知 
-            if( m_WaveLevel % 3 == 0 ){
-                if( NetworkServer.active )  m_rGameManager.SetMainMassage( "敵の大軍が押し寄せています！", 3.7f, 1.2f );
-                                            m_rGameManager.RpcMainMessage( "敵の大軍が押し寄せています！", 3.7f, 1.2f );
-            }
-            else{
-                if( NetworkServer.active )  m_rGameManager.SetMainMassage( "新たな敵が接近しています", 3.7f, 1.2f );
-                                            m_rGameManager.RpcMainMessage( "新たな敵が接近しています", 3.7f, 1.2f );
-            }
+            //if( m_WaveLevel % 3 == 0 ){
+            //    if( NetworkServer.active )  m_rGameManager.SetMainMassage( "敵の大軍が押し寄せています！", 3.7f, 1.2f );
+            //                                m_rGameManager.RpcMainMessage( "敵の大軍が押し寄せています！", 3.7f, 1.2f );
+            //}
+            //else{
+            //    if( NetworkServer.active )  m_rGameManager.SetMainMassage( "新たな敵が接近しています", 3.7f, 1.2f );
+            //                                m_rGameManager.RpcMainMessage( "新たな敵が接近しています", 3.7f, 1.2f );
+            //}
 
             //  ウェーブ開始処理
             m_rGameManager.StartNewWave();
@@ -88,6 +88,18 @@ public class WaveManager : NetworkBehaviour {
 
         //  ウェーブ数更新
         m_rGameManager.m_WaveLevel  =   m_WaveLevel;
+
+        //  メッセージを通知 
+        if( m_WaveLevel > 1 ){
+            if( m_WaveLevel % 3 == 0 ){
+                if( NetworkServer.active )  m_rGameManager.SetMainMassage( "敵の大軍が押し寄せています！", 3.7f, 1.2f );
+                                            m_rGameManager.RpcMainMessage( "敵の大軍が押し寄せています！", 3.7f, 1.2f );
+            }
+            else{
+                if( NetworkServer.active )  m_rGameManager.SetMainMassage( "新たな敵が接近しています", 3.7f, 1.2f );
+                                            m_rGameManager.RpcMainMessage( "新たな敵が接近しています", 3.7f, 1.2f );
+            }
+        }
     }
 
     //  アクティブな子の数を取得

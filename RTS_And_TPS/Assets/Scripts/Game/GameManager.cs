@@ -12,6 +12,7 @@ public class GameManager : NetworkBehaviour {
     public  enum    State{
         Ready,      //  準備時間
         CountDown,  //  開始までのカウントダウン中
+        WaveReady,  //  ウェーブ開始準備
         InGame,     //  ゲーム中
         GameOver,   //  ゲームオーバー
         Reuslt,     //  結果発表
@@ -35,6 +36,7 @@ public class GameManager : NetworkBehaviour {
 
     //  固定パラメータ
     public  float                   c_StartCDTime   =   3.0f;
+    private float                   c_WaveInterval  =   30.0f;
     public  float                   c_StartResource =   150.0f;
 
     //  内部パラメータ
@@ -161,6 +163,16 @@ public class GameManager : NetworkBehaviour {
                 else                                                    m_rDFControl.SetEffect_Dying( false );
             }
         }
+
+        //  キー入力
+        if( Input.GetKeyDown( KeyCode.Return ) ){
+            if( m_State == State.WaveReady
+            &&  m_StateTimer >= 6.8f
+            &&  !GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) ){
+                if( NetworkServer.active )  SetToList_IsReady( m_rLinkManager.m_LocalPlayerID, true );
+                else                        m_rLinkManager.m_rLocalNPControl.CmdSend_GMIsReady( true );
+            }
+        }
     }
     void    UpdateIn_Server()
     {
@@ -180,6 +192,7 @@ public class GameManager : NetworkBehaviour {
 	    switch( m_State ){
             case    State.Ready:        Update_Ready();     break;
             case    State.CountDown:    Update_CountDown(); break;
+            case    State.WaveReady:    Update_WaveReady(); break;
             case    State.InGame:       Update_InGame();    break;
             case    State.GameOver:     Update_GameOver();  break;
             case    State.Reuslt:       Update_Result();    break;
@@ -201,6 +214,18 @@ public class GameManager : NetworkBehaviour {
         m_StateTimer    +=  Time.deltaTime;
         //  ゲーム開始
         if( m_StateTimer >= c_StartCDTime ){
+            //  ゲーム開始
+            ChangeState( State.InGame );
+            //  ウェーブ開始
+            m_rWaveManager.StartWave();
+        }
+    }
+    void    Update_WaveReady()
+    {
+        //  タイマーを進める
+        m_StateTimer    +=  Time.deltaTime;
+        if( m_StateTimer >= c_WaveInterval
+        ||  CountIsReady() >= NetworkManager.singleton.numPlayers ){
             //  ゲーム開始
             ChangeState( State.InGame );
             //  ウェーブ開始
@@ -277,8 +302,23 @@ public class GameManager : NetworkBehaviour {
         }
         //  ゲームが開始されました
         if( m_State == State.InGame
+        &&  m_WaveLevel == 1
         &&  CheckTimeShift( m_StateTimer, 1.2f, 1.2f + 5.0f ) ){
             PrintMessage( "敵が拠点への侵攻を開始しました" );
+        }
+
+        //  ウェーブインターバル
+        if( m_State == State.WaveReady
+        &&  m_StateTimer >= 6.8f
+        &&  !GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) ){
+            PrintMessage( "次のウェーブまであと  " + ( int )( c_WaveInterval - m_StateTimer + 1 ) + "  秒"
+                +   "\n" + "Enter キーで開始" );
+        }
+        if( m_State == State.WaveReady
+        &&  m_StateTimer >= 6.8f
+        &&  GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) ){
+            PrintMessage( "次のウェーブまであと  " + ( int )( c_WaveInterval - m_StateTimer + 1 ) + "  秒"
+                +   "\n" + "他のプレイヤーを待っています" );
         }
 
         //  拠点が破壊されました 
@@ -335,7 +375,7 @@ public class GameManager : NetworkBehaviour {
         {
             Rect    rect    =   FunctionManager.AdjustRectCanvasToGUI(
                 FunctionManager.AR_TYPE.TOP_CENTER,
-                new Rect( 0.0f, _Height, contentSize.x + 36.0f, 36.0f )
+                new Rect( 0.0f, _Height, contentSize.x + 36.0f, contentSize.y + 8.0f )
             );
             GUI.Box( rect, "" );
         }
@@ -724,6 +764,14 @@ public class GameManager : NetworkBehaviour {
     }
     void    StandbyProc_NewWaveInServer()
     {
+        //  インターバル開始
+        ChangeState( State.WaveReady );
+
+        //  リストをクリア
+        for( int i = 0; i < m_rIsReadyList.Count; i++ ){
+            m_rIsReadyList[ i ] =   false;
+        }
+
         //  一定ウェーブごとにドラム缶を再配置
         if( m_WaveLevel % 3 == 1 ){
             ReplaceStageDrum();
