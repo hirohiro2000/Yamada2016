@@ -124,7 +124,8 @@ public class MovingTarget : TaskBase
     {
 
         int rate = wave_param.m_current_level - personal_param.m_emearge_level;
-        m_move_speed = m_original_move_speed + (personal_param.GetMoveSpeedUpMultipleRate() * rate); 
+        m_move_speed = m_original_move_speed + (personal_param.GetMoveSpeedUpMultipleRate() * rate);
+        m_move_speed = Mathf.Clamp(m_move_speed, .01f, personal_param.GetMaxmoveSpeed());
     }
 
     public override void Initialize(GameObject owner)
@@ -188,7 +189,7 @@ public class MovingTarget : TaskBase
         m_navmesh_accessor.SetDestination(m_target_point);
         //m_original_move_speed = m_navmesh_accessor.speed;
         m_navmesh_accessor.speed = m_move_speed;
-        
+     
     }
 
     public override Status Execute(

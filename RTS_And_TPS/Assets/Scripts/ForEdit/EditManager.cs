@@ -3366,11 +3366,11 @@ public class EditManager : MonoBehaviour {
                     rBase.m_UseEdit =   true;
                 }
 
-                //  アクセスを登録
-                Transform   rShellTrans =   _rPlayTestShell.FindChild( "EnemySpawnRoot" );
-                if( rShellTrans ){
-                    rShellTrans.GetComponent< ReferenceWrapper >().m_home_base  =   rObj;
-                }
+                ////  アクセスを登録
+                //Transform   rShellTrans =   _rPlayTestShell.FindChild( "EnemySpawnRoot" );
+                //if( rShellTrans ){
+                //    rShellTrans.GetComponent< ReferenceWrapper >().m_home_base  =   rObj;
+                //}
             }
         }
     }

@@ -30,8 +30,9 @@ public class ShootAndMove : TaskBase {
 
     [SerializeField, HeaderAttribute("Defaultの弾バースト数")]
     private int NumDefaultBurstShot = 3;
+
     private int m_num_burstshot;
-    private GameObject m_home_base = null;
+   // private GameObject m_home_base = null;
     private Transform m_shoot_object = null;
     private Vector3 m_shoot_point = new Vector3();
     private Vector3 m_move_point = Vector3.zero;       //PQSを使う場合move_point = target.position + m_move_point 
@@ -195,7 +196,7 @@ public class ShootAndMove : TaskBase {
         base.Initialize(owner);
         InitializeMoveAlg();
         var enemy_root = GameObject.Find("EnemySpawnRoot");
-        m_home_base = enemy_root.GetComponent<ReferenceWrapper>().m_home_base;
+       // m_home_base = enemy_root.GetComponent<ReferenceWrapper>().m_home_base;
         m_navmesh_accessor = owner.GetComponent<NavMeshAgent>();
         m_original_move_speed = m_navmesh_accessor.speed;
         m_move_speed = m_original_move_speed;
