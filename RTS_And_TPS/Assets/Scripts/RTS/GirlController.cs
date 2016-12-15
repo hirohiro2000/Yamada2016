@@ -9,52 +9,49 @@ using System.Collections.Generic;
 public class GirlController : NetworkBehaviour
 {
 
-    public  GameObject          c_Drum                      = null;
-    private float               c_DrumCost                  = 15.0f;
+    public  GameObject          c_Drum							= null;
+    private float               c_DrumCost						= 15.0f;
 
-    public  GameObject          c_TimeBomb                  = null;
-    private float               c_TimeBombCost              = 25.0f;
+    public  GameObject          c_TimeBomb						= null;
+    private float               c_TimeBombCost					= 25.0f;
 
-    public  GameObject          c_C4                        = null;
-    private float               c_C4Cost                    = 35.0f;
+    public  GameObject          c_C4							= null;
+    private float               c_C4Cost						= 35.0f;
 
-    private UIGirlTaskSelect    m_uiGirlTaskSelect          = null;
+    private UIGirlTaskSelect    m_uiGirlTaskSelect				= null;
 
-	private ResourceInformation	m_resourceInformation		= null;
-	private ResourceCreator		m_resourceCreator			= null;
-	private ItemController		m_itemCntroller				= null;
-    private Rigidbody           m_rRigid                    = null;
-    private TPSPlayer_HP        m_rPlayerHP                 = null;
+	private ResourceInformation	m_resourceInformation			= null;
+	private ResourceCreator		m_resourceCreator				= null;
+	private ItemController		m_itemCntroller					= null;
+    private Rigidbody           m_rRigid						= null;
+    private TPSPlayer_HP        m_rPlayerHP						= null;
     private RTS_PlayerAnimationController m_animationController = null;
 
-	private GirlDroneSwitcher	m_cameraSwitcher			= null;
+	private GirlDroneSwitcher	m_cameraSwitcher				= null;
 
-    private GameManager         m_rGameManager              = null;
-    private LinkManager         m_rLinkManager              = null;
-    private C4Shell_Control     m_rC4Shell                  = null;
+    private GameManager         m_rGameManager					= null;
+    private LinkManager         m_rLinkManager					= null;
+    private C4Shell_Control     m_rC4Shell						= null;
 
-	private const KeyCode		m_okKey						= KeyCode.J;
-	private const KeyCode		m_cancelKey					= KeyCode.L;
-	private const KeyCode		m_breakKey					= KeyCode.K;
+	private const KeyCode		m_okKey							= KeyCode.J;
+	private const KeyCode		m_cancelKey						= KeyCode.L;
+	private const KeyCode		m_breakKey						= KeyCode.K;
 
-	public float				m_moveSpeed					= 1.0f;
-    public float                m_LiftingForce              = 1.0f;
-    public GameObject           m_symbolPivot               = null;
-	public GameObject		    m_routingError              = null;
+	public float				m_moveSpeed						= 1.0f;
+    public float                m_LiftingForce					= 1.0f;
+    public GameObject           m_symbolPivot					= null;
+	public GameObject		    m_routingError					= null;
 
 	private enum ActionState
 	{
 		Common,
-		CreateResource,
-		ConvertResource,
 		Drone,
 	}
 	private ActionState			m_actionState	= ActionState.Common;
     
- //   private bool                m_isMoveByKey   = false;
     private NavMeshAgent        m_navAgent      = null;
-    bool                        m_isEditMode    = false;
-    Vector3                     m_editTarget    = Vector3.zero; 
+    private bool                m_isEditMode    = false;
+    private Vector3             m_editTarget    = Vector3.zero; 
     
     interface IMoveToTargetCallback
     {
@@ -419,27 +416,13 @@ public class GirlController : NetworkBehaviour
 	void Update () 
 	{
 		//GameWorldParameterで強制的に書き換える
-		{
-			m_moveSpeed = GameWorldParameter.instance.RTSPlayer.WalkSpeed;
-		}
+		m_moveSpeed = GameWorldParameter.instance.RTSPlayer.WalkSpeed;
+		
         //  自分のキャラクターの場合のみ処理を行う
         if( !isLocalPlayer )        return;
-        //  瀕死状態では処理を行わない
+       
+		//  瀕死状態では処理を行わない
         if( m_rPlayerHP.m_IsDying ) return;
-
-        //  座標調整（いまだけ）
-        {
-            //  飛ぶ
-            //if (Input.GetKey( KeyCode.M ))
-            //{
-            //    m_rRigid.AddForce(Vector3.up * m_LiftingForce * Time.deltaTime * 60.0f);
-            //    if (m_navAgent.enabled)
-            //    {
-            //        m_navAgent.ResetPath();
-            //        m_navAgent.enabled = false;
-            //    }
-            //}
-        }
         
         //  ドラム缶を置く
         if( Input.GetKeyDown( KeyCode.B )
@@ -464,7 +447,6 @@ public class GirlController : NetworkBehaviour
             CmdExplodingC4();
         }
 
-        m_moveContractor.Update();
 		switch( m_actionState )
 		{
 		case ActionState.Common:			UpdateCommon();		break;
@@ -472,7 +454,6 @@ public class GirlController : NetworkBehaviour
 		}
 
         UpdateAnimation();
-
     }
 	void FixedUpdate () 
 	{
@@ -510,21 +491,27 @@ public class GirlController : NetworkBehaviour
 
     }
 
-    //---------------------------------------------------------------------
+  
+	//---------------------------------------------------------------------
     //      すてーと
     //---------------------------------------------------------------------   	
 	void UpdateCommon()
 	{
+		m_moveContractor.Update();
+
         //
         if ( m_isEditMode == false )
         {
             bool    anyEditKey = false;
+
+			//	キークリックでイベント開始判定
             if ( Input.GetKeyDown( m_okKey ) )
             {
                 anyEditKey  = true;
                 m_editTarget = m_resourceInformation.ComputeGridPosition( transform.position );
             }
     
+			//	マウスでイベント開始判定
             if ( RTSCursor.m_curMode == RTSCursor.MODE.eNone && Input.GetMouseButtonDown(1))
             {
                 RaycastHit  hit             = new RaycastHit();
@@ -534,7 +521,6 @@ public class GirlController : NetworkBehaviour
             
                 if ( Physics.Raycast(ray, out hit, float.MaxValue, layerMask) )
                 {      
-
                     m_editTarget = m_resourceInformation.ComputeGridPosition( hit.point );
 
                     bool navEnabled = m_navAgent.enabled;
@@ -542,11 +528,6 @@ public class GirlController : NetworkBehaviour
                     m_navAgent.enabled = true;
                     NavMeshPath path = new NavMeshPath();
 
-//		float   axis		    =   ( Mathf.Abs(v) > Mathf.Abs(h) )? Mathf.Abs(v) : Mathf.Abs(h);
-//        Vector3 moveAmount      =   direction * axis * m_moveSpeed * Time.deltaTime;
-//            //  瀕死状態なら減速 
-//            if( m_rPlayerHP.m_IsDying ) moveAmount  =   moveAmount * 0.2f;
-//		transform.localPosition +=  moveAmount;
                     if ( m_navAgent.CalculatePath( m_editTarget, path ) && path.status == NavMeshPathStatus.PathComplete )
                     {
                         anyEditKey  = true;
@@ -568,6 +549,8 @@ public class GirlController : NetworkBehaviour
                     m_navAgent.enabled = navEnabled;
                }
             }
+
+			//	イベントが開始されたら
             if ( anyEditKey )
             {
                 m_isEditMode = true; 
@@ -578,6 +561,12 @@ public class GirlController : NetworkBehaviour
                 if (m_resourceInformation.CheckExistResourceFromPosition(m_editTarget))
                 {
                     m_uiGirlTaskSelect.ToSelectTheConvertAction();
+					
+					//	リソースのUI設定
+					var param = m_resourceInformation.GetResourceParamFromPosition( transform.position );
+					m_uiGirlTaskSelect.m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().GetUpCost().ToString();
+					m_uiGirlTaskSelect.m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.GetBreakCost().ToString();
+
                 }
                 else
                 {
@@ -591,12 +580,7 @@ public class GirlController : NetworkBehaviour
         }
         else
 		{ 
-//        //  速度設定
-//        if( m_rPlayerHP.m_IsDying ) m_navAgent.speed    =   m_moveSpeed * 0.2f;
-//        else                        m_navAgent.speed    =   m_moveSpeed;
 
-//        if (m_navAgent.enabled )
-//        {
     		var forcusID	= m_itemCntroller.GetForcus();
     		if ( forcusID != -1 )
             {
@@ -640,15 +624,12 @@ public class GirlController : NetworkBehaviour
                 m_uiGirlTaskSelect.SetForcus( -1 );
                 m_uiGirlTaskSelect.Clear();
                 m_resourceCreator.SetGuideVisibleDisable();
-                    m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = false;
+                m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = false;
 
                 if ( isComp )
                     m_moveContractor.AddNewTargetPosition( m_editTarget, false, callback );
-
             }
-
         }
-
 	}
 	void UpdateDrone()
 	{
@@ -660,92 +641,6 @@ public class GirlController : NetworkBehaviour
 		}
 	}
 
-
-	void CreateResource()
-	{
-		var forcusID	= m_itemCntroller.GetForcus();
-		if ( forcusID != -1 )
-        {
-    		//	リソースの範囲表示更新
-		    m_resourceCreator.UpdateGuideResource( forcusID, transform.position );
-		    m_resourceCreator.UpdateGuideRange( forcusID, transform.position );
-        }
-
-
-		//	ステート更新
-        UIGirlTaskSelect.RESULT uiResult = m_uiGirlTaskSelect.ToSelectTheCreateResource();
-		if( ( Input.GetKeyDown( m_okKey )  || uiResult == UIGirlTaskSelect.RESULT.eOK ) &&
-			m_itemCntroller.CheckWhetherTheCostIsEnough() )
-		{
-			var obj = m_resourceCreator.AddResource( forcusID );
-
-            var forcusParam = m_itemCntroller.GetForcusResourceParam();
-            m_itemCntroller.AddResourceCost( -forcusParam.GetCreateCost());
-			
-            //m_actionState = ActionState.Common;
-
-
-			//	置かれたのがドローンだったらドローン操作に切り替え
-			const int droneID = 8;
-			if( forcusID == droneID )
-			{
-				m_cameraSwitcher.On( obj );
-				m_actionState = ActionState.Drone;
-			}
-			else
-			{
-				m_actionState = ActionState.Common;
-			}
-			return;
-		}
-		if( Input.GetKeyDown( m_cancelKey ) || uiResult == UIGirlTaskSelect.RESULT.eCancel || Input.GetMouseButtonDown(1)  )
-		{
-			m_actionState = ActionState.Common;
-			return;
-		}
-	}
-	void ConvertResource()
-	{
-		var param = m_resourceInformation.GetResourceParamFromPosition( transform.position );
-
-		//	今いるマスにリソースがなかった
-        if( param == null )
-		{
-            m_actionState   =   ActionState.Common;
-            return;
-        }
-
-		//	リソースの範囲表示更新
-		m_resourceCreator.UpdateGuideRange( transform.position );
-
-		//	リソースのUI設定
-	    m_uiGirlTaskSelect.m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().GetUpCost().ToString();
-		m_uiGirlTaskSelect.m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.GetBreakCost().ToString();
-
-		//	ステート更新
-        UIGirlTaskSelect.RESULT uiResult = m_uiGirlTaskSelect.ToSelectTheConvertAction();
-
-		if( ( Input.GetKeyDown( m_okKey )  || uiResult == UIGirlTaskSelect.RESULT.eOK ) &&
-			m_resourceInformation.CheckIfCanUpALevel( transform.position, m_itemCntroller.GetHaveCost() ))
-		{
-			m_actionState = ActionState.Common;
-    		m_itemCntroller.AddResourceCost( -param.GetCurLevelParam().GetUpCost());
-			CmdLevelUpResource( transform.position );
-			return;
-		}
-		if( Input.GetKeyDown( m_cancelKey ) || uiResult == UIGirlTaskSelect.RESULT.eCancel || Input.GetMouseButtonDown(1)  )
-		{
-			m_actionState = ActionState.Common;
-            return;
-		}
-		if( ( Input.GetKeyDown( m_breakKey ) || uiResult == UIGirlTaskSelect.RESULT.eBreak ) && m_itemCntroller.GetForcus() != -1 )
-		{
-			m_actionState = ActionState.Common;
-			m_itemCntroller.AddResourceCost( m_itemCntroller.GetForcusResourceParam().GetBreakCost() );
-            CmdBreakResource( transform.position );
-			return;
-		}
-	}
 
 	//---------------------------------------------------------------------
 	//      アクセサ
