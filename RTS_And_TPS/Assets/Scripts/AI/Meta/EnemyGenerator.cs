@@ -220,7 +220,7 @@ public class EnemyGenerator : NetworkBehaviour
         if (data.respawn_point_index >= m_navigation_data_list.Count)
             UserLog.ErrorTerauchi("Enemygenerator::CreateEnemyInstance respawan_index error !! max_respawn_point_index is " + GenerateEnemyList.Length + "type_index is" + data.respawn_point_index);
 
-        GameObject ret_object = Instantiate(GenerateEnemyList[data.type]);
+        GameObject ret_object = Instantiate(m_current_generate_list[data.type]);
 
         //NavMeshのWarpは遅延があるので最初のフレームは遠くに飛ばしておいて隠す
         ret_object.transform.position = new Vector3(10000.0f, 10000.0f, 10000.0f);

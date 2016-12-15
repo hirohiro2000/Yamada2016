@@ -15,7 +15,7 @@ public class EnemyPersonalParametor : MonoBehaviour {
     public float GetMoveSpeedUpMultipleRate() { return MoveSpeedUpMultipleRate; }
 
     [SerializeField, HeaderAttribute("最大移動速度")]
-    private float MaxmoveSpeed = 1.05f;
+    private float MaxmoveSpeed = 20.0f;
     public float GetMaxmoveSpeed() { return MaxmoveSpeed; }
 
     [SerializeField, HeaderAttribute("最大加速度")]
