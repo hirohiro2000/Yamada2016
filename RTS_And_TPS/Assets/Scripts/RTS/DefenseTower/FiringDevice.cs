@@ -12,12 +12,18 @@ public class FiringDevice : NetworkBehaviour
 
     private float                   m_IntervalTimer     = 0.0f;
 
+    [SerializeField]
+    private string                  m_seName            = "";
+    private SoundController         m_se                = null;
+
 	// Use this for initialization
 	void Start ()
 	{
 		m_rEnemyShell       = GameObject.Find( "EnemySpawnRoot" ).GetComponent< ReferenceWrapper >();
 		m_resourceParam		= GetComponent<ResourceParameter>();
         m_RTSResControl     = GetComponent<RTSResourece_Control>();
+
+        m_se                = SoundController.Create(m_seName, this.transform);
 	}
 	
 	// Update is called once per frame
@@ -52,6 +58,9 @@ public class FiringDevice : NetworkBehaviour
 
                 //  クライアントでも弾が見えるようにする
                 //RpcSpawnBullet( transform.rotation, transform.position );
+
+                // 音再生
+                m_se.PlayOneShot();
 
                 //  インターバルリセット
                 m_IntervalTimer =   0.0f;
