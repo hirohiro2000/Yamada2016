@@ -20,6 +20,7 @@ GameObject:
   - 136: {fileID: 13638022}
   - 114: {fileID: 11463500}
   - 114: {fileID: 11426266}
+  - 114: {fileID: 11434150}
   m_Layer: 12
   m_Name: RifleE
   m_TagString: Player_Attack
@@ -178,8 +179,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43e7d831188778b4b906f45d73c6ff5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackPointList: {fileID: 0}
   PowerlossCurve:
+    serializedVersion: 2
     m_Curve:
     - time: 0
       value: 1
@@ -194,8 +195,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  cntDistance: 0
-  BeforePos: {x: 0, y: 0, z: 0}
 --- !u!114 &11426266
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -207,7 +206,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee0795890d5dd0e4aa27b081f9bc0327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCollider: {fileID: 0}
+--- !u!114 &11434150
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e533552b40d31b34e8886a9c067c309a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_seFileName: Shot0
 --- !u!114 &11452834
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -262,8 +272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa9681714bc25e458b9799cfbe0d1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  follower: {fileID: 0}
-  c: 1
+  alphaMat: {fileID: 0}
 --- !u!114 &11463500
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -275,9 +284,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b52579dd2a67454488d8f4503c66c976, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  beforePos: {x: 0, y: 0, z: 0}
-  defCenter: {x: 0, y: 0, z: 0}
-  col: {fileID: 0}
 --- !u!114 &11472370
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -290,23 +296,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseAttackPoint: 30
-  Destroyed: 0
-  DestroyPos: {x: 0, y: 0, z: 0}
   attack_list:
     list:
     - type: 3
       multiple: 0.23
     - type: 155
       multiple: 1
-  data:
-    baseAttackPoint: 1
-    attack_list:
-      list: []
   autoDestroyObject: {fileID: 455538}
   autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 490204, guid: 8931ad398a75c2c4c8b694f005800976,
     type: 2}
-  ColliderResetRequest: 0
 --- !u!114 &11478388
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -332,7 +331,6 @@ MonoBehaviour:
       value: 15
     - type: 3
       value: 0
-  m_seFileName: Shot0
 --- !u!114 &11496294
 MonoBehaviour:
   m_ObjectHideFlags: 1
