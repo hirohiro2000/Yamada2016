@@ -51,6 +51,11 @@ public class SoundController : MonoBehaviour {
         if ( referenceAudio == null ) return null;
 
         Transform trans = referenceAudio.transform.FindChild(name);
+        if ( trans == null )
+            Debug.LogError( "サウンドの読み込みに失敗しました[FileName: "+name+" ]" );
+
+
+
         GameObject gameObj = Instantiate( trans.gameObject );
         gameObj.transform.parent = parent;
         SoundController controller = gameObj.AddComponent<SoundController>();

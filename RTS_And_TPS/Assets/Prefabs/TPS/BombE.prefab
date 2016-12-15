@@ -216,8 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa9681714bc25e458b9799cfbe0d1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  follower: {fileID: 0}
-  c: 1
+  alphaMat: {fileID: 0}
 --- !u!114 &11437286
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -230,22 +229,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseAttackPoint: 0
-  Destroyed: 0
-  DestroyPos: {x: 0, y: 0, z: 0}
   attack_list:
     list:
     - type: 3
       multiple: 0.23
     - type: 155
       multiple: 1
-  data:
-    baseAttackPoint: 1
-    attack_list:
-      list: []
   autoDestroyObject: {fileID: 493186}
   autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 0}
-  ColliderResetRequest: 0
 --- !u!114 &11447414
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -275,8 +267,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43e7d831188778b4b906f45d73c6ff5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackPointList: {fileID: 0}
   PowerlossCurve:
+    serializedVersion: 2
     m_Curve:
     - time: 0
       value: 1
@@ -291,8 +283,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  cntDistance: 0
-  BeforePos: {x: 0, y: 0, z: 0}
 --- !u!114 &11486514
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -307,8 +297,6 @@ MonoBehaviour:
   c_AttackerID: 0
   c_Explosion: {fileID: 183870, guid: ced6053babbc6ac41858dad6c1d5c9c1, type: 2}
   c_CallOnDestroy: 1
-  m_rGameManager: {fileID: 0}
-  m_IsGameQuit: 0
 --- !u!114 &11494436
 MonoBehaviour:
   m_ObjectHideFlags: 1

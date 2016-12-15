@@ -64,22 +64,23 @@ public class GirlController : NetworkBehaviour
     }
     class MoveSubContractor
     {
-        class TargetData
+        public class TargetData
         {
             public bool     m_userInput   { get; set; }
             public Vector3  m_targetPoint { get; set; }
             public IMoveToTargetCallback m_callback { get; set; }
         }
-        GirlController  m_controller            { get; set; }
-        Stack           m_targetStack           { get; set; }
-        NavMeshAgent    m_agent                 { get { return m_controller.m_navAgent; } }
-        public bool            m_isMoveByKey    { get; private set; }
+        GirlController              m_controller        { get; set; }
+        Vector3                     m_currentTarget     { get; set; } 
+        NavMeshAgent                m_agent             { get { return m_controller.m_navAgent; } }
+        public List<TargetData>     m_targetStack       { get; set; }
+        public bool                 m_isMoveByKey       { get; private set; }
 
         public MoveSubContractor(GirlController controller)
         {
             this.m_isMoveByKey  = false;
             this.m_controller   = controller;
-            m_targetStack       = new Stack();
+            m_targetStack       = new List<TargetData>();
         }
 
         public  void Update()
@@ -102,6 +103,9 @@ public class GirlController : NetworkBehaviour
                         
             
             // 左クリックによる移動の更新
+            //  速度設定
+            if( m_controller.m_rPlayerHP.m_IsDying )    m_agent.speed   = m_controller.m_moveSpeed * 0.2f;
+            else                                        m_agent.speed   = m_controller.m_moveSpeed;
             MoveByMouse();
             
 
@@ -111,12 +115,12 @@ public class GirlController : NetworkBehaviour
             
             // 目標地点に到達したかによる判定
             bool arrivedOnTarget  = ( m_agent.hasPath == false );
-                 arrivedOnTarget |= ( m_agent.remainingDistance <= m_agent.stoppingDistance );
+                 arrivedOnTarget |= ( ( m_controller.transform.position - m_currentTarget ).magnitude <= m_agent.stoppingDistance );
                
             if ( arrivedOnTarget == false ) return;
 
             // 目標に到達のでコールバックを呼び出します
-            TargetData current = (TargetData)m_targetStack.Peek();
+            TargetData current = m_targetStack[m_targetStack.Count-1];
             if ( current.m_callback != null )
             {
                 current.m_callback.OnStop( current.m_targetPoint );
@@ -139,10 +143,12 @@ public class GirlController : NetworkBehaviour
     		Vector3 direction 		= cameraForward * v + Camera.main.transform.right * h;
     
     		direction.Normalize();
-    
-    		float axis				= ( Mathf.Abs(v) > Mathf.Abs(h) )? Mathf.Abs(v) : Mathf.Abs(h);
-    		m_controller.transform.localPosition += direction * axis * m_controller.m_moveSpeed * Time.deltaTime;
-    
+
+    		float   axis		    =   ( Mathf.Abs(v) > Mathf.Abs(h) )? Mathf.Abs(v) : Mathf.Abs(h);
+            Vector3 moveAmount      =   direction * axis * m_controller.m_moveSpeed * Time.deltaTime;
+            //  瀕死状態なら減速 
+            if( m_controller.m_rPlayerHP.m_IsDying ) moveAmount  =   moveAmount * 0.2f;
+    		m_controller.transform.localPosition +=  moveAmount;
     		
     		//	rotate
     		Vector3 animDir 		= direction;
@@ -170,13 +176,13 @@ public class GirlController : NetworkBehaviour
             }
 
         }      
-        
+
         // [isUserData]が[true]の場合呼ばれません
         public  bool AddNewTargetPosition( Vector3 target, bool isUserData, IMoveToTargetCallback callback )
         {
             if (m_targetStack.Count > 0)
             {
-                TargetData data = (TargetData)m_targetStack.Peek();
+                TargetData data = m_targetStack[m_targetStack.Count-1];
                 if ( data.m_userInput == false && data.m_callback != null )
                 {
                     data.m_callback.OnStop( data.m_targetPoint );
@@ -186,58 +192,60 @@ public class GirlController : NetworkBehaviour
             //　エージェントの起動と設定
             m_agent.enabled   = true;
             NavMeshPath path = new NavMeshPath();
-            if ( m_agent.CalculatePath( target, path ) )
+            if (m_agent.CalculatePath(target, path) && (path.status == NavMeshPathStatus.PathComplete))
             {
-                if (path.status == NavMeshPathStatus.PathComplete)
+                m_currentTarget = target;
+                m_agent.SetPath(path);
+
+                if (callback != null)
                 {
-                    m_agent.SetPath(path);
-
-                    if (callback != null)
-                    {
-                        callback.OnStart(target);
-                    }
-
-                    // 最上部が左クリックによる移動かつ追加しようとしているデータも左クリックによるものである
-                    if (isUserData && PeekIsUserInput())
-                    {
-                        TargetData currentData = (TargetData)m_targetStack.Peek();
-                        currentData.m_targetPoint = target;
-                    }
-                    else
-                    {
-                        // ターゲット情報を追加
-                        TargetData newData = new TargetData();
-                        newData.m_userInput = isUserData;
-                        newData.m_targetPoint = target;
-                        newData.m_callback = callback;
-                        m_targetStack.Push(newData);
-                    }
-                    return true;
+                    callback.OnStart(target);
                 }
+
+                // 最上部が左クリックによる移動かつ追加しようとしているデータも左クリックによるものである
+                if (isUserData && PeekIsUserInput())
+                {
+                    TargetData currentData = m_targetStack[m_targetStack.Count - 1];
+                    currentData.m_targetPoint = target;
+                }
+                else
+                {
+                    // ターゲット情報を追加
+                    TargetData newData = new TargetData();
+                    newData.m_userInput = isUserData;
+                    newData.m_targetPoint = target;
+                    newData.m_callback = callback;
+                    m_targetStack.Add(newData);
+                }
+                return true;
             }
+
             return false;
         }
         private void ToTheNextTargetPosition()
         {
-            m_targetStack.Pop();
+            m_targetStack.RemoveAt(m_targetStack.Count-1);
             
             if ( m_targetStack.Count > 0 )
             {
-                // 次のターゲットを繰り上げて設定する
-                TargetData nextTarget = (TargetData)m_targetStack.Peek();
+                // 次のターゲットを繰り上げて設定する( [m_enabled == false]の場合割愛される )
+                TargetData nextTarget = m_targetStack[m_targetStack.Count-1];
+
                 NavMeshPath path = new NavMeshPath();
-                if (m_agent.CalculatePath(nextTarget.m_targetPoint, path))
+                if (m_agent.CalculatePath(nextTarget.m_targetPoint, path) && (path.status == NavMeshPathStatus.PathComplete))
                 {
+                    m_currentTarget = nextTarget.m_targetPoint;
+
                     //　エージェントの起動と設定
                     m_agent.enabled = true;
                     m_agent.SetPath(path);
-
+                
                     if (nextTarget.m_callback != null)
                     {
                         nextTarget.m_callback.OnStart(nextTarget.m_targetPoint);
                     }
-
                 }
+                
             }
             else
             {
@@ -246,12 +254,24 @@ public class GirlController : NetworkBehaviour
             }
         }
 
+        public  void RemoveAt(int index)
+        {
+            if (index == 0)
+            {
+                ToTheNextTargetPosition();
+                return;
+            }            
+
+            m_targetStack.RemoveAt( index );
+
+        }
+
         private bool PeekIsUserInput()
         {
             // 最上部は左クリックによる操作か？
             if ( m_targetStack.Count > 0 )
             {
-                TargetData currentData = (TargetData)m_targetStack.Peek();
+                TargetData currentData = m_targetStack[m_targetStack.Count-1];
                 return currentData.m_userInput;
             }
             return false;
@@ -322,12 +342,10 @@ public class GirlController : NetworkBehaviour
     }
     class ActionConvert : IMoveToTargetCallback
     {
-        int             resourceID { get; set; }
         GirlController  controller { get; set; }
         GameObject      targetSymbol { get; set; }
-        public ActionConvert( int resourceID, GirlController controller )
+        public ActionConvert( GirlController controller )
         {
-            this.resourceID = resourceID;
             this.controller = controller;
         }
         public void OnStart( Vector3 requestPosition )
@@ -355,12 +373,10 @@ public class GirlController : NetworkBehaviour
     }
     class ActionBreak : IMoveToTargetCallback
     {
-        int             resourceID { get; set; }
         GirlController  controller { get; set; }
         GameObject      targetSymbol { get; set; }
-        public ActionBreak( int resourceID, GirlController controller )
+        public ActionBreak( GirlController controller )
         {
-            this.resourceID = resourceID;
             this.controller = controller;
         }
         public void OnStart( Vector3 requestPosition )
@@ -413,7 +429,7 @@ public class GirlController : NetworkBehaviour
         m_animationController = GetComponent< RTS_PlayerAnimationController >();
 
         m_moveContractor = new MoveSubContractor(this);
-    }
+    } 
 
 	//	Write to the FixedUpdate if including physical behavior
 	void Update () 
@@ -513,7 +529,7 @@ public class GirlController : NetworkBehaviour
     //---------------------------------------------------------------------
     //      すてーと
     //---------------------------------------------------------------------   	
-	void UpdateCommon()
+    void UpdateCommon()
 	{
         //
         if ( m_isEditMode == false )
@@ -533,8 +549,7 @@ public class GirlController : NetworkBehaviour
                 Ray         ray             = Camera.main.ScreenPointToRay(mousePosition);
             
                 if ( Physics.Raycast(ray, out hit, float.MaxValue, layerMask) )
-                {      
-
+                {     
                     m_editTarget = m_resourceInformation.ComputeGridPosition( hit.point );
 
                     bool navEnabled = m_navAgent.enabled;
@@ -542,12 +557,7 @@ public class GirlController : NetworkBehaviour
                     m_navAgent.enabled = true;
                     NavMeshPath path = new NavMeshPath();
 
-//		float   axis		    =   ( Mathf.Abs(v) > Mathf.Abs(h) )? Mathf.Abs(v) : Mathf.Abs(h);
-//        Vector3 moveAmount      =   direction * axis * m_moveSpeed * Time.deltaTime;
-//            //  瀕死状態なら減速 
-//            if( m_rPlayerHP.m_IsDying ) moveAmount  =   moveAmount * 0.2f;
-//		transform.localPosition +=  moveAmount;
-                    if ( m_navAgent.CalculatePath( m_editTarget, path ) && path.status == NavMeshPathStatus.PathComplete )
+                    if ( m_navAgent.CalculatePath( m_editTarget, path ) && (path.status == NavMeshPathStatus.PathComplete) )
                     {
                         anyEditKey  = true;
                     }
@@ -555,9 +565,7 @@ public class GirlController : NetworkBehaviour
                     {
                         anyEditKey = true;
                     }
-                    
-
-                    if (path.status == NavMeshPathStatus.PathPartial)
+                    else if (path.status != NavMeshPathStatus.PathComplete)
                     {
                         // 選択されたグリッドの位置に女の子は行けません
                         GameObject obj = Instantiate(m_routingError);
@@ -566,7 +574,7 @@ public class GirlController : NetworkBehaviour
                     }
 
                     m_navAgent.enabled = navEnabled;
-               }
+                }
             }
             if ( anyEditKey )
             {
@@ -591,12 +599,6 @@ public class GirlController : NetworkBehaviour
         }
         else
 		{ 
-//        //  速度設定
-//        if( m_rPlayerHP.m_IsDying ) m_navAgent.speed    =   m_moveSpeed * 0.2f;
-//        else                        m_navAgent.speed    =   m_moveSpeed;
-
-//        if (m_navAgent.enabled )
-//        {
     		var forcusID	= m_itemCntroller.GetForcus();
     		if ( forcusID != -1 )
             {
@@ -626,12 +628,12 @@ public class GirlController : NetworkBehaviour
             else if ( result == UIGirlTaskSelect.RESULT.eLevel )
             {
                 isComp   = true;
-                callback = new ActionConvert( m_itemCntroller.GetForcus(), this );
+                callback = new ActionConvert( this );
             }
             else if ( result == UIGirlTaskSelect.RESULT.eBreak )
             {
                 isComp   = true;
-                callback = new ActionBreak( m_itemCntroller.GetForcus(), this );
+                callback = new ActionBreak( this );
             }
 
             if ( isComp || isCancel )
@@ -746,6 +748,26 @@ public class GirlController : NetworkBehaviour
 			return;
 		}
 	}
+
+    void OnGUI()
+    {
+        for (int i = m_moveContractor.m_targetStack.Count-1; i >= 0; i--)
+        { 
+            string name = "";
+            if ( i == 0 )
+                name = "Current";
+            else
+                name =  "Task " + i.ToString();
+
+            var item = m_moveContractor.m_targetStack[i];
+             
+            float y = i*22.0f;
+            if (GUI.Button(new Rect(10, 180+y, 100, 20), name ) )
+            {
+                m_moveContractor.RemoveAt(i);
+            }
+        }
+    }
 
 	//---------------------------------------------------------------------
 	//      アクセサ

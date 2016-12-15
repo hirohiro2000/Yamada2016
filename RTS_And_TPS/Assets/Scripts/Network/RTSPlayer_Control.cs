@@ -85,6 +85,8 @@ public class RTSPlayer_Control : NetworkBehaviour {
         rRTSCamera.GetComponent< AudioListener >().enabled  =   true;
         rRTSCParent.GetComponent< RTSCamera >().enabled     =   true;
         rRTSCParent.GetComponent< RTSCamera >().m_target    =   transform;
+        rRTSCParent.GetComponent< RTSCamera >().ForcusOnPlayer();
+
     }
     //  終了処理
     public  void    EndProc()
