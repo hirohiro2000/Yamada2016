@@ -21,6 +21,7 @@ GameObject:
   - 114: {fileID: 11459674}
   - 136: {fileID: 13614226}
   - 114: {fileID: 11431740}
+  - 114: {fileID: 11498030}
   m_Layer: 12
   m_Name: PlayerGunE
   m_TagString: Player_Attack
@@ -241,7 +242,6 @@ MonoBehaviour:
       value: 18
     - type: 3
       value: 0
-  m_seFileName: Shot0
 --- !u!114 &11459674
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -344,6 +344,18 @@ MonoBehaviour:
   autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 490204, guid: 8931ad398a75c2c4c8b694f005800976,
     type: 2}
+--- !u!114 &11498030
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 102464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e533552b40d31b34e8886a9c067c309a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_seFileName: Shot0
 --- !u!136 &13614226
 CapsuleCollider:
   m_ObjectHideFlags: 1

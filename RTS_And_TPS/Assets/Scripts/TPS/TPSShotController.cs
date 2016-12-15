@@ -238,7 +238,7 @@ public class WeaponParameter
 
         public SoundController CreateSoundController( GameObject user )
         {
-			ShotInfomation info = _weapon.GetComponent<ShotInfomation>();
+			ShotSound info = _weapon.GetComponent<ShotSound>();
 			if(info != null)
             {
                 SoundController controller = SoundController.Create( info.m_seFileName, user.transform );
@@ -259,7 +259,7 @@ public class TPSShotController : NetworkBehaviour {
 	float cntCoolDown;
 
 	[SerializeField]
-	int UI_ID;
+	int m_ID;
 
 	public LayerMask excludeLayers = 0;
 
@@ -283,6 +283,19 @@ public class TPSShotController : NetworkBehaviour {
 
 	[SerializeField]
 	PlayerRecoil playerRecoil = null;
+
+
+	static TPSShotController[] lists = null;
+	static public TPSShotController Aceess(int ID)
+	{
+		foreach (TPSShotController list in lists)
+		{
+			if (list.m_ID == ID)
+				return list;
+		}
+		return null;
+
+	}
 
 
 	//  親へのアクセス
@@ -318,10 +331,21 @@ public class TPSShotController : NetworkBehaviour {
 
         m_seShot            =   cntWeaponList.data.CreateSoundController(this.gameObject);
 
-//        TPSWeaponBar.Initialize(100);
+		//        TPSWeaponBar.Initialize(100);
+		if (m_rParentIdentity.isLocalPlayer == true)
+		{
+			if (lists == null)
+			{
+				lists = Object.FindObjectsOfType<TPSShotController>();
+			}
 
-    }
+		}
+
+		return;
 	
+
+	}
+
 	// Update is called once per frame
 	void    Update () {
         //  自分のキャラクター以外は処理を行わない
@@ -422,7 +446,7 @@ public class TPSShotController : NetworkBehaviour {
             }
 		}
 		//UIの描画
-		WeaponAmmoUIList UIList = WeaponAmmoUIList.Aceess(UI_ID);
+		WeaponAmmoUIList UIList = WeaponAmmoUIList.Aceess(m_ID);
 		if (UIList != null)
 			UIList.Disp(weapons.list.ToArray(),cntWeaponIndex);
 
@@ -552,6 +576,15 @@ public class TPSShotController : NetworkBehaviour {
         m_seShot = cntWeaponList.data.CreateSoundController(this.gameObject);
 
     }
+
+	//入れ替え(同じなら補充)
+	public void SelectNewWeapon(Transform weapon)
+	{
+		weapons[cntWeaponIndex] = new WeaponList();
+		weapons[cntWeaponIndex].weapon = weapon;
+		cntWeaponList = weapons[cntWeaponIndex];
+
+	}
 
 	void OnGUI()
 	{

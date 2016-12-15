@@ -36,6 +36,7 @@ GameObject:
   - 114: {fileID: 11421978}
   - 114: {fileID: 11451724}
   - 114: {fileID: 11486514}
+  - 114: {fileID: 11419454}
   m_Layer: 12
   m_Name: BombE
   m_TagString: Player_Attack
@@ -191,6 +192,17 @@ MonoBehaviour:
       value: 27
     - type: 3
       value: 0
+--- !u!114 &11419454
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 184498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e533552b40d31b34e8886a9c067c309a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   m_seFileName: Shot1
 --- !u!114 &11421978
 MonoBehaviour:

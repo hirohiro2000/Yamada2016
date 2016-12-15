@@ -20,6 +20,7 @@ GameObject:
   - 136: {fileID: 13638022}
   - 114: {fileID: 11463500}
   - 114: {fileID: 11426266}
+  - 114: {fileID: 11434150}
   m_Layer: 12
   m_Name: RifleE
   m_TagString: Player_Attack
@@ -205,6 +206,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee0795890d5dd0e4aa27b081f9bc0327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11434150
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e533552b40d31b34e8886a9c067c309a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_seFileName: Shot0
 --- !u!114 &11452834
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -318,7 +331,6 @@ MonoBehaviour:
       value: 15
     - type: 3
       value: 0
-  m_seFileName: Shot0
 --- !u!114 &11496294
 MonoBehaviour:
   m_ObjectHideFlags: 1
