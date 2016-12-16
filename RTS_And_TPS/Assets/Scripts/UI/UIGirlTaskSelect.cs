@@ -6,12 +6,9 @@ using UnityEngine.EventSystems;
 // 女の子のタワーの作成や破壊の選択をクリックでも行えるようにするクラス
 public class UIGirlTaskSelect : MonoBehaviour
 {
-    [SerializeField]
-    private RTSCursor           m_cursor                    = null;
-
-//    public  GameObject          m_rGirl                     = null;
-	public	GameObject			m_buttonOk					= null;
-	public	GameObject			m_buttonCancel				= null;
+//  public  GameObject          m_rGirl                     = null;
+	public	GameObject			m_buttonOk                  = null;
+    public	GameObject			m_buttonCancel				= null;
 	public	GameObject			m_buttonLevel				= null;
 	public	GameObject			m_buttonBreak				= null;
 	public	GameObject			m_towerInfoPanel			= null;

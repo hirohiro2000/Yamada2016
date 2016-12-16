@@ -16,7 +16,6 @@ public class RTSOnItemFrame : MonoBehaviour,
         m_uiGirlTaskSelect  = rHUD.GetComponent<UIGirlTaskSelect>();
         m_cursor            = rHUD.GetComponent<RTSCursor>();
     }
-
     void OnDisable()
     {
         if (m_itemController.GetForcus() == id)
@@ -27,8 +26,12 @@ public class RTSOnItemFrame : MonoBehaviour,
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        m_itemController.SetForcus(id);
-        m_uiGirlTaskSelect.SetForcus(id);
+        // 作成に必要なコストが足りない場合[-1]を設定する
+        int forcusID =  m_itemController.CheckWhetherTheCostIsEnough( id ) ? id : -1;
+
+        m_itemController.SetForcus(forcusID);
+        m_uiGirlTaskSelect.SetForcus(forcusID);
+
         m_cursor.Require(this.transform.parent.gameObject, RTSCursor.MODE.eUI);
     }
     public void OnPointerExit(PointerEventData eventData)
