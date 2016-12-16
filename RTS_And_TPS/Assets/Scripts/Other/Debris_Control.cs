@@ -9,6 +9,8 @@ public class Debris_Control : MonoBehaviour {
     };
 
     //public  Transform   c_Target        =   null;
+    public  GameObject      c_EndEmission   =   null;
+
     public  int             c_TargetID      =   0;
     public  float           c_Score         =   0.0f;
     public  bool            c_ForMe         =   false;
@@ -102,13 +104,21 @@ public class Debris_Control : MonoBehaviour {
             transform.position  =   m_StartPoint + vMove * moveRate + Vector3.up * upRate * 2.0f;
 
             //  終了処理
-            if( timeRate >= 1.0f ){
+            if( timeRate >= 1.0f ){ 
                 //  リソース獲得（自分のプレイヤーだけ処理）
                 if( m_rLinkManager ){
                     if( c_TargetID == m_rLinkManager.m_LocalPlayerID ){
                         if( m_rLinkManager.m_rLocalNPControl )  m_rLinkManager.m_rLocalNPControl.CmdAddResource( c_Score );
                         if( m_rGameManager )                    m_rGameManager.SetAcqResource( c_Score );
                     }
+                }
+
+                //  獲得エフェクト
+                if( c_EndEmission ){
+                    GameObject  rObj    =   Instantiate( c_EndEmission );
+                    Transform   rTrans  =   rObj.transform;
+                    rTrans.position     =   transform.position;//m_rTarget.position + Vector3.up * 1.0f;
+                    rTrans.parent       =   m_rTarget;
                 }
 
                 //  削除

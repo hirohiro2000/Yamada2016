@@ -1816,6 +1816,7 @@ GameObject:
   - 114: {fileID: 11449572}
   - 114: {fileID: 11450462}
   - 136: {fileID: 13640328}
+  - 114: {fileID: 11441606}
   m_Layer: 0
   m_Name: Boss_0
   m_TagString: Enemy
@@ -6598,6 +6599,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_adjust_max_steering_radius: 0.63
+--- !u!114 &11441606
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 196732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 424eb86e768c73d479649ba3c2cbcf23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HPUpMultipleRate: 10
+  MoveSpeedUpMultipleRate: 0.75
+  MaxmoveSpeed: 20
+  MaxAcceleration: 1000000
+  AttackPowerIncrementRate: 0
+  BurstIncrementRate: 0.1
+  MaxBurstShot: 6
 --- !u!114 &11443248
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7054,7 +7073,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_ExplodedObj: {fileID: 160876, guid: 38f27e6251be8384cbc64fd049a5aa28, type: 2}
   c_Explosion: {fileID: 0}
-  Resource: 50
+  Resource: 120
   Score: 500
   DefaultHP: 1500
 --- !u!114 &11452642

@@ -156,7 +156,7 @@ public class GameManager : NetworkBehaviour {
             &&  m_rLinkManager.m_rLocalPlayer ){
                 GameObject      rMyPlayer   =   m_rLinkManager.m_rLocalPlayer;
                 TPSPlayer_HP    rHealth     =   ( rMyPlayer )? rMyPlayer.GetComponent< TPSPlayer_HP >() : null;
-                float           dyingLine   =   0.4f;
+                float           dyingLine   =   0.8f;
 
                 if( rHealth
                 &&  rHealth.m_CurHP <= rHealth.m_MaxHP * dyingLine )    m_rDFControl.SetEffect_Dying( true );
@@ -164,8 +164,9 @@ public class GameManager : NetworkBehaviour {
             }
         }
 
-        //  キー入力
-        if( Input.GetKeyDown( KeyCode.Return ) ){
+        //  キー入力 
+        if( Input.GetKeyDown( KeyCode.Return )
+        ||  Input.GetMouseButtonDown( 2 ) ){
             if( m_State == State.WaveReady
             &&  m_StateTimer >= 6.8f
             &&  !GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) ){
@@ -773,7 +774,8 @@ public class GameManager : NetworkBehaviour {
         }
 
         //  一定ウェーブごとにドラム缶を再配置
-        if( m_WaveLevel % 3 == 1 ){
+        if( m_WaveLevel > 0
+        &&  m_WaveLevel % 3 == 0 ){
             ReplaceStageDrum();
         }
     }
