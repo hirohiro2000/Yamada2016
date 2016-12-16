@@ -94,7 +94,30 @@ public class ItemController : NetworkBehaviour
 		
 			for( int i=0; i<m_kindMax; ++i )
 			{
-				m_frameList[i].transform.localScale = ( m_curForcus==i )? new Vector3( forcus,forcus,forcus ):new Vector3( basic,basic,basic );
+                Image image = m_frameList[i].GetComponent<Image>();
+
+                bool isEnoughCost = CheckWhetherTheCostIsEnough( i );
+
+                // 色更新
+                if ( isEnoughCost )
+                {
+                    image.color = Color.white;
+                }
+                else
+                {
+                    image.color = Color.gray;
+                }
+                
+                // 大きさ更新
+                if ( isEnoughCost && m_curForcus == i )
+                {
+                    m_frameList[i].transform.localScale = new Vector3( forcus,forcus,forcus );
+                }
+                else
+                {
+                    m_frameList[i].transform.localScale = new Vector3( basic,basic,basic );
+                }
+
 			}
 		}
 		{
@@ -125,7 +148,12 @@ public class ItemController : NetworkBehaviour
 	}
 	public bool CheckWhetherTheCostIsEnough()
 	{
-		return m_rGameManager.GetResource() >= GetForcusResourceParam().GetCreateCost();
+		return ( m_curForcus != -1 ) && ( m_rGameManager.GetResource() >= GetForcusResourceParam().GetCreateCost() );
+	}
+	public bool CheckWhetherTheCostIsEnough( int resourceID )
+	{
+		return ( 0 <= resourceID && resourceID < m_kindMax ) 
+            && ( m_rGameManager.GetResource() >= m_resourceCreator.m_resources[ resourceID ].GetComponent<ResourceParameter>().GetCreateCost() );
 	}
 
 
