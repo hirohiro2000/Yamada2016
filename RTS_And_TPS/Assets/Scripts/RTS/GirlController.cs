@@ -55,9 +55,9 @@ public class GirlController : NetworkBehaviour
     
     interface IMoveToTargetCallback
     {
-        void OnStart( Vector3 requestPosition );
-        void OnStop( Vector3 requestPosition );
-        void OnPositionEnter( Vector3 requestPosition );
+        void OnStart();
+        void OnStop();
+        void OnPositionEnter();
     }
     class MoveSubContractor
     {
@@ -120,8 +120,8 @@ public class GirlController : NetworkBehaviour
             TargetData current = m_targetStack[m_targetStack.Count-1];
             if ( current.m_callback != null )
             {
-                current.m_callback.OnStop( current.m_targetPoint );
-                current.m_callback.OnPositionEnter( current.m_targetPoint );
+                current.m_callback.OnStop();
+                current.m_callback.OnPositionEnter();
             }
 
             //　次の目標へ設定し直します
@@ -182,7 +182,7 @@ public class GirlController : NetworkBehaviour
                 TargetData data = m_targetStack[m_targetStack.Count-1];
                 if ( data.m_userInput == false && data.m_callback != null )
                 {
-                    data.m_callback.OnStop( data.m_targetPoint );
+                    data.m_callback.OnStop();
                 }
             }
 
@@ -196,7 +196,7 @@ public class GirlController : NetworkBehaviour
 
                 if (callback != null)
                 {
-                    callback.OnStart(target);
+                    callback.OnStart();
                 }
 
                 // 最上部が左クリックによる移動かつ追加しようとしているデータも左クリックによるものである
@@ -239,7 +239,7 @@ public class GirlController : NetworkBehaviour
                 
                     if (nextTarget.m_callback != null)
                     {
-                        nextTarget.m_callback.OnStart(nextTarget.m_targetPoint);
+                        nextTarget.m_callback.OnStart();
                     }
                 }
                 
@@ -295,28 +295,30 @@ public class GirlController : NetworkBehaviour
 
     class ActionCreate : IMoveToTargetCallback
     {
-        int             resourceID   { get; set; }
-        GirlController  controller   { get; set; }
-        GameObject      targetSymbol { get; set; }
-        public ActionCreate( int resourceID, GirlController controller )
+        int             resourceID      { get; set; }
+        GirlController  controller      { get; set; }
+        GameObject      targetSymbol    { get; set; }
+        Vector3         targetPosition  { get; set; }
+        public ActionCreate( int resourceID, GirlController controller, Vector3 targetPosition )
         {
-            this.resourceID = resourceID;
-            this.controller = controller;
+            this.resourceID         = resourceID;
+            this.controller         = controller;
+            this.targetPosition     = targetPosition;
         }
-        public void OnStart( Vector3 requestPosition )
+        public void OnStart()
         {
             if ( targetSymbol != null ) return;
             targetSymbol = Instantiate( controller.m_symbolPivot );
-            targetSymbol.transform.position = requestPosition;
+            targetSymbol.transform.position = targetPosition;
         }
-        public void OnStop( Vector3 requestPosition )
+        public void OnStop()
         {
             if ( targetSymbol == null ) return;
             Destroy( targetSymbol );
         }
-        public void OnPositionEnter(Vector3 requestPosition)
+        public void OnPositionEnter()
         {
-            controller.m_resourceCreator.SetGuideResourcePosition( resourceID, requestPosition );
+            controller.m_resourceCreator.SetGuideResourcePosition( resourceID, targetPosition );
 
             var obj         = controller.m_resourceCreator.AddResource(resourceID);
             var forcusParam = controller.m_itemCntroller.GetForcusResourceParam();
@@ -339,58 +341,52 @@ public class GirlController : NetworkBehaviour
     }
     class ActionConvert : IMoveToTargetCallback
     {
-        GirlController  controller { get; set; }
-        GameObject      targetSymbol { get; set; }
-        public ActionConvert( GirlController controller )
+        GirlController  controller          { get; set; }
+        Vector3         targetPosition     { get; set; }
+        public ActionConvert( GirlController controller, Vector3 targetPosition )
         {
-            this.controller = controller;
+            this.controller         = controller;
+            this.targetPosition     = targetPosition;
         }
-        public void OnStart( Vector3 requestPosition )
+        public void OnStart()
         {
-            if ( targetSymbol != null ) return;
-            targetSymbol = Instantiate( controller.m_symbolPivot );
-            targetSymbol.transform.position = requestPosition;
         }
-        public void OnStop( Vector3 requestPosition )
+        public void OnStop()
         {
-            if ( targetSymbol == null ) return;
-            Destroy( targetSymbol );
         }
-        public void OnPositionEnter( Vector3 requestPosition )
+        public void OnPositionEnter()
         {
-    		//	今いるマスにリソースがなかった
-    		var param = controller.m_resourceInformation.GetResourceParamFromPosition( requestPosition );
+            Debug.Log("call");
+   		    //	今いるマスにリソースがなかった
+    		var param = controller.m_resourceInformation.GetResourceParamFromPosition( targetPosition );
             if( param == null )
     		{
+                Debug.Log("err");
                 return;
             }
             controller.m_itemCntroller.AddResourceCost( -param.GetCurLevelParam().GetUpCost());
-        	controller.CmdLevelUpResource( requestPosition );
+        	controller.CmdLevelUpResource( targetPosition );
         }
     }
     class ActionBreak : IMoveToTargetCallback
     {
-        GirlController  controller { get; set; }
-        GameObject      targetSymbol { get; set; }
-        public ActionBreak( GirlController controller )
+        GirlController  controller          { get; set; }
+        Vector3         targetPosition      { get; set; }
+        public ActionBreak( GirlController controller, Vector3 targetPosition )
         {
-            this.controller = controller;
+            this.controller         = controller;
+            this.targetPosition     = targetPosition;
         }
-        public void OnStart( Vector3 requestPosition )
+        public void OnStart()
         {
-            if ( targetSymbol != null ) return;
-            targetSymbol = Instantiate( controller.m_symbolPivot );
-            targetSymbol.transform.position = requestPosition;
         }
-        public void OnStop( Vector3 requestPosition )
+        public void OnStop()
         {
-            if ( targetSymbol == null ) return;
-            Destroy( targetSymbol );
         }
-        public void OnPositionEnter( Vector3 requestPosition )
+        public void OnPositionEnter()
         {
         	controller.m_itemCntroller.AddResourceCost( controller.m_itemCntroller.GetForcusResourceParam().GetBreakCost() );
-            controller.CmdBreakResource( requestPosition );
+            controller.CmdBreakResource( targetPosition );
         }
     }
 
@@ -569,6 +565,7 @@ public class GirlController : NetworkBehaviour
             {
                 m_isEditMode = true; 
     
+                m_itemCntroller.SetForcus( -1 );
                 m_uiGirlTaskSelect.Clear();
 
                 // グリッドにオブジェクトが存在するのか
@@ -577,7 +574,7 @@ public class GirlController : NetworkBehaviour
                     m_uiGirlTaskSelect.ToSelectTheConvertAction();
 					
 					//	リソースのUI設定
-					var param = m_resourceInformation.GetResourceParamFromPosition( transform.position );
+					var param = m_resourceInformation.GetResourceParamFromPosition( m_editTarget );
 					m_uiGirlTaskSelect.m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().GetUpCost().ToString();
 					m_uiGirlTaskSelect.m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.GetBreakCost().ToString();
 
@@ -594,7 +591,6 @@ public class GirlController : NetworkBehaviour
         }
         else
 		{ 
-
     		var forcusID	= m_itemCntroller.GetForcus();
     		if ( forcusID != -1 )
             {
@@ -619,17 +615,17 @@ public class GirlController : NetworkBehaviour
             else if ( result == UIGirlTaskSelect.RESULT.eOK )
             {
                 isComp   = true;
-                callback = new ActionCreate( m_itemCntroller.GetForcus(), this );
+                callback = new ActionCreate( m_itemCntroller.GetForcus(), this, m_editTarget );
             }
             else if ( result == UIGirlTaskSelect.RESULT.eLevel )
             {
                 isComp   = true;
-                callback = new ActionConvert( this );
+                callback = new ActionConvert( this, m_editTarget );
             }
             else if ( result == UIGirlTaskSelect.RESULT.eBreak )
             {
                 isComp   = true;
-                callback = new ActionBreak( this );
+                callback = new ActionBreak( this, m_editTarget );
             }
 
             if ( isComp || isCancel )
@@ -639,6 +635,25 @@ public class GirlController : NetworkBehaviour
                 m_uiGirlTaskSelect.Clear();
                 m_resourceCreator.SetGuideVisibleDisable();
                 m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = false;
+
+                
+                // [NavMeshObstacle]によって切り抜かれているのでターゲットの位置を変更
+                if ( result == UIGirlTaskSelect.RESULT.eLevel || result == UIGirlTaskSelect.RESULT.eBreak )
+                {
+                    bool navEnabled = m_navAgent.enabled;
+                    m_navAgent.enabled = true;
+
+                    Vector3 curPosition = m_navAgent.transform.position;
+                    m_navAgent.Warp( m_editTarget );
+                    NavMeshHit navHit = new NavMeshHit();
+                    if ( m_navAgent.FindClosestEdge( out navHit ) )
+                    {
+                        m_editTarget = navHit.position;
+                    }
+                    m_navAgent.Warp( curPosition );
+
+                    m_navAgent.enabled = navEnabled;
+                }
 
                 if ( isComp )
                     m_moveContractor.AddNewTargetPosition( m_editTarget, false, callback );

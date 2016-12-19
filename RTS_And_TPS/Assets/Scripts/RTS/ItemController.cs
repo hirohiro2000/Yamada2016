@@ -146,6 +146,11 @@ public class ItemController : NetworkBehaviour
         if ( m_curForcus == -1 )            return null;
 		return m_resourceCreator.m_resources[ m_curForcus ].GetComponent<ResourceParameter>();
 	}
+	public ResourceParameter GetResourceParam( int resourceID )
+	{
+		if ( resourceID < 0 || m_kindMax <= resourceID ) return null;
+		return m_resourceCreator.m_resources[ resourceID ].GetComponent<ResourceParameter>();
+	}
 	public bool CheckWhetherTheCostIsEnough()
 	{
 		return ( m_curForcus != -1 ) && ( m_rGameManager.GetResource() >= GetForcusResourceParam().GetCreateCost() );

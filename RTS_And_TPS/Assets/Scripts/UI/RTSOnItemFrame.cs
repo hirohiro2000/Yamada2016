@@ -30,7 +30,7 @@ public class RTSOnItemFrame : MonoBehaviour,
         int forcusID =  m_itemController.CheckWhetherTheCostIsEnough( id ) ? id : -1;
 
         m_itemController.SetForcus(forcusID);
-        m_uiGirlTaskSelect.SetForcus(forcusID);
+        m_uiGirlTaskSelect.SetForcus(id);
 
         m_cursor.Require(this.transform.parent.gameObject, RTSCursor.MODE.eUI);
     }

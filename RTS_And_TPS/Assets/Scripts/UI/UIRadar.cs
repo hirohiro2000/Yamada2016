@@ -3,16 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class UIRadar : MonoBehaviour {
-
+public class UIRadar : MonoBehaviour
+{
     [SerializeField]
-    private GameObject m_player         = null;
-    //[SerializeField]
-    //private GameObject m_ownFighter      = null;
+    private GameObject m_playerFighter  = null;
     [SerializeField]
-    private GameObject m_enemyFighter    = null;
-    //[SerializeField]
-    //private GameObject m_backGround    = null;
+    private GameObject m_enemyFighter   = null;
+    [SerializeField]
+    private GameObject m_backGround     = null;
 
     [SerializeField]
     private Texture     m_defaultIcon       = null;
@@ -22,15 +20,16 @@ public class UIRadar : MonoBehaviour {
     private Texture     m_lowerIcon         = null;
 
     [SerializeField]
-    private float     m_searchRange      = 50.0f;
-
+    private Color      m_ownColor           = Color.blue;
     [SerializeField]
-    private Color      m_ownColor       = Color.blue;
+    private Color      m_enemyColor         = Color.red;
     [SerializeField]
-    private Color      m_enemyColor      = Color.red;
+    private Color      m_resourceColor      = Color.red;
 
     //  外部へのアクセス
-    private ReferenceWrapper    m_rEnemyShell   =   null;
+    private GameObject          m_player            = null;
+    private ReferenceWrapper    m_rEnemyShell       =   null;
+    private GameObject          m_rResourceShell    =   null;
     
     class DATA
     {
@@ -48,7 +47,9 @@ public class UIRadar : MonoBehaviour {
         m_uiSymbolList = new List<DATA>();
 
         //  アクセスを取得
-        m_rEnemyShell   =   FunctionManager.GetAccessComponent< ReferenceWrapper >( "EnemySpawnRoot" );
+        m_rEnemyShell       =   FunctionManager.GetAccessComponent< ReferenceWrapper >( "EnemySpawnRoot" );
+		m_rResourceShell    = GameObject.Find("FieldResources");
+
     }
     void OnEnable()
     {
@@ -66,14 +67,17 @@ public class UIRadar : MonoBehaviour {
         }
     }
 
-    public GameObject rrr;
+    public float devParam = 10.0f;
     void Update()
     {
         if( m_player == null )  return;
 
         //  アクセスの取得
-        if( !m_rEnemyShell )    m_rEnemyShell   =   FunctionManager.GetAccessComponent< ReferenceWrapper >( "EnemySpawnRoot" );
-        if( !m_rEnemyShell )    return;
+        if( !m_rEnemyShell )        m_rEnemyShell   =   FunctionManager.GetAccessComponent< ReferenceWrapper >( "EnemySpawnRoot" );
+        if( !m_rEnemyShell )        return;
+
+        if( !m_rResourceShell )    m_rResourceShell    = GameObject.Find("FieldResources");
+        if( !m_rResourceShell )    return;
 
         //  リストを更新
         {
@@ -99,6 +103,18 @@ public class UIRadar : MonoBehaviour {
                 //  登録されていない場合は追加
                 AddEnemy( rEnemy );
             }
+            
+            //  新しいアクセスを追加
+            int loopCount = m_rResourceShell.transform.childCount;
+            for( int i = 0; i < loopCount; i++ ){
+                //  リソースへのアクセス
+                GameObject  rResource =   m_rResourceShell.transform.GetChild( i ).gameObject;
+                
+                //  リストに登録されているかチェック
+                if( CheckWhetherRegistedInList( rResource ) )  continue;
+                //  登録されていない場合は追加
+                AddResource( rResource );
+            }
 
             //  無効になった項目を削除
             for( int i = 0; i < m_uiSymbolList.Count; i++ ){
@@ -117,42 +133,42 @@ public class UIRadar : MonoBehaviour {
 
 
         //  表示を更新
-        Vector3     cameraPos       =   Camera.main.transform.position;
-        Vector3     vCamera         =   Camera.main.transform.forward.normalized;
-        float       cameraHAngle    =   Mathf.Atan2( vCamera.x, vCamera.z ) * Mathf.Rad2Deg;
-
-        //  ワールド→カメラ（縦回転無効）
-        Matrix4x4   transMatrix     =   new Matrix4x4();
-        transMatrix.SetTRS( cameraPos, Quaternion.Euler( 0.0f, cameraHAngle, 0.0f ), Vector3.one );
-        transMatrix =   transMatrix.inverse;
-
         foreach (var item in m_uiSymbolList)
         {
-            RectTransform rt = item.dst.GetComponent<RectTransform>();
-
-            Vector3 relativePosition = transMatrix.MultiplyPoint(item.reference.transform.position);
-
             item.dst.transform.SetParent(transform);
 
-            Vector3 rtPosition = relativePosition / m_searchRange;
-            float maxLength = 90.0f; 
+            RectTransform rt = item.dst.GetComponent<RectTransform>();
 
-            Vector3 enemyIconPos = new Vector3(rtPosition.x, rtPosition.z, 0.0f) * maxLength;
+            // 位置の更新
+            float searchRange   = 76.0f;
+            float maxLength     = 115.0f;
 
-            rt.localPosition = enemyIconPos.normalized * (Mathf.Min(enemyIconPos.magnitude, maxLength));
+            Vector3 rtPosition = ( m_player.transform.position - item.reference.transform.position ) / searchRange;
+            rt.localPosition = new Vector3(rtPosition.x, rtPosition.z, 0.0f) * maxLength;
 
-
+            // clamp
+            rt.localPosition = rt.localPosition.normalized * ( Mathf.Min(rt.localPosition.magnitude, maxLength) );
+            
+             
+            // アイコンの更新
             float   relativeHeight  =   item.reference.transform.position.y
                                     -   m_player.transform.position.y;
             float   heightFactor    =   5.0f;
                     if( relativeHeight > heightFactor ) item.dst.GetComponent< RawImage >().texture =   m_upperIcon;
             else    if( relativeHeight < -heightFactor) item.dst.GetComponent< RawImage >().texture =   m_lowerIcon;
             else                                        item.dst.GetComponent< RawImage >().texture =   m_defaultIcon;
-        }    
-        //{
-        //    //RectTransform rt = m_backGround.GetComponent<RectTransform>();  
-        //    //rt.eulerAngles = new Vector3(rt.eulerAngles.x, rt.eulerAngles.y, m_player.transform.eulerAngles.y);
-        //}
+
+        }
+
+        { 
+            RectTransform rt = m_playerFighter.GetComponent<RectTransform>();
+            rt.eulerAngles = new Vector3(rt.eulerAngles.x, rt.eulerAngles.y, -m_player.transform.eulerAngles.y );
+        }
+        {
+            Vector3 position = m_player.transform.position / 76.0f;
+            RectTransform rt = m_backGround.GetComponent<RectTransform>();  
+            rt.localPosition = new Vector3(position.x, position.z, 0.0f) * 145.0f;
+        }
 
     }
 
@@ -173,10 +189,6 @@ public class UIRadar : MonoBehaviour {
 
     static public void Add(GameObject src, Color rgba)
     {
-        //if( !instance )                                 return;
-        //if( !instance.gameObject.activeInHierarchy )    return;
-        
-
         DATA data = new DATA();
         data.reference = src;
         data.dst = Instantiate(instance.m_enemyFighter);
@@ -213,6 +225,10 @@ public class UIRadar : MonoBehaviour {
     static public void AddEnemy(GameObject src)
     {
         Add(src, instance.m_enemyColor);
+    }
+    static public void AddResource(GameObject src)
+    {
+        Add(src, instance.m_resourceColor);
     }
 
 

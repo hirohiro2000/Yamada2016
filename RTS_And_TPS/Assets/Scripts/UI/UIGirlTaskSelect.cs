@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-// 女の子のタワーの作成や破壊の選択をクリックでも行えるようにするクラス
+// UIと女の子のやり取りを補助するクラス
 public class UIGirlTaskSelect : MonoBehaviour
 {
 //  public  GameObject          m_rGirl                     = null;
@@ -47,12 +47,12 @@ public class UIGirlTaskSelect : MonoBehaviour
         {
 		    //	リソースのUI設定
             m_towerInfoPanel.SetActive(true);
-		    var forcusParam = m_itemCntroller.GetForcusResourceParam();
-		    m_buttonOk.transform.FindChild("Point").GetComponent<Text>().text = "-" + forcusParam.GetCreateCost().ToString();
-		    m_towerInfoPanel.transform.FindChild("Kind").GetComponent<Text>().text     = forcusParam.m_name;
-		    m_towerInfoPanel.transform.FindChild("Summary").GetComponent<Text>().text  = "概要:　　　" + forcusParam.m_summary;
-		    m_towerInfoPanel.transform.FindChild("Power").GetComponent<Text>().text    = "攻撃力:　　" + forcusParam.GetLevelParam(0).power;
-		    m_towerInfoPanel.transform.FindChild("Interval").GetComponent<Text>().text = "発射間隔:　" + forcusParam.GetLevelParam(0).interval + "秒/発";
+		    var param = m_itemCntroller.GetResourceParam( forcusID );
+		    m_buttonOk.transform.FindChild("Point").GetComponent<Text>().text          = "-" + param.GetCreateCost().ToString();
+		    m_towerInfoPanel.transform.FindChild("Kind").GetComponent<Text>().text     = param.m_name;
+		    m_towerInfoPanel.transform.FindChild("Summary").GetComponent<Text>().text  = "概要:　　　" + param.m_summary;
+		    m_towerInfoPanel.transform.FindChild("Power").GetComponent<Text>().text    = "攻撃力:　　" + param.GetLevelParam(0).power;
+		    m_towerInfoPanel.transform.FindChild("Interval").GetComponent<Text>().text = "発射間隔:　" + param.GetLevelParam(0).interval + "秒/発";
         }
 
     }
