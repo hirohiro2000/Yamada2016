@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
+using System.Collections.Generic;
+
 
 public class FiringDevice : NetworkBehaviour
 {
 	public GameObject		        m_bullet;
 	public Transform		        m_firePointTransform	= null;
+	public List< Transform >		m_firePointTransforms	= null;
 	public Transform		        m_orientatedTransform	= null;
 
 	private ReferenceWrapper        m_rEnemyShell			= null;
@@ -41,31 +44,25 @@ public class FiringDevice : NetworkBehaviour
 		//
 		UpdateRotation();
 
+		//
 		if ( m_IntervalTimer >= m_resourceParam.GetCurLevelParam().interval )
 		{
 
             if( m_rEnemyShell.IsExistEnemy()
             &&  m_rEnemyShell.CheckWhetherWithinTheRange( transform.position, m_resourceParam.GetCurLevelParam().range ) )
 			{
-				GameObject g			= Instantiate( m_bullet );
+				//	配列版
+				foreach( var fires in m_firePointTransforms )
+				{
+					Fire( fires, m_orientatedTransform );
+				}
 
-				//	射出位置を決める
-				g.transform.position	= m_firePointTransform.position;
-				g.transform.rotation	= m_orientatedTransform.rotation;
+				//	個々版
+				{
+					Fire( m_firePointTransform, m_orientatedTransform );
+				}
+
 			
-				//
-                AttackPointList rATKPL  =   g.GetComponentInChildren< AttackPointList >();
-                GameObject      rObj    =   rATKPL.gameObject;
-                rATKPL.baseAttackPoint  *=  m_resourceParam.GetCurLevelParam().power;
-
-                rObj.AddComponent< ResourceParameter >().Copy( m_resourceParam );
-
-                //  オーナー設定
-                rObj.GetComponent< RTSAttack_Net >().c_AttackerID   =   m_RTSResControl.c_OwnerID;
-
-                //  クライアントでも弾が見えるようにする
-                //RpcSpawnBullet( transform.rotation, transform.position );
-
                 // 音再生
                 m_se.PlayOneShot();
 
@@ -73,6 +70,25 @@ public class FiringDevice : NetworkBehaviour
                 m_IntervalTimer =   0.0f;
             }
         }
+	}
+
+
+	//
+	void Fire( Transform fire, Transform orien )
+	{
+		var instance				=	Instantiate( m_bullet );
+		instance.transform.position	=	fire.position;
+		instance.transform.rotation	=	orien.rotation;
+
+		//
+		AttackPointList rATKPL		=   instance.GetComponentInChildren< AttackPointList >();
+		GameObject      rObj		=   rATKPL.gameObject;
+		rATKPL.baseAttackPoint		*=  m_resourceParam.GetCurLevelParam().power;
+
+		rObj.AddComponent< ResourceParameter >().Copy( m_resourceParam );
+
+		//  オーナー設定
+		rObj.GetComponent< RTSAttack_Net >().c_AttackerID   =   m_RTSResControl.c_OwnerID;
 	}
 
 
