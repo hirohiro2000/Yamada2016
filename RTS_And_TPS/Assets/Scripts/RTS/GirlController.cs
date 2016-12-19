@@ -356,7 +356,6 @@ public class GirlController : NetworkBehaviour
         }
         public void OnPositionEnter()
         {
-            Debug.Log("call");
    		    //	今いるマスにリソースがなかった
     		var param = controller.m_resourceInformation.GetResourceParamFromPosition( targetPosition );
             if( param == null )
@@ -385,7 +384,13 @@ public class GirlController : NetworkBehaviour
         }
         public void OnPositionEnter()
         {
-        	controller.m_itemCntroller.AddResourceCost( controller.m_itemCntroller.GetForcusResourceParam().GetBreakCost() );
+    		var param = controller.m_resourceInformation.GetResourceParamFromPosition( targetPosition );
+            if( param == null )
+    		{
+                Debug.Log("err");
+                return;
+            }
+        	controller.m_itemCntroller.AddResourceCost( param.GetBreakCost() );
             controller.CmdBreakResource( targetPosition );
         }
     }
@@ -671,6 +676,9 @@ public class GirlController : NetworkBehaviour
 	}
 
 
+	//---------------------------------------------------------------------
+    //      デバック中
+    //---------------------------------------------------------------------   	
     void OnGUI()
     {
         for (int i = m_moveContractor.m_targetStack.Count-1; i >= 0; i--)
