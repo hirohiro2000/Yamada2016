@@ -164,8 +164,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 480508}
   - 114: {fileID: 11448430}
-  - 114: {fileID: 11454428}
-  - 114: {fileID: 11403984}
+  - 114: {fileID: 11495488}
+  - 114: {fileID: 11458762}
   m_Layer: 0
   m_Name: Explosion_TB
   m_TagString: Untagged
@@ -343,18 +343,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 480508}
   m_RootOrder: 2
---- !u!114 &11403984
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 175442}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 605e4f107dbb11848a51d398f3872f0a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_seFileName: Explosion0
 --- !u!114 &11422888
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -417,7 +405,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   multiplier: 2
---- !u!114 &11454428
+--- !u!114 &11458762
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -425,10 +413,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 175442}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d992e617ceba6994b9810d00313cc936, type: 3}
+  m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyParticle: {fileID: 19843120}
+  c_SEName: Explosion0
+  c_PlayType: 1
+  c_PlayMode: 0
+  c_VolumeRatio: 1
+  c_PitchRatio: 1
+  c_LifeTime: 3
+  c_ParentMe: 0
 --- !u!114 &11462536
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -441,6 +435,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_AttackerID: 0
+--- !u!114 &11495488
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 175442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de593ba5d0ffa4a4f9e1eccd89ac04c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DeleteSecond: 4
 --- !u!135 &13589278
 SphereCollider:
   m_ObjectHideFlags: 1

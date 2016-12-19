@@ -64,6 +64,20 @@ public class SoundController : MonoBehaviour {
 
     }
 
+    static public SoundController PlayOne( string _Name, Transform _rParent, float _Delay, float _Volume, float _Pitch, float _DestroyTime )
+    {
+        SoundController rControl    =   Create( _Name, _rParent );
+        if( !rControl ) return  null;
+
+        rControl.m_audioSource.volume   =   _Volume;
+        rControl.m_audioSource.pitch    =   _Pitch;
+        rControl.m_audioSource.PlayDelayed( _Delay );
+
+        Destroy( rControl.gameObject, _Delay + _DestroyTime );
+
+        return  rControl;
+    }
+
     // ゲームOnly
     static public SoundController CreateShotController(Transform parent = null)
     {

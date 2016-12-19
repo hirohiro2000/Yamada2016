@@ -902,7 +902,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 123842}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.2361298, y: 30, z: -57.598648}
+  m_LocalPosition: {x: 24.258257, y: 12.000001, z: 44.833412}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1353,7 +1353,7 @@ MonoBehaviour:
   ShotRange: 5
   m_use_pqs: 0
   m_use_bone_controller: 0
-  NumDefaultBurstShot: 3
+  NumDefaultBurstShot: 1
 --- !u!114 &11430314
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1601,7 +1601,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_ExplodedObj: {fileID: 102618, guid: c66536897f4a0164e91d83e720dfdd34, type: 2}
-  c_Explosion: {fileID: 0}
+  c_DeathEmission:
+  - {fileID: 158640, guid: b5436835d1c6a274b91afac7de96a911, type: 2}
   Resource: 3
   Score: 30
   DefaultHP: 3
@@ -1641,13 +1642,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424eb86e768c73d479649ba3c2cbcf23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HPUpMultipleRate: 1
-  MoveSpeedUpMultipleRate: 1.1
-  MaxmoveSpeed: 20
-  MaxAcceleration: 10
+  HPUpMultipleRate: 2.5
+  MoveSpeedUpMultipleRate: 1.5
+  MaxmoveSpeed: 60
+  MaxAcceleration: 1000000
   AttackPowerIncrementRate: 0
   BurstIncrementRate: 0.2
-  MaxBurstShot: 6
+  MaxBurstShot: 3
 --- !u!114 &11495468
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1927,7 +1928,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 123842}
   m_Enabled: 1
   m_Radius: 0.5
-  m_Speed: 9
+  m_Speed: 6
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 200

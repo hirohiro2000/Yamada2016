@@ -42,7 +42,10 @@ public class RTSOnItemFrame : MonoBehaviour,
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        m_uiGirlTaskSelect.SelectOK();
+        if (m_itemController.CheckWhetherTheCostIsEnough(id))
+        {
+            m_uiGirlTaskSelect.SelectOK();
+        }
     }
 
 }

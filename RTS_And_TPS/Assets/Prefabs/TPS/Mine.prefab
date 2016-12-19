@@ -36,6 +36,10 @@ GameObject:
   - 114: {fileID: 11480952}
   - 114: {fileID: 11410568}
   - 114: {fileID: 11475028}
+  - 114: {fileID: 11491552}
+  - 114: {fileID: 11460502}
+  - 114: {fileID: 11480506}
+  - 114: {fileID: 11499482}
   m_Layer: 19
   m_Name: Mine
   m_TagString: Untagged
@@ -251,6 +255,21 @@ MonoBehaviour:
   c_MaxHP: 10
   m_CurHP: 0
   m_DestroyerID: 0
+--- !u!114 &11460502
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 176026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e848cd0cb68a74581268c8ef4d7f1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_rTarget:
+  - {fileID: 11491552}
+  c_RandomVolume: {x: 1, y: 1}
+  c_RandomPitch: {x: 0.8, y: 0.8}
 --- !u!114 &11475028
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -262,6 +281,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b41c1148d7e9d044f872b8f96e7bde40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11480506
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 176026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_SEName: Shot_Mine2
+  c_PlayType: 1
+  c_VolumeRatio: 1
+  c_PitchRatio: 1
+  c_LifeTime: 1
+  c_ParentMe: 1
 --- !u!114 &11480952
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -280,7 +316,38 @@ MonoBehaviour:
     list:
     - type: 2
       value: 5
-  m_seFileName: 
+--- !u!114 &11491552
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 176026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_SEName: Shot_Mine
+  c_PlayType: 1
+  c_VolumeRatio: 1
+  c_PitchRatio: 1
+  c_LifeTime: 1
+  c_ParentMe: 1
+--- !u!114 &11499482
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 176026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e848cd0cb68a74581268c8ef4d7f1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_rTarget:
+  - {fileID: 11480506}
+  c_RandomVolume: {x: 1, y: 1}
+  c_RandomPitch: {x: 1, y: 1}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

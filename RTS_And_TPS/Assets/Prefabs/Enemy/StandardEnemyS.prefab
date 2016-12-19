@@ -1018,7 +1018,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 180630}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -56.495686, y: 30, z: -55.22737}
+  m_LocalPosition: {x: 27.481716, y: 15.114801, z: 42}
   m_LocalScale: {x: 2.4277558, y: 2.4277565, z: 2.4277565}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1262,13 +1262,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424eb86e768c73d479649ba3c2cbcf23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HPUpMultipleRate: 1.3
-  MoveSpeedUpMultipleRate: 1.05
-  MaxmoveSpeed: 20
-  MaxAcceleration: 10
+  HPUpMultipleRate: 5
+  MoveSpeedUpMultipleRate: 1.5
+  MaxmoveSpeed: 60
+  MaxAcceleration: 1000000
   AttackPowerIncrementRate: 0
-  BurstIncrementRate: 0.2
-  MaxBurstShot: 6
+  BurstIncrementRate: 0.4
+  MaxBurstShot: 15
 --- !u!114 &11414632
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1466,7 +1466,7 @@ MonoBehaviour:
   ShotRange: 12
   m_use_pqs: 0
   m_use_bone_controller: 0
-  NumDefaultBurstShot: 3
+  NumDefaultBurstShot: 1
 --- !u!114 &11459546
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1574,7 +1574,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_ExplodedObj: {fileID: 106676, guid: 665a2285f8096464685e5624d31fe644, type: 2}
-  c_Explosion: {fileID: 0}
+  c_DeathEmission:
+  - {fileID: 158640, guid: b5436835d1c6a274b91afac7de96a911, type: 2}
   Resource: 10
   Score: 200
   DefaultHP: 10
@@ -2048,7 +2049,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 180630}
   m_Enabled: 1
   m_Radius: 0.6
-  m_Speed: 13
+  m_Speed: 6
   m_Acceleration: 50
   avoidancePriority: 50
   m_AngularSpeed: 100200300

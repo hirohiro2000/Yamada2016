@@ -20,7 +20,10 @@ GameObject:
   - 136: {fileID: 13638022}
   - 114: {fileID: 11463500}
   - 114: {fileID: 11426266}
-  - 114: {fileID: 11485532}
+  - 114: {fileID: 11444316}
+  - 114: {fileID: 11441720}
+  - 114: {fileID: 11468012}
+  - 114: {fileID: 11487794}
   m_Layer: 12
   m_Name: Rifle
   m_TagString: Player_Attack
@@ -218,6 +221,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee0795890d5dd0e4aa27b081f9bc0327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11441720
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e848cd0cb68a74581268c8ef4d7f1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_rTarget:
+  - {fileID: 11444316}
+  c_RandomVolume: {x: 1, y: 1}
+  c_RandomPitch: {x: 1, y: 1}
+--- !u!114 &11444316
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_SEName: Shot_Rifle
+  c_PlayType: 1
+  c_VolumeRatio: 1
+  c_PitchRatio: 1
+  c_LifeTime: 3
+  c_ParentMe: 0
 --- !u!114 &11452834
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -272,6 +307,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b52579dd2a67454488d8f4503c66c976, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11468012
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_SEName: Shot_Rifle2
+  c_PlayType: 1
+  c_VolumeRatio: 1
+  c_PitchRatio: 1
+  c_LifeTime: 3
+  c_ParentMe: 0
 --- !u!114 &11472370
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -319,7 +371,7 @@ MonoBehaviour:
       value: 5
     - type: 3
       value: 18
---- !u!114 &11485532
+--- !u!114 &11487794
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -327,10 +379,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 166188}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e533552b40d31b34e8886a9c067c309a, type: 3}
+  m_Script: {fileID: 11500000, guid: f7e848cd0cb68a74581268c8ef4d7f1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_seFileName: Shot0
+  c_rTarget:
+  - {fileID: 11468012}
+  c_RandomVolume: {x: 1, y: 1}
+  c_RandomPitch: {x: 1, y: 1}
 --- !u!114 &11496294
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -156,7 +156,7 @@ public class GameManager : NetworkBehaviour {
             &&  m_rLinkManager.m_rLocalPlayer ){
                 GameObject      rMyPlayer   =   m_rLinkManager.m_rLocalPlayer;
                 TPSPlayer_HP    rHealth     =   ( rMyPlayer )? rMyPlayer.GetComponent< TPSPlayer_HP >() : null;
-                float           dyingLine   =   0.4f;
+                float           dyingLine   =   0.8f;
 
                 if( rHealth
                 &&  rHealth.m_CurHP <= rHealth.m_MaxHP * dyingLine )    m_rDFControl.SetEffect_Dying( true );
@@ -164,8 +164,9 @@ public class GameManager : NetworkBehaviour {
             }
         }
 
-        //  キー入力
-        if( Input.GetKeyDown( KeyCode.Return ) ){
+        //  キー入力 
+        if( Input.GetKeyDown( KeyCode.Return )
+        ||  Input.GetMouseButtonDown( 2 ) ){
             if( m_State == State.WaveReady
             &&  m_StateTimer >= 6.8f
             &&  !GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) ){
@@ -218,6 +219,9 @@ public class GameManager : NetworkBehaviour {
             ChangeState( State.InGame );
             //  ウェーブ開始
             m_rWaveManager.StartWave();
+
+            //  ウェーブ開始音
+            SoundController.PlayOne( "WaveStart", transform, 1.2f, 0.5f, 1.0f, 2.0f );
         }
     }
     void    Update_WaveReady()
@@ -230,6 +234,9 @@ public class GameManager : NetworkBehaviour {
             ChangeState( State.InGame );
             //  ウェーブ開始
             m_rWaveManager.StartWave();
+
+            //  ウェーブ開始音
+            SoundController.PlayOne( "WaveStart", transform, 1.2f, 0.5f, 1.0f, 2.0f );
         }
     }
     void    Update_InGame()
@@ -758,6 +765,10 @@ public class GameManager : NetworkBehaviour {
             rObj.SetActive( true );
         }
 
+        //  ウェーブクリア音
+        //SoundController.PlayOne( "WaveClear",  transform, 2.4f, 0.01f, 1.0f, 6.0f );
+        //SoundController.PlayOne( "WaveClear2", transform, 2.4f, 0.2f, 0.5f, 6.0f );
+
         ////  空を模様を更新
         //if( NetworkServer.active )  m_rSkyManager.ChangeSky( m_WaveLevel - 1 );
         //else                        m_rSkyManager.ChangeSky( m_WaveLevel );
@@ -773,7 +784,8 @@ public class GameManager : NetworkBehaviour {
         }
 
         //  一定ウェーブごとにドラム缶を再配置
-        if( m_WaveLevel % 3 == 1 ){
+        if( m_WaveLevel > 0
+        &&  m_WaveLevel % 3 == 0 ){
             ReplaceStageDrum();
         }
     }
