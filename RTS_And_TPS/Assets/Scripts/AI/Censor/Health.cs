@@ -5,8 +5,8 @@ using   System.Collections;
 
 public class Health : NetworkBehaviour {
 
-    public  GameObject  c_ExplodedObj   =   null;
-	public	GameObject	c_Explosion		=	null;
+    public  GameObject      c_ExplodedObj   =   null;
+    public  GameObject[]    c_DeathEmission =   null;
 
     [ SyncVar ]
     public  int         Resource        =   0;
@@ -72,9 +72,16 @@ public class Health : NetworkBehaviour {
             }
         }
 
-		//ここで爆発
-        if( c_Explosion ){
-            Instantiate(c_Explosion, transform.position, Quaternion.identity);  
+        //  死亡時の生成オブジェクト 
+        if( c_DeathEmission != null ){
+            for( int i = 0; i < c_DeathEmission.Length; i++ ){
+                if( !c_DeathEmission[ i ] ) continue;
+
+                //  生成
+                GameObject  rObj    =   Instantiate( c_DeathEmission[ i ] );
+                Transform   rTrans  =   rObj.transform;
+                rTrans.position     =   transform.position;
+            }
         }
 
         //  カメラシェイク（撃破したプレイヤーのクライアントだけ）

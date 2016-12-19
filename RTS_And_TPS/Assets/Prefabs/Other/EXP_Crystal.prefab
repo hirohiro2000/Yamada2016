@@ -1179,6 +1179,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 417402}
   - 114: {fileID: 11471572}
+  - 114: {fileID: 11411024}
+  - 114: {fileID: 11462094}
   m_Layer: 16
   m_Name: EXP_Crystal
   m_TagString: Untagged
@@ -9365,6 +9367,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9384,6 +9389,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9403,6 +9411,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9422,6 +9433,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9441,6 +9455,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9460,6 +9477,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9467,6 +9487,23 @@ MonoBehaviour:
   c_SpeedLimit: 0
   c_LimitTime: 0.05
   m_rTarget: {fileID: 0}
+--- !u!114 &11411024
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 177388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_SEName: BreakGlass
+  c_PlayType: 1
+  c_VolumeRatio: 1
+  c_PitchRatio: 1
+  c_LifeTime: 1
+  c_ParentMe: 0
 --- !u!114 &11412086
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -9479,6 +9516,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9498,6 +9538,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9517,6 +9560,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9536,6 +9582,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9555,6 +9604,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9574,6 +9626,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9593,6 +9648,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9612,6 +9670,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9631,6 +9692,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9650,6 +9714,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9669,6 +9736,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9688,6 +9758,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9707,6 +9780,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9726,6 +9802,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9745,6 +9824,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9764,6 +9846,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9783,6 +9868,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9802,6 +9890,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9821,6 +9912,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9840,6 +9934,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9859,6 +9956,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9878,6 +9978,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9897,6 +10000,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9916,6 +10022,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9935,6 +10044,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9954,6 +10066,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9973,6 +10088,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -9992,6 +10110,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10011,6 +10132,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10030,6 +10154,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10049,6 +10176,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10068,6 +10198,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10087,6 +10220,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10106,6 +10242,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10125,6 +10264,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10132,6 +10274,23 @@ MonoBehaviour:
   c_SpeedLimit: 0
   c_LimitTime: 0.05
   m_rTarget: {fileID: 0}
+--- !u!114 &11462094
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 177388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_SEName: BreakGlass2
+  c_PlayType: 1
+  c_VolumeRatio: 1
+  c_PitchRatio: 1
+  c_LifeTime: 1
+  c_ParentMe: 0
 --- !u!114 &11465428
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -10144,6 +10303,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10163,6 +10325,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10182,6 +10347,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10201,6 +10369,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10220,6 +10391,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10239,6 +10413,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10258,6 +10435,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10291,6 +10471,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10310,6 +10493,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10329,6 +10515,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10348,6 +10537,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10367,6 +10559,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10386,6 +10581,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10405,6 +10603,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10424,6 +10625,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10443,6 +10647,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10462,6 +10669,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10481,6 +10691,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10500,6 +10713,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10519,6 +10735,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10538,6 +10757,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10557,6 +10779,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10576,6 +10801,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0
@@ -10595,6 +10823,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_EndEmission: {fileID: 192546, guid: 86a79ab63a6ef894ab8ef98f3af003fd, type: 2}
+  c_EndEmission2: {fileID: 158640, guid: f7f72690fe9102c459ea91f47d36c94f, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 6baf11bc0d8c2ae47a0a1e144cf77476, type: 2}
+  c_MoveEmission: {fileID: 158640, guid: 517a8b4d99da6a74385e834205eed213, type: 2}
   c_TargetID: 0
   c_Score: 0
   c_ForMe: 0

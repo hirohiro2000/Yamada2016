@@ -1574,7 +1574,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_ExplodedObj: {fileID: 106676, guid: 665a2285f8096464685e5624d31fe644, type: 2}
-  c_Explosion: {fileID: 0}
+  c_DeathEmission:
+  - {fileID: 158640, guid: b5436835d1c6a274b91afac7de96a911, type: 2}
   Resource: 10
   Score: 200
   DefaultHP: 10

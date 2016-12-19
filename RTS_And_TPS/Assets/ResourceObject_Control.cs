@@ -5,24 +5,25 @@ using   System.Collections;
 
 public class ResourceObject_Control : NetworkBehaviour {
 
-    public  GameObject  c_ExplodedObj   =   null;
-    public  GameObject  c_BreakEffect   =   null;
+    public  GameObject      c_ExplodedObj   =   null;
+    public  GameObject      c_BreakEffect   =   null;
+    public  SoundController c_BreakSE       =   null;
 
 
-    public  int         m_Score         =   0;
+    public  int             m_Score         =   0;
     [ SyncVar ]
-    public  int         m_Resource      =   0;
+    public  int             m_Resource      =   0;
     [ SyncVar ]
-    private int         m_KillerID      =   -1;
+    private int             m_KillerID      =   -1;
 
-    private bool        m_IsGameQuit    =   false;
-    private GameManager m_rGameManager  =   null;
-    private LinkManager m_rLinkManager  =   null;
+    private bool            m_IsGameQuit    =   false;
+    private GameManager     m_rGameManager  =   null;
+    private LinkManager     m_rLinkManager  =   null;
 
 	// Use this for initialization
 	void    Start()
     {
-	    //  アクセスの取得 
+	    //  アクセスの取得  
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
         m_rGameManager  =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
 

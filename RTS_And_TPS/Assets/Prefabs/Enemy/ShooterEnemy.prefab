@@ -2097,7 +2097,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_ExplodedObj: {fileID: 102618, guid: c66536897f4a0164e91d83e720dfdd34, type: 2}
-  c_Explosion: {fileID: 0}
+  c_DeathEmission:
+  - {fileID: 158640, guid: b5436835d1c6a274b91afac7de96a911, type: 2}
   Resource: 10
   Score: 150
   DefaultHP: 6

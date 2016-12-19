@@ -12,7 +12,10 @@ GameObject:
   - 114: {fileID: 11445768}
   - 114: {fileID: 11408348}
   - 114: {fileID: 11400836}
-  - 114: {fileID: 11459020}
+  - 114: {fileID: 11432438}
+  - 114: {fileID: 11495808}
+  - 114: {fileID: 11431066}
+  - 114: {fileID: 11485594}
   m_Layer: 12
   m_Name: ShotGun
   m_TagString: Player_Attack
@@ -59,6 +62,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_AttackerID: 0
+--- !u!114 &11431066
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 194600}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_SEName: Shot_Rifle2
+  c_PlayType: 1
+  c_VolumeRatio: 1
+  c_PitchRatio: 1
+  c_LifeTime: 2
+  c_ParentMe: 0
+--- !u!114 &11432438
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 194600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_SEName: Shot_ShotGun
+  c_PlayType: 1
+  c_VolumeRatio: 1
+  c_PitchRatio: 1
+  c_LifeTime: 3
+  c_ParentMe: 0
 --- !u!114 &11445768
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -85,7 +122,7 @@ MonoBehaviour:
       value: 0.5
     - type: 3
       value: 24
---- !u!114 &11459020
+--- !u!114 &11485594
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -93,10 +130,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 194600}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e533552b40d31b34e8886a9c067c309a, type: 3}
+  m_Script: {fileID: 11500000, guid: f7e848cd0cb68a74581268c8ef4d7f1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_seFileName: Shot0
+  c_rTarget:
+  - {fileID: 11431066}
+  c_RandomVolume: {x: 0.5, y: 0.5}
+  c_RandomPitch: {x: 1, y: 1}
+--- !u!114 &11495808
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 194600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e848cd0cb68a74581268c8ef4d7f1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_rTarget:
+  - {fileID: 11432438}
+  c_RandomVolume: {x: 1, y: 1}
+  c_RandomPitch: {x: 1, y: 1}
 --- !u!114 &11499332
 MonoBehaviour:
   m_ObjectHideFlags: 1

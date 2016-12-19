@@ -1815,7 +1815,6 @@ GameObject:
   - 114: {fileID: 11427532}
   - 114: {fileID: 11449572}
   - 114: {fileID: 11450462}
-  - 136: {fileID: 13640328}
   - 114: {fileID: 11441606}
   m_Layer: 0
   m_Name: Boss_0
@@ -7072,7 +7071,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_ExplodedObj: {fileID: 160876, guid: 38f27e6251be8384cbc64fd049a5aa28, type: 2}
-  c_Explosion: {fileID: 0}
+  c_DeathEmission: []
   Resource: 120
   Score: 500
   DefaultHP: 1500
@@ -10740,19 +10739,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.06
   m_Center: {x: 0, y: 0, z: 0}
---- !u!136 &13640328
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 196732}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 4
-  m_Height: 20
-  m_Direction: 1
-  m_Center: {x: 0, y: 6, z: 0}
 --- !u!137 &13776414
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

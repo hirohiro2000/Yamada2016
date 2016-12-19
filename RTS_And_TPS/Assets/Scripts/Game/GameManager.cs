@@ -219,6 +219,9 @@ public class GameManager : NetworkBehaviour {
             ChangeState( State.InGame );
             //  ウェーブ開始
             m_rWaveManager.StartWave();
+
+            //  ウェーブ開始音
+            SoundController.PlayOne( "WaveStart", transform, 1.2f, 0.5f, 1.0f, 2.0f );
         }
     }
     void    Update_WaveReady()
@@ -231,6 +234,9 @@ public class GameManager : NetworkBehaviour {
             ChangeState( State.InGame );
             //  ウェーブ開始
             m_rWaveManager.StartWave();
+
+            //  ウェーブ開始音
+            SoundController.PlayOne( "WaveStart", transform, 1.2f, 0.5f, 1.0f, 2.0f );
         }
     }
     void    Update_InGame()
@@ -758,6 +764,10 @@ public class GameManager : NetworkBehaviour {
             rObj.SetActive( false );
             rObj.SetActive( true );
         }
+
+        //  ウェーブクリア音
+        //SoundController.PlayOne( "WaveClear",  transform, 2.4f, 0.01f, 1.0f, 6.0f );
+        //SoundController.PlayOne( "WaveClear2", transform, 2.4f, 0.2f, 0.5f, 6.0f );
 
         ////  空を模様を更新
         //if( NetworkServer.active )  m_rSkyManager.ChangeSky( m_WaveLevel - 1 );
