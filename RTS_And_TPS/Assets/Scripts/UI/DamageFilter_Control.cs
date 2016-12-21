@@ -24,6 +24,8 @@ public class DamageFilter_Control : MonoBehaviour {
     private bool            m_IsDying   =   false;
     private float           m_Timer     =   0.0f;
 
+    private bool            m_PlaySound =   false;
+
 	// Use this for initialization
 	void    Start()
     {
@@ -66,12 +68,22 @@ public class DamageFilter_Control : MonoBehaviour {
                 alpha   +=  addAlpha;
             }
 
-            //  瀕死状態なら明滅させる
+            //  瀕死状態なら明滅させる 
             if( m_IsDying ){
-                float   period  =   2.0f;
-                float   power   =   0.5f;
-                float   min     =   0.2f;
-                alpha   +=  min + ( Mathf.Sin( Mathf.PI * m_Timer * period ) * 0.5f + 0.5f ) * power;
+                float   period      =   1.75f;
+                float   power       =   0.5f;
+                float   min         =   0.2f;
+                float   timeRate    =   ( ( Mathf.PI * m_Timer * period + Mathf.PI ) % ( Mathf.PI * 2.0f ) ) / ( Mathf.PI * 2.0f );
+                alpha   +=  min + ( Mathf.Sin( Mathf.PI * m_Timer * period + Mathf.PI ) * 0.5f + 0.5f ) * power;
+
+                //  心音
+                if( m_PlaySound ){
+                    if( timeRate >= 0.95f ){
+                        SoundController.PlayNow( "HeartS", 0.0f, 1.0f, 0.85f, 2.0f );
+                        m_PlaySound =   false;
+                    }
+                }
+                if( timeRate <= 0.5f )  m_PlaySound =   true;
             }
 
             //  不透明度を反映
@@ -107,6 +119,10 @@ public class DamageFilter_Control : MonoBehaviour {
     }
     public  void    SetEffect_Dying( bool _IsDying )
     {
+        if( m_IsDying != _IsDying ){
+            m_Timer     =   0.0f;
+            m_PlaySound =   true;
+        }
         m_IsDying   =   _IsDying;
     }
 }

@@ -137,6 +137,7 @@ GameObject:
   - 114: {fileID: 11437196}
   - 114: {fileID: 11401638}
   - 114: {fileID: 11490980}
+  - 114: {fileID: 11473438}
   m_Layer: 0
   m_Name: CrowdEnemyS
   m_TagString: Enemy
@@ -1575,6 +1576,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AlwaysEvalutionTask:
   - {fileID: 11429706}
+--- !u!114 &11473438
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 123842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8532787a416db624c9862913bfdf5690, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_Emission: {fileID: 158640, guid: ee6f6827adcaff84eab72df9ad8d734c, type: 2}
 --- !u!114 &11475742
 MonoBehaviour:
   m_ObjectHideFlags: 1
