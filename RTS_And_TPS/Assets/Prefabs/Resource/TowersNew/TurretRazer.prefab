@@ -76,7 +76,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &143890
 GameObject:
   m_ObjectHideFlags: 1
@@ -799,8 +799,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bullet: {fileID: 167126, guid: 37dd945b4327d73499095c0905a73482, type: 2}
-  m_firePointTransform: {fileID: 427594}
+  m_firePointTransforms:
+  - {fileID: 427594}
   m_orientatedTransform: {fileID: 474958}
+  m_seName: 
 --- !u!114 &11499520
 MonoBehaviour:
   m_ObjectHideFlags: 1
