@@ -77,16 +77,17 @@ public class ItemController : NetworkBehaviour
 
 	// Update is called once per frame
 	void Update()
-	{
-		//GameWorldParameterで強制的に書き換える
+	{	
+        //  自分のキャラクターの場合のみ処理を行う
+        if( !isLocalPlayer ) return;
+
+        //GameWorldParameterで強制的に書き換える
 		{
 			for (int i = 0; i < m_textList.Count; i++)
 			{
 				m_textList[i].text = m_resourceList[i].GetCreateCost().ToString();
 			}
 		}
-        //  自分のキャラクターの場合のみ処理を行う
-        if( !isLocalPlayer ) return;
 
 		{
 			const float forcus	= 1.2f;
