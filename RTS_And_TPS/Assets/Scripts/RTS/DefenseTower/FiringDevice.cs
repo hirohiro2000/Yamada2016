@@ -97,7 +97,10 @@ public class FiringDevice : NetworkBehaviour
 		rObj.AddComponent< ResourceParameter >().Copy( m_resourceParam );
 
 		//  オーナー設定
-		rObj.GetComponent< RTSAttack_Net >().c_AttackerID   =   m_RTSResControl.c_OwnerID;
+        RTSAttack_Net   rRTSAttack  =   rObj.GetComponent< RTSAttack_Net >();
+        BombExplosion   rBomb       =   rObj.GetComponent< BombExplosion >();
+        if( rRTSAttack )    rRTSAttack.c_AttackerID =   m_RTSResControl.c_OwnerID;
+        if( rBomb )         rBomb.c_AttackerID      =   m_RTSResControl.c_OwnerID;
 	}
 
 
