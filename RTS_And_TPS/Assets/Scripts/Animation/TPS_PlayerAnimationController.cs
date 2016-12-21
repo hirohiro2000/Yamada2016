@@ -35,6 +35,7 @@ public class TPS_PlayerAnimationController : MonoBehaviour
         
         if (flag != InputDpad.eNONE)
         {
+			Debug.Log(currentMoveDir);
             animator.SetBool((string)inputFlags[currentMoveDir], false);
             currentMoveDir = flag;
         }
