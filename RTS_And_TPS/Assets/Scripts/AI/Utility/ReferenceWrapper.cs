@@ -33,6 +33,8 @@ public class ReferenceWrapper : MonoBehaviour {
 
 		for( int i=0; i<m_active_enemy_list.Count; ++i )
 		{
+            if( !m_active_enemy_list[ i ] ) continue;
+
 			Vector3 pos		    =	m_active_enemy_list[i].transform.position;
 
             Vector3 vToTarget   =   target - pos;
@@ -54,6 +56,8 @@ public class ReferenceWrapper : MonoBehaviour {
 
 		for( int i=0; i<m_active_enemy_list.Count; ++i )
 		{
+            if( !m_active_enemy_list[ i ] ) continue;
+
 			Vector3 pos		    =	m_active_enemy_list[i].transform.position;
 
             Vector3 vToTarget   =   target - pos;
@@ -81,6 +85,8 @@ public class ReferenceWrapper : MonoBehaviour {
 
 		for( int i=0; i<m_active_enemy_list.Count; ++i )
 		{
+            if( !m_active_enemy_list[ i ] ) continue;
+
 			Vector3 pos		    =	m_active_enemy_list[i].transform.position;
 
             Vector3 vToTarget   =   target - pos;
