@@ -46,13 +46,16 @@ public class GirlController : NetworkBehaviour
 	{
 		Common,
 		Drone,
+		Ride,
 	}
 	private ActionState			m_actionState	= ActionState.Common;
     
     private NavMeshAgent        m_navAgent      = null;
     private bool                m_isEditMode    = false;
-    private Vector3             m_editTarget    = Vector3.zero; 
-    
+    private Vector3             m_editTarget    = Vector3.zero;
+
+    private Transform           m_ridingVehicle = null;
+
     interface IMoveToTargetCallback
     {
         void OnStart();
@@ -463,11 +466,29 @@ public class GirlController : NetworkBehaviour
         if( Input.GetKeyDown( KeyCode.Period ) ){
             CmdExplodingC4();
         }
+        // ロボットに乗る
+        if ( Input.GetKeyDown(KeyCode.Z ) )
+        {
+            float           nearDistance    = 1.5f;
+            GameObject[]    playerList      =   GameObject.FindGameObjectsWithTag( "Player" );
+            for (int i = 0; i < playerList.Length; i++)
+            {
+                if (this.gameObject == playerList[i])                           continue;
+                if (playerList[i].GetComponent<TPSPlayer_Control>() == null)    continue;
+                if ( ( transform.position - playerList[i].transform.position ).sqrMagnitude > nearDistance ) continue; 
+                
+                m_actionState   = ActionState.Ride;
+                m_ridingVehicle = playerList[i].transform;
+                break;
 
-		switch( m_actionState )
+            }
+        }
+
+        switch ( m_actionState )
 		{
 		case ActionState.Common:			UpdateCommon();		break;
 		case ActionState.Drone:				UpdateDrone();		break;
+		case ActionState.Ride:				UpdateVehicle();    break;
 		}
 
         UpdateAnimation();
@@ -508,8 +529,8 @@ public class GirlController : NetworkBehaviour
 
     }
 
-  
-	//---------------------------------------------------------------------
+
+    //---------------------------------------------------------------------
     //      すてーと
     //---------------------------------------------------------------------   	
     void UpdateCommon()
@@ -674,7 +695,18 @@ public class GirlController : NetworkBehaviour
             return;
 		}
 	}
+    void UpdateVehicle()
+    {
+        if ( Input.GetKeyDown(KeyCode.Z ) )
+        {
+            m_actionState   = ActionState.Common;
+            m_ridingVehicle = null;
+            return;
+        }
 
+        transform.position = m_ridingVehicle.transform.position;
+
+    }
 
 	//---------------------------------------------------------------------
     //      デバック中

@@ -104,7 +104,7 @@ public class UIRadar : MonoBehaviour
                 AddEnemy( rEnemy );
             }
             
-            //  新しいアクセスを追加
+            //  リソースの追加
             int loopCount = m_rResourceShell.transform.childCount;
             for( int i = 0; i < loopCount; i++ ){
                 //  リソースへのアクセス
