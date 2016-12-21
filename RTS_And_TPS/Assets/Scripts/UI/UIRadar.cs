@@ -154,13 +154,14 @@ public class UIRadar : MonoBehaviour
 
             // 位置の更新
             float searchRange   = 76.0f;
-            float maxLength     = 95.0f;
+            float maxLength     = 145.0f;
              
             Vector3 rtPosition = ( m_player.transform.position - item.reference.transform.position ) / searchRange * maxLength;
             rt.localPosition = rtBG.transform.up * rtPosition.z + rtBG.transform.right*rtPosition.x;
 
             // clamp
-            rt.localPosition = rt.localPosition.normalized * ( Mathf.Min(rt.localPosition.magnitude, maxLength) );
+            float clampLength     = 95.0f;
+            rt.localPosition = rt.localPosition.normalized * ( Mathf.Min(rt.localPosition.magnitude, clampLength) );
             
              
             // アイコンの更新

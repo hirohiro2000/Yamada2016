@@ -469,13 +469,13 @@ public class GirlController : NetworkBehaviour
         // ロボットに乗る
         if ( Input.GetKeyDown(KeyCode.Z ) )
         {
-            float           nearDistance    = 4.5f;
+//            float           nearDistance    = 4.5f;
             GameObject[]    playerList      = GameObject.FindGameObjectsWithTag( "Player" );
             for (int i = 0; i < playerList.Length; i++)
             {
                 if (this.gameObject == playerList[i])                           continue;
                 if (playerList[i].GetComponent<TPSPlayer_Control>() == null)    continue;
-                if ( ( transform.position - playerList[i].transform.position ).sqrMagnitude > nearDistance ) continue; 
+//                if ( ( transform.position - playerList[i].transform.position ).sqrMagnitude > nearDistance ) continue; 
                 
                 m_actionState   = ActionState.Ride;
                 m_ridingVehicle = playerList[i].transform;
