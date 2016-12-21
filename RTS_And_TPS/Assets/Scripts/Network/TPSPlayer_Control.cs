@@ -81,7 +81,7 @@ public class TPSPlayer_Control : NetworkBehaviour {
             UIRadar.SetPlayer( gameObject );
         }
 
-        //  カメラのスクリプト生成 
+        //  カメラのスクリプト生成  
         c_rMyCamera.transform.parent.gameObject.AddComponent<TPS_CameraController>();
         //  リスナーを有効化
         c_rMyCamera.GetComponent< AudioListener >().enabled     =   true;

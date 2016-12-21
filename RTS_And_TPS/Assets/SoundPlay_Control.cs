@@ -41,10 +41,12 @@ public class SoundPlay_Control : MonoBehaviour {
         rCountrol.m_audioSource.volume  *=  c_VolumeRatio;
         rCountrol.m_audioSource.pitch   *=  c_PitchRatio;
 
-        //  座標設定
+        //  座標設定 
         rCountrol.transform.position    =   transform.position;
-        //  破棄設定
-        Destroy( rCountrol.gameObject, c_LifeTime );
+        //  破棄設定 
+        if( c_LifeTime >= 0 ){
+            Destroy( rCountrol.gameObject, c_LifeTime );
+        }
 
         //  再生
         switch( c_PlayType ){

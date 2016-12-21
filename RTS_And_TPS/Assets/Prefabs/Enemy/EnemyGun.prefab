@@ -178,7 +178,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_rTarget:
   - {fileID: 11430392}
-  c_RandomVolume: {x: 1, y: 1}
+  c_RandomVolume: {x: 0.8, y: 1.2}
   c_RandomPitch: {x: 0.9, y: 1.1}
 --- !u!114 &11430392
 MonoBehaviour:
@@ -191,7 +191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_SEName: Shot3
+  c_SEName: Shot0
   c_PlayType: 1
   c_PlayMode: 0
   c_VolumeRatio: 1
