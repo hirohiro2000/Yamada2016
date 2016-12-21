@@ -134,15 +134,14 @@ public class UIRadar : MonoBehaviour
         //  表示を更新
         { 
             RectTransform rt = m_playerFighter.GetComponent<RectTransform>();
-            rt.eulerAngles = new Vector3(rt.eulerAngles.x, rt.eulerAngles.y, 180.0f );
+            rt.eulerAngles = new Vector3(rt.eulerAngles.x, rt.eulerAngles.y, 180.0f + Camera.main.transform.eulerAngles.y-m_player.transform.eulerAngles.y );
         }
         {
             Vector3 position = ( m_player.transform.position / 76.0f ) * 145.0f;
             RectTransform rt = m_backGround.GetComponent<RectTransform>();
 
-            rt.eulerAngles = new Vector3(rt.eulerAngles.x, rt.eulerAngles.y, 180.0f+m_player.transform.eulerAngles.y );
+            rt.eulerAngles = new Vector3(rt.eulerAngles.x, rt.eulerAngles.y, 180.0f + Camera.main.transform.eulerAngles.y );
             rt.localPosition = rt.transform.up * position.z + rt.transform.right*position.x;
-
         }
 
         foreach (var item in m_uiSymbolList)

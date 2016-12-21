@@ -469,19 +469,7 @@ public class GirlController : NetworkBehaviour
         // ロボットに乗る
         if ( Input.GetKeyDown(KeyCode.Z ) )
         {
-//            float           nearDistance    = 4.5f;
-            GameObject[]    playerList      = GameObject.FindGameObjectsWithTag( "Player" );
-            for (int i = 0; i < playerList.Length; i++)
-            {
-                if (this.gameObject == playerList[i])                           continue;
-                if (playerList[i].GetComponent<TPSPlayer_Control>() == null)    continue;
-//                if ( ( transform.position - playerList[i].transform.position ).sqrMagnitude > nearDistance ) continue; 
-                
-                m_actionState   = ActionState.Ride;
-                m_ridingVehicle = playerList[i].transform;
-                break;
-
-            }
+            m_actionState   = ActionState.Ride;
         }
 
         switch ( m_actionState )
@@ -697,6 +685,26 @@ public class GirlController : NetworkBehaviour
 	}
     void UpdateVehicle()
     {
+        if (m_ridingVehicle == null)
+        {
+            float           nearDistance    = 4.5f;
+            GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
+            for (int i = 0; i < playerList.Length; i++)
+            {
+                if (this.gameObject == playerList[i]) continue;
+                if (playerList[i].GetComponent<GirlController>() != null) continue;
+                if ( ( transform.position - playerList[i].transform.position ).sqrMagnitude > nearDistance ) continue; 
+
+                m_ridingVehicle = playerList[i].transform;
+                return;
+            }
+        }
+        else
+        {
+            transform.position = m_ridingVehicle.transform.position;
+        }
+
+
         if ( Input.GetKeyDown(KeyCode.Z ) )
         {
             m_actionState   = ActionState.Common;
@@ -704,7 +712,6 @@ public class GirlController : NetworkBehaviour
             return;
         }
 
-        transform.position = m_ridingVehicle.transform.position;
 
     }
 
