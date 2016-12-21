@@ -566,8 +566,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bullet: {fileID: 186000, guid: f098ca3b974fc464b9823cfb6bf36335, type: 2}
-  m_firePointTransform: {fileID: 412096}
+  m_firePointTransforms:
+  - {fileID: 469606}
   m_orientatedTransform: {fileID: 477370}
+  m_seName: 
 --- !u!114 &11476610
 MonoBehaviour:
   m_ObjectHideFlags: 1

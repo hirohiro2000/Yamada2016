@@ -9,14 +9,15 @@ public class TurretBullet : MonoBehaviour
 	public float				m_chaseSpeed	= 1.0f;
 
 	private ReferenceWrapper	m_rEnemyShell   =   null;
-    //private LinkManager         m_rLinkManager  =   null;
 	private Transform		    m_target        =   null;
+
+	[SerializeField]
+	private bool				m_chaseable		= false;
 
 	// Use this for initialization
 	void Start ()
 	{
 		m_rEnemyShell   =   GameObject.Find( "EnemySpawnRoot" ).GetComponent< ReferenceWrapper >();
-        //m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
 		m_target		=	m_rEnemyShell.GetNearEnemyTransform( transform.position, float.MaxValue );
 	}
 	
@@ -31,10 +32,13 @@ public class TurretBullet : MonoBehaviour
 		}
 
 		//	跳ぶ
-		Vector3 vec = m_target.position - transform.position;
-		vec.Normalize();
+		if( m_chaseable )
+		{
+			Vector3 vec = m_target.position - transform.position;
+			vec.Normalize();
+			transform.rotation	= Quaternion.Slerp ( transform.rotation, Quaternion.LookRotation( vec ), m_chaseSpeed*Time.deltaTime );
+		}
 
-		transform.rotation = Quaternion.Slerp ( transform.rotation, Quaternion.LookRotation( vec ), m_chaseSpeed*Time.deltaTime );
 		transform.position	+= ( transform.forward * m_speed * Time.deltaTime );		
 	}
 
@@ -58,5 +62,4 @@ public class TurretBullet : MonoBehaviour
         //  オブジェクトを破棄
         Destroy( gameObject );
 	}
-
 }
