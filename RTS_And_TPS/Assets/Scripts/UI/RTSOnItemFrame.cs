@@ -44,6 +44,8 @@ public class RTSOnItemFrame : MonoBehaviour,
     {
         if (m_itemController.CheckWhetherTheCostIsEnough(id))
         {
+            m_itemController.SetForcus(id);
+            m_uiGirlTaskSelect.SetForcus(id);
             m_uiGirlTaskSelect.SelectOK();
         }
     }
