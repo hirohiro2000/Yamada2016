@@ -67,7 +67,6 @@ public class UIRadar : MonoBehaviour
         }
     }
 
-    public float devParam = 10.0f;
     void Update()
     {
         if( m_player == null )  return;
@@ -155,8 +154,8 @@ public class UIRadar : MonoBehaviour
 
             // 位置の更新
             float searchRange   = 76.0f;
-            float maxLength     = 115.0f;
-
+            float maxLength     = 95.0f;
+             
             Vector3 rtPosition = ( m_player.transform.position - item.reference.transform.position ) / searchRange * maxLength;
             rt.localPosition = rtBG.transform.up * rtPosition.z + rtBG.transform.right*rtPosition.x;
 

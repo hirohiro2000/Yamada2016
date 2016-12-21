@@ -469,8 +469,8 @@ public class GirlController : NetworkBehaviour
         // ロボットに乗る
         if ( Input.GetKeyDown(KeyCode.Z ) )
         {
-            float           nearDistance    = 1.5f;
-            GameObject[]    playerList      =   GameObject.FindGameObjectsWithTag( "Player" );
+            float           nearDistance    = 4.5f;
+            GameObject[]    playerList      = GameObject.FindGameObjectsWithTag( "Player" );
             for (int i = 0; i < playerList.Length; i++)
             {
                 if (this.gameObject == playerList[i])                           continue;
