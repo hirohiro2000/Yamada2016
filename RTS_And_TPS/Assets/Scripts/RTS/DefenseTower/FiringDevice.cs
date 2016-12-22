@@ -7,7 +7,6 @@ using System.Collections.Generic;
 public class FiringDevice : NetworkBehaviour
 {
 	public GameObject		        m_bullet;
-	public Transform		        m_firePointTransform	= null;
 	public List< Transform >		m_firePointTransforms	= null;
 	public Transform		        m_orientatedTransform	= null;
 
@@ -18,8 +17,8 @@ public class FiringDevice : NetworkBehaviour
     private float                   m_IntervalTimer			= 0.0f;
 
     [SerializeField]
-    private string                  m_seName            = "";
-    private SoundController         m_se                = null;
+    private string                  m_seName				= "";
+    private SoundController         m_se					= null;
 
 	// Use this for initialization
 	void Start ()
@@ -41,35 +40,45 @@ public class FiringDevice : NetworkBehaviour
         m_IntervalTimer +=  Time.deltaTime;
         m_IntervalTimer =   Mathf.Min( m_IntervalTimer, m_resourceParam.GetCurLevelParam().interval );
 
-		//
-		UpdateRotation();
+	
+		//	敵の存在確認
+		if( !m_rEnemyShell.IsExistEnemy() )
+			return;
+
+		if( !m_rEnemyShell.CheckWhetherWithinTheRange( transform.position, m_resourceParam.GetCurLevelParam().range ))
+			return;
+
+		
+		//	壁判定
+		{
+			var		target		= m_rEnemyShell.GetNearEnemyTransform( transform.position, m_resourceParam.GetCurLevelParam().range ).FindChild("Eye");
+			var		vector		= target.position - m_orientatedTransform.position;
+			Vector3	dir			= transform.TransformDirection( vector.normalized );
+			int     layerMask   = LayerMask.GetMask( "Field" );
+
+			if( Physics.Raycast( m_orientatedTransform.position, dir, vector.magnitude, layerMask ))
+				return;
+		}
+
 
 		//
+		Tragetting();
+
+
+		//	発射
 		if ( m_IntervalTimer >= m_resourceParam.GetCurLevelParam().interval )
 		{
-
-            if( m_rEnemyShell.IsExistEnemy()
-            &&  m_rEnemyShell.CheckWhetherWithinTheRange( transform.position, m_resourceParam.GetCurLevelParam().range ) )
+			foreach( var fires in m_firePointTransforms )
 			{
-				//	配列版
-				foreach( var fires in m_firePointTransforms )
-				{
-					Fire( fires, m_orientatedTransform );
-				}
+				Fire( fires, m_orientatedTransform );
+			}
 
-				//	個々版
-				{
-					Fire( m_firePointTransform, m_orientatedTransform );
-				}
+			// 音再生
+			m_se.PlayOneShot();
 
-			
-                // 音再生
-                m_se.PlayOneShot();
-
-                //  インターバルリセット
-                m_IntervalTimer =   0.0f;
-            }
-        }
+			//  インターバルリセット
+			m_IntervalTimer =   0.0f;
+		}   	 
 	}
 
 
@@ -88,12 +97,15 @@ public class FiringDevice : NetworkBehaviour
 		rObj.AddComponent< ResourceParameter >().Copy( m_resourceParam );
 
 		//  オーナー設定
-		rObj.GetComponent< RTSAttack_Net >().c_AttackerID   =   m_RTSResControl.c_OwnerID;
+        RTSAttack_Net   rRTSAttack  =   rObj.GetComponent< RTSAttack_Net >();
+        BombExplosion   rBomb       =   rObj.GetComponent< BombExplosion >();
+        if( rRTSAttack )    rRTSAttack.c_AttackerID =   m_RTSResControl.c_OwnerID;
+        if( rBomb )         rBomb.c_AttackerID      =   m_RTSResControl.c_OwnerID;
 	}
 
 
 	//
-	void UpdateRotation()
+	void Tragetting()
     {
 		var trs = m_rEnemyShell.GetNearEnemyTransform( m_orientatedTransform.position, m_resourceParam.GetCurLevelParam().range );
         if( trs )

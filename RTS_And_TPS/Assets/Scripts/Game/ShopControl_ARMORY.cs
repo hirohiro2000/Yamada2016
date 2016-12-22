@@ -35,6 +35,9 @@ public  class   ShopControl_ARMORY  :   ShopControl_Base{
         //  プレイヤーに通知
         m_rGameManager.SetAcqRecord( "弾薬を購入した！ - " + m_Cost, m_rLinkManager.m_LocalPlayerID );
 
+        //  効果音再生
+        SoundController.PlayNow( "Purchase", null, transform.position, 0.0f, 0.1f, 1.0f, 2.0f );
+
         return  true;
     }
 }

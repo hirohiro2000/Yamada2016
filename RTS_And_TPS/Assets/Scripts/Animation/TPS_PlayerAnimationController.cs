@@ -33,11 +33,12 @@ public class TPS_PlayerAnimationController : MonoBehaviour
 
         animator.SetBool( (string)inputFlags[flag], true );
         
-        if (flag != InputDpad.eNONE)
+        if (currentMoveDir != InputDpad.eNONE)
         {
             animator.SetBool((string)inputFlags[currentMoveDir], false);
-            currentMoveDir = flag;
         }
+        currentMoveDir = flag;
+
     }
     public void ChangeStateIdle()
     {

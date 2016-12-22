@@ -64,16 +64,24 @@ public class SoundController : MonoBehaviour {
 
     }
 
-    static public SoundController PlayOne( string _Name, Transform _rParent, float _Delay, float _Volume, float _Pitch, float _DestroyTime )
+    static public SoundController PlayNow( string _Name, float _Delay, float _Volume, float _Pitch, float _DestroyTime )
+    {
+        return  PlayNow( _Name, null, Vector3.zero, _Delay, _Volume, _Pitch, _DestroyTime );
+    }
+    static public SoundController PlayNow( string _Name, Transform _rParent, Vector3 _Pos, float _Delay, float _Volume, float _Pitch, float _DestroyTime )
     {
         SoundController rControl    =   Create( _Name, _rParent );
         if( !rControl ) return  null;
+
+        rControl.transform.position     =   _Pos;
 
         rControl.m_audioSource.volume   =   _Volume;
         rControl.m_audioSource.pitch    =   _Pitch;
         rControl.m_audioSource.PlayDelayed( _Delay );
 
-        Destroy( rControl.gameObject, _Delay + _DestroyTime );
+        if( _DestroyTime >= 0.0f ){
+            Destroy( rControl.gameObject, _Delay + _DestroyTime );
+        }
 
         return  rControl;
     }

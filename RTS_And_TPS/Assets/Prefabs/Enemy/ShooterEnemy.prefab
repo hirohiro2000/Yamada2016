@@ -88,6 +88,7 @@ GameObject:
   - 114: {fileID: 11408232}
   - 114: {fileID: 11435294}
   - 114: {fileID: 11490406}
+  - 114: {fileID: 11472206}
   m_Layer: 0
   m_Name: ShooterEnemy
   m_TagString: Enemy
@@ -2184,6 +2185,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaf5aa4dbdf1dd49834a576bc521b4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11472206
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 106616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8532787a416db624c9862913bfdf5690, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_Emission: {fileID: 158640, guid: 2033d7f47956ed243845122b9a8b31a6, type: 2}
 --- !u!114 &11473802
 MonoBehaviour:
   m_ObjectHideFlags: 1

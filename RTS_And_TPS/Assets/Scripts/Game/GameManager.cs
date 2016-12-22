@@ -82,6 +82,9 @@ public class GameManager : NetworkBehaviour {
 
     private StageDrum_Control       m_rSDrumControl =   null;
 
+    //  関連パラメータ
+    private SoundController         m_rHeartSound   =   null;
+
 	// Use this for initialization
 	void    Start()
     {
@@ -156,11 +159,22 @@ public class GameManager : NetworkBehaviour {
             &&  m_rLinkManager.m_rLocalPlayer ){
                 GameObject      rMyPlayer   =   m_rLinkManager.m_rLocalPlayer;
                 TPSPlayer_HP    rHealth     =   ( rMyPlayer )? rMyPlayer.GetComponent< TPSPlayer_HP >() : null;
-                float           dyingLine   =   0.8f;
+                float           dyingLine   =   0.5f;
 
-                if( rHealth
-                &&  rHealth.m_CurHP <= rHealth.m_MaxHP * dyingLine )    m_rDFControl.SetEffect_Dying( true );
-                else                                                    m_rDFControl.SetEffect_Dying( false );
+                if( rHealth ){
+                    //  ピンチフィルター
+                    if( rHealth.m_CurHP <= rHealth.m_MaxHP * dyingLine )    m_rDFControl.SetEffect_Dying( true );
+                    else                                                    m_rDFControl.SetEffect_Dying( false );
+
+                    //  心音
+                    //if( rHealth.m_CurHP <= rHealth.m_MaxHP * dyingLine ){
+                    //    if( !m_rHeartSound )    m_rHeartSound   =   SoundController.PlayNow( "Heart", 0.0f, 1.0f, 0.85f, -1.0f );
+                    //}
+                    //else{
+                    //    //  心音削除
+                    //    if( m_rHeartSound )     Destroy( m_rHeartSound.gameObject );
+                    //}
+                }
             }
         }
 
@@ -221,7 +235,7 @@ public class GameManager : NetworkBehaviour {
             m_rWaveManager.StartWave();
 
             //  ウェーブ開始音
-            SoundController.PlayOne( "WaveStart", transform, 1.2f, 0.5f, 1.0f, 2.0f );
+            SoundController.PlayNow( "WaveStart", 1.2f, 0.5f, 1.0f, 2.0f );
         }
     }
     void    Update_WaveReady()
@@ -236,7 +250,7 @@ public class GameManager : NetworkBehaviour {
             m_rWaveManager.StartWave();
 
             //  ウェーブ開始音
-            SoundController.PlayOne( "WaveStart", transform, 1.2f, 0.5f, 1.0f, 2.0f );
+            SoundController.PlayNow( "WaveStart", 1.2f, 0.5f, 1.0f, 2.0f );
         }
     }
     void    Update_InGame()
@@ -765,9 +779,9 @@ public class GameManager : NetworkBehaviour {
             rObj.SetActive( true );
         }
 
-        //  ウェーブクリア音
-        //SoundController.PlayOne( "WaveClear",  transform, 2.4f, 0.01f, 1.0f, 6.0f );
-        //SoundController.PlayOne( "WaveClear2", transform, 2.4f, 0.2f, 0.5f, 6.0f );
+        //  ウェーブクリア音 
+        SoundController.PlayNow( "WaveClear", 1.8f, 0.125f, 0.75f, 6.0f );
+        //SoundController.PlayNow( "WaveClear2", transform, 2.4f, 0.2f, 0.5f, 6.0f );
 
         ////  空を模様を更新
         //if( NetworkServer.active )  m_rSkyManager.ChangeSky( m_WaveLevel - 1 );

@@ -67,7 +67,6 @@ public class UIRadar : MonoBehaviour
         }
     }
 
-    public float devParam = 10.0f;
     void Update()
     {
         if( m_player == null )  return;
@@ -104,7 +103,7 @@ public class UIRadar : MonoBehaviour
                 AddEnemy( rEnemy );
             }
             
-            //  新しいアクセスを追加
+            //  リソースの追加
             int loopCount = m_rResourceShell.transform.childCount;
             for( int i = 0; i < loopCount; i++ ){
                 //  リソースへのアクセス
@@ -133,21 +132,35 @@ public class UIRadar : MonoBehaviour
 
 
         //  表示を更新
+        { 
+            RectTransform rt = m_playerFighter.GetComponent<RectTransform>();
+            rt.eulerAngles = new Vector3(rt.eulerAngles.x, rt.eulerAngles.y, 180.0f + Camera.main.transform.eulerAngles.y-m_player.transform.eulerAngles.y );
+        }
+        {
+            Vector3 position = ( m_player.transform.position / 76.0f ) * 145.0f;
+            RectTransform rt = m_backGround.GetComponent<RectTransform>();
+
+            rt.eulerAngles = new Vector3(rt.eulerAngles.x, rt.eulerAngles.y, 180.0f + Camera.main.transform.eulerAngles.y );
+            rt.localPosition = rt.transform.up * position.z + rt.transform.right*position.x;
+        }
+
         foreach (var item in m_uiSymbolList)
         {
             item.dst.transform.SetParent(transform);
 
+            RectTransform rtBG = m_backGround.GetComponent<RectTransform>();
             RectTransform rt = item.dst.GetComponent<RectTransform>();
 
             // 位置の更新
             float searchRange   = 76.0f;
-            float maxLength     = 115.0f;
-
-            Vector3 rtPosition = ( m_player.transform.position - item.reference.transform.position ) / searchRange;
-            rt.localPosition = new Vector3(rtPosition.x, rtPosition.z, 0.0f) * maxLength;
+            float maxLength     = 145.0f;
+             
+            Vector3 rtPosition = ( m_player.transform.position - item.reference.transform.position ) / searchRange * maxLength;
+            rt.localPosition = rtBG.transform.up * rtPosition.z + rtBG.transform.right*rtPosition.x;
 
             // clamp
-            rt.localPosition = rt.localPosition.normalized * ( Mathf.Min(rt.localPosition.magnitude, maxLength) );
+            float clampLength     = 95.0f;
+            rt.localPosition = rt.localPosition.normalized * ( Mathf.Min(rt.localPosition.magnitude, clampLength) );
             
              
             // アイコンの更新
@@ -158,16 +171,6 @@ public class UIRadar : MonoBehaviour
             else    if( relativeHeight < -heightFactor) item.dst.GetComponent< RawImage >().texture =   m_lowerIcon;
             else                                        item.dst.GetComponent< RawImage >().texture =   m_defaultIcon;
 
-        }
-
-        { 
-            RectTransform rt = m_playerFighter.GetComponent<RectTransform>();
-            rt.eulerAngles = new Vector3(rt.eulerAngles.x, rt.eulerAngles.y, -m_player.transform.eulerAngles.y );
-        }
-        {
-            Vector3 position = m_player.transform.position / 76.0f;
-            RectTransform rt = m_backGround.GetComponent<RectTransform>();  
-            rt.localPosition = new Vector3(position.x, position.z, 0.0f) * 145.0f;
         }
 
     }
