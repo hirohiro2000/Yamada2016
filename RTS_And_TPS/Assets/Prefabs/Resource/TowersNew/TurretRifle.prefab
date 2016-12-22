@@ -545,7 +545,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 155426}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -46.668114, y: 6, z: 55.811195}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -900,11 +900,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 531631570deda454eae7244c0e3630c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_bullet: {fileID: 180896, guid: 96c12297e05f0cc4695f884bff8928fc, type: 2}
+  m_bullet: {fileID: 180896, guid: d4c9ab88a76ffc44e88800e2e553c13e, type: 2}
   m_firePointTransforms:
   - {fileID: 437342}
   m_orientatedTransform: {fileID: 463804}
-  m_seName: 
+  c_ShotSound: {fileID: 158640, guid: dbbcd5aacc3734140bba0ac38ae5a32a, type: 2}
 --- !u!114 &11422238
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1085,8 +1085,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002d41c214277184fae0483bea09af24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_name: "\u9AD8\u706B\u529B\u30BF\u30EC\u30C3\u30C8"
-  m_summary: "\u5A01\u529B\u304C\u9AD8\u3044"
+  m_name: "\u72D9\u6483\u30BF\u30EC\u30C3\u30C8"
+  m_summary: "\u5FB9\u7532\u5F3E\u3092\u9AD8\u901F\u3067\u767A\u5C04\u3059\u308B"
   m_createCost: 138
   m_breakCost: 23
   m_level: 0
@@ -1094,19 +1094,19 @@ MonoBehaviour:
   m_levelInformations:
     list:
     - hp: 15
-      power: 8
-      range: 10
-      interval: 0.5
+      power: 32
+      range: 600
+      interval: 2
       upCost: 117
     - hp: 20
-      power: 12
-      range: 12
-      interval: 0.3
+      power: 32
+      range: 600
+      interval: 2
       upCost: 161
     - hp: 40
-      power: 20
-      range: 14
-      interval: 0.1
+      power: 32
+      range: 0
+      interval: 2
       upCost: 0
 --- !u!114 &11463846
 MonoBehaviour:
@@ -1255,8 +1255,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.75
-  m_Height: 3.4
+  m_Radius: 1.75
+  m_Height: 10
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!208 &20875652
@@ -1268,7 +1268,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 0
-  m_Extents: {x: 0.75, y: 1.7, z: 0.75}
+  m_Extents: {x: 1.75, y: 5, z: 1.75}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 0

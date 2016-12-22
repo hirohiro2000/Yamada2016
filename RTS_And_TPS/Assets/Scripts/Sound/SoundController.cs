@@ -23,6 +23,10 @@ public class SoundController : MonoBehaviour {
     {
         m_audioSource.Play();
     }
+    public void PlayDelay( float _Delay )
+    {
+        m_audioSource.PlayDelayed( _Delay );
+    }
     public void Stop()
     {
         m_audioSource.Stop();

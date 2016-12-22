@@ -16,9 +16,7 @@ public class FiringDevice : NetworkBehaviour
 
     private float                   m_IntervalTimer			= 0.0f;
 
-    [SerializeField]
-    private string                  m_seName				= "";
-    private SoundController         m_se					= null;
+    public  GameObject              c_ShotSound             = null;
 
 	// Use this for initialization
 	void Start ()
@@ -26,8 +24,6 @@ public class FiringDevice : NetworkBehaviour
 		m_rEnemyShell       = GameObject.Find( "EnemySpawnRoot" ).GetComponent< ReferenceWrapper >();
 		m_resourceParam		= GetComponent<ResourceParameter>();
         m_RTSResControl     = GetComponent<RTSResourece_Control>();
-
-        m_se                = SoundController.Create(m_seName, this.transform);
 	}
 	
 	// Update is called once per frame
@@ -73,8 +69,12 @@ public class FiringDevice : NetworkBehaviour
 				Fire( fires, m_orientatedTransform );
 			}
 
-			// 音再生
-			m_se.PlayOneShot();
+			//  音再生
+            if( c_ShotSound ){
+                GameObject  rObj    =   Instantiate( c_ShotSound );
+                Transform   rTrans  =   rObj.transform;
+                rTrans.position     =   transform.position;
+            }
 
 			//  インターバルリセット
 			m_IntervalTimer =   0.0f;
@@ -101,6 +101,11 @@ public class FiringDevice : NetworkBehaviour
         BombExplosion   rBomb       =   rObj.GetComponent< BombExplosion >();
         if( rRTSAttack )    rRTSAttack.c_AttackerID =   m_RTSResControl.c_OwnerID;
         if( rBomb )         rBomb.c_AttackerID      =   m_RTSResControl.c_OwnerID;
+
+        //  榴弾の場合は火力も設定
+        if( rBomb ){
+            rBomb.c_ATK     =   m_resourceParam.GetCurLevelParam().power;
+        }
 	}
 
 

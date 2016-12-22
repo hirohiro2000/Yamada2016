@@ -71,6 +71,7 @@ GameObject:
   - 114: {fileID: 11476610}
   - 208: {fileID: 20816640}
   - 114: {fileID: 11458356}
+  - 136: {fileID: 13682656}
   m_Layer: 11
   m_Name: TurretBomb
   m_TagString: Untagged
@@ -323,7 +324,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 121248}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -48.805244, y: 6, z: 55.841812}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -587,28 +588,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002d41c214277184fae0483bea09af24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_name: "\u5E83\u7BC4\u56F2\u30BF\u30EC\u30C3\u30C8"
-  m_summary: "\u6575\u3092\u5DFB\u304D\u8FBC\u3081\u308B"
-  m_createCost: 108
+  m_name: "105mm\u69B4\u5F3E\u7832M2A1"
+  m_summary: "\u70B8\u88C2\u5F3E\u3092\u767A\u5C04\u3059\u308B"
+  m_createCost: 218
   m_breakCost: 37
   m_level: 0
   m_curHp: 0
   m_levelInformations:
     list:
     - hp: 15
-      power: 8
-      range: 10
-      interval: 0.5
+      power: 18
+      range: 40
+      interval: 3
       upCost: 117
     - hp: 20
-      power: 12
-      range: 12
-      interval: 0.3
+      power: 18
+      range: 40
+      interval: 3
       upCost: 161
     - hp: 40
-      power: 20
-      range: 14
-      interval: 0.1
+      power: 18
+      range: 40
+      interval: 3
       upCost: 0
 --- !u!114 &11410948
 MonoBehaviour:
@@ -850,7 +851,7 @@ MonoBehaviour:
   m_firePointTransforms:
   - {fileID: 469606}
   m_orientatedTransform: {fileID: 477370}
-  m_seName: 
+  c_ShotSound: {fileID: 158640, guid: 87a902ff1db616a4a9bade18452605ec, type: 2}
 --- !u!114 &11476610
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1007,6 +1008,19 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1.17
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!136 &13682656
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 121248}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1.75
+  m_Height: 10
+  m_Direction: 1
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!208 &20816640
 NavMeshObstacle:
   m_ObjectHideFlags: 1
@@ -1016,11 +1030,11 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 0
-  m_Extents: {x: 0.75, y: 1.7, z: 0.75}
+  m_Extents: {x: 1.75, y: 5, z: 1.75}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 0
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 2, z: 0}
   m_TimeToStationary: 0.5
 --- !u!222 &22219932
 CanvasRenderer:
