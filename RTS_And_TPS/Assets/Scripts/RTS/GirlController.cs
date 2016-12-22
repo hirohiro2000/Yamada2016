@@ -169,7 +169,7 @@ public class GirlController : NetworkBehaviour
             if ( RTSCursor.m_curMode == RTSCursor.MODE.eNone && Input.GetMouseButton(0))
             {                
                 Vector3 hitPoint;
-                if (RayToField( out hitPoint ) )
+                if ( m_controller.RaycastFromMouseToField( out hitPoint ) )
                 {
                     AddNewTargetPosition( hitPoint, true, null );
                 }
@@ -253,7 +253,6 @@ public class GirlController : NetworkBehaviour
                 m_agent.enabled = false;
             }
         }
-
         public  void RemoveAt(int index)
         {
             if (index == 0)
@@ -274,22 +273,6 @@ public class GirlController : NetworkBehaviour
                 TargetData currentData = m_targetStack[m_targetStack.Count-1];
                 return currentData.m_userInput;
             }
-            return false;
-        }
-        private bool RayToField(out Vector3 hitPoint)
-        {
-            RaycastHit hit = new RaycastHit();
-            int layerMask = LayerMask.GetMask("Field");
-            Vector3 mousePosition = Input.mousePosition;
-            Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-
-            if (Physics.Raycast(ray, out hit, float.MaxValue, layerMask))
-            {
-                hitPoint = hit.point;
-                return true;
-            }
-
-            hitPoint = Vector3.zero;
             return false;
         }
 
@@ -525,7 +508,7 @@ public class GirlController : NetworkBehaviour
 	{
 		m_moveContractor.Update();
 
-        //
+        // 
         if ( m_isEditMode == false )
         {
             bool    anyEditKey = false;
@@ -540,14 +523,10 @@ public class GirlController : NetworkBehaviour
 			//	マウスでイベント開始判定
             if ( RTSCursor.m_curMode == RTSCursor.MODE.eNone && Input.GetMouseButtonDown(1))
             {
-                RaycastHit  hit             = new RaycastHit();
-                int         layerMask       = LayerMask.GetMask( "Field" );
-                Vector3     mousePosition   = Input.mousePosition;
-                Ray         ray             = Camera.main.ScreenPointToRay(mousePosition);
-            
-                if ( Physics.Raycast(ray, out hit, float.MaxValue, layerMask) )
+                Vector3 hitPoint;
+                if ( RaycastFromMouseToField( out hitPoint ) )
                 {      
-                    m_editTarget = m_resourceInformation.ComputeGridPosition( hit.point );
+                    m_editTarget = m_resourceInformation.ComputeGridPosition( hitPoint );
 
                     bool navEnabled = m_navAgent.enabled;
                     
@@ -696,6 +675,7 @@ public class GirlController : NetworkBehaviour
                 if ( ( transform.position - playerList[i].transform.position ).sqrMagnitude > nearDistance ) continue; 
 
                 m_ridingVehicle = playerList[i].transform;
+                GetComponent<CapsuleCollider>().enabled = false;
                 return;
             }
         }
@@ -709,6 +689,7 @@ public class GirlController : NetworkBehaviour
         {
             m_actionState   = ActionState.Common;
             m_ridingVehicle = null;
+            GetComponent<CapsuleCollider>().enabled = true;
             return;
         }
 
@@ -749,6 +730,26 @@ public class GirlController : NetworkBehaviour
         m_uiGirlTaskSelect.m_buttonBreak.SetActive( _IsActive );
     }
 
+    //---------------------------------------------------------------------
+	//      
+	//---------------------------------------------------------------------
+    bool RaycastFromMouseToField( out Vector3 hitPoint )
+    {
+        RaycastHit  hit             = new RaycastHit();
+        int         layerMask       = LayerMask.GetMask( "Field" );
+        Vector3     mousePosition   = Input.mousePosition;
+        Ray         ray             = Camera.main.ScreenPointToRay(mousePosition);
+        
+        if ( Physics.Raycast(ray, out hit, float.MaxValue, layerMask) )
+        {
+            hitPoint = hit.point;
+            return true;
+        }
+
+        hitPoint = Vector3.zero;
+        return false;
+
+    }
 
     //---------------------------------------------------------------------
 	//      コマンド
