@@ -83,7 +83,7 @@ public class GameManager : NetworkBehaviour {
     private StageDrum_Control       m_rSDrumControl =   null;
 
     //  関連パラメータ
-    private SoundController         m_rHeartSound   =   null;
+    //private SoundController         m_rHeartSound   =   null;
 
 	// Use this for initialization
 	void    Start()
@@ -162,7 +162,7 @@ public class GameManager : NetworkBehaviour {
                 float           dyingLine   =   0.5f;
 
                 if( rHealth ){
-                    //  ピンチフィルター
+                    //  ピンチフィルター 
                     if( rHealth.m_CurHP <= rHealth.m_MaxHP * dyingLine )    m_rDFControl.SetEffect_Dying( true );
                     else                                                    m_rDFControl.SetEffect_Dying( false );
 
@@ -178,9 +178,14 @@ public class GameManager : NetworkBehaviour {
             }
         }
 
-        //  キー入力 
+        //  キー入力  
         if( Input.GetKeyDown( KeyCode.Return )
         ||  Input.GetMouseButtonDown( 2 ) ){
+            if( m_State == State.CountDown
+            &&  !GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) ){
+                if( NetworkServer.active )  SetToList_IsReady( m_rLinkManager.m_LocalPlayerID, true );
+                else                        m_rLinkManager.m_rLocalNPControl.CmdSend_GMIsReady( true );
+            }
             if( m_State == State.WaveReady
             &&  m_StateTimer >= 6.8f
             &&  !GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) ){
@@ -228,7 +233,8 @@ public class GameManager : NetworkBehaviour {
         //  タイマーを進める
         m_StateTimer    +=  Time.deltaTime;
         //  ゲーム開始
-        if( m_StateTimer >= c_StartCDTime ){
+        if( m_StateTimer >= c_StartCDTime
+        ||  CountIsReady() >= NetworkManager.singleton.numPlayers ){
             //  ゲーム開始
             ChangeState( State.InGame );
             //  ウェーブ開始
@@ -318,10 +324,18 @@ public class GameManager : NetworkBehaviour {
         }
 
         //  カウントダウン
-        if( m_State == State.CountDown ){
-            PrintMessage( "ゲーム開始まであと  " + ( int )( c_StartCDTime - m_StateTimer + 1 ) +  "  秒" );
+        if( m_State == State.CountDown
+        &&  !GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) ){
+            PrintMessage( "ゲーム開始まであと  " + ( int )( c_StartCDTime - m_StateTimer + 1 ) + "  秒"
+                +   "\n" + "Enter キーで開始" );
         }
-        //  ゲームが開始されました
+        if( m_State == State.CountDown
+        &&  GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) ){
+            PrintMessage( "ゲーム開始まであと  " + ( int )( c_StartCDTime - m_StateTimer + 1 ) + "  秒"
+                +   "\n" + "他のプレイヤーを待っています" );
+        }
+
+        //  ゲームが開始されました 
         if( m_State == State.InGame
         &&  m_WaveLevel == 1
         &&  CheckTimeShift( m_StateTimer, 1.2f, 1.2f + 5.0f ) ){
@@ -545,6 +559,11 @@ public class GameManager : NetworkBehaviour {
     {
         m_State         =   _NextState;
         m_StateTimer    =   0.0f;
+
+        //  リストをクリア
+        for( int i = 0; i < m_rIsReadyList.Count; i++ ){
+            m_rIsReadyList[ i ] =   false;
+        }
     }
     bool    CheckTimeShift( float _Start, float _End )
     {

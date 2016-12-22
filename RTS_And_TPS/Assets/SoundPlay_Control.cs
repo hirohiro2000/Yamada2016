@@ -4,6 +4,7 @@ using System.Collections;
 public class SoundPlay_Control : MonoBehaviour {
     public  enum    PlayType{
         Play,
+        PlayDelayed,
         OneShot,
     };
     public  enum    PlayMode{
@@ -16,6 +17,8 @@ public class SoundPlay_Control : MonoBehaviour {
     public  PlayMode    c_PlayMode      =   PlayMode.Start;
     public  float       c_VolumeRatio   =   1.0f;
     public  float       c_PitchRatio    =   1.0f;
+
+    public  float       c_Delay         =   0.0f;
 
     public  float       c_LifeTime      =   0.0f;
     public  bool        c_ParentMe      =   false;
@@ -50,8 +53,9 @@ public class SoundPlay_Control : MonoBehaviour {
 
         //  再生
         switch( c_PlayType ){
-            case    PlayType.Play:      rCountrol.Play();           break;
-            case    PlayType.OneShot:   rCountrol.PlayOneShot();    break;
+            case    PlayType.Play:          rCountrol.Play();                   break;
+            case    PlayType.PlayDelayed:   rCountrol.PlayDelay( c_Delay );     break;
+            case    PlayType.OneShot:       rCountrol.PlayOneShot();            break;
         }
 
         //  スクリプト無効化

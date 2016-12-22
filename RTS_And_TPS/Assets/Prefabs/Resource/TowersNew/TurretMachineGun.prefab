@@ -442,7 +442,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 155278}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -49.82344, y: 6, z: 57.13}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -705,7 +705,7 @@ MonoBehaviour:
   - {fileID: 421094}
   - {fileID: 403270}
   m_orientatedTransform: {fileID: 407028}
-  m_seName: 
+  c_ShotSound: {fileID: 158640, guid: 43b134adae3938c4c81160b7b67816eb, type: 2}
 --- !u!114 &11405786
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -836,7 +836,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002d41c214277184fae0483bea09af24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_name: "\u9023\u5C04\u30BF\u30EC\u30C3\u30C8"
+  m_name: "25mm\u9023\u88C5\u6A5F\u9283"
   m_summary: "\u9023\u5C04\u901F\u5EA6\u304C\u901F\u3044"
   m_createCost: 112
   m_breakCost: 79
@@ -846,18 +846,18 @@ MonoBehaviour:
     list:
     - hp: 15
       power: 8
-      range: 10
+      range: 50
       interval: 0.5
       upCost: 117
     - hp: 20
-      power: 12
-      range: 12
-      interval: 0.3
+      power: 8
+      range: 50
+      interval: 0.5
       upCost: 161
     - hp: 40
-      power: 20
-      range: 14
-      interval: 0.1
+      power: 8
+      range: 50
+      interval: 0.5
       upCost: 0
 --- !u!114 &11428122
 MonoBehaviour:

@@ -374,7 +374,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 137458}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -48.563377, y: 6, z: 56.181732}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -778,8 +778,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002d41c214277184fae0483bea09af24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_name: "\u30EC\u30FC\u30B6\u30FC"
-  m_summary: "\u6575\u3092\u8CAB\u901A\u3059\u308B"
+  m_name: "\u9AD8\u51FA\u529B\u30EC\u30FC\u30B6\u30FC\u7832"
+  m_summary: "\u8CAB\u901A\u30EC\u30FC\u30B6\u30FC\u3092\u767A\u5C04\u3059\u308B"
   m_createCost: 144
   m_breakCost: 51
   m_level: 0
@@ -787,19 +787,19 @@ MonoBehaviour:
   m_levelInformations:
     list:
     - hp: 15
-      power: 8
-      range: 10
-      interval: 0.5
+      power: 42
+      range: 60
+      interval: 4
       upCost: 117
     - hp: 20
-      power: 12
-      range: 12
-      interval: 0.3
+      power: 42
+      range: 60
+      interval: 4
       upCost: 161
     - hp: 40
-      power: 20
-      range: 14
-      interval: 0.1
+      power: 42
+      range: 60
+      interval: 4
       upCost: 0
 --- !u!114 &11413732
 MonoBehaviour:
@@ -1097,7 +1097,7 @@ MonoBehaviour:
   m_firePointTransforms:
   - {fileID: 427594}
   m_orientatedTransform: {fileID: 474958}
-  m_seName: 
+  c_ShotSound: {fileID: 0}
 --- !u!114 &11498874
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1189,10 +1189,10 @@ CapsuleCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 137458}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.75
-  m_Height: 3.4
+  m_Radius: 1.75
+  m_Height: 10
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!208 &20807634
@@ -1204,7 +1204,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 0
-  m_Extents: {x: 0.75, y: 1.7, z: 0.75}
+  m_Extents: {x: 1.75, y: 5, z: 1.75}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 0

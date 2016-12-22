@@ -221,9 +221,9 @@ public class TPSPlayer_HP : NetworkBehaviour {
             &&  m_CurHP > m_PrevHPInLocal ){
                 m_RecoveryNow   =   true;
 
-                //  回復音再生
+                //  回復音再生 
                 //SoundController.PlayNow( "Recovery", transform, transform.position, 0.0f, 1.0f, 0.86f, 2.0f );
-                m_rRecSound =   SoundController.PlayNow( "Recovery2", transform, transform.position, 0.0f, 1.0f, 1.0f, 2.0f ).gameObject;
+                m_rRecSound =   SoundController.PlayNow( "Recovery2", transform, transform.position, 0.0f, 0.05f, 1.0f, 5.0f ).gameObject;
             }
             if( m_CurHP < m_PrevHPInLocal ){
                 m_RecoveryNow   =   false;
