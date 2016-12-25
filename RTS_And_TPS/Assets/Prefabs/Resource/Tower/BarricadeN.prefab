@@ -246,7 +246,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 118036}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.788424, y: 5.9999995, z: -37.91698}
+  m_LocalPosition: {x: -63.210556, y: 12, z: 18.801918}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -397,6 +397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002d41c214277184fae0483bea09af24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_HitEmission: {fileID: 158640, guid: 955e542a3a25cd14eb990e918dee7f74, type: 2}
   m_name: "\u30D0\u30EA\u30B1\u30FC\u30C9"
   m_summary: "\u6575\u306E\u9032\u884C\u3092\u59A8\u5BB3\u3059\u308B"
   m_createCost: 56
@@ -405,11 +406,11 @@ MonoBehaviour:
   m_curHp: 0
   m_levelInformations:
     list:
-    - hp: 200
+    - hp: 150
       power: 0
       range: 0
       interval: 0
-      upCost: 117
+      upCost: 0
     - hp: 350
       power: 0
       range: 0
@@ -419,7 +420,7 @@ MonoBehaviour:
       power: 0
       range: 0
       interval: 0
-      upCost: 0
+      upCost: 236
 --- !u!114 &11419296
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -472,6 +473,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_rResoureceParam: {fileID: 11404050}
   m_rHealthBar: {fileID: 11477398}
+  m_rLevelText: {fileID: 11466784}
 --- !u!114 &11438392
 MonoBehaviour:
   m_ObjectHideFlags: 1

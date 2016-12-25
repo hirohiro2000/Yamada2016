@@ -442,7 +442,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 155278}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -62.21729, y: 12, z: 19.775675}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -836,6 +836,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002d41c214277184fae0483bea09af24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_HitEmission: {fileID: 158640, guid: 955e542a3a25cd14eb990e918dee7f74, type: 2}
   m_name: "25mm\u9023\u88C5\u6A5F\u9283"
   m_summary: "\u9023\u5C04\u901F\u5EA6\u304C\u901F\u3044"
   m_createCost: 112
@@ -845,19 +846,19 @@ MonoBehaviour:
   m_levelInformations:
     list:
     - hp: 15
-      power: 8
-      range: 50
-      interval: 0.5
+      power: 82
+      range: 60
+      interval: 5
       upCost: 117
     - hp: 20
-      power: 8
-      range: 50
-      interval: 0.5
+      power: 82
+      range: 60
+      interval: 5
       upCost: 161
     - hp: 40
-      power: 8
-      range: 50
-      interval: 0.5
+      power: 82
+      range: 60
+      interval: 5
       upCost: 0
 --- !u!114 &11428122
 MonoBehaviour:
@@ -872,6 +873,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_rResoureceParam: {fileID: 11425446}
   m_rHealthBar: {fileID: 11445402}
+  m_rLevelText: {fileID: 11475592}
 --- !u!114 &11444508
 MonoBehaviour:
   m_ObjectHideFlags: 1

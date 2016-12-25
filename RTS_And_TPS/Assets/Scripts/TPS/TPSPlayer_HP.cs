@@ -152,8 +152,10 @@ public class TPSPlayer_HP : NetworkBehaviour {
             m_rDFCtrl.SetEffect( 0.6f, 1.0f );
         }
 
-        //  ダメージ音
-        SoundController.PlayNow( "Damage", transform, transform.position, 0.0f, 0.15f, Random.Range( 0.8f, 1.2f ), 2.0f );
+        //  ダメージ音  
+        float   pitch   =   Random.Range( 0.69f, 0.79f );
+        SoundController.PlayNow( "Damage", transform, transform.position, 0.0f, 0.2f, pitch, 2.0f );
+        SoundController.PlayNow( "Damage2", transform, transform.position, 0.0f, 0.15f, pitch, 2.0f );
     }
     void    DamageProc_CallBackEnemy( DamageResult _rDamageResult, CollisionInfo _rInfo )
     {

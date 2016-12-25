@@ -5,16 +5,6 @@ public class HitSound_Control : MonoBehaviour {
 
     public  GameObject[]    c_Emission  =   null;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
     void    OnCollisionEnter( Collision _rCollision )
     {
         if( c_Emission == null )        return;

@@ -545,7 +545,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 155426}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -64.49978, y: 12, z: 20.364735}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -918,6 +918,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_rResoureceParam: {fileID: 11458148}
   m_rHealthBar: {fileID: 11445210}
+  m_rLevelText: {fileID: 11415304}
 --- !u!114 &11430918
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1085,6 +1086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002d41c214277184fae0483bea09af24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_HitEmission: {fileID: 158640, guid: 955e542a3a25cd14eb990e918dee7f74, type: 2}
   m_name: "\u72D9\u6483\u30BF\u30EC\u30C3\u30C8"
   m_summary: "\u5FB9\u7532\u5F3E\u3092\u9AD8\u901F\u3067\u767A\u5C04\u3059\u308B"
   m_createCost: 138
@@ -1094,19 +1096,19 @@ MonoBehaviour:
   m_levelInformations:
     list:
     - hp: 15
-      power: 32
-      range: 600
-      interval: 2
+      power: 82
+      range: 60
+      interval: 5
       upCost: 117
     - hp: 20
-      power: 32
-      range: 600
-      interval: 2
+      power: 82
+      range: 60
+      interval: 5
       upCost: 161
     - hp: 40
-      power: 32
-      range: 0
-      interval: 2
+      power: 82
+      range: 60
+      interval: 5
       upCost: 0
 --- !u!114 &11463846
 MonoBehaviour:

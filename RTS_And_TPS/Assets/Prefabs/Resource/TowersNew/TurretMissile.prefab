@@ -168,7 +168,7 @@ GameObject:
   - 4: {fileID: 446564}
   - 114: {fileID: 11481800}
   m_Layer: 0
-  m_Name: _Health (1)
+  m_Name: _Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -419,7 +419,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 182442}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -63.35243, y: 12, z: 19.021923}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -683,6 +683,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002d41c214277184fae0483bea09af24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_HitEmission: {fileID: 158640, guid: 955e542a3a25cd14eb990e918dee7f74, type: 2}
   m_name: "\u516D\u9023\u88C5\u30DF\u30B5\u30A4\u30EB\u30DD\u30C3\u30C9"
   m_summary: "\u8A98\u5C0E\u30DF\u30B5\u30A4\u30EB\u3092\u767A\u5C04\u3059\u308B"
   m_createCost: 341
@@ -832,6 +833,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_rResoureceParam: {fileID: 11457280}
   m_rHealthBar: {fileID: 11448554}
+  m_rLevelText: {fileID: 11485562}
 --- !u!114 &11484656
 MonoBehaviour:
   m_ObjectHideFlags: 1

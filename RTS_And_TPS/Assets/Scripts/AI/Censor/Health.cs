@@ -8,6 +8,10 @@ public class Health : NetworkBehaviour {
     public  GameObject      c_ExplodedObj   =   null;
     public  GameObject[]    c_DeathEmission =   null;
 
+    public  GameObject      c_HitEmission   =   null;
+    public  GameObject      c_WeakEmission  =   null;
+    public  GameObject      c_THitEmission  =   null;
+
     [ SyncVar ]
     public  int         Resource        =   0;
     public  int         Score           =   0;
@@ -119,6 +123,21 @@ public class Health : NetworkBehaviour {
     {
         //  既に死亡している場合は処理を行わない
         if( HP <= 0.0f )    return;
+
+        //  ヒット音 
+        {
+            bool    weakHit =   _rDamageResult.GetTotalDamage() > _rDamageResult.GetBaseDamage();
+            bool    isRTS   =   _rInfo.attackedObject.GetComponent< RTSAttack_Net >();
+
+            GameObject  rEmit   =   ( weakHit )? c_WeakEmission : c_HitEmission;
+                        rEmit   =   ( isRTS )?   c_THitEmission : rEmit;
+
+            if( rEmit ){
+                GameObject  rObj    =   Instantiate( rEmit );
+                Transform   rTrans  =   rObj.transform;
+                rTrans.position     =   _rInfo.contactPoint;
+            }
+        }
 
         //  ＴＰＳプレイヤーとのダメージ処理 
         DamageProc_WidthTPSPlayer( _rDamageResult, _rInfo );

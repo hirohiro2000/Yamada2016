@@ -30,6 +30,8 @@ public class LevelUpParamReorderableList : ReorderableList<LevelParam>
 
 public class ResourceParameter : NetworkBehaviour
 {
+    public GameObject   c_HitEmission       = null;
+
 	public string		m_name;
 	public string		m_summary;
 
@@ -48,10 +50,16 @@ public class ResourceParameter : NetworkBehaviour
 	public LevelUpParamReorderableList m_levelInformations = null;
 
 
-    private DamageBank  m_rDamageBank       = null;
+    private RTSResourece_Control    m_rResControl   = null;
+    private DamageBank              m_rDamageBank   = null;
+
+    private LinkManager             m_rLinkManager  = null;
 
 	void Start()
 	{
+        m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+
+        m_rResControl   =   GetComponent< RTSResourece_Control >();
         m_rDamageBank   =   GetComponent< DamageBank >();
 		m_curHp         =   GetCurLevelParam().hp;
 
@@ -71,10 +79,20 @@ public class ResourceParameter : NetworkBehaviour
     void    DamageProc_CallBack( DamageResult _rDamageResult, CollisionInfo _rInfo )
     {
         //  サーバーでのみ処理を行う
-        if( !NetworkServer.active ) return;
+        //if( !NetworkServer.active ) return;
 
-        //  ダメージを受ける
-        GiveDamage( ( int )_rDamageResult.GetTotalDamage() );
+        //  ヒットサウンド
+        if( c_HitEmission ){
+            GameObject  rObj    =   Instantiate( c_HitEmission );
+            Transform   rTrans  =   rObj.transform;
+            rTrans.position     =   _rInfo.contactPoint;
+        }
+
+        //  オーナーのクライアントでのみダメージ処理を行う
+        if( m_rLinkManager.m_LocalPlayerID == m_rResControl.c_OwnerID ){
+            //  ダメージを受ける
+            GiveDamage( ( int )_rDamageResult.GetTotalDamage() );
+        }
     }
 
 
