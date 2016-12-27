@@ -54,7 +54,7 @@ public class GirlController : NetworkBehaviour
     private bool                m_isEditMode    = false;
     private Vector3             m_editTarget    = Vector3.zero;
 
-    private Transform           m_ridingVehicle = null;
+    private GameObject          m_ridingVehicle = null;
 
     interface IMoveToTargetCallback
     {
@@ -449,10 +449,21 @@ public class GirlController : NetworkBehaviour
         if( Input.GetKeyDown( KeyCode.Period ) ){
             CmdExplodingC4();
         }
-        // ロボットに乗る
+        //　乗れるロボットの検索
         if ( Input.GetKeyDown(KeyCode.Z ) )
         {
-            m_actionState   = ActionState.Ride;
+            float       nearDistanceSq   = 4.5f;
+            GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
+            for (int i = 0; i < playerList.Length; i++)
+            {               
+                if (this.gameObject == playerList[i])                                                           continue;
+                if (playerList[i].GetComponent<GirlController>() != null)                                       continue;
+
+                float distanceSq = ( transform.position - playerList[i].transform.position ).sqrMagnitude;
+                if ( distanceSq > nearDistanceSq )    continue; 
+
+                CmdRidingVehicle( gameObject.GetComponent<NetworkIdentity>().netId, playerList[i].GetComponent<NetworkIdentity>().netId, true );
+            }
         }
 
         switch ( m_actionState )
@@ -468,7 +479,11 @@ public class GirlController : NetworkBehaviour
 	{
         //  自分のキャラクターの場合のみ処理を行う
         if( !isLocalPlayer ) return;
-        m_moveContractor.FixedUpdate();
+
+        if (m_actionState == ActionState.Common)
+        {
+            m_moveContractor.FixedUpdate();
+        }
 	}
     void UpdateAnimation()
     {
@@ -664,39 +679,14 @@ public class GirlController : NetworkBehaviour
 	}
     void UpdateVehicle()
     {
-        if (m_ridingVehicle == null)
+        if (Input.GetKeyDown(KeyCode.Z))
         {
-            float           nearDistance    = 4.5f;
-            GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
-            for (int i = 0; i < playerList.Length; i++)
-            {
-                if (this.gameObject == playerList[i]) continue;
-                if (playerList[i].GetComponent<GirlController>() != null) continue;
-                if ( ( transform.position - playerList[i].transform.position ).sqrMagnitude > nearDistance ) continue; 
-
-                m_ridingVehicle = playerList[i].transform;
-                GetComponent<CapsuleCollider>().enabled = false;
-                return;
-            }
-        }
-        else
-        {
-            transform.position = m_ridingVehicle.transform.position;
-        }
-
-
-        if ( Input.GetKeyDown(KeyCode.Z ) )
-        {
-            m_actionState   = ActionState.Common;
-            m_ridingVehicle = null;
-            GetComponent<CapsuleCollider>().enabled = true;
+            CmdRidingVehicle(gameObject.GetComponent<NetworkIdentity>().netId, m_ridingVehicle.GetComponent<NetworkIdentity>().netId, false);
             return;
         }
-
-
     }
 
-	//---------------------------------------------------------------------
+    //---------------------------------------------------------------------
     //      デバック中
     //---------------------------------------------------------------------   	
     void OnGUI()
@@ -749,6 +739,23 @@ public class GirlController : NetworkBehaviour
         hitPoint = Vector3.zero;
         return false;
 
+    }
+    void RideVehicle( GameObject vehicle, bool isEnable )
+    {
+        m_actionState      = ( isEnable ) ? ActionState.Ride  : ActionState.Common;
+        m_ridingVehicle    = ( isEnable ) ? vehicle           : null;
+        transform.SetParent( ( isEnable ) ? vehicle.transform : null );
+
+        GetComponent<CapsuleCollider>().enabled     = !isEnable;
+        GetComponent<LerpSync_Position>().enabled   = !isEnable;
+        GetComponent<LerpSync_Rotation>().enabled   = !isEnable;
+        GetComponent<Rigidbody>().useGravity        = !isEnable;
+
+        if (isEnable)
+        {
+            transform.localRotation = Quaternion.identity;
+            transform.localPosition = Vector3.zero;
+        }
     }
 
     //---------------------------------------------------------------------
@@ -840,4 +847,22 @@ public class GirlController : NetworkBehaviour
             rControl.SetExploding();
         }
     }
+  
+    [ Command ]
+    void    CmdRidingVehicle( NetworkInstanceId _NetID, NetworkInstanceId _TargetNetID, bool _Enable )
+    {
+        RpcRidingVehicle( _NetID, _TargetNetID, _Enable );
+    }
+    
+    [ ClientRpc ]
+    void    RpcRidingVehicle( NetworkInstanceId _NetID, NetworkInstanceId _TargetNetID, bool _Enable )
+    {
+        //  対象オブジェクトを探す
+        GameObject rIdentity        =  ClientScene.FindLocalObject( _NetID );
+        GameObject rTarget          =  ClientScene.FindLocalObject( _TargetNetID );
+        
+        rIdentity.GetComponent<GirlController>().RideVehicle( rTarget, _Enable );
+                
+    }
+
 }

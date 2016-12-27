@@ -93,7 +93,7 @@ public class GameManager : NetworkBehaviour {
         m_rWaveManager  =   FunctionManager.GetAccessComponent< WaveManager >( "EnemySpawnRoot" );
         m_rSkyManager   =   FunctionManager.GetAccessComponent< SkyManager >( "SkyManager" );
         m_rResources    =   FunctionManager.GetAccessComponent< Transform >( "FieldResources" );
-
+         
         m_rWaveText     =   FunctionManager.GetAccessComponent< Text >( "Canvas/Column_Wave/Text_Score" );
         m_rResourceText =   FunctionManager.GetAccessComponent< Text >( "Canvas/Column_Resource/Text_Resource" );
         m_rScoreText    =   FunctionManager.GetAccessComponent< Text >( "Canvas/Column_Score/Text_Score" );
@@ -150,9 +150,9 @@ public class GameManager : NetworkBehaviour {
 
         //  ＵＩの更新
         {
-            if( m_rWaveText )       m_rWaveText.text        =   "Wave  "     + m_WaveLevel.ToString();
-            if( m_rResourceText )   m_rResourceText.text    =   "Resource  " + ( ( int )m_Resource ).ToString();
-            if( m_rScoreText )      m_rScoreText.text       =   "Score  "    + ( ( int )m_GlobalScore ).ToString();
+            if( m_rWaveText )       m_rWaveText.text        =   m_WaveLevel.ToString();
+            if( m_rResourceText )   m_rResourceText.text    =   ( ( int )m_Resource ).ToString();
+            if( m_rScoreText )      m_rScoreText.text       =   ( ( int )m_GlobalScore ).ToString();
 
             //  ダメージフィルター更新
             if( m_rLinkManager
