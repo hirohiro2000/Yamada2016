@@ -33,6 +33,9 @@ public class RTSOnItemFrame : MonoBehaviour,
         m_uiGirlTaskSelect.SetForcus(id);
 
         m_cursor.Require(this.transform.parent.gameObject, RTSCursor.MODE.eUI);
+
+        //  効果音再生
+        SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, Random.Range( 0.95f, 1.05f ), 1.0f );
     }
     public void OnPointerExit(PointerEventData eventData)
     {
@@ -47,6 +50,14 @@ public class RTSOnItemFrame : MonoBehaviour,
             m_itemController.SetForcus(id);
             m_uiGirlTaskSelect.SetForcus(id);
             m_uiGirlTaskSelect.SelectOK();
+
+            //  効果音再生  
+            SoundController.PlayNow( "UI_Click2", 0.0f, 0.1f, 1.24f, 1.0f );
+            SoundController.PlayNow( "UI_Click", 0.0f, 0.1f, 0.84f, 1.0f );
+        }
+        else{
+            //  効果音再生
+            SoundController.PlayNow( "UI_NG", 0.0f, 0.1f, 0.64f, 1.0f );
         }
     }
 

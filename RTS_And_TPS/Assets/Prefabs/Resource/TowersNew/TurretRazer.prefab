@@ -788,19 +788,19 @@ MonoBehaviour:
   m_levelInformations:
     list:
     - hp: 15
-      power: 82
-      range: 60
-      interval: 5
+      power: 32
+      range: 90
+      interval: 3
       upCost: 117
     - hp: 20
-      power: 82
-      range: 60
-      interval: 5
+      power: 32
+      range: 90
+      interval: 3
       upCost: 161
     - hp: 40
-      power: 82
-      range: 60
-      interval: 5
+      power: 32
+      range: 90
+      interval: 3
       upCost: 0
 --- !u!114 &11413732
 MonoBehaviour:
@@ -893,25 +893,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 763b25596baf47b4eac7eabbd537575d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_CompleteEmission:
+  - {fileID: 158640, guid: bd6b8853680fedf4685925782f4063a2, type: 2}
+  c_DuringSound: {fileID: 158640, guid: c2989b3a60c8736428f930122066ef23, type: 2}
   height:
     serializedVersion: 2
     m_Curve:
     - time: 0
-      value: -5.5
-      inSlope: 5.5
-      outSlope: 5.5
+      value: -3.3418338
+      inSlope: 3.3418338
+      outSlope: 3.3418338
       tangentMode: 10
     - time: 1
       value: 0
-      inSlope: 5.5
-      outSlope: 5.5
+      inSlope: 3.3418338
+      outSlope: 3.3418338
       tangentMode: 10
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
   originHeight: 0
   timer: 0
-  timeSpeed: 1
+  timeSpeed: 0.1
   originalPlate: {fileID: 118720, guid: 49e23c7961287d6448353cd1ea4ae4a8, type: 2}
 --- !u!114 &11437786
 MonoBehaviour:
@@ -1099,7 +1102,7 @@ MonoBehaviour:
   m_firePointTransforms:
   - {fileID: 427594}
   m_orientatedTransform: {fileID: 474958}
-  c_ShotSound: {fileID: 0}
+  c_ShotSound: {fileID: 158640, guid: 8a981fc032d885a4581647b9db04836c, type: 2}
 --- !u!114 &11498874
 MonoBehaviour:
   m_ObjectHideFlags: 1

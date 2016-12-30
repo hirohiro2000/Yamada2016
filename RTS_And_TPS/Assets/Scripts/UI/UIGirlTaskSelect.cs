@@ -77,14 +77,26 @@ public class UIGirlTaskSelect : MonoBehaviour
     public void SelectCancel()
     {
         result = RESULT.eCancel;
+
+        //  効果音再生  
+        SoundController.PlayNow( "UI_Click2", 0.0f, 0.1f, 1.24f, 1.0f );
+        SoundController.PlayNow( "UI_Click", 0.0f, 0.1f, 0.84f, 1.0f );
     }
     public void SelectLevel()
     {
         result = RESULT.eLevel;
+
+        //  効果音再生  
+        SoundController.PlayNow( "UI_Click2", 0.0f, 0.1f, 1.24f, 1.0f );
+        SoundController.PlayNow( "UI_Click", 0.0f, 0.1f, 0.84f, 1.0f );
     }
     public void SelectBreak()
     {
         result = RESULT.eBreak;
+
+        //  効果音再生  
+        SoundController.PlayNow( "UI_Click2", 0.0f, 0.1f, 1.24f, 1.0f );
+        SoundController.PlayNow( "UI_Click", 0.0f, 0.1f, 0.84f, 1.0f );
     }
 
 }

@@ -9,10 +9,9 @@ GameObject:
   m_Component:
   - 4: {fileID: 466600}
   - 114: {fileID: 11418194}
-  - 114: {fileID: 11431356}
-  - 114: {fileID: 11456444}
+  - 114: {fileID: 11453982}
   m_Layer: 0
-  m_Name: SE_TowerShot_4
+  m_Name: SE_TowerDuring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,14 +41,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_SEName: TowerAttack_4
-  c_PlayType: 1
+  c_SEName: TowerConstraction_During
+  c_PlayType: 0
   c_PlayMode: 0
-  c_VolumeRatio: 1
-  c_PitchRatio: 1
-  c_LifeTime: 3
-  c_ParentMe: 0
---- !u!114 &11431356
+  c_VolumeRatio: 0.5
+  c_PitchRatio: 0.84
+  c_Delay: 0
+  c_LifeTime: 1000
+  c_ParentMe: 1
+--- !u!114 &11453982
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -57,25 +57,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 158640}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de593ba5d0ffa4a4f9e1eccd89ac04c0, type: 3}
+  m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeleteSecond: 1
---- !u!114 &11456444
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 158640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7e848cd0cb68a74581268c8ef4d7f1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  c_rTarget:
-  - {fileID: 11418194}
-  c_RandomVolume: {x: 1000, y: 1000}
-  c_RandomPitch: {x: 0.8, y: 1.2}
+  c_SEName: TowerConstraction_During2
+  c_PlayType: 0
+  c_PlayMode: 0
+  c_VolumeRatio: 0.75
+  c_PitchRatio: 1.64
+  c_Delay: 0
+  c_LifeTime: 10000
+  c_ParentMe: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

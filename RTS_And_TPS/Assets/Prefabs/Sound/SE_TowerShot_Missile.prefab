@@ -11,10 +11,8 @@ GameObject:
   - 114: {fileID: 11418194}
   - 114: {fileID: 11431356}
   - 114: {fileID: 11456444}
-  - 114: {fileID: 11461040}
-  - 114: {fileID: 11468172}
   m_Layer: 0
-  m_Name: SE_TowerShot_1
+  m_Name: SE_TowerShot_Missile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,13 +42,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_SEName: Shot_Rifle2
+  c_SEName: TowerAttack_4
   c_PlayType: 1
   c_PlayMode: 0
   c_VolumeRatio: 1
   c_PitchRatio: 1
   c_Delay: 0
-  c_LifeTime: 2
+  c_LifeTime: 3
   c_ParentMe: 0
 --- !u!114 &11431356
 MonoBehaviour:
@@ -63,7 +61,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de593ba5d0ffa4a4f9e1eccd89ac04c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeleteSecond: 3
+  DeleteSecond: 1
 --- !u!114 &11456444
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -77,46 +75,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_rTarget:
   - {fileID: 11418194}
+  c_EffectType: 0
   c_RandomVolume: {x: 1000, y: 1000}
   c_RandomPitch: {x: 0.8, y: 1.2}
---- !u!114 &11461040
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 158640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  c_SEName: TowerReload
-  c_PlayType: 1
-  c_PlayMode: 0
-  c_VolumeRatio: 10
-  c_PitchRatio: 0.5
-  c_Delay: 2.5
-  c_LifeTime: 6
-  c_ParentMe: 0
---- !u!114 &11468172
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 158640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  c_SEName: TowerReload
-  c_PlayType: 1
-  c_PlayMode: 0
-  c_VolumeRatio: 10
-  c_PitchRatio: 1
-  c_Delay: 2.65
-  c_LifeTime: 6
-  c_ParentMe: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -409,6 +409,8 @@ public class GirlController : NetworkBehaviour
             m_navAgent.stoppingDistance		= 1.0f;
             m_navAgent.Warp( transform.position );
             m_navAgent.ResetPath();
+
+            m_navAgent.enabled              = false;
         }
         
         m_animationController = GetComponent< RTS_PlayerAnimationController >();
@@ -578,6 +580,8 @@ public class GirlController : NetworkBehaviour
 					m_uiGirlTaskSelect.m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().GetUpCost().ToString();
 					m_uiGirlTaskSelect.m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.GetBreakCost().ToString();
 
+                    //  効果音再生（パネルを出す）
+                    SoundController.PlayNow( "UI_MenuOpen", 0.0f, 0.1f, 1.0f, 1.0f );
                 }
                 else
                 {
@@ -586,6 +590,9 @@ public class GirlController : NetworkBehaviour
                     m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = true;
                     m_resourceInformation.m_gridSplitSpacePlane.transform.position = m_editTarget;
                     m_resourceInformation.m_gridSplitSpacePlane.transform.position += new Vector3(0, 0.04f, 0);
+
+                    //  効果音再生（パネルを出す）
+                    SoundController.PlayNow( "UI_MenuOpen", 0.0f, 0.1f, 1.0f, 1.0f );
                 }
             }
         }

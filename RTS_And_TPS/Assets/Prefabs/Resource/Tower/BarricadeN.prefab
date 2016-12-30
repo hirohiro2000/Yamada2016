@@ -409,18 +409,18 @@ MonoBehaviour:
     - hp: 150
       power: 0
       range: 0
-      interval: 0
-      upCost: 0
-    - hp: 350
+      interval: 5
+      upCost: 117
+    - hp: 250
       power: 0
       range: 0
-      interval: 0
+      interval: 5
       upCost: 161
-    - hp: 600
+    - hp: 450
       power: 0
       range: 0
-      interval: 0
-      upCost: 236
+      interval: 5
+      upCost: 0
 --- !u!114 &11419296
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -644,6 +644,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 763b25596baf47b4eac7eabbd537575d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_CompleteEmission:
+  - {fileID: 158640, guid: bd6b8853680fedf4685925782f4063a2, type: 2}
+  c_DuringSound: {fileID: 158640, guid: c2989b3a60c8736428f930122066ef23, type: 2}
   height:
     serializedVersion: 2
     m_Curve:
@@ -662,7 +665,7 @@ MonoBehaviour:
     m_RotationOrder: 0
   originHeight: 0
   timer: 0
-  timeSpeed: 1
+  timeSpeed: 0.5
   originalPlate: {fileID: 118720, guid: 49e23c7961287d6448353cd1ea4ae4a8, type: 2}
 --- !u!114 &11470746
 MonoBehaviour:
