@@ -22,7 +22,8 @@ public class RTSCameraRotater : MonoBehaviour {
 		//マウス移動で回転
 		rtsCamera.m_dir.Normalize();
 
-		Vector3 rotateVector = Quaternion.Euler(Input.GetAxis("Mouse Y") * 2.0f, Input.GetAxis("Mouse X") * 2.0f, .0f) * Vector3.forward;
+//		Vector3 rotateVector = Quaternion.Euler(Input.GetAxis("Mouse Y") * 2.0f, Input.GetAxis("Mouse X") * 2.0f, .0f) * Vector3.forward;
+		Vector3 rotateVector = Quaternion.Euler(0.0f, Input.GetAxis("Mouse X") * 2.0f, 0.0f) * Vector3.forward;
 
 		rtsCamera.m_dir = (Quaternion.LookRotation(rtsCamera.m_dir) * rotateVector).normalized;
 	}
