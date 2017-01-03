@@ -419,7 +419,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 182442}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -63.35243, y: 12, z: 19.021923}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -684,6 +684,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_HitEmission: {fileID: 158640, guid: 955e542a3a25cd14eb990e918dee7f74, type: 2}
+  c_ExplodedData:
+  - rPosition: {fileID: 438424}
+    rEmitObj: {fileID: 129914, guid: 8585b2a4d24f9014e912dde4dd8e677a, type: 2}
+  - rPosition: {fileID: 448526}
+    rEmitObj: {fileID: 183494, guid: 1193b3192f27cbb4bb2981507bf9eae3, type: 2}
+  c_DestroyEmit: {fileID: 158640, guid: aecaaf1ca3d909a48a533dc2afd80c55, type: 2}
   m_name: "\u516D\u9023\u88C5\u30DF\u30B5\u30A4\u30EB\u30DD\u30C3\u30C9"
   m_summary: "\u8A98\u5C0E\u30DF\u30B5\u30A4\u30EB\u3092\u767A\u5C04\u3059\u308B"
   m_createCost: 341

@@ -324,7 +324,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 121248}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -63.731445, y: 12, z: 20.474775}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -410,8 +410,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 186516}
   m_LocalRotation: {x: 0.000000021855694, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -2.797, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalPosition: {x: 0, y: -0.69925004, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 412096}
@@ -439,7 +439,7 @@ Transform:
   m_GameObject: {fileID: 174638}
   m_LocalRotation: {x: -0.000000021855694, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.784, z: 0.001}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 469606}
@@ -589,6 +589,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_HitEmission: {fileID: 158640, guid: 955e542a3a25cd14eb990e918dee7f74, type: 2}
+  c_ExplodedData:
+  - rPosition: {fileID: 469606}
+    rEmitObj: {fileID: 120092, guid: d89e6c0193f0dcb4d8518f9f15e39d09, type: 2}
+  - rPosition: {fileID: 419264}
+    rEmitObj: {fileID: 156408, guid: 5588f6174458f9e4a8168973fa1d5a1e, type: 2}
+  c_DestroyEmit: {fileID: 158640, guid: aecaaf1ca3d909a48a533dc2afd80c55, type: 2}
   m_name: "105mm\u69B4\u5F3E\u7832M2A1"
   m_summary: "\u70B8\u88C2\u5F3E\u3092\u767A\u5C04\u3059\u308B"
   m_createCost: 218
@@ -599,17 +605,17 @@ MonoBehaviour:
     list:
     - hp: 15
       power: 24
-      range: 12
+      range: 18
       interval: 3
       upCost: 117
     - hp: 20
       power: 24
-      range: 12
+      range: 18
       interval: 3
       upCost: 161
     - hp: 40
       power: 24
-      range: 12
+      range: 18
       interval: 3
       upCost: 0
 --- !u!114 &11410948

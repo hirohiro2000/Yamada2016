@@ -42,20 +42,15 @@ public class WaveManager : NetworkBehaviour {
             //StandbyWave( 4.0f );
 
             //  ウェーブクリア
-            if( NetworkServer.active )      m_rGameManager.SetMainMassage( "第 " + ( m_WaveLevel ) +  " ウェーブクリア！", 3.7f, 1.7f );
-                                            m_rGameManager.RpcMainMessage( "第 " + ( m_WaveLevel ) +  " ウェーブクリア！", 3.7f, 1.7f );
-            //  敵の襲来を通知 
-            //if( m_WaveLevel % 3 == 0 ){
-            //    if( NetworkServer.active )  m_rGameManager.SetMainMassage( "敵の大軍が押し寄せています！", 3.7f, 1.2f );
-            //                                m_rGameManager.RpcMainMessage( "敵の大軍が押し寄せています！", 3.7f, 1.2f );
-            //}
-            //else{
-            //    if( NetworkServer.active )  m_rGameManager.SetMainMassage( "新たな敵が接近しています", 3.7f, 1.2f );
-            //                                m_rGameManager.RpcMainMessage( "新たな敵が接近しています", 3.7f, 1.2f );
-            //}
+            if( NetworkServer.active ){
+                if( m_WaveLevel % 3 == 0 )  m_rGameManager.SetMainMassage( "敵の大軍を撃退しました！！\n（ 第 " + m_WaveLevel + " ウェーブ ）", 3.7f, 1.7f );
+                else                        m_rGameManager.SetMainMassage( "第 " + ( m_WaveLevel ) +  " ウェーブクリア！", 3.7f, 1.7f );
+            }
+            if( m_WaveLevel % 3 == 0 )  m_rGameManager.RpcMainMessage( "敵の大軍を撃退しました！！（ 第 " + m_WaveLevel + " ウェーブ ）", 3.7f, 1.7f );
+            else                        m_rGameManager.RpcMainMessage( "第 " + ( m_WaveLevel ) +  " ウェーブクリア！", 3.7f, 1.7f );
 
-            //  ウェーブ開始処理
-            m_rGameManager.StartNewWave();
+            //  インターバル開始
+            m_rGameManager.StartWaveInterval();
         }
 	}
 
@@ -77,7 +72,7 @@ public class WaveManager : NetworkBehaviour {
         int     miniLevel   =   ( m_WaveLevel - 1 ) % 3;
 
 		//GameWorldParameterで強制的に書き換える
-		int numPop      =  (int)(( 10 + ( largeLevel + miniLevel ) * 3 )* GameWorldParameter.instance.Enemy.EmitMultiple);
+		int numPop      =  (int)(( 6 + ( largeLevel * 2 + miniLevel ) * 3 )* GameWorldParameter.instance.Enemy.EmitMultiple);
 
         //  ピーク時は出現量２倍
         if( isPeak ){

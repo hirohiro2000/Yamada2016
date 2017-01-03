@@ -343,7 +343,7 @@ public class GirlController : NetworkBehaviour
         }
         public void OnPositionEnter()
         {
-   		    //	今いるマスにリソースがなかった
+   		    //	今いるマスにリソースがなかった 
     		var param = controller.m_resourceInformation.GetResourceParamFromPosition( targetPosition );
             if( param == null )
     		{
@@ -352,6 +352,11 @@ public class GirlController : NetworkBehaviour
             }
             controller.m_itemCntroller.AddResourceCost( -param.GetCurLevelParam().GetUpCost());
         	controller.CmdLevelUpResource( targetPosition );
+
+            //  効果音再生  
+            SoundController.PlayNow( "UI_LevelUP",  0.0f, 0.05f, 0.92f, 4.0f );
+            //SoundController.PlayNow( "UI_LevelUP2", 0.0f, 0.1f, 1.0f, 2.0f );
+            //SoundController.PlayNow( "UI_LevelUP3", 0, 0.05f, 1.2f, 2.0f );
         }
     }
     class ActionBreak : IMoveToTargetCallback
@@ -776,6 +781,14 @@ public class GirlController : NetworkBehaviour
     [ Command ]
     void    CmdBreakResource( Vector3 _Position )
     {
+        //  破壊を通知 
+        ResourceParameter   rParam  =   m_resourceInformation.GetResourceParamFromPosition( _Position );
+        if( rParam ){
+            m_rGameManager.SetAcqRecord     ( rParam.m_name + "を解体しました！" + " + " + rParam.GetBreakCost() + " R", 3.0f, connectionToClient.connectionId );
+            m_rGameManager.RpcRecordNoticeD ( rParam.m_name + "を解体しました！" + " + " + rParam.GetBreakCost() + " R", 3.0f, connectionToClient.connectionId );
+        }
+
+        //  破壊
         m_resourceInformation.SetGridInformation( null, _Position, false );
     }
     [ Command ]

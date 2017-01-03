@@ -55,6 +55,7 @@ public class GameManager : NetworkBehaviour {
 
     private Queue< MainMessage >    m_MainMessageQ  =   new Queue< MainMessage >();
     private float                   m_SDPlaceTimer  =   0.0f;
+    private float                   m_PreStateTimer =   0.0f;
 
     //  共有パラメータ
     private SyncListBool            m_rIsReadyList  =   new SyncListBool();
@@ -107,8 +108,13 @@ public class GameManager : NetworkBehaviour {
 
         //  共通の処理
         {
+            //  空設定
             m_rSkyManager.ChangeSky( 0 );
+
+            //  BGM再生開始
+            BGMManager.ChangeBGM( "BGM_Ready", 0.5f, 0.0f, 0.0f, 0.0f );
         }
+
         //  サーバーでの処理
         if( NetworkServer.active ){
             ReplaceStageDrum();
@@ -145,6 +151,26 @@ public class GameManager : NetworkBehaviour {
             }
         }
 
+        //  カウント音
+        {
+            int curCount    =   ( int )( c_StartCDTime - m_StateTimer ) + 1;
+
+            //  カウントチェック
+            if( m_State == State.CountDown
+            ||  m_State == State.WaveReady ){
+                int soundTime   =   10;
+                for( int i = 1; i < soundTime + 1; i++ ){
+                    if( curCount        <= i
+                    &&  m_PreStateTimer >  i ){
+                        SoundController.PlayNow( "UI_Clock", 0.0f, 0.075f, 1, 1.0f );
+                    }
+                }
+            }
+
+            //  現在のタイマーを保存
+            m_PreStateTimer =   curCount;
+        }
+
         //  空模様を更新
         m_rSkyManager.ChangeSky( Mathf.Max( m_WaveLevel - 1, 0 ) );
 
@@ -165,15 +191,9 @@ public class GameManager : NetworkBehaviour {
                     //  ピンチフィルター 
                     if( rHealth.m_CurHP <= rHealth.m_MaxHP * dyingLine )    m_rDFControl.SetEffect_Dying( true );
                     else                                                    m_rDFControl.SetEffect_Dying( false );
-
-                    //  心音
-                    //if( rHealth.m_CurHP <= rHealth.m_MaxHP * dyingLine ){
-                    //    if( !m_rHeartSound )    m_rHeartSound   =   SoundController.PlayNow( "Heart", 0.0f, 1.0f, 0.85f, -1.0f );
-                    //}
-                    //else{
-                    //    //  心音削除
-                    //    if( m_rHeartSound )     Destroy( m_rHeartSound.gameObject );
-                    //}
+                }
+                else{
+                    m_rDFControl.SetEffect_Dying( false );
                 }
             }
         }
@@ -240,8 +260,8 @@ public class GameManager : NetworkBehaviour {
             //  ウェーブ開始
             m_rWaveManager.StartWave();
 
-            //  ウェーブ開始音
-            SoundController.PlayNow( "WaveStart", 1.2f, 0.5f, 1.0f, 2.0f );
+            //  ウェーブ開始処理
+            StartWave();
         }
     }
     void    Update_WaveReady()
@@ -255,8 +275,8 @@ public class GameManager : NetworkBehaviour {
             //  ウェーブ開始
             m_rWaveManager.StartWave();
 
-            //  ウェーブ開始音
-            SoundController.PlayNow( "WaveStart", 1.2f, 0.5f, 1.0f, 2.0f );
+            //  ウェーブ開始処理
+            StartWave();
         }
     }
     void    Update_InGame()
@@ -346,14 +366,26 @@ public class GameManager : NetworkBehaviour {
         if( m_State == State.WaveReady
         &&  m_StateTimer >= 6.8f
         &&  !GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) ){
-            PrintMessage( "次のウェーブまであと  " + ( int )( c_WaveInterval - m_StateTimer + 1 ) + "  秒"
+            if( m_WaveLevel % 3 == 2 ){
+                PrintMessage( "敵の大軍が接近中です… あと  " + ( int )( c_WaveInterval - m_StateTimer + 1 ) + "  秒"
                 +   "\n" + "Enter キーで開始" );
+            }
+            else{
+                PrintMessage( "次のウェーブまであと  " + ( int )( c_WaveInterval - m_StateTimer + 1 ) + "  秒"
+                +   "\n" + "Enter キーで開始" );
+            }
         }
         if( m_State == State.WaveReady
         &&  m_StateTimer >= 6.8f
         &&  GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) ){
-            PrintMessage( "次のウェーブまであと  " + ( int )( c_WaveInterval - m_StateTimer + 1 ) + "  秒"
+            if( m_WaveLevel % 3 == 2 ){
+                PrintMessage( "敵の大軍が接近中です… あと  " + ( int )( c_WaveInterval - m_StateTimer + 1 ) + "  秒"
                 +   "\n" + "他のプレイヤーを待っています" );
+            }
+            else{
+                PrintMessage( "次のウェーブまであと  " + ( int )( c_WaveInterval - m_StateTimer + 1 ) + "  秒"
+                +   "\n" + "他のプレイヤーを待っています" );
+            }
         }
 
         //  拠点が破壊されました 
@@ -788,8 +820,8 @@ public class GameManager : NetworkBehaviour {
         return  count;
     }
 
-    //  ウェーブ開始処理
-    void    StandbyProc_NewWave()
+    //  インターバル開始処理
+    void    StandbyProc_WaveInterval()
     {
         //  破壊されたタワーを修復
         for( int i = 0; i < m_rResources.childCount; i++ ){
@@ -799,14 +831,17 @@ public class GameManager : NetworkBehaviour {
         }
 
         //  ウェーブクリア音 
-        SoundController.PlayNow( "WaveClear", 1.8f, 0.125f, 0.75f, 6.0f );
-        //SoundController.PlayNow( "WaveClear2", transform, 2.4f, 0.2f, 0.5f, 6.0f );
+        SoundController.PlayNow( "WaveClear",  1.8f, 0.125f, 0.75f, 6.0f );
+            //  ピーク時だけ大げさな効果音
+            if( m_WaveLevel % 3 == 0 ){
+                SoundController.PlayNow( "WaveClear2", 1.8f, 0.15f, 1.0f,  8.0f );
+            }
 
-        ////  空を模様を更新
-        //if( NetworkServer.active )  m_rSkyManager.ChangeSky( m_WaveLevel - 1 );
-        //else                        m_rSkyManager.ChangeSky( m_WaveLevel );
+        //  BGM変更
+        if( m_WaveLevel % 3 == 0 )  BGMManager.ChangeBGM( "BGM_Interval_0", 0.5f, 2.0f, 1.0f, 6.5f );
+        else                        BGMManager.ChangeBGM( "BGM_Interval_0", 0.5f, 2.0f, 3.0f, 6.5f );
     }
-    void    StandbyProc_NewWaveInServer()
+    void    StandbyProc_WaveIntervalInServer()
     {
         //  インターバル開始
         ChangeState( State.WaveReady );
@@ -822,6 +857,41 @@ public class GameManager : NetworkBehaviour {
             ReplaceStageDrum();
         }
     }
+    //  ウェーブ開始処理
+    void    StandbyProc_Wave()
+    {
+        //  ウェーブ開始音 
+        SoundController.PlayNow( "WaveStart", 1.2f, 0.5f, 1.0f, 2.0f );
+
+        //  BGM変更  
+        {
+            bool    isPeek  =   m_WaveLevel % 3 == 0;
+            if( isPeek ){
+                int numBGM      =   3;
+                int useBGMID    =   ( ( m_WaveLevel / 3 ) - 1 ) % numBGM;
+                BGMManager.ChangeBGM( "BGM_InBattle_Peek_" + useBGMID, 0.5f, 0.0f, 1.0f, 2.0f );
+            }
+            else{
+                int numBGM      =   4;
+                int useBGMID    =   ( m_WaveLevel / 3 ) % numBGM;
+                BGMManager.ChangeBGM( "BGM_InBattle_" + useBGMID, 0.5f, 0.0f, 1.0f, 2.0f );
+            }
+        }
+    }
+    void    StandbyProc_WaveInServer()
+    {
+
+    }
+    //  ゲームオーバー処理
+    void    StandbyProc_GameOver()
+    {
+        //  BGM変更 
+        BGMManager.ChangeBGM( "BGM_Result", 0.5f, 1.0f, 6.0f, 6.0f );
+    }
+    void    StandbyProc_GameOverInServer()
+    {
+
+    }
 
     //  外部からの操作
     public  void    StartCountDown()
@@ -830,19 +900,37 @@ public class GameManager : NetworkBehaviour {
 
         ChangeState( State.CountDown );
     }
-    public  void    StartNewWave()
+    public  void    StartWaveInterval()
     {
-        //  ウェーブ開始処理
-        StandbyProc_NewWave();
-        StandbyProc_NewWaveInServer();
+        //  インターバル開始処理
+        StandbyProc_WaveInterval();
+        StandbyProc_WaveIntervalInServer();
 
         //  クライアントにも同じ処理をリクエスト
-        RpcStartNewWave_StandbyProc();
+        RpcStartWaveInterval_StandbyProc();
     }
+    public  void    StartWave()
+    {
+        //  ウェーブ開始処理
+        StandbyProc_Wave();
+        StandbyProc_WaveInServer();
+
+        //  クライアントにも同じ処理をリクエスト
+        RpcStartWave_StandbyProc();
+    }
+
     public  void    GameOver()
     {
         if( m_State != State.InGame )   return;
 
+        //  ゲームオーバー処理
+        StandbyProc_GameOver();
+        StandbyProc_GameOverInServer();
+
+        //  クライアントにも同じ処理をリクエスト
+        RpcGameOver_StandbyProc();
+
+        //  ゲームオーバー
         ChangeState( State.GameOver );
     }
 
@@ -866,6 +954,18 @@ public class GameManager : NetworkBehaviour {
         if( m_rLinkManager.m_LocalPlayerID != _ClientID )   return;
 
         m_rAcqRecord.SetRecord( _Record );
+    }
+    public  void    SetAcqRecord( string _Record, float _DispTime, int _ClientID )
+    {
+        if( m_rLinkManager.m_LocalPlayerID != _ClientID )   return;
+
+        m_rAcqRecord.SetRecord( _Record, _DispTime, AcqRecord_Control.ColorType.Default );
+    }
+    public  void    SetAcqRecord( string _Record, float _DispTime, int _ClientID, AcqRecord_Control.ColorType _ColorType )
+    {
+        if( m_rLinkManager.m_LocalPlayerID != _ClientID )   return;
+
+        m_rAcqRecord.SetRecord( _Record, _DispTime, _ColorType );
     }
     public  void    SetAcqResource( float _AddResource )
     {
@@ -936,15 +1036,35 @@ public class GameManager : NetworkBehaviour {
 
         SetMainMassage( _Message, _DisplayTime, _Delay );
     }
+    //  インターバル開始処理
+    [ ClientRpc ]
+    public  void    RpcStartWaveInterval_StandbyProc()
+    {
+        //  サーバーでは処理を行わない
+        if( NetworkServer.active )  return;
+
+        //  インターバル開始処理
+        StandbyProc_WaveInterval();
+    }
     //  ウェーブ開始処理
     [ ClientRpc ]
-    public  void    RpcStartNewWave_StandbyProc()
+    public  void    RpcStartWave_StandbyProc()
     {
         //  サーバーでは処理を行わない
         if( NetworkServer.active )  return;
 
         //  ウェーブ開始処理
-        StandbyProc_NewWave();
+        StandbyProc_Wave();
+    }
+    //  ゲームオーバー処理
+    [ ClientRpc ]
+    public  void    RpcGameOver_StandbyProc()
+    {
+        //  サーバーでは処理を行わない
+        if( NetworkServer.active )  return;
+
+        //  ゲームオーバー処理
+        StandbyProc_GameOver();
     }
     //  スコア獲得通知
     [ ClientRpc ]
@@ -969,6 +1089,28 @@ public class GameManager : NetworkBehaviour {
         
         //  レコードを通知
         m_rAcqRecord.SetRecord( _Record );
+    }
+    [ ClientRpc ]
+    public  void    RpcRecordNoticeD( string _Record, float _DisplayTime, int _ClientID )
+    {
+        //  サーバーでは処理を行わない
+        if( NetworkServer.active )                          return;
+        //  指定されたプレイヤー以外は無視する
+        if( m_rLinkManager.m_LocalPlayerID != _ClientID )   return;
+        
+        //  レコードを通知
+        m_rAcqRecord.SetRecord( _Record, _DisplayTime, AcqRecord_Control.ColorType.Default );
+    }
+    [ ClientRpc ]
+    public  void    RpcRecordNoticeDRed( string _Record, float _DisplayTime, int _ClientID )
+    {
+        //  サーバーでは処理を行わない
+        if( NetworkServer.active )                          return;
+        //  指定されたプレイヤー以外は無視する
+        if( m_rLinkManager.m_LocalPlayerID != _ClientID )   return;
+        
+        //  レコードを通知
+        m_rAcqRecord.SetRecord( _Record, _DisplayTime, AcqRecord_Control.ColorType.Emergency );
     }
     [ ClientRpc ]
     public  void    RpcRecordNotice_ToOther( string _Record, int _ExclusionID )

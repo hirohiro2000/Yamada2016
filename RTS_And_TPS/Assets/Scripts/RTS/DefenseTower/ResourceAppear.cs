@@ -47,6 +47,8 @@ public class ResourceAppear : MonoBehaviour
             GameObject  rObj    =   Instantiate( c_DuringSound );
             Transform   rTrans  =   rObj.transform;
             rTrans.position     =   transform.position;
+            rTrans.parent       =   transform;
+
             m_rDuringSound      =   rObj;
         }
 	}

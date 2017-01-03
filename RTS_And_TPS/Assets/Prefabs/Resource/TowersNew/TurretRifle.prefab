@@ -545,7 +545,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 155426}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -64.49978, y: 12, z: 20.364735}
+  m_LocalPosition: {x: -48.932354, y: 6, z: 55.654995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1090,6 +1090,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_HitEmission: {fileID: 158640, guid: 955e542a3a25cd14eb990e918dee7f74, type: 2}
+  c_ExplodedData:
+  - rPosition: {fileID: 422584}
+    rEmitObj: {fileID: 180030, guid: b4a7ee3c742ac2244b8f56bb7d127886, type: 2}
+  - rPosition: {fileID: 400616}
+    rEmitObj: {fileID: 116476, guid: 1c3738868975da0419bd9a1ab119d463, type: 2}
+  c_DestroyEmit: {fileID: 158640, guid: aecaaf1ca3d909a48a533dc2afd80c55, type: 2}
   m_name: "\u72D9\u6483\u30BF\u30EC\u30C3\u30C8"
   m_summary: "\u5FB9\u7532\u5F3E\u3092\u9AD8\u901F\u3067\u767A\u5C04\u3059\u308B"
   m_createCost: 138
@@ -1100,17 +1106,17 @@ MonoBehaviour:
     list:
     - hp: 15
       power: 48
-      range: 320
+      range: 360
       interval: 2
       upCost: 117
     - hp: 20
       power: 48
-      range: 320
+      range: 360
       interval: 2
       upCost: 161
     - hp: 40
       power: 48
-      range: 320
+      range: 360
       interval: 2
       upCost: 0
 --- !u!114 &11463846

@@ -374,7 +374,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 137458}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -63.10681, y: 12.000001, z: 17.353037}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -474,8 +474,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 184508}
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5000001, w: 0.49999994}
-  m_LocalPosition: {x: 0, y: 0.3, z: 0.0031003952}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_LocalPosition: {x: 0, y: 0.07499993, z: 0.0007753372}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
   m_Children:
   - {fileID: 419768}
@@ -490,7 +490,7 @@ Transform:
   m_GameObject: {fileID: 175032}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 2.586, z: -0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 470274}
@@ -779,6 +779,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_HitEmission: {fileID: 158640, guid: 955e542a3a25cd14eb990e918dee7f74, type: 2}
+  c_ExplodedData:
+  - rPosition: {fileID: 470274}
+    rEmitObj: {fileID: 107194, guid: f8a23cb54b24c5c4bbc4a70f2fcf02d0, type: 2}
+  - rPosition: {fileID: 420258}
+    rEmitObj: {fileID: 145692, guid: a9c1e9a84ce5bdb4c9502b709b4d9637, type: 2}
+  c_DestroyEmit: {fileID: 158640, guid: aecaaf1ca3d909a48a533dc2afd80c55, type: 2}
   m_name: "\u9AD8\u51FA\u529B\u30EC\u30FC\u30B6\u30FC\u7832"
   m_summary: "\u8CAB\u901A\u30EC\u30FC\u30B6\u30FC\u3092\u767A\u5C04\u3059\u308B"
   m_createCost: 144
@@ -789,17 +795,17 @@ MonoBehaviour:
     list:
     - hp: 15
       power: 32
-      range: 90
+      range: 50
       interval: 3
       upCost: 117
     - hp: 20
       power: 32
-      range: 90
+      range: 50
       interval: 3
       upCost: 161
     - hp: 40
       power: 32
-      range: 90
+      range: 50
       interval: 3
       upCost: 0
 --- !u!114 &11413732

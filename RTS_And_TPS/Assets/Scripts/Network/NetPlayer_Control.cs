@@ -78,7 +78,7 @@ public class NetPlayer_Control : NetworkBehaviour {
 //*********************************************************************************
     //  エネミーへのダメージを送信
     [ Command ]
-    public  void    CmdSendDamageEnemy( NetworkInstanceId _NetID, float _Damage, bool _HitWeak )
+    public  void    CmdSendDamageEnemy( NetworkInstanceId _NetID, float _Damage, bool _HitWeak, bool _IsTowerAttack )
     {
         //  対象オブジェクトを探す
         NetworkIdentity rIdentity   =   FunctionManager.FindIdentityAtNetID( _NetID );
@@ -89,7 +89,7 @@ public class NetPlayer_Control : NetworkBehaviour {
         if( !rHaelth )      return;
 
         //  ダメージを与える
-        rHaelth.GiveDamage( _Damage, connectionToClient.connectionId, _HitWeak );
+        rHaelth.GiveDamage( _Damage, connectionToClient.connectionId, _HitWeak, _IsTowerAttack );
     }
     //  プレイヤーへのダメージを送信
     [ Command ]
