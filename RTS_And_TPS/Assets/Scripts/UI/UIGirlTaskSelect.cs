@@ -113,7 +113,13 @@ public class UIGirlTaskSelect : MonoBehaviour
             m_mode = MODE.eConvert;
             return;
         }
-        
+
+        if ( Input.GetKeyDown( m_cancelKey ))
+        {
+            Reset();
+            return;
+        }
+
 		//	リソースのUI設定
         m_resourceInformation.m_gridSplitSpacePlane.transform.position  = computePosition;
         m_resourceInformation.m_gridSplitSpacePlane.transform.position += new Vector3(0, 0.04f, 0);
@@ -142,11 +148,8 @@ public class UIGirlTaskSelect : MonoBehaviour
         {
             if ( Input.GetKeyDown(KeyCode.Alpha1+ i) )
             {
-                if (m_itemController.GetForcus() == i)
-                {
-                    result = RESULT.eOK;
-                    m_itemController.SetForcus(i);
-                }
+                result = RESULT.eOK;
+                m_itemController.SetForcus(i);
             }
         }
 
@@ -166,6 +169,12 @@ public class UIGirlTaskSelect : MonoBehaviour
     		m_towerInfoPanel.SetActive(true);
             m_mode = MODE.eCreate;
 
+            return;
+        }
+
+        if ( Input.GetKeyDown( m_cancelKey ))
+        {
+            Reset();
             return;
         }
 

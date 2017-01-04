@@ -191,7 +191,6 @@ public class GirlController : NetworkBehaviour
         {
             m_uiGirlTask.Reset();
         }
-
 	}
 	void UpdateDrone()
 	{
@@ -442,11 +441,16 @@ public class GirlController : NetworkBehaviour
             rControl.SetExploding();
         }
     }
-  
+ 
     [ Command ]
     void    CmdRidingVehicle( NetworkInstanceId _NetID, NetworkInstanceId _TargetNetID, bool _Enable )
     {
         RpcRidingVehicle( _NetID, _TargetNetID, _Enable );
+    }
+    [ Command ]
+    public void    CmdPlaceDrone( NetworkInstanceId _NetID )
+    {
+        RpcPlaceDrone( _NetID );
     }
     
     [ ClientRpc ]
@@ -459,5 +463,23 @@ public class GirlController : NetworkBehaviour
         rIdentity.GetComponent<GirlController>().RideVehicle( rTarget, _Enable );
                 
     }
+    [ ClientRpc ]
+    void    RpcPlaceDrone( NetworkInstanceId _NetID )
+    {
+        GameObject org = GameObject.Find("SkillItemShell").transform.GetChild(0).gameObject;
+
+        //  オブジェクト生成
+        GameObject  rObj    =   Instantiate( org );
+        Transform   rTrans  =   rObj.transform;
+        GameObject  rGirl   =   ClientScene.FindLocalObject( _NetID );
+
+        rObj.SetActive(true);
+        rObj.transform.SetParent( rGirl.transform );
+
+        //  配置設定
+        rObj.transform.localPosition = new Vector3( 0.3f, 2.3f, -0.5f );
+        rObj.transform.localRotation = Quaternion.identity;
+    }
+
 
 }
