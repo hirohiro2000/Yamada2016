@@ -517,6 +517,19 @@ public class TPSPlayer_HP : NetworkBehaviour {
         m_IsDying   =   m_CurHP == 0.0f;
     }
 
+    [ Command ]
+    public  void    CmdForciblyRevival( int _clientID)
+    {
+        //  蘇生を記録
+        m_rGameManager.SetToList_Rivival( _clientID, 1 );
+        
+        //  復活
+        SetRecovery( m_MaxHP * 1.0f );
+        
+        //  タイマーリセット
+        m_RevivalTimer  =   0.0f;
+    }
+
     //  アクセス
     public  float   GetDeathTimer()
     {

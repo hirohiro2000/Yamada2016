@@ -41,7 +41,7 @@ public class ItemController : NetworkBehaviour
             float       screenRatio = Screen.width / 1280.0f;
 
 			add.transform.SetParent( GameObject.Find("Canvas").transform );
-			add.transform.position	= new Vector3( ( i*80 + 72 ) * screenRatio, 130 * screenRatio, 0 );
+			add.transform.position	= new Vector3( ( i*80 + 72 ) * screenRatio, 180 * screenRatio, 0 );
 			add.transform.GetChild(1).GetComponent<Text>().text = m_resourceCreator.m_resources[i].GetComponent<ResourceParameter>().GetCreateCost().ToString();
             
             RTSOnItemFrame onFrame = add.GetComponent<RTSOnItemFrame>();
@@ -142,6 +142,10 @@ public class ItemController : NetworkBehaviour
 	{
 		return m_curForcus;
 	}
+    public int GetNumKind()
+    {
+        return m_kindMax;
+    }
 	public ResourceParameter GetForcusResourceParam()
 	{
         if ( m_curForcus == -1 )            return null;

@@ -81,6 +81,9 @@ public class WaveManager : NetworkBehaviour {
 
         m_ganerator.BeginGenerate( m_WaveLevel, numPop, _Delay );
 
+        // スキル初期化
+        SkillInvoker.StartWave();
+
         //  ウェーブ数更新
         m_rGameManager.m_WaveLevel  =   m_WaveLevel;
 

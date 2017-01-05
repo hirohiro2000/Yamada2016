@@ -78,6 +78,7 @@ public class TPSPlayer_Control : NetworkBehaviour {
             rCanvasTrans.FindChild( "RevivalGage" ).gameObject.SetActive( true );
 
             UIRadar.SetPlayer( gameObject );
+            UICompasCore.SetPlayer( gameObject ); 
         }
 
         //  カメラのスクリプト生成  
