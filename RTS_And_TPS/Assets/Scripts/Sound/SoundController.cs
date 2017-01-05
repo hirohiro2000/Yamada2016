@@ -23,6 +23,10 @@ public class SoundController : MonoBehaviour {
     {
         m_audioSource.Play();
     }
+    public void PlayDelay( float _Delay )
+    {
+        m_audioSource.PlayDelayed( _Delay );
+    }
     public void Stop()
     {
         m_audioSource.Stop();
@@ -51,12 +55,39 @@ public class SoundController : MonoBehaviour {
         if ( referenceAudio == null ) return null;
 
         Transform trans = referenceAudio.transform.FindChild(name);
+        if ( trans == null )
+            Debug.LogError( "サウンドの読み込みに失敗しました[FileName: "+name+" ]" );
+
+
+
         GameObject gameObj = Instantiate( trans.gameObject );
         gameObj.transform.parent = parent;
         SoundController controller = gameObj.AddComponent<SoundController>();
         controller.m_audioSource.playOnAwake = false;
         return controller;
 
+    }
+
+    static public SoundController PlayNow( string _Name, float _Delay, float _Volume, float _Pitch, float _DestroyTime )
+    {
+        return  PlayNow( _Name, null, Vector3.zero, _Delay, _Volume, _Pitch, _DestroyTime );
+    }
+    static public SoundController PlayNow( string _Name, Transform _rParent, Vector3 _Pos, float _Delay, float _Volume, float _Pitch, float _DestroyTime )
+    {
+        SoundController rControl    =   Create( _Name, _rParent );
+        if( !rControl ) return  null;
+
+        rControl.transform.position     =   _Pos;
+
+        rControl.m_audioSource.volume   =   _Volume;
+        rControl.m_audioSource.pitch    =   _Pitch;
+        rControl.m_audioSource.PlayDelayed( _Delay );
+
+        if( _DestroyTime >= 0.0f ){
+            Destroy( rControl.gameObject, _Delay + _DestroyTime );
+        }
+
+        return  rControl;
     }
 
     // ゲームOnly

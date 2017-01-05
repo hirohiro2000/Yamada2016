@@ -28,14 +28,7 @@ public class EnemyGenerator : NetworkBehaviour
         ForText,
     }
 
-    [SerializeField, HeaderAttribute("敵生成の仕方 : Auto=完全自動 Manual=テキストから読み込み")]
-    private GeneratorType GenerateType = GeneratorType.Auto;
 
-    [SerializeField, HeaderAttribute("体力補正値 : HP=BaseHp×HPCorrectionRate×Level")]
-    private float HPCorrectionRate = 1.5f;
-
-    //[SerializeField, HeaderAttribute("攻撃力補正値 : Attack=BaseHp×AttackCorrectionRate×Level")]
-    //private float AttackCorrectionRate = 1.01f;
 
     [SerializeField, HeaderAttribute("生成する敵Prefab")]
     private GameObject[] GenerateEnemyList = new GameObject[1] { null };
@@ -51,13 +44,21 @@ public class EnemyGenerator : NetworkBehaviour
     private EnemyWaveParametor m_parametor = null;
 
     [SerializeField]
-    bool DebugMode = false;
+    bool OneSpawnMove = false;
 
 
     //private List<GameObject> m_current_hierarchy_list = new List<GameObject>();
-    private List< GameObject >  m_rActiveEnemyList  =   new List< GameObject >();
+    private List<GameObject> m_rActiveEnemyList = new List<GameObject>();
 
-    public  List< GameObject >  GetCurrentHierachyList()
+    [SerializeField, HeaderAttribute("解禁していくEnemyのリスト")]
+    private List<GameObjectList> m_unlock_enemy_block_list = new List<GameObjectList>();
+
+    [SerializeField, HeaderAttribute("unlock_enemy_block_listの各要素を解禁していくwaveレベル")]
+    private List<int> m_enemy_unlock_wave_list = new List<int>();
+
+    private List<GameObject> m_current_generate_list = new List<GameObject>();
+
+    public List<GameObject> GetCurrentHierachyList()
     {
         return m_rActiveEnemyList;
     }
@@ -69,8 +70,10 @@ public class EnemyGenerator : NetworkBehaviour
 
     public int GetNumSpawnPointList()
     {
-        return  m_navigation_data_list.Count;
+        return m_navigation_data_list.Count;
     }
+
+
 
     /**
     *@brief     敵の生成を開始する
@@ -78,15 +81,17 @@ public class EnemyGenerator : NetworkBehaviour
     *@param  生成する敵の総数
     *@param  最初の生成までの遅延時間（秒） 
     */
-    public void BeginGenerate(int wave_level,int num_spawn,float delay_second)
+    public void BeginGenerate(int wave_level, int num_spawn, float delay_second)
     {
         m_is_running = true;
         m_parametor.LevelUp();
-        num_spawn = Mathf.Clamp(
-            m_parametor.GetNumStartSpawnEnemy() + (m_parametor.GetNumIncrementSpawnEnemy() * (m_parametor.m_current_level -1)),
-            1,
-            m_parametor.GetNumMaxSpawnEnemy());
-        StartCoroutine(Execute(wave_level, num_spawn,delay_second));
+        //出現数はWavemanagerが管理してたので
+        //num_spawn = Mathf.Clamp(
+        //    m_parametor.GetNumStartSpawnEnemy() + (m_parametor.GetNumIncrementSpawnEnemy() * (m_parametor.m_current_level -1)),
+        //    1,
+        //    m_parametor.GetNumMaxSpawnEnemy());
+        UnLockEnemy(wave_level);
+        StartCoroutine(Execute(wave_level, num_spawn, delay_second));
     }
 
     /**
@@ -106,36 +111,38 @@ public class EnemyGenerator : NetworkBehaviour
     }
 
 
-    void    Update()
+    void Update()
     {
-		//GameWorldParameterで強制的に書き換える
-		{
-			HPCorrectionRate = GameWorldParameter.instance.Enemy.HealthMultiple;
-		}
-		//  死亡したエネミーの項目を削除
-		for ( int i = 0; i < m_rActiveEnemyList.Count; i++ ){
-            m_rActiveEnemyList.Remove( null );
+        //GameWorldParameterで強制的に書き換える
+        {
+            //HPCorrectionRate = GameWorldParameter.instance.Enemy.HealthMultiple;
+        }
+
+        //  死亡したエネミーの項目を削除
+        for (int i = 0; i < m_rActiveEnemyList.Count; i++) {
+            m_rActiveEnemyList.Remove(null);
         }
     }
 
     void Awake()
     {
-        if(GenerateType == GeneratorType.Auto)
-        {
-            gameObject.AddComponent<EnemyDirectorAuto>();
-        }            
-        else
-        {
-            UserLog.Terauchi("for text generate no support ");
-        }
-
+        //if(GenerateType == GeneratorType.Auto)
+        //{
+        gameObject.AddComponent<EnemyDirectorAuto>();
+        //}            
+        //else
+        //{
+        //    UserLog.Terauchi("for text generate no support ");
+        //}
         m_generate_director = GetComponent<EnemyDirectorBase>();
         m_parametor = GetComponent<EnemyWaveParametor>();
         m_navigation_data_list = new List<NavigationRouteData>();
         InitializeSpawnPoint();
+        //UnLockEnemy(0);
     }
 
-    void    InitializeSpawnPoint()
+
+    void InitializeSpawnPoint()
     {
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -146,13 +153,13 @@ public class EnemyGenerator : NetworkBehaviour
                 UserLog.ErrorTerauchi(transform.GetChild(i).name + "not attach NavigationRouteData");
         }
     }
-    public  void    InitializeSpawnPoint( List< Transform > _rSpawnPointList )
+    public void InitializeSpawnPoint(List<Transform> _rSpawnPointList)
     {
         //  リストをクリア
         m_navigation_data_list.Clear();
 
-        for( int i = 0; i < _rSpawnPointList.Count; i++ ){
-            Transform   rTrans  =   _rSpawnPointList[ i ];
+        for (int i = 0; i < _rSpawnPointList.Count; i++) {
+            Transform rTrans = _rSpawnPointList[i];
 
             var nav_data = rTrans.GetComponent<NavigationRouteData>();
             if (nav_data)
@@ -162,30 +169,31 @@ public class EnemyGenerator : NetworkBehaviour
         }
     }
 
-    IEnumerator Execute(int level, int num_spawn,float delay_second)
+    IEnumerator Execute(int level, int num_spawn, float delay_second)
     {
         yield return new WaitForSeconds(delay_second);
 
         int respawn_count = 0;
 
         //test
-       if(DebugMode)
+        if (OneSpawnMove)
             num_spawn = 1;
         while (respawn_count < num_spawn)
         {
-            for(int i = 0; i < m_num_spawn_one_frame; i++)
+            for (int i = 0; i < m_num_spawn_one_frame; i++)
             {
-                EnemyData create_enemy_data = m_generate_director.DirectionGenerateEnemy();
-                GameObject new_enemy = CreateEnemyInstance( Random.Range( 1, level + 1 ), create_enemy_data );
+                EnemyData create_enemy_data = m_generate_director.DirectionGenerateEnemy(m_current_generate_list);
+                GameObject new_enemy = CreateEnemyInstance(Random.Range(1, level + 1), create_enemy_data);
 
-                if (new_enemy){
-                    NetworkIdentity     rIndentity  =   new_enemy.GetComponent< NetworkIdentity >();
-                    if( rIndentity )    NetworkServer.Spawn(new_enemy);
+                if (new_enemy) {
+                    NetworkIdentity rIndentity = new_enemy.GetComponent<NetworkIdentity>();
+                    if (rIndentity) NetworkServer.Spawn(new_enemy);
                 }
 
                 respawn_count++;
+
                 if (respawn_count >= num_spawn)
-                    break;    
+                    break;
             }
             yield return new WaitForSeconds(m_sparn_interval);
         }
@@ -204,15 +212,15 @@ public class EnemyGenerator : NetworkBehaviour
         EnemyData data)
     {
         //  出現地点がない場合は発生処理を行わない
-        if( m_navigation_data_list.Count == 0 ) return  null;
+        if (m_navigation_data_list.Count == 0) return null;
 
         //このエラーチェックは最終的に消す
-        if(data.type >= GenerateEnemyList.Length)
+        if (data.type >= GenerateEnemyList.Length)
             UserLog.ErrorTerauchi("Enemygenerator::CreateEnemyInstance type_index error !! max_enemy_type is " + GenerateEnemyList.Length + "type_index is" + data.type);
         if (data.respawn_point_index >= m_navigation_data_list.Count)
             UserLog.ErrorTerauchi("Enemygenerator::CreateEnemyInstance respawan_index error !! max_respawn_point_index is " + GenerateEnemyList.Length + "type_index is" + data.respawn_point_index);
-        
-        GameObject ret_object = Instantiate(GenerateEnemyList[data.type]);
+
+        GameObject ret_object = Instantiate(m_current_generate_list[data.type]);
 
         //NavMeshのWarpは遅延があるので最初のフレームは遠くに飛ばしておいて隠す
         ret_object.transform.position = new Vector3(10000.0f, 10000.0f, 10000.0f);
@@ -223,7 +231,7 @@ public class EnemyGenerator : NetworkBehaviour
         //座標はちょっとだけばらつき入れておく
         respawn_point += new Vector3(UnityEngine.Random.Range(-0.5f, 0.5f), .0f, UnityEngine.Random.Range(-0.5f, 0.5f));
 
-      
+
         var route_list = m_navigation_data_list[data.respawn_point_index].GetRouteData(data.route_index);
         //サイズが0の場合の時は出現位置から最短経路をたどる敵になる
         if (route_list.data.Count == CanAllRoute)
@@ -240,10 +248,10 @@ public class EnemyGenerator : NetworkBehaviour
     /**
     *@note そのうちちゃんとする
     */
-    private void InitializeCrowdEnemy(GameObject root_enemy_object,StringList route_list,int level)
+    private void InitializeCrowdEnemy(GameObject root_enemy_object, StringList route_list, int level)
     {
-      
-        for(int i = 0; i < root_enemy_object.transform.childCount; i++)
+
+        for (int i = 0; i < root_enemy_object.transform.childCount; i++)
         {
             var game_object = root_enemy_object.transform.GetChild(i);
             //経路設定
@@ -256,6 +264,31 @@ public class EnemyGenerator : NetworkBehaviour
 
             //体力設定
             //var hp = game_object.GetComponent<Health>();
+        }
+    }
+
+    private void CreateCurrentGenerateEnemyList(EnemyWaveParametor param)
+    {
+        for (int i = 0; i < m_enemy_unlock_wave_list.Count; i++)
+        {
+            if(param.m_current_level == m_enemy_unlock_wave_list[i])
+            {
+                UnLockEnemy(i);
+            }
+        }
+    }
+
+    private void UnLockEnemy(int level)
+    {
+        for(int  count =0;   count<m_enemy_unlock_wave_list.Count; count++)
+        {
+            if(m_enemy_unlock_wave_list[count] == level)
+            {
+                foreach (var enemy in m_unlock_enemy_block_list[count].m_list)
+                {
+                    m_current_generate_list.Add(enemy);
+                }
+            }
         }
     }
 }

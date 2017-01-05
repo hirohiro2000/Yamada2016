@@ -14,7 +14,6 @@ public class TPSPlayer_Control : NetworkBehaviour {
 
     private bool                m_IsLock            =   true;
 
-    private SoundController     m_bgm               =   null;
     private TPSPlayer_HP        m_rHP               =   null;
 
 	// Use this for initialization
@@ -79,21 +78,16 @@ public class TPSPlayer_Control : NetworkBehaviour {
             rCanvasTrans.FindChild( "RevivalGage" ).gameObject.SetActive( true );
 
             UIRadar.SetPlayer( gameObject );
+            UICompasCore.SetPlayer( gameObject ); 
         }
 
-        //  カメラのスクリプト生成 
+        //  カメラのスクリプト生成  
         c_rMyCamera.transform.parent.gameObject.AddComponent<TPS_CameraController>();
         //  リスナーを有効化
         c_rMyCamera.GetComponent< AudioListener >().enabled     =   true;
 
-        // BGM再生
-        if (m_bgm == null)
-        {
-            Transform   rPTTrans    =   FunctionManager.GetAccessComponent< Transform >( "PlayTest_Shell" );
-            m_bgm = SoundController.Create("BGM0", rPTTrans);
-        }
-        m_bgm.Play();
-
+        //  BGM再生
+        //BGMManager.ChangeBGM( "BGM0", 0.5f, 1.0f );
     }
     //  終了処理
     public  void    EndProc()
@@ -113,11 +107,8 @@ public class TPSPlayer_Control : NetworkBehaviour {
         rMainCamera.GetComponent< Camera >().enabled            =   true;
         rMainCamera.GetComponent< AudioListener >().enabled     =   true;
 
-        // BGM停止
-        if (m_bgm != null)
-        {
-            m_bgm.Stop();
-        }
+        //  BGM停止
+        //BGMManager.StopBGM();
     }
 
     //  弾薬を充填する

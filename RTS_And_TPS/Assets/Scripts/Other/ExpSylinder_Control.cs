@@ -8,10 +8,11 @@ public class ExpSylinder_Control : MonoBehaviour {
     //public  float   c_ExplosionForce    =   0.0f;
     public  int                 c_Score         =   0;
     public  int                 c_PartnerID     =   0;
+    public  bool                c_UseLightMode  =   true;
     public  Transform           m_rTargetTrans  =   null;
     private bool                m_ForMe         =   false;
 
-    private float               c_WaitTime      =   1.5f;
+    public  float               c_WaitTime      =   1.5f;
     private float               m_WaitTimer     =   0.0f;
     private float               c_CatchInterval =   0.0f;
     private float               m_CatchTimer    =   0.0f;
@@ -36,7 +37,8 @@ public class ExpSylinder_Control : MonoBehaviour {
         m_rExpManager   =   FunctionManager.GetAccessComponent< ExplodedManager >( "ExplodedManager" );
 
         //  当たり判定の設定
-        if( m_rExpManager ){
+        if( m_rExpManager
+        &&  c_UseLightMode ){
             //  個数を見て軽量処理にするかどうかを決定
             bool    doSaving    =   ( m_rExpManager.m_rExpObjList.Count + 1 >= c_SavingLine )? true : false;
 

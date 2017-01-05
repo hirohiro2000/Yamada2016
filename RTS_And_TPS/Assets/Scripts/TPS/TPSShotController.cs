@@ -1,8 +1,8 @@
 ﻿
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 using System.Collections;
-
 
 [System.Serializable]
 public class WeaponList
@@ -34,9 +34,9 @@ public class WeaponList
 			return _param;
 		}
 	}
-	public void Update()
+	public void Update( Transform _rParent )
 	{ 
-		param.Update();
+		param.Update( _rParent );
 	}
 }
 
@@ -57,7 +57,7 @@ public class WeaponParameter
 		AllRecovery();
 	}
 
-	public void Update()
+	public void Update( Transform _rParent )
 	{
 		if (IsCanReload())
 			cntReloadTime += Time.deltaTime;
@@ -73,11 +73,18 @@ public class WeaponParameter
 			{
 				Reload(1);
 				cntReloadTime -= singleReloadTime;
+
+                //  リロード音（シングル）   
+                SoundController.PlayNow( "ReloadAmmo_Single", _rParent, _rParent.position, 0.0f, 1.0f, 0.45f, 2.0f );
 			}
 			else
 			{
 				Reload((int)data.GetInfoValue(ShotInfoValue.Ammo) - cntAmmo);
 				cntReloadTime = .0f;
+
+                //  リロード音（通常）   
+                SoundController.PlayNow( "ReloadAmmo_Normal", _rParent, _rParent.position, 0.0f, 0.35f, 0.5f, 2.0f );
+                SoundController.PlayNow( "ReloadAmmo_Normal", _rParent, _rParent.position, 0.15f, 0.7f, 1, 2.0f );
 			}
 		}
 	}
@@ -163,7 +170,7 @@ public class WeaponParameter
 			return "∞";
 		return cntHavingAmmo.ToString();
 	}
-	public float DispReloadProgress()
+	public float  DispReloadProgress()
 	{
 		float cnt;
 		float max;
@@ -304,6 +311,7 @@ public class TPSShotController : NetworkBehaviour {
     private TPSPlayer_HP        m_rTPSHP            =   null;
 
     //  外部へのアクセス
+    private GameManager         m_rGameManager      =   null;
     private LinkManager         m_rLinkManager      =   null;
     private Shaker_Control      m_rShaker           =   null;
 
@@ -312,6 +320,13 @@ public class TPSShotController : NetworkBehaviour {
 
     // サウンド
     private SoundController     m_seShot            =   null;
+    private bool                m_PlayNoAmmo        =   false;
+
+    //ＵＩ
+    private Text                m_uiWeaponAmmo         = null;
+    private Text                m_uiWeaponHavingAmmo   = null;
+    private GameObject          m_uiWeaponReloadTime   = null;
+
 
 	// Use this for initialization
 	void    Start()
@@ -321,6 +336,7 @@ public class TPSShotController : NetworkBehaviour {
         m_rNPControl        =   transform.parent.parent.GetComponent< NetPlayer_Control >();
         m_rTPSHP            =   transform.GetComponentInParent< TPSPlayer_HP >();
 
+        m_rGameManager      =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
         m_rLinkManager      =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
         m_rShaker           =   Camera.main.GetComponent< Shaker_Control >();
 
@@ -369,7 +385,7 @@ public class TPSShotController : NetworkBehaviour {
 		{
 			foreach(WeaponList list in weapons.list)
 			{
-				list.Update();
+				list.Update( transform );
 			}
 
 		}
@@ -421,6 +437,20 @@ public class TPSShotController : NetworkBehaviour {
 
 		if (shotRequest == true)
 		{
+            //  弾切れ
+            if( !cntWeaponList.param.IsCanShot()
+            &&  !m_PlayNoAmmo){
+                SoundController.PlayNow( "NoAmmo", transform, transform.position, 0.0f, 1.0f, 0.8f, 2.0f );
+
+                //  長押しでは鳴らさない 
+                m_PlayNoAmmo    =   true;
+
+                //  リロード中
+                if( cntWeaponList.param.IsCanReload() ) m_rGameManager.SetAcqRecord( "リロード中！", m_rLinkManager.m_LocalPlayerID );
+                //  弾切れ
+                else                                    m_rGameManager.SetAcqRecord( "弾切れです！弾薬を補充してください！！", m_rLinkManager.m_LocalPlayerID );
+            }
+
 			//クールダウン＆残り弾薬
 			if(cntCoolDown < 0 && cntWeaponList.param.IsCanShot())
 			{
@@ -435,26 +465,52 @@ public class TPSShotController : NetworkBehaviour {
 					fireCnt = 0;
                 }
 
-//                TPSWeaponBar.Consumption(1.0f);
-
                 // 発砲音
                 if (m_seShot != null)
                 {
                     m_seShot.transform.position = firePoint.position;
                     m_seShot.PlayOneShot();
                 }
+
             }
 		}
 		//UIの描画
-		WeaponAmmoUIList UIList = WeaponAmmoUIList.Aceess(m_ID);
-		if (UIList != null)
-			UIList.Disp(weapons.list.ToArray(),cntWeaponIndex);
+//		WeaponAmmoUIList UIList = WeaponAmmoUIList.Aceess(m_ID);
+//		if (UIList != null)
+//			UIList.Disp(weapons.list.ToArray(),cntWeaponIndex);
 
+        if ( m_uiWeaponAmmo       == null ) m_uiWeaponAmmo        = GameObject.Find("TPS_HUD").transform.FindChild("Weapon").GetChild(m_ID+1).transform.FindChild("Ammo").GetComponent<Text>();           // [BackGround]があるから１つ加算
+        if ( m_uiWeaponHavingAmmo == null ) m_uiWeaponHavingAmmo  = GameObject.Find("TPS_HUD").transform.FindChild("Weapon").GetChild(m_ID+1).transform.FindChild("HavingAmmo").GetComponent<Text>();     // [BackGround]があるから１つ加算
+        if ( m_uiWeaponReloadTime == null ) m_uiWeaponReloadTime  = GameObject.Find("TPS_HUD").transform.FindChild("Weapon").GetChild(m_ID+1).transform.FindChild("ReloadTime").gameObject;               // [BackGround]があるから１つ加算
+        m_uiWeaponAmmo.text         = cntWeaponList.param.DispAmmo();
+        m_uiWeaponHavingAmmo.text   = cntWeaponList.param.DispHavingAmmo();
+        m_uiWeaponReloadTime.transform.localScale = new Vector3( 1.0f, cntWeaponList.param.DispReloadProgress(), 1.0f );
+
+        //  弾切れサウンドフラグリセット
+        if( !Input.GetKey( shotKey ) ){
+            m_PlayNoAmmo    =   false;
+        }
 	}
 
     void    Shot( Vector3 firePoint, Vector3 target )
 	{
-		//リコイル再設定
+        //  サーバーで生成するかどうか
+        bool    shotSpawn       =   false;
+
+        //  アクセスの取得
+        GameObject      rObj    =   cntWeaponList.weapon.gameObject;
+        BombExplosion   rBomb   =   rObj.GetComponent< BombExplosion >();
+        if( rBomb ){
+            shotSpawn   =   rBomb.c_Spawn;
+        }
+
+        //  発射処理
+        if( shotSpawn ) Shot_Spawn( firePoint, target );
+        else            Shot_Client( firePoint, target );		
+    }
+    void    Shot_Client( Vector3 firePoint, Vector3 target )
+    {
+        //リコイル再設定
 		playerRecoil.holdingWeapon = cntWeaponList.data.weaponRecoilData;
 
 		Vector3 forward;
@@ -494,6 +550,11 @@ public class TPSShotController : NetworkBehaviour {
         //  他のクライアントでも発射
         m_rNPControl.CmdFire_Client( firePoint, target, cntWeaponIndex, m_MyChildID );
     }
+    void    Shot_Spawn( Vector3 firePoint, Vector3 target )
+    {
+        //  サーバーで生成
+        m_rNPControl.CmdFire_Server( firePoint, target, cntWeaponIndex, m_MyChildID );
+    }
     public  void    Shot_ByRequest( Vector3 firePoint, Vector3 target, int _ShooterID, int _WeaponID )
     {
         Vector3 forward;
@@ -515,6 +576,31 @@ public class TPSShotController : NetworkBehaviour {
         if( rAttack )   rAttack.c_AttackerID    =   _ShooterID;
         BombExplosion   rBomb   =   emit.GetComponent< BombExplosion >();
         if( rBomb )     rBomb.c_AttackerID      =   _ShooterID;
+    }
+    public  void    Shot_InServer( Vector3 firePoint, Vector3 target, int _ShooterID, int _WeaponID )
+    {
+        Vector3 forward;
+		forward = (target - firePoint).normalized;
+
+		GameObject  emit  = Instantiate( weapons[ _WeaponID ].weapon.gameObject, firePoint, Quaternion.LookRotation(forward)) as GameObject;
+
+		//cloneをまとめる
+        string parentName = emit.name + "s";
+		GameObject parent = GameObject.Find(parentName);
+		if (parent == null)
+		{
+			parent = new GameObject(parentName);
+		}
+		emit.transform.parent = parent.transform;
+
+        //  所属を設定
+        TPSAttack_Net   rAttack =   emit.GetComponent< TPSAttack_Net >();
+        if( rAttack )   rAttack.c_AttackerID    =   _ShooterID;
+        BombExplosion   rBomb   =   emit.GetComponent< BombExplosion >();
+        if( rBomb )     rBomb.c_AttackerID      =   _ShooterID;
+
+        //  ネットワークで共有
+        NetworkServer.Spawn( emit );
     }
 
 	void WeaponChange()

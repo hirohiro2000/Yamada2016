@@ -5,22 +5,25 @@ using   System.Collections;
 
 public class ResourceObject_Control : NetworkBehaviour {
 
-    public  GameObject  c_ExplodedObj   =   null;
-    public  GameObject  c_BreakEffect   =   null;
+    public  GameObject      c_ExplodedObj   =   null;
+    public  GameObject      c_BreakEffect   =   null;
+    public  SoundController c_BreakSE       =   null;
 
-    [ SyncVar ]
-    public  int         m_Resource      =   0;
-    [ SyncVar ]
-    private int         m_KillerID      =   -1;
 
-    private bool        m_IsGameQuit    =   false;
-    private GameManager m_rGameManager  =   null;
-    private LinkManager m_rLinkManager  =   null;
+    public  int             m_Score         =   0;
+    [ SyncVar ]
+    public  int             m_Resource      =   0;
+    [ SyncVar ]
+    private int             m_KillerID      =   -1;
+
+    private bool            m_IsGameQuit    =   false;
+    private GameManager     m_rGameManager  =   null;
+    private LinkManager     m_rLinkManager  =   null;
 
 	// Use this for initialization
 	void    Start()
     {
-	    //  アクセスの取得 
+	    //  アクセスの取得  
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
         m_rGameManager  =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
 
@@ -66,20 +69,24 @@ public class ResourceObject_Control : NetworkBehaviour {
         }
 
         //  カメラシェイク（撃破したプレイヤーのクライアントだけ）
-        //if( m_KillerID == m_rLinkManager.m_LocalPlayerID ){
-        //    Camera          rCamera     =   Camera.main;
-        //    Shaker_Control  rShaker     =   ( rCamera )? rCamera.GetComponent< Shaker_Control >() : null;
-        //    if( rShaker ){
-        //        Transform   rCamTrans   =   rShaker.transform;
-        //        Vector3     vToCamera   =   ( Camera.main.transform.position - transform.position );
-        //        Vector3     vShake      =   vToCamera.normalized;
-        //                    vShake      =   rCamTrans.InverseTransformDirection( vShake );
-        //        float       shakePower  =   10 / vToCamera.magnitude;
-        //                    shakePower  =   Mathf.Min( shakePower, 1.0f );
-                
-        //        rShaker.SetShake( vShake, 3.0f, 0.2f, shakePower );
-        //    }
-        //}
+        if( m_KillerID == m_rLinkManager.m_LocalPlayerID )
+        {
+            Shaker_Control  rShaker     =   Camera.main.GetComponent< Shaker_Control >();
+            if( rShaker ){
+                Transform   rCamTrans   =   rShaker.transform;
+                Vector3     vToCamera   =   ( Camera.main.transform.position - transform.position );
+                Vector3     vShake      =   vToCamera.normalized;
+                            vShake      =   rCamTrans.InverseTransformDirection( vShake );
+                float       shakePower  =   10 / vToCamera.magnitude;
+                            shakePower  =   Mathf.Min( shakePower, 0.3f );
+
+
+                float       timeRate    =   0.5f;
+                rShaker.SetShake( vShake, 1.0f, 0.25f * timeRate, shakePower );
+                rShaker.SetShake( Vector3.up, 1.5f, 0.25f * timeRate, shakePower * 0.35f );
+                rShaker.SetShake( Vector3.right, 2.5f, 0.25f * timeRate, shakePower * 0.25f );
+            }
+        }
 	}
 
     //  ダメージ処理
@@ -141,8 +148,17 @@ public class ResourceObject_Control : NetworkBehaviour {
     //  破壊
     public  void    Destroy( int _DestroyerID )
     {
+        //  スコアを獲得
+        m_rGameManager.AddGlobalScore( m_Score, _DestroyerID );
+
+        //  スコア獲得通知
+        if( NetworkServer.active )  m_rGameManager.SetAcqScoreNotrice( m_Score, _DestroyerID );
+                                    m_rGameManager.RpcGetScoreNotice( m_Score, _DestroyerID );
+
+        //  破壊者保存
         m_KillerID  =   _DestroyerID;
 
+        //  破棄
         Destroy( gameObject );
     }
 }

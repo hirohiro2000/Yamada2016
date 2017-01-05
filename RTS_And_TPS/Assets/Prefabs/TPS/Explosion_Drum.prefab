@@ -164,8 +164,10 @@ GameObject:
   m_Component:
   - 4: {fileID: 480508}
   - 114: {fileID: 11448430}
-  - 114: {fileID: 11454428}
-  - 114: {fileID: 11403984}
+  - 114: {fileID: 11455374}
+  - 114: {fileID: 11490918}
+  - 114: {fileID: 11407834}
+  - 114: {fileID: 11450704}
   m_Layer: 0
   m_Name: Explosion_Drum
   m_TagString: Untagged
@@ -343,7 +345,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 480508}
   m_RootOrder: 2
---- !u!114 &11403984
+--- !u!114 &11407834
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -351,10 +353,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 175442}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 605e4f107dbb11848a51d398f3872f0a, type: 3}
+  m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_seFileName: Explosion0
+  c_SEName: Shot_Rifle2
+  c_PlayType: 1
+  c_VolumeRatio: 2
+  c_PitchRatio: 0.5
+  c_LifeTime: 4
+  c_ParentMe: 0
 --- !u!114 &11422888
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -417,7 +424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   multiplier: 1.75
---- !u!114 &11454428
+--- !u!114 &11450704
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -425,10 +432,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 175442}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d992e617ceba6994b9810d00313cc936, type: 3}
+  m_Script: {fileID: 11500000, guid: de593ba5d0ffa4a4f9e1eccd89ac04c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyParticle: {fileID: 19843120}
+  DeleteSecond: 4
+--- !u!114 &11455374
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 175442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_SEName: EXP_Bomb
+  c_PlayType: 1
+  c_VolumeRatio: 1
+  c_PitchRatio: 1
+  c_LifeTime: 3
+  c_ParentMe: 0
 --- !u!114 &11462536
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -441,6 +465,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_AttackerID: 0
+--- !u!114 &11490918
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 175442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e848cd0cb68a74581268c8ef4d7f1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_rTarget:
+  - {fileID: 11455374}
+  c_RandomVolume: {x: 2, y: 2}
+  c_RandomPitch: {x: 1, y: 1}
 --- !u!135 &13589278
 SphereCollider:
   m_ObjectHideFlags: 1

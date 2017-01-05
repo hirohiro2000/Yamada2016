@@ -3,6 +3,11 @@ using System.Collections;
 
 public class ResourceAppear : MonoBehaviour
 {
+    public  GameObject[]    c_CompleteEmission  =   null;
+    public  GameObject      c_DuringSound       =   null;
+
+    private GameObject      m_rDuringSound      =   null;
+
 	[SerializeField]
 	AnimationCurve height = null; 
     
@@ -37,10 +42,21 @@ public class ResourceAppear : MonoBehaviour
 			transform.localPosition = localHeight;
 		}
 
+        //  建設中の音
+        if( c_DuringSound ){
+            GameObject  rObj    =   Instantiate( c_DuringSound );
+            Transform   rTrans  =   rObj.transform;
+            rTrans.position     =   transform.position;
+            rTrans.parent       =   transform;
 
+            m_rDuringSound      =   rObj;
+        }
 	}
     void Update()
     {
+        timer += timeSpeed * Time.deltaTime;
+        timer =  Mathf.Min( timer, 1.0f );
+
 		Vector3 localPosition = transform.localPosition;
 
 		// update tower
@@ -53,10 +69,29 @@ public class ResourceAppear : MonoBehaviour
 		plate.transform.position = localPosition;
 		plate.transform.eulerAngles = Vector3.zero;
 
-		timer += timeSpeed * Time.deltaTime;
+		
 
-		this.enabled = (timer <= 1.0f);
-		plate.SetActive(timer <= 1.0f);
+        //  建設完了
+        if( timer >= 1.0f ){
+            //  建設中の音を削除
+            if( m_rDuringSound ){
+                Destroy( m_rDuringSound );
+            }
+
+            //  完了時に発生させるオブジェクトを生成
+            if( c_CompleteEmission != null ){
+                for( int i = 0; i < c_CompleteEmission.Length; i++ ){
+                    if( !c_CompleteEmission[ i ] )  continue;
+
+                    GameObject  rObj    =   Instantiate( c_CompleteEmission[ i ] );
+                    Transform   rTrans  =   rObj.transform;
+                    rTrans.position     =   transform.position;
+                }
+            }
+        }
+
+		this.enabled = (timer < 1.0f);
+		plate.SetActive(timer < 1.0f);
 
 	}
     public void End()

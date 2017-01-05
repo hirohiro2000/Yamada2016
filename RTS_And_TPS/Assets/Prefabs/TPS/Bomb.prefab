@@ -36,7 +36,8 @@ GameObject:
   - 114: {fileID: 11421978}
   - 114: {fileID: 11451724}
   - 114: {fileID: 11486514}
-  - 114: {fileID: 11475434}
+  - 114: {fileID: 11448096}
+  - 114: {fileID: 11490074}
   m_Layer: 12
   m_Name: Bomb
   m_TagString: Player_Attack
@@ -64,7 +65,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 184498}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.68, y: 14.39, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.19397569, y: 0.19397569, z: 0.19397569}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -256,6 +257,23 @@ MonoBehaviour:
   recoveryTimeWithRecoil: 1.5
   maxValueWithUpperRecoil: 3
   maxValueWithHorizontalRecoil: 0.1
+--- !u!114 &11448096
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 184498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_SEName: Shot1
+  c_PlayType: 1
+  c_VolumeRatio: 1
+  c_PitchRatio: 1
+  c_LifeTime: 1
+  c_ParentMe: 0
 --- !u!114 &11451724
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -283,18 +301,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &11475434
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 184498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e533552b40d31b34e8886a9c067c309a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_seFileName: Shot1
 --- !u!114 &11486514
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -307,8 +313,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_AttackerID: 0
+  c_Spawn: 0
   c_Explosion: {fileID: 183870, guid: 073c9ebb652abdf4187690414a9e6e15, type: 2}
   c_CallOnDestroy: 1
+--- !u!114 &11490074
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 184498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e848cd0cb68a74581268c8ef4d7f1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_rTarget:
+  - {fileID: 11448096}
+  c_RandomVolume: {x: 1, y: 1}
+  c_RandomPitch: {x: 1, y: 1}
 --- !u!114 &11494436
 MonoBehaviour:
   m_ObjectHideFlags: 1

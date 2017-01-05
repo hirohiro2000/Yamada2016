@@ -594,6 +594,8 @@ GameObject:
   - 114: {fileID: 11477488}
   - 114: {fileID: 11439930}
   - 114: {fileID: 11400824}
+  - 114: {fileID: 11493468}
+  - 114: {fileID: 11436276}
   m_Layer: 0
   m_Name: ShieldEnemyS
   m_TagString: Enemy
@@ -1404,6 +1406,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11436276
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 180630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8532787a416db624c9862913bfdf5690, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_Emission: {fileID: 158640, guid: 38ba0e213f635b749998dc5658395eb0, type: 2}
 --- !u!114 &11437426
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1526,6 +1540,7 @@ MonoBehaviour:
   ShotPower: 120
   ShotRange: 12
   m_use_pqs: 0
+  m_use_bone_controller: 0
   NumDefaultBurstShot: 1
 --- !u!114 &11459546
 MonoBehaviour:
@@ -1645,7 +1660,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_ExplodedObj: {fileID: 106676, guid: 665a2285f8096464685e5624d31fe644, type: 2}
-  c_Explosion: {fileID: 0}
+  c_DeathEmission:
+  - {fileID: 158640, guid: b5436835d1c6a274b91afac7de96a911, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 38f5b6ca5be88b24fa93fb9005151237, type: 2}
+  c_WeakEmission: {fileID: 158640, guid: 87f7f9010dff2b24dab8eaa15d0461f3, type: 2}
+  c_THitEmission: {fileID: 158640, guid: e30cf765421362b4db85bbf113a13ca7, type: 2}
   Resource: 10
   Score: 200
   DefaultHP: 10
@@ -1772,6 +1791,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recieveDamageType: 0
+--- !u!114 &11493468
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 180630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 424eb86e768c73d479649ba3c2cbcf23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HPUpMultipleRate: 10
+  MoveSpeedUpMultipleRate: 0.75
+  MaxmoveSpeed: 30
+  MaxAcceleration: 1000000
+  AttackPowerIncrementRate: 0
+  BurstIncrementRate: 0.2
+  MaxBurstShot: 9
 --- !u!114 &11498580
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2122,7 +2159,7 @@ NavMeshAgent:
   m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 200
+  m_AngularSpeed: 100200300
   m_StoppingDistance: 4
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1

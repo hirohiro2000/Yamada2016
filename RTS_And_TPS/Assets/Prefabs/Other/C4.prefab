@@ -20,7 +20,7 @@ GameObject:
   - 114: {fileID: 11498650}
   - 114: {fileID: 11477024}
   - 114: {fileID: 11421256}
-  m_Layer: 9
+  m_Layer: 20
   m_Name: C4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 460006}
   - 108: {fileID: 10893846}
-  m_Layer: 9
+  m_Layer: 20
   m_Name: _Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,7 +188,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68a5f2d6b0ffcdc428749a3742403f19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_ActiveColor: {r: 1, g: 0, b: 0, a: 1}
   c_OwnerID: 0
+  m_StartForce: {x: 0, y: 0, z: 0}
 --- !u!114 &11443284
 MonoBehaviour:
   m_ObjectHideFlags: 1

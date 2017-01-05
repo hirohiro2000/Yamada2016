@@ -509,6 +509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_bullet: {fileID: 167126, guid: 37dd945b4327d73499095c0905a73482, type: 2}
+  m_seName: Shot5
 --- !u!114 &11457214
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -530,17 +531,17 @@ MonoBehaviour:
     list:
     - hp: 15
       power: 16
-      range: 8
+      range: 12
       interval: 2
       upCost: 117
     - hp: 20
       power: 24
-      range: 9
+      range: 14
       interval: 1.75
       upCost: 161
     - hp: 40
       power: 40
-      range: 10
+      range: 15
       interval: 1.5
       upCost: 0
 --- !u!114 &11492042

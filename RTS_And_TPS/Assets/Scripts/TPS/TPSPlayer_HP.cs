@@ -39,11 +39,16 @@ public class TPSPlayer_HP : NetworkBehaviour {
     private float                   m_DeathTimer    =   0.0f;
 
     //  回復用パラメータ
-    private float                   c_RecoveryTime  =   3.0f;
+    private float                   c_RecoveryTime  =   4.0f;
     private float                   c_RecoverySpeed =   5.0f;
     private float                   m_PrevHP        =   0.0f;
     private float                   m_NoDamageTimer =   0.0f;
-    
+
+    //  回復チェック用パラメータ
+    private GameObject              m_rRecSound     =   null;
+    private float                   m_PrevHPInLocal =   0.0f;
+    private bool                    m_RecoveryNow   =   false;
+
     //  外部へのアクセス
     private DamageFilter_Control    m_rDFCtrl       =   null;
     private DyingMessage_Control    m_rDMControl    =   null;
@@ -68,7 +73,7 @@ public class TPSPlayer_HP : NetworkBehaviour {
         m_rRTSControl   =   GetComponent< RTSPlayer_Control >();
         m_rNetPlayer    =   GetComponent< NetPlayer_Control >();
 
-        //  パラメータ初期化
+        //  パラメータ初期化 
 		if(GameWorldParameter.instance != null)
 		{
 			//女の子か
@@ -79,6 +84,7 @@ public class TPSPlayer_HP : NetworkBehaviour {
 		}
 		
         m_CurHP         =   m_MaxHP;
+        m_PrevHPInLocal =   m_CurHP;
 
         //  ローカルでのみ処理を行う
         if( isLocalPlayer ){
@@ -145,6 +151,11 @@ public class TPSPlayer_HP : NetworkBehaviour {
         if( m_rDFCtrl ){
             m_rDFCtrl.SetEffect( 0.6f, 1.0f );
         }
+
+        //  ダメージ音  
+        float   pitch   =   Random.Range( 0.69f, 0.79f );
+        SoundController.PlayNow( "Damage", transform, transform.position, 0.0f, 0.2f, pitch, 2.0f );
+        SoundController.PlayNow( "Damage2", transform, transform.position, 0.0f, 0.15f, pitch, 2.0f );
     }
     void    DamageProc_CallBackEnemy( DamageResult _rDamageResult, CollisionInfo _rInfo )
     {
@@ -191,8 +202,9 @@ public class TPSPlayer_HP : NetworkBehaviour {
 		{
 			c_DamageHeight = GameWorldParameter.instance.TPSPlayer.FallDamageHeight;
 		}
+
 		//  サーバー側での処理
-		if ( NetworkServer.active )  Update_InServer();
+		if( NetworkServer.active )  Update_InServer();
 	    //  ローカルでの処理（サーバーと重複する）
         if( isLocalPlayer )         Update_InLocal();
 	}
@@ -203,6 +215,34 @@ public class TPSPlayer_HP : NetworkBehaviour {
         
         //  瀕死時の処理
         DyingProc();
+
+        //  ＨＰ監視 
+        {
+            //  回復チェック
+            if( !m_RecoveryNow
+            &&  m_CurHP > m_PrevHPInLocal ){
+                m_RecoveryNow   =   true;
+
+                //  回復音再生 
+                //SoundController.PlayNow( "Recovery", transform, transform.position, 0.0f, 1.0f, 0.86f, 2.0f );
+                m_rRecSound =   SoundController.PlayNow( "Recovery2", transform, transform.position, 0.0f, 0.05f, 1.0f, 5.0f ).gameObject;
+            }
+            if( m_CurHP < m_PrevHPInLocal ){
+                m_RecoveryNow   =   false;
+
+                //  回復音中断
+                if( m_rRecSound )   Destroy( m_rRecSound );
+            }
+
+            //  満タンになったら再生終了
+            if( m_rRecSound
+            &&  m_CurHP >= m_MaxHP ){
+                Destroy( m_rRecSound );
+            }
+
+            //  現在のＨＰを保存
+            m_PrevHPInLocal =   m_CurHP;
+        }
 
         //  ＨＰバー更新
         TPSHpBar.SetHP( m_CurHP );
@@ -475,6 +515,19 @@ public class TPSPlayer_HP : NetworkBehaviour {
 
         //  復活判定
         m_IsDying   =   m_CurHP == 0.0f;
+    }
+
+    [ Command ]
+    public  void    CmdForciblyRevival( int _clientID)
+    {
+        //  蘇生を記録
+        m_rGameManager.SetToList_Rivival( _clientID, 1 );
+        
+        //  復活
+        SetRecovery( m_MaxHP * 1.0f );
+        
+        //  タイマーリセット
+        m_RevivalTimer  =   0.0f;
     }
 
     //  アクセス

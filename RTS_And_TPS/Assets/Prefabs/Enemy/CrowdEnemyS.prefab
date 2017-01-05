@@ -136,6 +136,8 @@ GameObject:
   - 114: {fileID: 11409232}
   - 114: {fileID: 11437196}
   - 114: {fileID: 11401638}
+  - 114: {fileID: 11490980}
+  - 114: {fileID: 11473438}
   m_Layer: 0
   m_Name: CrowdEnemyS
   m_TagString: Enemy
@@ -901,7 +903,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 123842}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.2361298, y: 30, z: -57.598648}
+  m_LocalPosition: {x: 24.258257, y: 12.000001, z: 44.833412}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1351,7 +1353,8 @@ MonoBehaviour:
   ShotPower: 120
   ShotRange: 5
   m_use_pqs: 0
-  NumDefaultBurstShot: 3
+  m_use_bone_controller: 0
+  NumDefaultBurstShot: 1
 --- !u!114 &11430314
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1490,7 +1493,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_always_perception_tag: 0100000002000000
-  m_fav: 84
+  m_fav: 180
   m_use_raycast: 0
 --- !u!114 &11463804
 MonoBehaviour:
@@ -1573,6 +1576,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AlwaysEvalutionTask:
   - {fileID: 11429706}
+--- !u!114 &11473438
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 123842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8532787a416db624c9862913bfdf5690, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_Emission: {fileID: 158640, guid: ee6f6827adcaff84eab72df9ad8d734c, type: 2}
 --- !u!114 &11475742
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1599,7 +1614,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_ExplodedObj: {fileID: 102618, guid: c66536897f4a0164e91d83e720dfdd34, type: 2}
-  c_Explosion: {fileID: 0}
+  c_DeathEmission:
+  - {fileID: 158640, guid: b5436835d1c6a274b91afac7de96a911, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 38f5b6ca5be88b24fa93fb9005151237, type: 2}
+  c_WeakEmission: {fileID: 158640, guid: 87f7f9010dff2b24dab8eaa15d0461f3, type: 2}
+  c_THitEmission: {fileID: 158640, guid: e30cf765421362b4db85bbf113a13ca7, type: 2}
   Resource: 3
   Score: 30
   DefaultHP: 3
@@ -1628,6 +1647,24 @@ MonoBehaviour:
   m_health: {fileID: 11480596}
   m_healthBar: {fileID: 11403266}
   m_text: {fileID: 11495468}
+--- !u!114 &11490980
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 123842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 424eb86e768c73d479649ba3c2cbcf23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HPUpMultipleRate: 2.5
+  MoveSpeedUpMultipleRate: 1.5
+  MaxmoveSpeed: 60
+  MaxAcceleration: 1000000
+  AttackPowerIncrementRate: 0
+  BurstIncrementRate: 0.2
+  MaxBurstShot: 3
 --- !u!114 &11495468
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1907,7 +1944,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 123842}
   m_Enabled: 1
   m_Radius: 0.5
-  m_Speed: 9
+  m_Speed: 6
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 200

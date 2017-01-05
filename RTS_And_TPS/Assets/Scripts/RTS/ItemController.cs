@@ -41,7 +41,7 @@ public class ItemController : NetworkBehaviour
             float       screenRatio = Screen.width / 1280.0f;
 
 			add.transform.SetParent( GameObject.Find("Canvas").transform );
-			add.transform.position	= new Vector3( ( i*80 + 72 ) * screenRatio, 130 * screenRatio, 0 );
+			add.transform.position	= new Vector3( ( i*80 + 72 ) * screenRatio, 180 * screenRatio, 0 );
 			add.transform.GetChild(1).GetComponent<Text>().text = m_resourceCreator.m_resources[i].GetComponent<ResourceParameter>().GetCreateCost().ToString();
             
             RTSOnItemFrame onFrame = add.GetComponent<RTSOnItemFrame>();
@@ -77,16 +77,17 @@ public class ItemController : NetworkBehaviour
 
 	// Update is called once per frame
 	void Update()
-	{
-		//GameWorldParameterで強制的に書き換える
+	{	
+        //  自分のキャラクターの場合のみ処理を行う
+        if( !isLocalPlayer ) return;
+
+        //GameWorldParameterで強制的に書き換える
 		{
 			for (int i = 0; i < m_textList.Count; i++)
 			{
 				m_textList[i].text = m_resourceList[i].GetCreateCost().ToString();
 			}
 		}
-        //  自分のキャラクターの場合のみ処理を行う
-        if( !isLocalPlayer ) return;
 
 		{
 			const float forcus	= 1.2f;
@@ -94,7 +95,30 @@ public class ItemController : NetworkBehaviour
 		
 			for( int i=0; i<m_kindMax; ++i )
 			{
-				m_frameList[i].transform.localScale = ( m_curForcus==i )? new Vector3( forcus,forcus,forcus ):new Vector3( basic,basic,basic );
+                Image image = m_frameList[i].GetComponent<Image>();
+
+                bool isEnoughCost = CheckWhetherTheCostIsEnough( i );
+
+                // 色更新
+                if ( isEnoughCost )
+                {
+                    image.color = Color.white;
+                }
+                else
+                {
+                    image.color = Color.gray;
+                }
+                
+                // 大きさ更新
+                if ( isEnoughCost && m_curForcus == i )
+                {
+                    m_frameList[i].transform.localScale = new Vector3( forcus,forcus,forcus );
+                }
+                else
+                {
+                    m_frameList[i].transform.localScale = new Vector3( basic,basic,basic );
+                }
+
 			}
 		}
 		{
@@ -118,14 +142,28 @@ public class ItemController : NetworkBehaviour
 	{
 		return m_curForcus;
 	}
+    public int GetNumKind()
+    {
+        return m_kindMax;
+    }
 	public ResourceParameter GetForcusResourceParam()
 	{
         if ( m_curForcus == -1 )            return null;
 		return m_resourceCreator.m_resources[ m_curForcus ].GetComponent<ResourceParameter>();
 	}
+	public ResourceParameter GetResourceParam( int resourceID )
+	{
+		if ( resourceID < 0 || m_kindMax <= resourceID ) return null;
+		return m_resourceCreator.m_resources[ resourceID ].GetComponent<ResourceParameter>();
+	}
 	public bool CheckWhetherTheCostIsEnough()
 	{
-		return m_rGameManager.GetResource() >= GetForcusResourceParam().GetCreateCost();
+		return ( m_curForcus != -1 ) && ( m_rGameManager.GetResource() >= GetForcusResourceParam().GetCreateCost() );
+	}
+	public bool CheckWhetherTheCostIsEnough( int resourceID )
+	{
+		return ( 0 <= resourceID && resourceID < m_kindMax ) 
+            && ( m_rGameManager.GetResource() >= m_resourceCreator.m_resources[ resourceID ].GetComponent<ResourceParameter>().GetCreateCost() );
 	}
 
 

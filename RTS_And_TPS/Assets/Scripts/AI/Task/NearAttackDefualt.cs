@@ -17,6 +17,12 @@ public class NearAttackDefualt : TaskBase {
 
 	private PhysicsAttack m_attack_object = null;
 
+    public override void SetWaveParametor(EnemyWaveParametor wave_param,
+        EnemyPersonalParametor parsonal_param)
+    {
+        base.SetWaveParametor(wave_param, parsonal_param);
+    }
+
     public override void Initialize(GameObject owner)
     {
         base.Initialize(owner);

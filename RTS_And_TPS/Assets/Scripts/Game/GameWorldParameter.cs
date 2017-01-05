@@ -36,8 +36,8 @@ public class RTSPlayerParam
 public class EnemyParam
 {
 	public float EmitMultiple = 1.0f;
-	public float HealthMultiple = 1.5f;
-	public float WalkSpeedMultiple = 1.0f;
+	//public float HealthMultiple = 1.5f;
+    //public float WalkSpeedMultiple = 1.0f;
 }
 
 public class GameWorldParameter : MonoBehaviour {

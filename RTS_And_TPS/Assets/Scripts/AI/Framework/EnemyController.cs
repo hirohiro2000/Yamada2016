@@ -9,13 +9,15 @@ public class EnemyController : NetworkBehaviour {
     [SerializeField, HeaderAttribute("そのうちインスペクタから隠す")]
     private float m_update_intarval_socond = 0.5f;
 
-    private EnemyTaskDirector  m_task_director;
-    private VisibilitySystem       m_visibility_censor;
-    private TargetingSystem     m_target_director;
-    private bool                      m_coroutine_flg;
+    private EnemyTaskDirector  m_task_director = null;
+    private VisibilitySystem       m_visibility_censor = null;
+    private TargetingSystem     m_target_director = null;
+    private bool                      m_coroutine_flg ;
     public delegate void          Deadlistener(GameObject dead_enemy);
     private Deadlistener           m_dead_callback;   //死んだときにEnemyGeneratorに通知するためのコールバック
-    
+    private EnemyPersonalParametor m_personal_param = null; 
+
+
     /**
     *@note　現在未使用
     */
@@ -34,6 +36,8 @@ public class EnemyController : NetworkBehaviour {
 
     void Awake()
     {
+        //個体別のparameter取得
+        m_personal_param = GetComponent<EnemyPersonalParametor>();
         m_target_director = GetComponent<TargetingSystem>();
         m_task_director = GetComponent<EnemyTaskDirector>();
         m_visibility_censor = GetComponent<VisibilitySystem>();
@@ -50,7 +54,17 @@ public class EnemyController : NetworkBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        //UIRadar.AddEnemy(gameObject);
+        //  クライアント側でのみパラメータの初期化処理を行う
+        if( !NetworkServer.active ){
+            EnemyWaveParametor  rWaveParam  =   FunctionManager.GetAccessComponent< EnemyWaveParametor >( "EnemySpawnRoot" );
+            SetWaveParametor_InClient( rWaveParam );
+        }
+
+        if (m_personal_param == null)
+        {
+            UserLog.Terauchi(gameObject.name + "not attach EnemyPersonalParametor!!");
+        }
+
         StartCoroutine(UpdateFramework());
 	}
 
@@ -107,8 +121,18 @@ public class EnemyController : NetworkBehaviour {
         }
 	}
 
-    public void SetWaveParametor(EnemyWaveParametor param)
+    public  void    SetWaveParametor(EnemyWaveParametor wave_param)
     {
-        m_task_director.SetWaveparamtor(param);
+        //  体力設定     
+        Health rHealth = GetComponent<Health>();
+        if (rHealth) rHealth.CorrectionHP(wave_param.m_current_level - m_personal_param.m_emearge_level,
+            m_personal_param.GetHPUpMultipleRate());
+        else UserLog.ErrorTerauchi(gameObject.name + "no attach Health !!");
+        m_task_director.SetWaveparamtor(wave_param, m_personal_param);
+    }
+    private void    SetWaveParametor_InClient( EnemyWaveParametor _WaveParam )
+    {
+        //  体力関係のパラメータはHealth内で同期されているので、それ以外のパラメータだけをクライアント側で初期化
+        m_task_director.SetWaveparamtor( _WaveParam, m_personal_param );
     }
 }

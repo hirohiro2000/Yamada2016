@@ -309,6 +309,8 @@ GameObject:
   - 114: {fileID: 11449572}
   - 114: {fileID: 11450462}
   - 65: {fileID: 6522082}
+  - 114: {fileID: 11448156}
+  - 114: {fileID: 11459648}
   m_Layer: 0
   m_Name: DashEnemy
   m_TagString: Enemy
@@ -472,7 +474,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 196732}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -18.71386, y: 29.110382, z: 70.40761}
+  m_LocalPosition: {x: 23.942204, y: 12, z: 44.766983}
   m_LocalScale: {x: 1.3042357, y: 1.3042355, z: 1.3042355}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -879,6 +881,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_adjust_max_steering_radius: 0.63
+--- !u!114 &11448156
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 196732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 424eb86e768c73d479649ba3c2cbcf23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HPUpMultipleRate: 3
+  MoveSpeedUpMultipleRate: 0.75
+  MaxmoveSpeed: 80
+  MaxAcceleration: 10000000
+  AttackPowerIncrementRate: 0
+  BurstIncrementRate: 0.2
+  MaxBurstShot: 4
 --- !u!114 &11449572
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -925,7 +945,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_ExplodedObj: {fileID: 102618, guid: c66536897f4a0164e91d83e720dfdd34, type: 2}
-  c_Explosion: {fileID: 0}
+  c_DeathEmission:
+  - {fileID: 158640, guid: b5436835d1c6a274b91afac7de96a911, type: 2}
+  c_HitEmission: {fileID: 158640, guid: 38f5b6ca5be88b24fa93fb9005151237, type: 2}
+  c_WeakEmission: {fileID: 158640, guid: 87f7f9010dff2b24dab8eaa15d0461f3, type: 2}
+  c_THitEmission: {fileID: 158640, guid: e30cf765421362b4db85bbf113a13ca7, type: 2}
   Resource: 10
   Score: 150
   DefaultHP: 6
@@ -961,6 +985,18 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &11459648
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 196732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8532787a416db624c9862913bfdf5690, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_Emission: {fileID: 158640, guid: a2360f11fbef95548838e71e66c16a03, type: 2}
 --- !u!114 &11463208
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1007,7 +1043,8 @@ MonoBehaviour:
   ShotPower: 120
   ShotRange: 5
   m_use_pqs: 0
-  NumDefaultBurstShot: 2
+  m_use_bone_controller: 0
+  NumDefaultBurstShot: 1
 --- !u!114 &11475158
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1172,7 +1209,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 196732}
   m_Enabled: 1
   m_Radius: 0.5
-  m_Speed: 20
+  m_Speed: 12
   m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 100200300

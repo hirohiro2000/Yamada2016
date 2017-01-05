@@ -73,8 +73,8 @@ public class RTSCameraEventTrigger : MonoBehaviour
 
     void OnGUI()
     {
-        GUI.Label(new Rect( 10, 130, 100, 100 ), RTSCursor.m_curMode.ToString() );
-        GUI.Label(new Rect( 10, 150, 100, 100 ), m_rtsCamera.m_actionState.ToString() );
+//        GUI.Label(new Rect( 10, 130, 100, 100 ), RTSCursor.m_curMode.ToString() );
+//        GUI.Label(new Rect( 10, 150, 100, 100 ), m_rtsCamera.m_actionState.ToString() );
     }
 
 }

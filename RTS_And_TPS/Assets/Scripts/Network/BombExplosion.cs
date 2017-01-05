@@ -1,10 +1,17 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿
+using   UnityEngine;
+using   UnityEngine.Networking;
+using   System.Collections;
 
-public class BombExplosion : MonoBehaviour {
+public class BombExplosion : NetworkBehaviour {
+    [ SyncVar ]
     public  int         c_AttackerID    =   0;
+    public  bool        c_Spawn         =   false;
     public  GameObject  c_Explosion     =   null;
     public  bool        c_CallOnDestroy =   true;
+
+    public  bool        c_SetATKPoint   =   false;
+    public  float       c_ATK           =   0.0f;
 
     private GameManager m_rGameManager  =   null;
     private bool        m_IsGameQuit    =   false;
@@ -51,6 +58,12 @@ public class BombExplosion : MonoBehaviour {
         //  あたり判定のフレーム数を設定
         ExplosionAttack rEXATK  =   rCol.GetComponent< ExplosionAttack >();
         rEXATK.c_DestroyCounter =   1;
+
+        //  攻撃力設定
+        if( c_SetATKPoint ){
+            AttackPointList rAtk    =   rCol.GetComponent< AttackPointList >();
+            rAtk.baseAttackPoint    =   c_ATK;
+        }
 
         //  オブジェクトをアクティベート
         rObj.SetActive( true );

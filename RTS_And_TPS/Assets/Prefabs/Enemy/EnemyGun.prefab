@@ -14,6 +14,11 @@ GameObject:
   - 54: {fileID: 5488220}
   - 114: {fileID: 11483894}
   - 114: {fileID: 11495288}
+  - 114: {fileID: 11430392}
+  - 114: {fileID: 11424814}
+  - 114: {fileID: 11438410}
+  - 114: {fileID: 11481418}
+  - 114: {fileID: 11472744}
   m_Layer: 12
   m_Name: EnemyGun
   m_TagString: EnemyAttack
@@ -160,6 +165,39 @@ TrailRenderer:
       rgba: 16777215
   m_MinVertexDistance: 0
   m_Autodestruct: 1
+--- !u!114 &11424814
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e848cd0cb68a74581268c8ef4d7f1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_rTarget:
+  - {fileID: 11430392}
+  c_RandomVolume: {x: 0.8, y: 1.2}
+  c_RandomPitch: {x: 0.9, y: 1.1}
+--- !u!114 &11430392
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_SEName: Shot0
+  c_PlayType: 1
+  c_PlayMode: 0
+  c_VolumeRatio: 1
+  c_PitchRatio: 1
+  c_LifeTime: 2
+  c_ParentMe: 0
 --- !u!114 &11435142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -171,6 +209,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ab98f39ae2a04140820d1932b9fc562, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _followParent: {fileID: 0}
+--- !u!114 &11438410
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8532787a416db624c9862913bfdf5690, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_Emission: {fileID: 158640, guid: da88997b797e35a45a317e802145d3e7, type: 2}
+--- !u!114 &11472744
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e848cd0cb68a74581268c8ef4d7f1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_rTarget:
+  - {fileID: 11481418}
+  c_RandomVolume: {x: 0.8, y: 1.2}
+  c_RandomPitch: {x: 0.95, y: 1.05}
+--- !u!114 &11481418
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_SEName: BulletHit
+  c_PlayType: 1
+  c_PlayMode: 1
+  c_VolumeRatio: 1
+  c_PitchRatio: 1
+  c_LifeTime: 1
+  c_ParentMe: 0
 --- !u!114 &11483894
 MonoBehaviour:
   m_ObjectHideFlags: 1

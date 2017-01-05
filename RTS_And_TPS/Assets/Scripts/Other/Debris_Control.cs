@@ -9,6 +9,11 @@ public class Debris_Control : MonoBehaviour {
     };
 
     //public  Transform   c_Target        =   null;
+    public  GameObject      c_EndEmission   =   null;
+    public  GameObject      c_EndEmission2  =   null;
+    public  GameObject      c_HitEmission   =   null;
+    public  GameObject      c_MoveEmission  =   null;
+
     public  int             c_TargetID      =   0;
     public  float           c_Score         =   0.0f;
     public  bool            c_ForMe         =   false;
@@ -102,7 +107,7 @@ public class Debris_Control : MonoBehaviour {
             transform.position  =   m_StartPoint + vMove * moveRate + Vector3.up * upRate * 2.0f;
 
             //  終了処理
-            if( timeRate >= 1.0f ){
+            if( timeRate >= 1.0f ){ 
                 //  リソース獲得（自分のプレイヤーだけ処理）
                 if( m_rLinkManager ){
                     if( c_TargetID == m_rLinkManager.m_LocalPlayerID ){
@@ -111,7 +116,35 @@ public class Debris_Control : MonoBehaviour {
                     }
                 }
 
-                //  削除
+                //  獲得エフェクト  
+                if( c_EndEmission ){
+                    GameObject  rObj    =   Instantiate( c_EndEmission );
+                    Transform   rTrans  =   rObj.transform;
+                    rTrans.position     =   transform.position;//m_rTarget.position + Vector3.up * 1.0f;
+                    rTrans.parent       =   m_rTarget;
+                }
+                if( c_EndEmission2
+                //&&  Random.Range( 0, 6 ) == 0 
+                    ){
+                    GameObject  rObj    =   Instantiate( c_EndEmission2 );
+                    Transform   rTrans  =   rObj.transform;
+                    rTrans.position     =   transform.position;
+                    rTrans.parent       =   m_rTarget;
+                }
+                if( c_HitEmission
+                &&  Random.Range( 0, 3 ) == 0 
+                    ){
+                    GameObject  rObj    =   Instantiate( c_HitEmission );
+                    Transform   rTrans  =   rObj.transform;
+                    rTrans.position     =   transform.position;
+
+                    SoundPlay_Control   rSound  =   rObj.GetComponent< SoundPlay_Control >();
+                    rSound.c_PitchRatio     =   Random.Range( 0.5f, 1.5f );
+                    rSound.c_VolumeRatio    =   Random.Range( 1.0f, 2.0f );
+                    rSound.c_LifeTime       =   rSound.c_LifeTime / rSound.c_PitchRatio;
+                }
+
+                //  削除 
                 Destroy( gameObject );
                 return;
             }
@@ -143,6 +176,28 @@ public class Debris_Control : MonoBehaviour {
         }
     }
 
+    void    OnCollisionEnter( Collision _rCollision )
+    {
+        if( m_State != State.Stay )                                             return;
+        if( _rCollision.gameObject.layer == LayerMask.NameToLayer( "Debris" ) ) return;
+
+        //  音を再生  
+        if( c_HitEmission
+        &&  Random.Range( 0, 5 ) == 0 ){
+            GameObject  rObj    =   Instantiate( c_HitEmission );
+            Transform   rTrans  =   rObj.transform;
+            rTrans.position     =   transform.position;
+
+            SoundPlay_Control   rSound  =   rObj.GetComponent< SoundPlay_Control >();
+            rSound.c_PitchRatio     =   Random.Range( 0.5f, 1.5f );
+            rSound.c_VolumeRatio    =   Random.Range( 1.0f, 2.0f );
+            rSound.c_LifeTime       =   rSound.c_LifeTime / rSound.c_PitchRatio;
+        
+            //  次は再生しない  
+            //c_HitEmission       =   null;
+        }
+    }
+
     public  void    SetMove( Transform _rTrans )
     {
         m_State         =   State.Move;
@@ -152,6 +207,20 @@ public class Debris_Control : MonoBehaviour {
         //  コンポーネント削除
         Destroy( GetComponent< Rigidbody >() );
         Destroy( GetComponent< Collider >() );
+
+        //  効果音再生 
+        if( c_MoveEmission
+        //&&  Random.Range( 0, 3 ) == 0  
+            ){
+            GameObject  rObj    =   Instantiate( c_MoveEmission );
+            Transform   rTrans  =   rObj.transform;
+            rTrans.position     =   transform.position;
+            rTrans.parent       =   transform;
+
+            SoundPlay_Control   rSound  =   rObj.GetComponent< SoundPlay_Control >();
+            rSound.c_PitchRatio     =   Random.Range( 0.5f, 1.5f );
+            rSound.c_VolumeRatio    =   Random.Range( 0.25f, 0.5f );
+        }
     }
     public  bool    IsMove()
     {

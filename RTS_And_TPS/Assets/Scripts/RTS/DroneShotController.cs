@@ -22,4 +22,11 @@ public class DroneShotController : MonoBehaviour
 			Instantiate( m_gun, transform.position, transform.rotation );
 		}
 	}
+
+    public Object Fire()
+    {
+        Object obj = Instantiate( m_gun, transform.position, transform.rotation );
+        return obj;
+    }
+
 }

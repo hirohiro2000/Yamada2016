@@ -4,7 +4,7 @@ using System.Collections;
 public class TaskBase : MonoBehaviour {
 
     protected TaskEvaluationBase m_rater;
-    protected GameObject            m_owner_object;
+    protected GameObject           m_owner_object;
 
 
     public enum Status
@@ -20,7 +20,8 @@ public class TaskBase : MonoBehaviour {
       
     }
     
-    public virtual void SetWaveParametor(EnemyWaveParametor param)
+    public virtual void SetWaveParametor(EnemyWaveParametor wave_param,
+        EnemyPersonalParametor parsonal_param)
     {
         
     }
