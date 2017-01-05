@@ -58,9 +58,6 @@ public class AttackPointList : MonoBehaviour {
 	[SerializeField]
 	Transform autoEmitObjectOnHitPoint = null;
 
-	[SerializeField]
-	bool ColliderReset = true;
-
 	//コライダーのリセットを要求
 	bool ColliderResetRequest = false;
 
@@ -79,7 +76,7 @@ public class AttackPointList : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		ColliderResetRequest = ColliderReset;
+		ColliderResetRequest = true;
 	}
 
 	void FixedUpdate()

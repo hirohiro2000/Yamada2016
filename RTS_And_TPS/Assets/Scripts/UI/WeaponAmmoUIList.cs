@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.EventSystems;
 
 //テストでcntのみ
-public class WeaponAmmoUIList : MonoBehaviour, IDropHandler
-{
+public class WeaponAmmoUIList : MonoBehaviour {
 
 	[SerializeField]
 	int ID;
@@ -48,34 +46,4 @@ public class WeaponAmmoUIList : MonoBehaviour, IDropHandler
 			weaponAmmoUIs[i].TextUpdate(weapons[i].param, cnt == i);
 		}
 	}
-
-	public void OnDrop(PointerEventData data)
-	{
-		if (data.pointerDrag != null)
-		{
-			DragWeapon weapon = data.pointerDrag.GetComponent<DragWeapon>();
-			foreach(GameObject obj in data.hovered)
-			{
-				if(obj.GetComponent< WeaponAmmoUI > () != null)
-				{
-					//インデックスを検索
-					for (int i = 0; i< transform.childCount; i++)
-					{
-						if (obj == transform.GetChild(i).gameObject)
-						{
-							TPSShotController.Aceess(ID).ReplaceWeapon(weapon.weapon, i);
-						}
-					}
-
-
-				}
-
-			}
-        }
-	}
-
-	public void SupplyAmmo()
-	{
-		TPSShotController.Aceess(ID).SupplyAmmo();
-    }
 }

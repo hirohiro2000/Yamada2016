@@ -39,7 +39,7 @@ public class DragWeapon : MonoBehaviour,IDragHandler,IBeginDragHandler,IEndDragH
 		dragObject = null;
 		CanvasGroup.blocksRaycasts = true;
 		CanvasGroup.alpha = 1.0f;
-		//TPSShotController.Aceess(0).SelectNewWeapon(weapon);
+		TPSShotController.Aceess(0).SelectNewWeapon(weapon);
 
 	}
 

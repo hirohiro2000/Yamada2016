@@ -7,9 +7,7 @@ using System.Collections;
 [System.Serializable]
 public class WeaponList
 {
-	public Transform weapon = null;
-	//生成するインスタンスオブジェクト
-	GameObject m_emitWeapon = null;
+	public Transform weapon = null ;
 	[HideInInspector]
 	WeaponData _data = null;
 	[HideInInspector]
@@ -36,40 +34,6 @@ public class WeaponList
 			return _param;
 		}
 	}
-
-	public GameObject emitWeapon
-	{
-		get
-		{
-			if (m_emitWeapon == null)
-			{
-				weapon.gameObject.SetActive(false);
-				m_emitWeapon =(Object.Instantiate(weapon.gameObject));
-				weapon.gameObject.SetActive(true);
-
-			    string parentName =  "EmitWeapons";
-				GameObject parent = GameObject.Find(parentName);
-				if (parent == null)
-				{
-					parent = new GameObject(parentName);
-				}
-				m_emitWeapon.transform.parent = parent.transform;
-
-				//不要なコンポーネントを削除
-				Object.Destroy(m_emitWeapon.GetComponent<ShotInfomation>());
-				Object.Destroy(m_emitWeapon.GetComponent<WeaponRecoilData>());
-            }
-
-			return m_emitWeapon;
-		}
-	}
-
-	public void DestroyEmitWeapon()
-	{
-		if (m_emitWeapon != null)
-			Object.Destroy(m_emitWeapon);
-    }
-
 	public void Update()
 	{ 
 		param.Update();
@@ -499,10 +463,10 @@ public class TPSShotController : NetworkBehaviour {
 		//レティクルをクォータニオンに変換して回転
 		forward = playerRecoil.GetReticleVector(forward);
 
-		GameObject emit = Instantiate(cntWeaponList.emitWeapon, firePoint, Quaternion.LookRotation(forward)) as GameObject;
-		emit.SetActive(true);
+		GameObject emit = Instantiate(cntWeaponList.weapon.gameObject, firePoint, Quaternion.LookRotation(forward)) as GameObject;
+
 		//cloneをまとめる
-		string parentName = emit.name + "s";
+        string parentName = emit.name + "s";
 		GameObject parent = GameObject.Find(parentName);
 		if (parent == null)
 		{
@@ -535,11 +499,10 @@ public class TPSShotController : NetworkBehaviour {
         Vector3 forward;
 		forward = (target - firePoint).normalized;
 
-		GameObject emit = Instantiate(cntWeaponList.emitWeapon, firePoint, Quaternion.LookRotation(forward)) as GameObject;
-		emit.SetActive(true);
+		GameObject  emit  = Instantiate( weapons[ _WeaponID ].weapon.gameObject, firePoint, Quaternion.LookRotation(forward)) as GameObject;
 
 		//cloneをまとめる
-		string parentName = emit.name + "s";
+        string parentName = emit.name + "s";
 		GameObject parent = GameObject.Find(parentName);
 		if (parent == null)
 		{
@@ -569,15 +532,10 @@ public class TPSShotController : NetworkBehaviour {
     }
 
 	//入れ替え(同じなら補充)
-	public void ReplaceWeapon(Transform weapon,int index)
+	public void SelectNewWeapon(Transform weapon)
 	{
-		if(weapons[index].weapon == weapon)
-		{
-			SupplyAmmo();
-        }
-		weapons[index].DestroyEmitWeapon();
-		weapons[index] = new WeaponList();
-		weapons[index].weapon = weapon;
+		weapons[cntWeaponIndex] = new WeaponList();
+		weapons[cntWeaponIndex].weapon = weapon;
 		cntWeaponList = weapons[cntWeaponIndex];
 
 	}
