@@ -11,7 +11,6 @@ GameObject:
   - 33: {fileID: 3362278}
   - 23: {fileID: 2362308}
   - 54: {fileID: 5450944}
-  - 114: {fileID: 11445088}
   - 114: {fileID: 11463520}
   - 114: {fileID: 11453622}
   - 114: {fileID: 11425642}
@@ -205,18 +204,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_seFileName: Shot0
---- !u!114 &11445088
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 102464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f25afd9c1ced10e4c937ebf8a6b10a27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  particle: {fileID: 175374, guid: 8931ad398a75c2c4c8b694f005800976, type: 2}
 --- !u!114 &11450980
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -356,6 +343,7 @@ MonoBehaviour:
   autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 490204, guid: 8931ad398a75c2c4c8b694f005800976,
     type: 2}
+  ColliderReset: 0
 --- !u!136 &13614226
 CapsuleCollider:
   m_ObjectHideFlags: 1

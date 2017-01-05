@@ -12,7 +12,7 @@ public class TPSPlayer_Control : NetworkBehaviour {
 
     private LinkManager         m_rLinkManager      =   null;
 
-    private bool                m_IsLock            =   true;
+    public bool                m_IsLock            =   true;
 
     private SoundController     m_bgm               =   null;
     private TPSPlayer_HP        m_rHP               =   null;
