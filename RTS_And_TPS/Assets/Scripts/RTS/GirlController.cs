@@ -38,6 +38,7 @@ public class GirlController : NetworkBehaviour
 
 	public float				m_moveSpeed						= 1.0f;
     public float                m_LiftingForce					= 1.0f;
+    public float                m_JumpForce                     = 0.0f;
     public GameObject           m_symbolPivot					= null;
 	public GameObject		    m_routingError					= null;
 
@@ -109,6 +110,11 @@ public class GirlController : NetworkBehaviour
         //  C4爆弾を起動する
         if( Input.GetKeyDown( KeyCode.Period ) ){
             CmdExplodingC4();
+        }
+        //  ジャンプする
+        if( Input.GetKeyDown( KeyCode.M )
+        &&  Mathf.Abs( m_rRigid.velocity.y ) < 0.01f ){
+            m_rRigid.AddForce( Vector3.up * m_JumpForce, ForceMode.Impulse );
         }
         //　乗れるロボットの検索
         if ( Input.GetKeyDown(KeyCode.Space) )

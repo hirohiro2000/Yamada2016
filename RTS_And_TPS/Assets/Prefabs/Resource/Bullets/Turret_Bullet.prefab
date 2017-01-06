@@ -9,13 +9,13 @@ GameObject:
   m_Component:
   - 4: {fileID: 440786}
   - 33: {fileID: 3319752}
-  - 135: {fileID: 13530356}
   - 23: {fileID: 2318388}
   - 114: {fileID: 11489882}
   - 114: {fileID: 11473140}
   - 114: {fileID: 11440732}
   - 114: {fileID: 11467390}
   - 96: {fileID: 9685436}
+  - 136: {fileID: 13692538}
   m_Layer: 12
   m_Name: Turret_Bullet
   m_TagString: Player_Attack
@@ -175,8 +175,8 @@ MonoBehaviour:
   m_speed: 40
   m_chaseSpeed: 20
   m_chaseable: 0
---- !u!135 &13530356
-SphereCollider:
+--- !u!136 &13692538
+CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -184,8 +184,9 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
   m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &100100000
 Prefab:
