@@ -199,8 +199,7 @@ public class GameManager : NetworkBehaviour {
         }
 
         //  キー入力  
-        if( Input.GetKeyDown( KeyCode.Return )
-        ||  Input.GetMouseButtonDown( 2 ) ){
+        if( Input.GetKeyDown( KeyCode.Return ) ){
             if( m_State == State.CountDown
             &&  !GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) ){
                 if( NetworkServer.active )  SetToList_IsReady( m_rLinkManager.m_LocalPlayerID, true );
@@ -865,15 +864,17 @@ public class GameManager : NetworkBehaviour {
 
         //  BGM変更  
         {
-            bool    isPeek  =   m_WaveLevel % 3 == 0;
+            bool    isPeek  =   m_WaveLevel % 3 == 0 && m_WaveLevel > 0;
             if( isPeek ){
                 int numBGM      =   3;
                 int useBGMID    =   ( ( m_WaveLevel / 3 ) - 1 ) % numBGM;
-                BGMManager.ChangeBGM( "BGM_InBattle_Peek_" + useBGMID, 0.5f, 0.0f, 1.0f, 2.0f );
+
+                BGMManager.ChangeBGM( "BGM_InBattle_Peek_" + useBGMID, 0.5f, 0.0f, 1.0f, 2.0f );                
             }
             else{
                 int numBGM      =   4;
                 int useBGMID    =   ( m_WaveLevel / 3 ) % numBGM;
+
                 BGMManager.ChangeBGM( "BGM_InBattle_" + useBGMID, 0.5f, 0.0f, 1.0f, 2.0f );
             }
         }

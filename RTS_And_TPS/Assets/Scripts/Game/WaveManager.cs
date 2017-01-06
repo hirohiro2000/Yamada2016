@@ -72,7 +72,7 @@ public class WaveManager : NetworkBehaviour {
         int     miniLevel   =   ( m_WaveLevel - 1 ) % 3;
 
 		//GameWorldParameterで強制的に書き換える
-		int numPop      =  (int)(( 6 + ( largeLevel * 2 + miniLevel ) * 3 )* GameWorldParameter.instance.Enemy.EmitMultiple);
+		int numPop      =  (int)(( 6 + ( largeLevel * 2 + miniLevel ) )* GameWorldParameter.instance.Enemy.EmitMultiple);
 
         //  ピーク時は出現量２倍
         if( isPeak ){

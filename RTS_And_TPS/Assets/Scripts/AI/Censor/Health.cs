@@ -82,7 +82,7 @@ public class Health : NetworkBehaviour {
             GameObject          rPlayer     =   m_rLinkManager.m_rLocalPlayer;
             if( rPlayer ){
                 rControl.c_PartnerID        =   KillerID;
-                rControl.c_Score            =   Resource + Mathf.Max( Level - 1, 0 );
+                rControl.c_Score            =   Resource;// + Mathf.Max( Level - 1, 0 );
             }
         }
 
