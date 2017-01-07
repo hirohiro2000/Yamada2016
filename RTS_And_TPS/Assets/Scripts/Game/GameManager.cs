@@ -174,13 +174,13 @@ public class GameManager : NetworkBehaviour {
         //  空模様を更新
         m_rSkyManager.ChangeSky( Mathf.Max( m_WaveLevel - 1, 0 ) );
 
-        //  ＵＩの更新
+        //  ＵＩの更新  
         {
             if( m_rWaveText )       m_rWaveText.text        =   m_WaveLevel.ToString();
             if( m_rResourceText )   m_rResourceText.text    =   ( ( int )m_Resource ).ToString();
             if( m_rScoreText )      m_rScoreText.text       =   ( ( int )m_GlobalScore ).ToString();
 
-            //  ダメージフィルター更新
+            //  ダメージフィルター更新  
             if( m_rLinkManager
             &&  m_rLinkManager.m_rLocalPlayer ){
                 GameObject      rMyPlayer   =   m_rLinkManager.m_rLocalPlayer;
@@ -860,7 +860,7 @@ public class GameManager : NetworkBehaviour {
     void    StandbyProc_Wave()
     {
         //  ウェーブ開始音 
-        SoundController.PlayNow( "WaveStart", 1.2f, 0.5f, 1.0f, 2.0f );
+        SoundController.PlayNow( "WaveStart", 1.2f, 0.5f, 1.0f, 4.0f );
 
         //  BGM変更  
         {
