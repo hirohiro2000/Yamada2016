@@ -153,7 +153,10 @@ public class GameManager : NetworkBehaviour {
 
         //  カウント音
         {
-            int curCount    =   ( int )( c_StartCDTime - m_StateTimer ) + 1;
+            int curCount    =   ( int )( c_StartCDTime  - m_StateTimer ) + 1;
+            if( m_State == State.WaveReady ){
+                curCount    =   ( int )( c_WaveInterval - m_StateTimer ) + 1;
+            }
 
             //  カウントチェック
             if( m_State == State.CountDown
@@ -778,7 +781,7 @@ public class GameManager : NetworkBehaviour {
     }
     void    CheckWhetherExist_Float( SyncListFloat _rList, int _NeedCount )
     {
-        //  項目がなければ拡張する
+        //  項目がなければ拡張する 
         if( _rList.Count < _NeedCount ){
             //  必要な項目の数を計算
             int needItem    =   _NeedCount - _rList.Count;
