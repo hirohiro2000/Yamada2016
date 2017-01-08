@@ -8798,6 +8798,10 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SelectOK
       objectReference: {fileID: 0}
+    - target: {fileID: 11489156, guid: 4d60f159d4c84df47a5b89b4c57b5c94, type: 2}
+      propertyPath: m_Text
+      value: OK(J)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4d60f159d4c84df47a5b89b4c57b5c94, type: 2}
   m_IsPrefabParent: 0
@@ -33114,6 +33118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 481583ddbbd4a02458c52d9ea70d1580, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_cursorTexture: {fileID: 2800000, guid: d600dcac1749e28448cb10769673d8d5, type: 3}
 --- !u!225 &755151794
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -48717,7 +48722,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Break(K)
+  m_Text: Break(C)
 --- !u!222 &1195472542
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -62741,7 +62746,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Cancel(L)
+  m_Text: Cancel(X)
 --- !u!222 &1552334135
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -77097,7 +77102,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LevelUp(J)
+  m_Text: LevelUp(Z)
 --- !u!222 &1942946070
 CanvasRenderer:
   m_ObjectHideFlags: 0
