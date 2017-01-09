@@ -19,11 +19,14 @@ public class ShootAndMove : TaskBase {
     [SerializeField, HeaderAttribute("弾の速度")]
     private float ShotPower = 2.0f;
 
-    [SerializeField, HeaderAttribute("弾を撃つ範囲(PlayerのVisibilityRangeより少し近いくらいがおすすめ)")]
+    [SerializeField, HeaderAttribute("弾を撃つ範囲")]
     private float ShotRange = 7.0f;
 
     [SerializeField, HeaderAttribute("trueにするとPQSを使った位置取りを行う(基本触るな)")]
     private bool m_use_pqs = false;
+
+    [SerializeField, HeaderAttribute("navmeshを使用した移動をするかどうか")]
+    private bool m_use_navmesh = true;
 
     [SerializeField, HeaderAttribute("trueにするとBodylControllerを使ったAnimation制御が行われる")]
     private bool m_use_bone_controller = false;
@@ -31,14 +34,16 @@ public class ShootAndMove : TaskBase {
     [SerializeField, HeaderAttribute("Defaultの弾バースト数")]
     private int NumDefaultBurstShot = 3;
 
+    [SerializeField, HeaderAttribute("自分の高さ")]
+    private float m_owner_height = 1.0f;
+
     private int m_num_burstshot;
-   // private GameObject m_home_base = null;
     private Transform m_shoot_object = null;
     private Vector3 m_shoot_point = new Vector3();
     private Vector3 m_move_point = Vector3.zero;       //PQSを使う場合move_point = target.position + m_move_point 
     private NavMeshAgent m_navmesh_accessor = null;
     private bool m_is_active = false;
-    private float m_navmesh_agent_stop_dist = 5.0f;
+
 
     private GameObject m_attack_object_root = null;
 
@@ -51,6 +56,8 @@ public class ShootAndMove : TaskBase {
     delegate void TargetingPointFunction(TargetingSystem target_system);
     private TargetingPointFunction m_targeting_function;
 
+    bool m_point_create_result = false; //PQSポイント作成に成功したかどうか
+    PointQuerySystem.ResultData m_result_data = new PointQuerySystem.ResultData();
     private float m_original_move_speed = .0f;
     private float m_move_speed = .0f;
 
@@ -59,10 +66,43 @@ public class ShootAndMove : TaskBase {
  
     void Awake()
     {
-      //  m_navmesh_accessor = transform.root.GetComponent<NavMeshAgent>();
         m_shoot_object = transform.FindChild("ShootObject");
         m_num_burstshot = NumDefaultBurstShot;
         
+    }
+
+    void SetDestination(Vector3 pos)
+    {
+        if (m_use_navmesh)
+            m_navmesh_accessor.SetDestination(pos);
+        else
+            m_move_point = pos;
+    }
+
+    void Resume()
+    {
+        if (m_use_navmesh)
+            m_navmesh_accessor.Resume();
+    }
+
+    void SetSpeed(float speed)
+    {
+        if (m_use_navmesh)
+            m_navmesh_accessor.speed = speed;
+    }
+
+    void Move()
+    {
+        if (m_use_navmesh)
+            return;
+
+        Vector3 target_point = /*m_owner_object.transform.position +*/ m_move_point;
+        Vector3 me_tor_target = target_point - m_owner_object.transform.position;
+        if (me_tor_target.magnitude > m_move_speed)
+            me_tor_target = me_tor_target.normalized * m_move_speed;
+
+        m_owner_object.transform.position = Vector3.Lerp(m_owner_object.transform.position, target_point, 0.05f);
+       // m_owner_object.transform.position += me_tor_target * Time.deltaTime; ;
     }
 
     private void UpdateTargetingPointDefault(TargetingSystem targeting_system)
@@ -71,37 +111,42 @@ public class ShootAndMove : TaskBase {
         if (targeting_system.IsTargetArive())
         {
             m_move_point = targeting_system.m_current_target.transform.position;
-            m_navmesh_accessor.SetDestination(m_move_point);
+            SetDestination(m_move_point);
         }
     }
 
     private void CalculateNewMovePoint(TargetingSystem target_system)
     {
-        PointQuerySystem.ResultData result;
+        //PointQuerySystem.ResultData result;
         //PQSに失敗した場合は動くMovePointはtargetのpositionにしてreturn
         if (!target_system.m_pqs.CalculateNewPoint(m_pqs_info,
             target_system.m_current_target.transform,
             m_owner_object.transform,
+            m_owner_height,
             m_target_height,
-            m_target_height,
-           out result))
+            ref m_result_data,
+           m_use_navmesh))
         {
-            m_move_point = Vector3.zero;
-            m_navmesh_accessor.SetDestination(target_system.m_current_target.transform.position);
-            m_navmesh_accessor.Resume();
+           
+            m_move_point = target_system.m_current_target.transform.position;
+            m_point_create_result = false; 
+            SetDestination(m_move_point);
+            Resume();
             return;
         }
+
         //成功した場合はoffsetのベクトルを保存してその位置に移動する
-        m_move_point = result.target_pos_offset;
-        m_navmesh_accessor.SetDestination(target_system.m_current_target.transform.position + m_move_point);
-        m_navmesh_accessor.Resume();
+        m_move_point = m_result_data.pos;
+        SetDestination(target_system.m_current_target.transform.position + m_result_data.target_pos_offset);
+        m_point_create_result = true;
+        Resume();
         return;
     }
 
     private void UpdateTargetingPointUsePQS(TargetingSystem target_system)
     {
-        //現在のMovePointOffsetがほぼの場合Pointを打ち直す
-       if(m_move_point.sqrMagnitude <= 0.0001f)
+   
+       if(!m_point_create_result)
         {
             CalculateNewMovePoint(target_system);
             return;
@@ -110,7 +155,7 @@ public class ShootAndMove : TaskBase {
        //現在のターゲット位置からのOffsetで移動可能かを評価する
        //だめな場合は新たにPointを打ち直す
        if(!target_system.m_pqs.IsValidCurrentPoint(target_system.m_current_target.transform,
-           m_move_point,
+           m_result_data.target_pos_offset,
            m_pqs_info,
            m_target_height))
         {
@@ -118,7 +163,7 @@ public class ShootAndMove : TaskBase {
             return;
         }
         //m_move_point = Vector3.zero;
-        m_navmesh_accessor.SetDestination(target_system.m_current_target.transform.position + m_move_point);
+       SetDestination(target_system.m_current_target.transform.position + m_move_point);
     }
 
     private void InitializeMoveAlg()
@@ -146,14 +191,9 @@ public class ShootAndMove : TaskBase {
        
     }
 
-    void Update()
-    {
-
-    }
-
     IEnumerator UpdateLookPointAndMovePoint(TargetingSystem target_system)
     {
-        m_navmesh_accessor.Resume();
+        Resume();
         while(m_is_active)
         {
             //targeting_systemでもcheckしているがなぜかエラーでるのでとりあえず
@@ -161,7 +201,7 @@ public class ShootAndMove : TaskBase {
                 m_shoot_point = target_system.m_current_target.transform.position;
 
             //   m_owner_object.transform.LookAt(m_shoot_point);
-            //射撃位置更新
+            //射撃位置更新a
             m_shoot_object.LookAt(m_shoot_point);
             //if(m_use_bone_controller)
             //{
@@ -201,6 +241,11 @@ public class ShootAndMove : TaskBase {
         m_original_move_speed = m_navmesh_accessor.speed;
         m_move_speed = m_original_move_speed;
         m_agent_speed = m_navmesh_accessor.speed;
+        if(!m_use_navmesh)
+        {
+            m_navmesh_accessor.enabled = false;
+        }
+
         if (m_use_bone_controller)
             m_bone_controller = GetComponent<BoneController>();
     }
@@ -224,7 +269,7 @@ public class ShootAndMove : TaskBase {
         StartCoroutine(Attack(target_system));
         task_director.m_anime_controller.SetTrigger("ToShootAndMove");
 
-        m_navmesh_accessor.speed = m_move_speed;
+       SetSpeed( m_move_speed);
         //ほかのキャラクターのルートをたどる可能性があるから改良する
         //   m_navmesh_accessor.SetDestination(m_home_base.transform.position);
     }
@@ -233,7 +278,8 @@ public class ShootAndMove : TaskBase {
     {
         //UpdateIsReachHomeBase(target_system);
         Status current_status = EvaluteStatus(target_system, task_director);
-        task_director.m_anime_controller.SetFloat("MoveSpeed", m_navmesh_accessor.velocity.magnitude);
+        if(m_use_navmesh)
+            task_director.m_anime_controller.SetFloat("MoveSpeed", m_navmesh_accessor.velocity.magnitude);
         //targeting_systemでもcheckしているがなぜかエラーでるのでとりあえず
         if (target_system.IsTargetArive())
             m_shoot_point = target_system.m_current_target.transform.position;
@@ -241,14 +287,15 @@ public class ShootAndMove : TaskBase {
         {
             m_bone_controller.m_target_direction = m_shoot_point - m_owner_object.transform.position;
         }
+        Move();
         return current_status;
     }
 
     public override void Exit(TargetingSystem target_system, EnemyTaskDirector task_director)
     {
         m_is_active = false;
-        m_navmesh_accessor.Resume();
-        m_navmesh_accessor.speed = m_agent_speed;
+        Resume();
+        SetSpeed(m_agent_speed);
     }
 
     private Status EvaluteStatus(TargetingSystem target_system, EnemyTaskDirector task_director)

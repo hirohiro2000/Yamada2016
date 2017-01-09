@@ -91,7 +91,10 @@ public class PointCreator
     class BasicFilter
     {
 
-        public bool IsCanCreate(PQSQuery query_info,Transform target,Vector3 candidate_pos)
+        public bool IsCanCreate(
+            PQSQuery query_info,
+            Transform target,
+            Vector3 candidate_pos)
         {
             Vector3 target_to_caindidate_pos = candidate_pos - target.position;
             float distsq = target_to_caindidate_pos.sqrMagnitude;
@@ -127,13 +130,14 @@ public class PointCreator
     *@param 自分自身の高さ
     *@param この関数内で生成させたPQSPointを格納するList(呼び出し時sizeを0にしておくこと)
     */
-    public  void Execute(
+    public void Execute(
         PQSQuery query_info,
         Transform target_transform,
         Transform owner_transform,
-        float          target_height,
-        float          owner_height,
-        List<PointQuerySystem.PointData> out_list)
+        float target_height,
+        float owner_height,
+        List<PointQuerySystem.PointData> out_list,
+        bool use_navimesh)
     {
         m_circle_sampler.BeginCreate(query_info.GetPointFieldSize(),
             query_info.GetFieldDetailY(),
@@ -153,16 +157,26 @@ public class PointCreator
 
             //形状の座標がローカル空間なのでtargetまで持ってくる
             candidate_pos += target_transform.position;
+            //高さ調整
+            candidate_pos += new Vector3(.0f, query_info.GetAdjustHeight(), .0f);
 
             //対象となる位置に対してのフィルタリングを行う
             if (!IsCanCreate(query_info, target_transform, candidate_pos, target_height))
                 continue;
 
             //Pointを生成する
-            if (!NavMesh.SamplePosition(candidate_pos, out hit_data, .2f, NavMesh.AllAreas))
+            if (use_navimesh)
             {
-                continue;
+                if (!NavMesh.SamplePosition(candidate_pos, out hit_data, .2f, NavMesh.AllAreas))
+                {
+                    continue;
+                }
             }
+            else
+            {
+                hit_data.position = candidate_pos;
+            }
+            
             out_list.Add(new PointQuerySystem.PointData(hit_data.position));
         }
         m_circle_sampler.EndCreate();
