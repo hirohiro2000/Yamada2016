@@ -47,13 +47,19 @@ public class PointQuerySystem : MonoBehaviour
         Transform owner_transform,
         float          target_height,
         float           owner_height,
-        out ResultData out_result_data)
+        ref ResultData out_result_data,
+        bool use_navmesh = true)
     {
         ClearPointList();
-        CreatePointList(query, target_transform, owner_transform, target_height, owner_height);
+        CreatePointList(query, 
+            target_transform,
+            owner_transform,
+            target_height,
+            owner_height,
+            use_navmesh);
 
         var point = ScoringAllPoint(query.GetPointRater(), target_transform, owner_transform);
-        out_result_data = new ResultData();
+       
         if(point == null)
         {
             UserLog.Terauchi(gameObject.name + "PQS::CalculateNewPoint can not evalute point!!");
@@ -65,6 +71,7 @@ public class PointQuerySystem : MonoBehaviour
         out_result_data.pos = point.pos;
         out_result_data.score = point.score;
         out_result_data.target_pos_offset = point.pos - target_transform.position;
+        
         ////test
         //var material = point.debug_object.GetComponent<MeshRenderer>();
         //material.material.color = Color.red;
@@ -74,16 +81,21 @@ public class PointQuerySystem : MonoBehaviour
     public bool IsValidCurrentPoint(Transform target_transform,
         Vector3 point_offset_vec,
         PQSQuery query_info,
-        float target_height)
+        float target_height,
+        bool use_nevmesh = true)
     {
         NavMeshHit hit_data;
-        if (!NavMesh.SamplePosition(target_transform.position + point_offset_vec
-            , out hit_data,
-            .2f,
-            NavMesh.AllAreas))
+        if (use_nevmesh)
         {
-            return false;
+            if (!NavMesh.SamplePosition(target_transform.position + point_offset_vec
+                , out hit_data,
+                .2f,
+                NavMesh.AllAreas))
+            {
+                return false;
+            }
         }
+
         if (!query_info.FilteringCandidatePoint(target_transform, target_transform.position + point_offset_vec,
             target_height))
             return false;
@@ -134,9 +146,10 @@ public class PointQuerySystem : MonoBehaviour
         Transform target_transform,
         Transform owner_transform,
         float target_height,
-        float owner_height)
+        float owner_height,
+        bool use_navmesh)
     {
-        m_point_creator.Execute(query, target_transform, owner_transform, target_height, owner_height,m_point_list);
+        m_point_creator.Execute(query, target_transform, owner_transform, target_height, owner_height,m_point_list,use_navmesh);
         if (m_point_list.Count <= 0)
             return false;
         return true;
