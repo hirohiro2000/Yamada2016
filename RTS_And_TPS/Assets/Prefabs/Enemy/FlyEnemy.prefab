@@ -768,8 +768,8 @@ GameObject:
   - 114: {fileID: 11474266}
   - 114: {fileID: 11443920}
   - 114: {fileID: 11425216}
-  - 114: {fileID: 11404850}
   - 114: {fileID: 11474690}
+  - 114: {fileID: 11465924}
   m_Layer: 0
   m_Name: ShootAndMove
   m_TagString: Untagged
@@ -1071,7 +1071,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 138818}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -59.663292, y: -0.00000866131, z: 48.437553}
+  m_LocalPosition: {x: 84, y: 46.171173, z: 13.111738}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -1703,17 +1703,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &11404850
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 188752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee098dce43bee2a4380231f092abd46d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11411852
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2028,7 +2017,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BulletObject: {fileID: 162058, guid: eb1cd25c2ec9863418960ad35d169c7a, type: 2}
-  ShotIntarvalSecond: 2
+  ShotIntarvalSecond: 4
   ShotPower: 120
   ShotRange: 152.8
   m_use_pqs: 1
@@ -2036,6 +2025,17 @@ MonoBehaviour:
   m_use_bone_controller: 1
   NumDefaultBurstShot: 1
   m_owner_height: 1.3
+--- !u!114 &11465924
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 188752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2edf96acfb8bf347bf15f507539d434, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11470210
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2069,11 +2069,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 991433627a81cf043b9ccab7dcc07ce0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DistanceExclusion: 2
+  DistanceExclusion: 3.5
   EularFovExclusion: 0
   shape: 0
-  PointFieldSize: 6
-  FieldDetailX: 18
+  PointFieldSize: 20
+  FieldDetailX: 12
   FieldDetailY: 5
   IsRamdomPoint: 0
   MaxSamplingCount: -1

@@ -101,7 +101,7 @@ public class ShootAndMove : TaskBase {
         if (me_tor_target.magnitude > m_move_speed)
             me_tor_target = me_tor_target.normalized * m_move_speed;
 
-        m_owner_object.transform.position = Vector3.Lerp(m_owner_object.transform.position, target_point, 0.05f);
+        m_owner_object.transform.position = Vector3.Lerp(m_owner_object.transform.position, target_point, 0.025f);
        // m_owner_object.transform.position += me_tor_target * Time.deltaTime; ;
     }
 
