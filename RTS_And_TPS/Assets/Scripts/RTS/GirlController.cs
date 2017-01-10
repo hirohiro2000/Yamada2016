@@ -38,6 +38,7 @@ public class GirlController : NetworkBehaviour
 
 	public float				m_moveSpeed						= 1.0f;
     public float                m_LiftingForce					= 1.0f;
+    public float                m_JumpForce                     = 0.0f;
     public GameObject           m_symbolPivot					= null;
 	public GameObject		    m_routingError					= null;
 
@@ -109,6 +110,11 @@ public class GirlController : NetworkBehaviour
         //  C4爆弾を起動する
         if( Input.GetKeyDown( KeyCode.Period ) ){
             CmdExplodingC4();
+        }
+        //  ジャンプする
+        if( Input.GetKeyDown( KeyCode.M )
+        &&  Mathf.Abs( m_rRigid.velocity.y ) < 0.01f ){
+            m_rRigid.AddForce( Vector3.up * m_JumpForce, ForceMode.Impulse );
         }
         //　乗れるロボットの検索
         if ( Input.GetKeyDown(KeyCode.Space) )
@@ -203,7 +209,7 @@ public class GirlController : NetworkBehaviour
 	}
     void UpdateVehicle()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             CmdRidingVehicle(gameObject.GetComponent<NetworkIdentity>().netId, m_ridingVehicle.GetComponent<NetworkIdentity>().netId, false);
             return;
@@ -228,7 +234,7 @@ public class GirlController : NetworkBehaviour
         Vector3 moveAmount      =   direction * axis * m_moveSpeed * Time.deltaTime;
         //  瀕死状態なら減速 
         if( m_rPlayerHP.m_IsDying ) moveAmount  =   moveAmount * 0.2f;
-    	transform.localPosition +=  moveAmount;
+    	transform.position +=  moveAmount;
     	
     	//	rotate
     	Vector3 animDir 		= direction;
@@ -286,6 +292,11 @@ public class GirlController : NetworkBehaviour
 
         m_itemCntroller.AddResourceCost( -param.GetCurLevelParam().GetUpCost());
         CmdLevelUpResource( targetPosition );
+
+        // 効果音再生
+        SoundController.PlayNow( "UI_LevelUP",  0.0f, 0.05f, 0.92f, 4.0f );
+        //SoundController.PlayNow( "UI_LevelUP2", 0.0f, 0.1f, 1.0f, 2.0f );
+        //SoundController.PlayNow( "UI_LevelUP3", 0, 0.05f, 1.2f, 2.0f );
 
         return true;
     }

@@ -153,7 +153,10 @@ public class GameManager : NetworkBehaviour {
 
         //  カウント音
         {
-            int curCount    =   ( int )( c_StartCDTime - m_StateTimer ) + 1;
+            int curCount    =   ( int )( c_StartCDTime  - m_StateTimer ) + 1;
+            if( m_State == State.WaveReady ){
+                curCount    =   ( int )( c_WaveInterval - m_StateTimer ) + 1;
+            }
 
             //  カウントチェック
             if( m_State == State.CountDown
@@ -174,13 +177,13 @@ public class GameManager : NetworkBehaviour {
         //  空模様を更新
         m_rSkyManager.ChangeSky( Mathf.Max( m_WaveLevel - 1, 0 ) );
 
-        //  ＵＩの更新
+        //  ＵＩの更新  
         {
             if( m_rWaveText )       m_rWaveText.text        =   m_WaveLevel.ToString();
             if( m_rResourceText )   m_rResourceText.text    =   ( ( int )m_Resource ).ToString();
             if( m_rScoreText )      m_rScoreText.text       =   ( ( int )m_GlobalScore ).ToString();
 
-            //  ダメージフィルター更新
+            //  ダメージフィルター更新  
             if( m_rLinkManager
             &&  m_rLinkManager.m_rLocalPlayer ){
                 GameObject      rMyPlayer   =   m_rLinkManager.m_rLocalPlayer;
@@ -199,8 +202,7 @@ public class GameManager : NetworkBehaviour {
         }
 
         //  キー入力  
-        if( Input.GetKeyDown( KeyCode.Return )
-        ||  Input.GetMouseButtonDown( 2 ) ){
+        if( Input.GetKeyDown( KeyCode.Return ) ){
             if( m_State == State.CountDown
             &&  !GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) ){
                 if( NetworkServer.active )  SetToList_IsReady( m_rLinkManager.m_LocalPlayerID, true );
@@ -779,7 +781,7 @@ public class GameManager : NetworkBehaviour {
     }
     void    CheckWhetherExist_Float( SyncListFloat _rList, int _NeedCount )
     {
-        //  項目がなければ拡張する
+        //  項目がなければ拡張する 
         if( _rList.Count < _NeedCount ){
             //  必要な項目の数を計算
             int needItem    =   _NeedCount - _rList.Count;
@@ -861,19 +863,21 @@ public class GameManager : NetworkBehaviour {
     void    StandbyProc_Wave()
     {
         //  ウェーブ開始音 
-        SoundController.PlayNow( "WaveStart", 1.2f, 0.5f, 1.0f, 2.0f );
+        SoundController.PlayNow( "WaveStart", 1.2f, 0.5f, 1.0f, 4.0f );
 
         //  BGM変更  
         {
-            bool    isPeek  =   m_WaveLevel % 3 == 0;
+            bool    isPeek  =   m_WaveLevel % 3 == 0 && m_WaveLevel > 0;
             if( isPeek ){
                 int numBGM      =   3;
                 int useBGMID    =   ( ( m_WaveLevel / 3 ) - 1 ) % numBGM;
-                BGMManager.ChangeBGM( "BGM_InBattle_Peek_" + useBGMID, 0.5f, 0.0f, 1.0f, 2.0f );
+
+                BGMManager.ChangeBGM( "BGM_InBattle_Peek_" + useBGMID, 0.5f, 0.0f, 1.0f, 2.0f );                
             }
             else{
                 int numBGM      =   4;
                 int useBGMID    =   ( m_WaveLevel / 3 ) % numBGM;
+
                 BGMManager.ChangeBGM( "BGM_InBattle_" + useBGMID, 0.5f, 0.0f, 1.0f, 2.0f );
             }
         }

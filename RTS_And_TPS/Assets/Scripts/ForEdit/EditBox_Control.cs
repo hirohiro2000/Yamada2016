@@ -7,6 +7,8 @@ public class EditBox_Control : MonoBehaviour {
 
     public  float       c_BaseScale     =   1.0f;
     public  bool        c_CombineMesh   =   false;
+    public  bool        c_SetMaterial   =   true;
+    public  bool        c_SetUV         =   true;
 
     public  Material[]  c_Material      =   null;
 
@@ -14,11 +16,15 @@ public class EditBox_Control : MonoBehaviour {
 	void    Start()
     {
         //  マテリアル初期化
-        SetMaterial();
+        if( c_SetMaterial ){
+            SetMaterial();
+        }
 
         //  ＵＶ調整
-        Vector3 size    =   transform.localScale / c_BaseScale;
-	    SetUV( ( int )size.x, ( int )size.y, ( int )size.z );
+        if( c_SetUV ){
+            Vector3 size    =   transform.localScale / c_BaseScale;
+	        SetUV( ( int )size.x, ( int )size.y, ( int )size.z );
+        }
 
         //  メッシュ最適化
         if( c_CombineMesh ){
@@ -116,7 +122,7 @@ public class EditBox_Control : MonoBehaviour {
             //  サブメッシュの数
             rFilter.mesh.subMeshCount   =   numMesh;
 
-            //  サブメッシュの構成情報を設定
+            //  サブメッシュの構成情報を設定 
             {
                 int indexOffset     =   0;
                 for( int m = 0; m < numMesh; m++ ){

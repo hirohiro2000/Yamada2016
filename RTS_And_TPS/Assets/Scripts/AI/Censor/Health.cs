@@ -82,7 +82,7 @@ public class Health : NetworkBehaviour {
             GameObject          rPlayer     =   m_rLinkManager.m_rLocalPlayer;
             if( rPlayer ){
                 rControl.c_PartnerID        =   KillerID;
-                rControl.c_Score            =   Resource + Mathf.Max( Level - 1, 0 );
+                rControl.c_Score            =   Resource;// + Mathf.Max( Level - 1, 0 );
             }
         }
 
@@ -237,10 +237,10 @@ public class Health : NetworkBehaviour {
             }
 
             //  キルを通知（RTS） 
-            if( _IsTowerAttack ){
-                if( NetworkServer.active )  m_rGameManager.SetAcqRecord     ( "あなたの防衛施設が敵を撃破しました！", KillerID );
-                                            m_rGameManager.RpcRecordNotice  ( "あなたの防衛施設が敵を撃破しました！", KillerID );
-            }
+            //if( _IsTowerAttack ){
+            //    if( NetworkServer.active )  m_rGameManager.SetAcqRecord     ( "あなたの防衛施設が敵を撃破しました！", KillerID );
+            //                                m_rGameManager.RpcRecordNotice  ( "あなたの防衛施設が敵を撃破しました！", KillerID );
+            //}
 
             //  キルを記録
             m_rGameManager.SetToList_Kill( KillerID, 1 );

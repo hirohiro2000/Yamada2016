@@ -83,9 +83,13 @@ public class UIGirlTaskSelect : MonoBehaviour
 		if( !Input.GetKeyDown( m_cancelKey ))
 			return;
 
-		if( m_resourceInformation.CheckExistResourceFromPosition( computePosition ) )
+        //  効果音再生（パネルを出す）
+        SoundController.PlayNow( "UI_MenuOpen", 0.0f, 0.1f, 1.0f, 1.0f );
+
+        var param = m_resourceInformation.GetResourceParamFromPosition( computePosition );
+        if( param )
 		{
-			m_buttonLevel.SetActive(true);
+			m_buttonLevel.SetActive( param.CheckWhetherCanUpALevel() && param.GetCurLevelParam().GetUpCost() <= m_itemController.GetHaveCost() );
 			m_buttonBreak.SetActive(true);
 			m_buttonCancel.SetActive(true);
 			m_mode = MODE.eConvert;
@@ -99,14 +103,16 @@ public class UIGirlTaskSelect : MonoBehaviour
     }
     void UpdateCreate( Vector3 computePosition )
     {
-        if ( m_resourceInformation.CheckExistResourceFromPosition( computePosition ) )
+		var param = m_resourceInformation.GetResourceParamFromPosition( computePosition );
+        if( param )
         {
             m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = false;
             m_resourceCreator.SetGuideVisibleDisable();
             m_itemController.SetActive(false);
     		m_towerInfoPanel.SetActive(false);
 
-			m_buttonLevel.SetActive(true);
+            // ＵＩ更新
+			m_buttonLevel.SetActive( param.CheckWhetherCanUpALevel() && param.GetCurLevelParam().GetUpCost() <= m_itemController.GetHaveCost() );
 			m_buttonBreak.SetActive(true);
 			m_buttonCancel.SetActive(true);
 
@@ -136,21 +142,15 @@ public class UIGirlTaskSelect : MonoBehaviour
             m_resourceCreator.SetGuideVisibleDisable();
         }
 
-        
-        if ( Input.GetKeyDown( m_okKey ) )
-        {
-            // 生成
-            result = RESULT.eOK;
-        }
 
-        // ショートカット
+        // 生成( ショートカット )
         for (int i = 0; i < m_itemController.GetNumKind(); i++)
         {
-            if ( Input.GetKeyDown(KeyCode.Alpha1+ i) )
-            {
-                result = RESULT.eOK;
-                m_itemController.SetForcus(i);
-            }
+            if ( Input.GetKeyDown(KeyCode.Alpha1+ i)             == false ) continue;
+            if ( m_itemController.CheckWhetherTheCostIsEnough(i) == false ) continue;
+
+            result = RESULT.eOK;
+            m_itemController.SetForcus(i);
         }
 
     }
@@ -159,7 +159,6 @@ public class UIGirlTaskSelect : MonoBehaviour
 		var param = m_resourceInformation.GetResourceParamFromPosition( computePosition );
         if( !param )
         {
-
 			m_buttonLevel.SetActive(false);
 			m_buttonBreak.SetActive(false);
 			m_buttonCancel.SetActive(false);
@@ -185,17 +184,16 @@ public class UIGirlTaskSelect : MonoBehaviour
 		//	リソースの範囲表示更新
 		m_resourceCreator.UpdateGuideRange( computePosition );
 
-        if (Input.GetKeyDown(m_okKey) && param != null && param.CheckWhetherCanUpALevel())
+        if (Input.GetKeyDown(m_okKey) && param.CheckWhetherCanUpALevel() && param.GetCurLevelParam().GetUpCost() <= m_itemController.GetHaveCost() )
         {
             // 強化
             result = RESULT.eLevel;
         }
-        else if (Input.GetKeyDown(m_breakKey) && param != null)
+        else if (Input.GetKeyDown(m_breakKey))
         {
             // 破壊
             result = RESULT.eBreak;
         }
-               
     }
     
     // ボタン専用設定
