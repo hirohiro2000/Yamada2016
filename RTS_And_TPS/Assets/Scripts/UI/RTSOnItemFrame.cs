@@ -26,28 +26,45 @@ public class RTSOnItemFrame : MonoBehaviour,
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // 作成に必要なコストが足りない場合[-1]を設定する
-        int forcusID =  m_itemController.CheckWhetherTheCostIsEnough( id ) ? id : -1;
+        m_uiGirlTaskSelect.SetForcusByButton( id );
+        SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, Random.Range( 0.95f, 1.05f ), 1.0f );
 
-        m_itemController.SetForcus(forcusID);
-        m_uiGirlTaskSelect.SetForcus(id);
-
-        m_cursor.Require(this.transform.parent.gameObject, RTSCursor.MODE.eUI);
+//        // 作成に必要なコストが足りない場合[-1]を設定する
+//        int forcusID =  m_itemController.CheckWhetherTheCostIsEnough( id ) ? id : -1;
+//
+//        m_itemController.SetForcus(forcusID);
+//        m_uiGirlTaskSelect.SetForcus(id);
+//
+//        m_cursor.Require(this.transform.parent.gameObject, RTSCursor.MODE.eUI);
+//
+//        //  効果音再生
+//        SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, Random.Range( 0.95f, 1.05f ), 1.0f );
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        m_itemController.SetForcus(-1);
-        m_uiGirlTaskSelect.SetForcus(-1);
-        m_cursor.Destruction(this.transform.parent.gameObject);
+        m_uiGirlTaskSelect.SetForcusByButton(-1);
+//        m_cursor.Destruction(this.transform.parent.gameObject);
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (m_itemController.CheckWhetherTheCostIsEnough(id))
-        {
-            m_itemController.SetForcus(id);
-            m_uiGirlTaskSelect.SetForcus(id);
-            m_uiGirlTaskSelect.SelectOK();
-        }
+        if( eventData.button == PointerEventData.InputButton.Right )  return;
+
+        m_uiGirlTaskSelect.SelectOKByButton( id );
+
+//        if (m_itemController.CheckWhetherTheCostIsEnough(id))
+//        {
+//            m_itemController.SetForcus(id);
+//            m_uiGirlTaskSelect.SetForcus(id);
+//            m_uiGirlTaskSelect.SelectOK();
+//
+//            //  効果音再生  
+//            SoundController.PlayNow( "UI_Click2", 0.0f, 0.1f, 1.24f, 1.0f );
+//            SoundController.PlayNow( "UI_Click", 0.0f, 0.1f, 0.84f, 1.0f );
+//        }
+//        else{
+//            //  効果音再生
+//            SoundController.PlayNow( "UI_NG", 0.0f, 0.1f, 0.64f, 1.0f );
+//        }
     }
 
 }

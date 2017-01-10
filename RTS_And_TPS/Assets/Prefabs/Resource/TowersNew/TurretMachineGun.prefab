@@ -442,7 +442,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 155278}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -49.82344, y: 6, z: 57.13}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -705,7 +705,7 @@ MonoBehaviour:
   - {fileID: 421094}
   - {fileID: 403270}
   m_orientatedTransform: {fileID: 407028}
-  m_seName: 
+  c_ShotSound: {fileID: 158640, guid: 43b134adae3938c4c81160b7b67816eb, type: 2}
 --- !u!114 &11405786
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -766,25 +766,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 763b25596baf47b4eac7eabbd537575d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_CompleteEmission:
+  - {fileID: 158640, guid: bd6b8853680fedf4685925782f4063a2, type: 2}
+  c_DuringSound: {fileID: 158640, guid: c2989b3a60c8736428f930122066ef23, type: 2}
   height:
     serializedVersion: 2
     m_Curve:
     - time: 0
-      value: -5.5
-      inSlope: 5.5
-      outSlope: 5.5
+      value: -3.3418338
+      inSlope: 3.3418338
+      outSlope: 3.3418338
       tangentMode: 10
     - time: 1
       value: 0
-      inSlope: 5.5
-      outSlope: 5.5
+      inSlope: 3.3418338
+      outSlope: 3.3418338
       tangentMode: 10
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
   originHeight: 0
   timer: 0
-  timeSpeed: 1
+  timeSpeed: 0.1
   originalPlate: {fileID: 118720, guid: 49e23c7961287d6448353cd1ea4ae4a8, type: 2}
 --- !u!114 &11420002
 MonoBehaviour:
@@ -836,7 +839,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002d41c214277184fae0483bea09af24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_name: "\u9023\u5C04\u30BF\u30EC\u30C3\u30C8"
+  c_HitEmission: {fileID: 158640, guid: 955e542a3a25cd14eb990e918dee7f74, type: 2}
+  c_ExplodedData:
+  - rPosition: {fileID: 407028}
+    rEmitObj: {fileID: 168904, guid: 02db6db112f77984d80d9014a8bf64f9, type: 2}
+  - rPosition: {fileID: 441218}
+    rEmitObj: {fileID: 104920, guid: f2452ec09010adc468af729840c182b7, type: 2}
+  c_DestroyEmit: {fileID: 158640, guid: aecaaf1ca3d909a48a533dc2afd80c55, type: 2}
+  m_name: "25mm\u9023\u88C5\u6A5F\u9283"
   m_summary: "\u9023\u5C04\u901F\u5EA6\u304C\u901F\u3044"
   m_createCost: 112
   m_breakCost: 79
@@ -846,18 +856,18 @@ MonoBehaviour:
     list:
     - hp: 15
       power: 8
-      range: 10
+      range: 40
       interval: 0.5
-      upCost: 117
+      upCost: 76
     - hp: 20
-      power: 12
-      range: 12
-      interval: 0.3
-      upCost: 161
+      power: 9
+      range: 40
+      interval: 0.4
+      upCost: 134
     - hp: 40
-      power: 20
-      range: 14
-      interval: 0.1
+      power: 10
+      range: 40
+      interval: 0.3
       upCost: 0
 --- !u!114 &11428122
 MonoBehaviour:
@@ -872,6 +882,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_rResoureceParam: {fileID: 11425446}
   m_rHealthBar: {fileID: 11445402}
+  m_rLevelText: {fileID: 11475592}
 --- !u!114 &11444508
 MonoBehaviour:
   m_ObjectHideFlags: 1

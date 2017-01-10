@@ -69,6 +69,11 @@ public class CrystalFarm_Control : NetworkBehaviour {
             //  配置設定
             rTrans.position     =   transform.position + Vector3.up * 2.0f;
 
+            //  パラメータ設定 
+            ResourceObject_Control  rControl    =   rObj.GetComponent< ResourceObject_Control >();
+            rControl.m_Resource =   25 + 25 * ( 3 - m_Energy );
+            rControl.m_Resource *=  ( GetComponent< ResourceParameter >().m_level + 1 );
+
             //  ネットワークで共有
             NetworkServer.Spawn( rObj );
         }

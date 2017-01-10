@@ -26,11 +26,12 @@ public class PlayerCommander_Control : NetworkBehaviour {
             Cursor.visible      =   true;
 
             //  プレイヤー名取得
-            m_EditName  =   PlayerPrefs.GetString( "PlayerName", "Null" );
+            m_EditName          =   PlayerPrefs.GetString( "PlayerName", "Null" );
 
-            // BGM再生
-            SoundController bgm = SoundController.Create("BGM1",this.transform);
-            bgm.Play();
+            //  BGM再生
+            //BGMManager.ChangeBGM( "BGM1", 0.5f, 0.0f, 0.0f );
+            //SoundController bgm = SoundController.Create("BGM1",this.transform);
+            //bgm.Play();
         }
     }
 	

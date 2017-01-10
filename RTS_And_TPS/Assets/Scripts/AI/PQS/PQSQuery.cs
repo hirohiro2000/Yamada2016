@@ -41,6 +41,10 @@ public class PQSQuery : MonoBehaviour {
     private int MaxSamplingCount = -1;
     public int GetMaxSamplingCount() { return MaxSamplingCount; }
 
+    [SerializeField, HeaderAttribute("ポイントを作る際の高さ調整(飛行敵)")]
+    private float AdjustHeight = .0f;
+    public float GetAdjustHeight() { return AdjustHeight; }
+
     private PointScoringBase m_point_rater = null;
     public PointScoringBase GetPointRater() { return m_point_rater; }
 

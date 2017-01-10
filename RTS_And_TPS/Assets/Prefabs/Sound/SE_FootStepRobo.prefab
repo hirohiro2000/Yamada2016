@@ -45,8 +45,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_SEName: FootStep_Robo
   c_PlayType: 1
+  c_PlayMode: 0
   c_VolumeRatio: 1
   c_PitchRatio: 1
+  c_Delay: 0
   c_LifeTime: 1
   c_ParentMe: 0
 --- !u!114 &11431356
@@ -88,10 +90,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1abb7c7c22a4c64290e7bdaf299af4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_SEName: DebrisGet2
+  c_SEName: FootStep_Robo2
   c_PlayType: 1
+  c_PlayMode: 0
   c_VolumeRatio: 1
   c_PitchRatio: 1
+  c_Delay: 0
   c_LifeTime: 1
   c_ParentMe: 0
 --- !u!1001 &100100000

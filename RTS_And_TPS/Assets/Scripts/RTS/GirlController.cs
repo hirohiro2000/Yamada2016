@@ -8,7 +8,6 @@ using System.Collections.Generic;
 
 public class GirlController : NetworkBehaviour
 {
-
     public  GameObject          c_Drum							= null;
     private float               c_DrumCost						= 15.0f;
 
@@ -18,7 +17,7 @@ public class GirlController : NetworkBehaviour
     public  GameObject          c_C4							= null;
     private float               c_C4Cost						= 35.0f;
 
-    private UIGirlTaskSelect    m_uiGirlTaskSelect				= null;
+    private UIGirlTaskSelect    m_uiGirlTask    				= null;
 
 	private ResourceInformation	m_resourceInformation			= null;
 	private ResourceCreator		m_resourceCreator				= null;
@@ -33,12 +32,13 @@ public class GirlController : NetworkBehaviour
     private LinkManager         m_rLinkManager					= null;
     private C4Shell_Control     m_rC4Shell						= null;
 
-	private const KeyCode		m_okKey							= KeyCode.J;
-	private const KeyCode		m_cancelKey						= KeyCode.L;
-	private const KeyCode		m_breakKey						= KeyCode.K;
+	private const KeyCode		m_okKey							= KeyCode.Z;
+	private const KeyCode		m_cancelKey						= KeyCode.X;
+	private const KeyCode		m_breakKey						= KeyCode.C;
 
 	public float				m_moveSpeed						= 1.0f;
     public float                m_LiftingForce					= 1.0f;
+    public float                m_JumpForce                     = 0.0f;
     public GameObject           m_symbolPivot					= null;
 	public GameObject		    m_routingError					= null;
 
@@ -50,362 +50,19 @@ public class GirlController : NetworkBehaviour
 	}
 	private ActionState			m_actionState	= ActionState.Common;
     
-    private NavMeshAgent        m_navAgent      = null;
-    private bool                m_isEditMode    = false;
-    private Vector3             m_editTarget    = Vector3.zero;
+    private bool                m_isMove        = false;
 
-    private Transform           m_ridingVehicle = null;
-
-    interface IMoveToTargetCallback
-    {
-        void OnStart();
-        void OnStop();
-        void OnPositionEnter();
-    }
-    class MoveSubContractor
-    {
-        public class TargetData
-        {
-            public bool     m_userInput   { get; set; }
-            public Vector3  m_targetPoint { get; set; }
-            public IMoveToTargetCallback m_callback { get; set; }
-        }
-        GirlController              m_controller        { get; set; }
-        Vector3                     m_currentTarget     { get; set; } 
-        NavMeshAgent                m_agent             { get { return m_controller.m_navAgent; } }
-        public List<TargetData>     m_targetStack       { get; set; }
-        public bool                 m_isMoveByKey       { get; private set; }
-
-        public MoveSubContractor(GirlController controller)
-        {
-            this.m_isMoveByKey  = false;
-            this.m_controller   = controller;
-            m_targetStack       = new List<TargetData>();
-        }
-
-        public  void Update()
-        {
-            UpdateAgent( m_isMoveByKey );
-        }
-        public  void FixedUpdate()
-        {
-            m_isMoveByKey = MoveByKey();
-        }
-        private void UpdateAgent( bool keyMove )
-        {
-            // キーボードによるプレイヤーの操作が行われているか？
-            if ( keyMove && m_agent.enabled )
-            {
-                m_agent.ResetPath();
-                m_agent.enabled = false;
-                return;
-            }    
-                        
-            
-            // 左クリックによる移動の更新
-            //  速度設定
-            if( m_controller.m_rPlayerHP.m_IsDying )    m_agent.speed   = m_controller.m_moveSpeed * 0.2f;
-            else                                        m_agent.speed   = m_controller.m_moveSpeed;
-            MoveByMouse();
-            
-
-            // 動作していないかの判定
-            if ( m_agent.enabled     == false )   return;
-            if ( m_targetStack.Count == 0 )       return;
-            
-            // 目標地点に到達したかによる判定
-            bool arrivedOnTarget  = ( m_agent.hasPath == false );
-                 arrivedOnTarget |= ( ( m_controller.transform.position - m_currentTarget ).magnitude <= m_agent.stoppingDistance );
-               
-            if ( arrivedOnTarget == false ) return;
-
-            // 目標に到達のでコールバックを呼び出します
-            TargetData current = m_targetStack[m_targetStack.Count-1];
-            if ( current.m_callback != null )
-            {
-                current.m_callback.OnStop();
-                current.m_callback.OnPositionEnter();
-            }
-
-            //　次の目標へ設定し直します
-            ToTheNextTargetPosition();
-
-            return;
-        }
-
-        private bool MoveByKey()
-    	{		
-    		//	move
-    		float v = Input.GetAxis ("Vertical");
-    		float h = Input.GetAxis ("Horizontal");
-    
-    		Vector3 cameraForward 	= Vector3.Scale( Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
-    		Vector3 direction 		= cameraForward * v + Camera.main.transform.right * h;
-    
-    		direction.Normalize();
-
-    		float   axis		    =   ( Mathf.Abs(v) > Mathf.Abs(h) )? Mathf.Abs(v) : Mathf.Abs(h);
-            Vector3 moveAmount      =   direction * axis * m_controller.m_moveSpeed * Time.deltaTime;
-            //  瀕死状態なら減速 
-            if( m_controller.m_rPlayerHP.m_IsDying ) moveAmount  =   moveAmount * 0.2f;
-    		m_controller.transform.localPosition +=  moveAmount;
-    		
-    		//	rotate
-    		Vector3 animDir 		= direction;
-    		animDir.y 				= 0;
-    
-    		if ( animDir.sqrMagnitude > 0.001f )
-    		{
-    			Vector3 newDir 		            = Vector3.RotateTowards( m_controller.transform.forward, animDir, 10.0f*Time.deltaTime, 0f );
-    			m_controller.transform.rotation 	= Quaternion.LookRotation( newDir );
-    		}
-            
-            // Did a player move by a key?
-            float   expValue        = 0.1f;
-            return ( axis > expValue );
-    	}
-        private void MoveByMouse()
-        {
-            if ( RTSCursor.m_curMode == RTSCursor.MODE.eNone && Input.GetMouseButton(0))
-            {                
-                Vector3 hitPoint;
-                if (RayToField( out hitPoint ) )
-                {
-                    AddNewTargetPosition( hitPoint, true, null );
-                }
-            }
-
-        }      
-
-        // [isUserData]が[true]の場合呼ばれません
-        public  bool AddNewTargetPosition( Vector3 target, bool isUserData, IMoveToTargetCallback callback )
-        {
-            if (m_targetStack.Count > 0)
-            {
-                TargetData data = m_targetStack[m_targetStack.Count-1];
-                if ( data.m_userInput == false && data.m_callback != null )
-                {
-                    data.m_callback.OnStop();
-                }
-            }
-
-            //　エージェントの起動と設定
-            m_agent.enabled   = true;
-            NavMeshPath path = new NavMeshPath();
-            if (m_agent.CalculatePath(target, path) && (path.status == NavMeshPathStatus.PathComplete))
-            {
-                m_currentTarget = target;
-                m_agent.SetPath(path);
-
-                if (callback != null)
-                {
-                    callback.OnStart();
-                }
-
-                // 最上部が左クリックによる移動かつ追加しようとしているデータも左クリックによるものである
-                if (isUserData && PeekIsUserInput())
-                {
-                    TargetData currentData = m_targetStack[m_targetStack.Count - 1];
-                    currentData.m_targetPoint = target;
-                }
-                else
-                {
-                    // ターゲット情報を追加
-                    TargetData newData = new TargetData();
-                    newData.m_userInput = isUserData;
-                    newData.m_targetPoint = target;
-                    newData.m_callback = callback;
-                    m_targetStack.Add(newData);
-                }
-                return true;
-            }
-
-            return false;
-        }
-        private void ToTheNextTargetPosition()
-        {
-            m_targetStack.RemoveAt(m_targetStack.Count-1);
-            
-            if ( m_targetStack.Count > 0 )
-            {
-                // 次のターゲットを繰り上げて設定する( [m_enabled == false]の場合割愛される )
-                TargetData nextTarget = m_targetStack[m_targetStack.Count-1];
-
-                NavMeshPath path = new NavMeshPath();
-                if (m_agent.CalculatePath(nextTarget.m_targetPoint, path) && (path.status == NavMeshPathStatus.PathComplete))
-                {
-                    m_currentTarget = nextTarget.m_targetPoint;
-
-                    //　エージェントの起動と設定
-                    m_agent.enabled = true;
-                    m_agent.SetPath(path);
-                
-                    if (nextTarget.m_callback != null)
-                    {
-                        nextTarget.m_callback.OnStart();
-                    }
-                }
-                
-            }
-            else
-            {
-                m_agent.ResetPath();
-                m_agent.enabled = false;
-            }
-        }
-
-        public  void RemoveAt(int index)
-        {
-            if (index == 0)
-            {
-                ToTheNextTargetPosition();
-                return;
-            }            
-
-            m_targetStack.RemoveAt( index );
-
-        }
-
-        private bool PeekIsUserInput()
-        {
-            // 最上部は左クリックによる操作か？
-            if ( m_targetStack.Count > 0 )
-            {
-                TargetData currentData = m_targetStack[m_targetStack.Count-1];
-                return currentData.m_userInput;
-            }
-            return false;
-        }
-        private bool RayToField(out Vector3 hitPoint)
-        {
-            RaycastHit hit = new RaycastHit();
-            int layerMask = LayerMask.GetMask("Field");
-            Vector3 mousePosition = Input.mousePosition;
-            Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-
-            if (Physics.Raycast(ray, out hit, float.MaxValue, layerMask))
-            {
-                hitPoint = hit.point;
-                return true;
-            }
-
-            hitPoint = Vector3.zero;
-            return false;
-        }
-
-    }
-    MoveSubContractor m_moveContractor = null;
-
-    class ActionCreate : IMoveToTargetCallback
-    {
-        int             resourceID      { get; set; }
-        GirlController  controller      { get; set; }
-        GameObject      targetSymbol    { get; set; }
-        Vector3         targetPosition  { get; set; }
-        public ActionCreate( int resourceID, GirlController controller, Vector3 targetPosition )
-        {
-            this.resourceID         = resourceID;
-            this.controller         = controller;
-            this.targetPosition     = targetPosition;
-        }
-        public void OnStart()
-        {
-            if ( targetSymbol != null ) return;
-            targetSymbol = Instantiate( controller.m_symbolPivot );
-            targetSymbol.transform.position = targetPosition;
-        }
-        public void OnStop()
-        {
-            if ( targetSymbol == null ) return;
-            Destroy( targetSymbol );
-        }
-        public void OnPositionEnter()
-        {
-            controller.m_resourceCreator.SetGuideResourcePosition( resourceID, targetPosition );
-
-            var obj         = controller.m_resourceCreator.AddResource(resourceID);
-            var forcusParam = controller.m_itemCntroller.GetForcusResourceParam();
-
-            controller.m_itemCntroller.AddResourceCost(-forcusParam.GetCreateCost());
-
-            //	置かれたのがドローンだったらドローン操作に切り替え
-            const int droneID = 8;
-            if (resourceID == droneID)
-            {
-                controller.m_cameraSwitcher.On(obj);
-                controller.m_actionState = ActionState.Drone;
-            }
-            else
-            {
-                controller.m_actionState = ActionState.Common;
-            }
-
-        }
-    }
-    class ActionConvert : IMoveToTargetCallback
-    {
-        GirlController  controller          { get; set; }
-        Vector3         targetPosition     { get; set; }
-        public ActionConvert( GirlController controller, Vector3 targetPosition )
-        {
-            this.controller         = controller;
-            this.targetPosition     = targetPosition;
-        }
-        public void OnStart()
-        {
-        }
-        public void OnStop()
-        {
-        }
-        public void OnPositionEnter()
-        {
-   		    //	今いるマスにリソースがなかった
-    		var param = controller.m_resourceInformation.GetResourceParamFromPosition( targetPosition );
-            if( param == null )
-    		{
-                Debug.Log("err");
-                return;
-            }
-            controller.m_itemCntroller.AddResourceCost( -param.GetCurLevelParam().GetUpCost());
-        	controller.CmdLevelUpResource( targetPosition );
-        }
-    }
-    class ActionBreak : IMoveToTargetCallback
-    {
-        GirlController  controller          { get; set; }
-        Vector3         targetPosition      { get; set; }
-        public ActionBreak( GirlController controller, Vector3 targetPosition )
-        {
-            this.controller         = controller;
-            this.targetPosition     = targetPosition;
-        }
-        public void OnStart()
-        {
-        }
-        public void OnStop()
-        {
-        }
-        public void OnPositionEnter()
-        {
-    		var param = controller.m_resourceInformation.GetResourceParamFromPosition( targetPosition );
-            if( param == null )
-    		{
-                Debug.Log("err");
-                return;
-            }
-        	controller.m_itemCntroller.AddResourceCost( param.GetBreakCost() );
-            controller.CmdBreakResource( targetPosition );
-        }
-    }
+    private GameObject          m_ridingVehicle = null;
 
 	// Use this for initialization
 	void Start ()
 	{
-        Transform   rHUD                            = GameObject.Find( "Canvas" ).transform.FindChild("RTS_HUD");
-        m_uiGirlTaskSelect                          = rHUD.GetComponent<UIGirlTaskSelect>();
-        m_uiGirlTaskSelect.m_rResourceInformation   = GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
-        m_uiGirlTaskSelect.m_itemCntroller          = GetComponent<ItemController>();
-        m_uiGirlTaskSelect.Clear();
+        Transform   rHUD                      = GameObject.Find( "Canvas" ).transform.FindChild("RTS_HUD");
+        m_uiGirlTask                          = rHUD.GetComponent<UIGirlTaskSelect>();
+        m_uiGirlTask.m_resourceInformation    = GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
+        m_uiGirlTask.m_resourceCreator        = GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
+        m_uiGirlTask.m_itemController         = GetComponent<ItemController>();
+        m_uiGirlTask.Reset();
 
 		m_resourceInformation			= GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
 		m_resourceCreator				= GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
@@ -416,20 +73,8 @@ public class GirlController : NetworkBehaviour
   		m_cameraSwitcher				= GetComponent<GirlDroneSwitcher>();
 		m_rRigid                        = GetComponent< Rigidbody >();
         m_rPlayerHP                     = GetComponent< TPSPlayer_HP >();
-		
-        //  ローカルでのみエージェントを追加
-        if( isLocalPlayer ){
-            m_navAgent                      = gameObject.AddComponent<NavMeshAgent>();
-            m_navAgent.acceleration			= float.MaxValue;
-            m_navAgent.angularSpeed			= float.MaxValue;
-            m_navAgent.stoppingDistance		= 1.0f;
-            m_navAgent.Warp( transform.position );
-            m_navAgent.ResetPath();
-        }
-        
+		        
         m_animationController = GetComponent< RTS_PlayerAnimationController >();
-
-        m_moveContractor = new MoveSubContractor(this);
     } 
 
 	//	Write to the FixedUpdate if including physical behavior
@@ -466,10 +111,26 @@ public class GirlController : NetworkBehaviour
         if( Input.GetKeyDown( KeyCode.Period ) ){
             CmdExplodingC4();
         }
-        // ロボットに乗る
-        if ( Input.GetKeyDown(KeyCode.Z ) )
+        //  ジャンプする
+        if( Input.GetKeyDown( KeyCode.Space )
+        &&  Mathf.Abs( m_rRigid.velocity.y ) < 0.01f ){
+            m_rRigid.AddForce( Vector3.up * m_JumpForce, ForceMode.Impulse );
+        }
+        //　乗れるロボットの検索
+        if ( Input.GetKeyDown(KeyCode.Space) )
         {
-            m_actionState   = ActionState.Ride;
+            float       nearDistanceSq   = 4.5f;
+            GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
+            for (int i = 0; i < playerList.Length; i++)
+            {               
+                if (this.gameObject == playerList[i])                                                           continue;
+                if (playerList[i].GetComponent<GirlController>() != null)                                       continue;
+
+                float distanceSq = ( transform.position - playerList[i].transform.position ).sqrMagnitude;
+                if ( distanceSq > nearDistanceSq )    continue; 
+
+                CmdRidingVehicle( gameObject.GetComponent<NetworkIdentity>().netId, playerList[i].GetComponent<NetworkIdentity>().netId, true );
+            }
         }
 
         switch ( m_actionState )
@@ -485,7 +146,11 @@ public class GirlController : NetworkBehaviour
 	{
         //  自分のキャラクターの場合のみ処理を行う
         if( !isLocalPlayer ) return;
-        m_moveContractor.FixedUpdate();
+
+        if (m_actionState == ActionState.Common)
+        {
+            m_isMove = MoveByKey();
+        }
 	}
     void UpdateAnimation()
     {
@@ -494,14 +159,9 @@ public class GirlController : NetworkBehaviour
         float   expValue        = 0.1f;
 
         // 速度計算
-        if ( m_moveContractor.m_isMoveByKey )
+        if (m_isMove)
         {
-            speedSq = m_moveSpeed*m_moveSpeed;
-        }
-        else if ( m_navAgent.enabled )
-        {
-            Vector2 walkVelocity    = new Vector2( m_navAgent.velocity.x, m_navAgent.velocity.z );
-            speedSq = walkVelocity.sqrMagnitude;
+            speedSq = m_moveSpeed * m_moveSpeed;
         }
 
         // モーション決定
@@ -517,161 +177,25 @@ public class GirlController : NetworkBehaviour
 
     }
 
-
     //---------------------------------------------------------------------
-    //      すてーと
+    //      ステート
     //---------------------------------------------------------------------   	
     void UpdateCommon()
 	{
-		m_moveContractor.Update();
+        Vector3 editTarget = m_resourceInformation.ComputeGridPosition( transform.position );
 
-        //
-        if ( m_isEditMode == false )
+        // 更新
+        UIGirlTaskSelect.RESULT task = m_uiGirlTask.Select( editTarget );
+        switch ( task )
         {
-            bool    anyEditKey = false;
-
-			//	キークリックでイベント開始判定
-            if ( Input.GetKeyDown( m_okKey ) )
-            {
-                anyEditKey  = true;
-                m_editTarget = m_resourceInformation.ComputeGridPosition( transform.position );
-            }
-    
-			//	マウスでイベント開始判定
-            if ( RTSCursor.m_curMode == RTSCursor.MODE.eNone && Input.GetMouseButtonDown(1))
-            {
-                RaycastHit  hit             = new RaycastHit();
-                int         layerMask       = LayerMask.GetMask( "Field" );
-                Vector3     mousePosition   = Input.mousePosition;
-                Ray         ray             = Camera.main.ScreenPointToRay(mousePosition);
-            
-                if ( Physics.Raycast(ray, out hit, float.MaxValue, layerMask) )
-                {      
-                    m_editTarget = m_resourceInformation.ComputeGridPosition( hit.point );
-
-                    bool navEnabled = m_navAgent.enabled;
-                    
-                    m_navAgent.enabled = true;
-                    NavMeshPath path = new NavMeshPath();
-
-                    if ( m_navAgent.CalculatePath( m_editTarget, path ) && path.status == NavMeshPathStatus.PathComplete )
-                    {
-                        anyEditKey  = true;
-                    }
-                    else if (m_resourceInformation.CheckExistResourceFromPosition(m_editTarget))
-                    {
-                        anyEditKey = true;
-                    }
-                    else if (path.status != NavMeshPathStatus.PathComplete)
-                    {
-                        // 選択されたグリッドの位置に女の子は行けません
-                        GameObject obj = Instantiate(m_routingError);
-                        obj.transform.position = m_editTarget;
-                        obj.transform.position += new Vector3(0, 0.1f, 0);
-                    }
-
-                    m_navAgent.enabled = navEnabled;
-                }
-            }
-
-			//	イベントが開始されたら
-            if ( anyEditKey )
-            {
-                m_isEditMode = true; 
-    
-                m_itemCntroller.SetForcus( -1 );
-                m_uiGirlTaskSelect.Clear();
-
-                // グリッドにオブジェクトが存在するのか
-                if (m_resourceInformation.CheckExistResourceFromPosition(m_editTarget))
-                {
-                    m_uiGirlTaskSelect.ToSelectTheConvertAction();
-					
-					//	リソースのUI設定
-					var param = m_resourceInformation.GetResourceParamFromPosition( m_editTarget );
-					m_uiGirlTaskSelect.m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().GetUpCost().ToString();
-					m_uiGirlTaskSelect.m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.GetBreakCost().ToString();
-
-                }
-                else
-                {
-                    m_uiGirlTaskSelect.ToSelectTheCreateResource();
-
-                    m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = true;
-                    m_resourceInformation.m_gridSplitSpacePlane.transform.position = m_editTarget;
-                    m_resourceInformation.m_gridSplitSpacePlane.transform.position += new Vector3(0, 0.04f, 0);
-                }
-            }
+            case UIGirlTaskSelect.RESULT.eOK:       Create(editTarget,m_itemCntroller.GetForcus());    break;
+            case UIGirlTaskSelect.RESULT.eLevel:    Convert(editTarget);                                break;
+            case UIGirlTaskSelect.RESULT.eBreak:    Break(editTarget);                                  break;
+            default: break;
         }
-        else
-		{ 
-    		var forcusID	= m_itemCntroller.GetForcus();
-    		if ( forcusID != -1 )
-            {
-        		//	リソースの範囲表示更新
-    		    m_resourceCreator.UpdateGuideResource( forcusID, m_editTarget );
-    		    m_resourceCreator.UpdateGuideRange( forcusID, m_editTarget );
-            }
-            else
-            {
-                m_resourceCreator.SetGuideVisibleDisable();
-            }
-    
-            bool isComp   = false;
-            bool isCancel = false;
-            IMoveToTargetCallback callback = null;
-
-            UIGirlTaskSelect.RESULT result = m_uiGirlTaskSelect.result;
-            if( result == UIGirlTaskSelect.RESULT.eCancel || Input.GetKeyDown( m_cancelKey ) || Input.GetMouseButtonDown(1) )
-            {
-                isCancel = true;
-            }
-            else if ( result == UIGirlTaskSelect.RESULT.eOK )
-            {
-                isComp   = true;
-                callback = new ActionCreate( m_itemCntroller.GetForcus(), this, m_editTarget );
-            }
-            else if ( result == UIGirlTaskSelect.RESULT.eLevel )
-            {
-                isComp   = true;
-                callback = new ActionConvert( this, m_editTarget );
-            }
-            else if ( result == UIGirlTaskSelect.RESULT.eBreak )
-            {
-                isComp   = true;
-                callback = new ActionBreak( this, m_editTarget );
-            }
-
-            if ( isComp || isCancel )
-            {
-                m_isEditMode = false;
-                m_uiGirlTaskSelect.SetForcus( -1 );
-                m_uiGirlTaskSelect.Clear();
-                m_resourceCreator.SetGuideVisibleDisable();
-                m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = false;
-
-                
-                // [NavMeshObstacle]によって切り抜かれているのでターゲットの位置を変更
-                if ( result == UIGirlTaskSelect.RESULT.eLevel || result == UIGirlTaskSelect.RESULT.eBreak )
-                {
-                    bool navEnabled = m_navAgent.enabled;
-                    m_navAgent.enabled = true;
-
-                    Vector3 curPosition = m_navAgent.transform.position;
-                    m_navAgent.Warp( m_editTarget );
-                    NavMeshHit navHit = new NavMeshHit();
-                    if ( m_navAgent.FindClosestEdge( out navHit ) )
-                    {
-                        m_editTarget = navHit.position;
-                    }
-                    m_navAgent.Warp( curPosition );
-
-                    m_navAgent.enabled = navEnabled;
-                }
-
-                if ( isComp )
-                    m_moveContractor.AddNewTargetPosition( m_editTarget, false, callback );
-            }
+        if ( task != UIGirlTaskSelect.RESULT.eNone )
+        {
+            m_uiGirlTask.Reset();
         }
 	}
 	void UpdateDrone()
@@ -685,57 +209,109 @@ public class GirlController : NetworkBehaviour
 	}
     void UpdateVehicle()
     {
-        if (m_ridingVehicle == null)
+        if (Input.GetKeyDown(KeyCode.N))
         {
-            float           nearDistance    = 4.5f;
-            GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
-            for (int i = 0; i < playerList.Length; i++)
-            {
-                if (this.gameObject == playerList[i]) continue;
-                if (playerList[i].GetComponent<GirlController>() != null) continue;
-                if ( ( transform.position - playerList[i].transform.position ).sqrMagnitude > nearDistance ) continue; 
+            CmdRidingVehicle(gameObject.GetComponent<NetworkIdentity>().netId, m_ridingVehicle.GetComponent<NetworkIdentity>().netId, false);
+            return;
+        }
+    }
 
-                m_ridingVehicle = playerList[i].transform;
-                return;
-            }
+    //---------------------------------------------------------------------
+    //      アクション
+    //---------------------------------------------------------------------   	
+    bool MoveByKey()
+    {		
+    	//	move
+    	float v = Input.GetAxis ("Vertical");
+    	float h = Input.GetAxis ("Horizontal");
+    
+    	Vector3 cameraForward 	= Vector3.Scale( Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+    	Vector3 direction 		= cameraForward * v + Camera.main.transform.right * h;
+    
+    	direction.Normalize();
+    
+    	float   axis		    =   ( Mathf.Abs(v) > Mathf.Abs(h) )? Mathf.Abs(v) : Mathf.Abs(h);
+        Vector3 moveAmount      =   direction * axis * m_moveSpeed * Time.deltaTime;
+        //  瀕死状態なら減速 
+        if( m_rPlayerHP.m_IsDying ) moveAmount  =   moveAmount * 0.2f;
+    	transform.position +=  moveAmount;
+    	
+    	//	rotate
+    	Vector3 animDir 		= direction;
+    	animDir.y 				= 0;
+    
+    	if ( animDir.sqrMagnitude > 0.001f )
+    	{
+    		Vector3 newDir 		            = Vector3.RotateTowards( transform.forward, animDir, 10.0f*Time.deltaTime, 0f );
+    		transform.rotation 	= Quaternion.LookRotation( newDir );
+    	}
+
+        // Did a player move by a key?
+        float   expValue = 0.1f;
+        return ( axis > expValue );
+
+    }
+    bool Create( Vector3 targetPosition, int resourceID )
+    {
+        //	今いるマスにリソースが存在する
+        var param = m_resourceInformation.GetResourceParamFromPosition( targetPosition );
+        if( param != null )
+        {
+            return false;
+        }
+
+        m_resourceCreator.SetGuideResourcePosition( resourceID, targetPosition );
+        
+        var obj         = m_resourceCreator.AddResource(resourceID);
+        var forcusParam = m_itemCntroller.GetForcusResourceParam();
+        
+        m_itemCntroller.AddResourceCost(-forcusParam.GetCreateCost());
+        
+        //	置かれたのがドローンだったらドローン操作に切り替え
+        const int droneID = 8;
+        if (resourceID == droneID)
+        {
+            m_cameraSwitcher.On(obj);
+            m_actionState = ActionState.Drone;
         }
         else
         {
-            transform.position = m_ridingVehicle.transform.position;
+            m_actionState = ActionState.Common;
         }
 
-
-        if ( Input.GetKeyDown(KeyCode.Z ) )
-        {
-            m_actionState   = ActionState.Common;
-            m_ridingVehicle = null;
-            return;
-        }
-
-
+        return true;
     }
-
-	//---------------------------------------------------------------------
-    //      デバック中
-    //---------------------------------------------------------------------   	
-    void OnGUI()
+    bool Convert( Vector3 targetPosition )
     {
-        for (int i = m_moveContractor.m_targetStack.Count-1; i >= 0; i--)
-        { 
-            string name = "";
-            if ( i == 0 )
-                name = "Current";
-            else
-                name =  "Task " + i.ToString();
-
-            var item = m_moveContractor.m_targetStack[i];
-             
-            float y = i*22.0f;
-            if (GUI.Button(new Rect(10, 180+y, 100, 20), name ) )
-            {
-                m_moveContractor.RemoveAt(i);
-            }
+        //	今いるマスにリソースがなかった
+        var param = m_resourceInformation.GetResourceParamFromPosition( targetPosition );
+        if( param == null )
+        {
+            return false;
         }
+
+        m_itemCntroller.AddResourceCost( -param.GetCurLevelParam().GetUpCost());
+        CmdLevelUpResource( targetPosition );
+
+        // 効果音再生
+        SoundController.PlayNow( "UI_LevelUP",  0.0f, 0.05f, 0.92f, 4.0f );
+        //SoundController.PlayNow( "UI_LevelUP2", 0.0f, 0.1f, 1.0f, 2.0f );
+        //SoundController.PlayNow( "UI_LevelUP3", 0, 0.05f, 1.2f, 2.0f );
+
+        return true;
+    }
+    bool Break( Vector3 targetPosition )
+    {
+        var param = m_resourceInformation.GetResourceParamFromPosition( targetPosition );
+        if( param == null )
+        {
+            return false;
+        }
+
+        m_itemCntroller.AddResourceCost( param.GetBreakCost() );
+        CmdBreakResource( targetPosition );
+
+        return true;
     }
 
 	//---------------------------------------------------------------------
@@ -743,12 +319,49 @@ public class GirlController : NetworkBehaviour
 	//---------------------------------------------------------------------   
 	public  void    SetActiveButton( bool _IsActive )
     {
-        m_uiGirlTaskSelect.m_buttonOk.SetActive( _IsActive );
-        m_uiGirlTaskSelect.m_buttonCancel.SetActive( _IsActive );
-        m_uiGirlTaskSelect.m_buttonLevel.SetActive( _IsActive );
-        m_uiGirlTaskSelect.m_buttonBreak.SetActive( _IsActive );
+        m_uiGirlTask.m_buttonOk.SetActive( _IsActive );
+        m_uiGirlTask.m_buttonCancel.SetActive( _IsActive );
+        m_uiGirlTask.m_buttonLevel.SetActive( _IsActive );
+        m_uiGirlTask.m_buttonBreak.SetActive( _IsActive );
     }
 
+    //---------------------------------------------------------------------
+	//      
+	//---------------------------------------------------------------------
+    bool RaycastFromMouseToField( out Vector3 hitPoint )
+    {
+        RaycastHit  hit             = new RaycastHit();
+        int         layerMask       = LayerMask.GetMask( "Field" );
+        Vector3     mousePosition   = Input.mousePosition;
+        Ray         ray             = Camera.main.ScreenPointToRay(mousePosition);
+        
+        if ( Physics.Raycast(ray, out hit, float.MaxValue, layerMask) )
+        {
+            hitPoint = hit.point;
+            return true;
+        }
+
+        hitPoint = Vector3.zero;
+        return false;
+
+    }
+    void RideVehicle( GameObject vehicle, bool isEnable )
+    {
+        m_actionState      = ( isEnable ) ? ActionState.Ride  : ActionState.Common;
+        m_ridingVehicle    = ( isEnable ) ? vehicle           : null;
+        transform.SetParent( ( isEnable ) ? vehicle.transform : null );
+
+        GetComponent<CapsuleCollider>().enabled     = !isEnable;
+        GetComponent<LerpSync_Position>().enabled   = !isEnable;
+        GetComponent<LerpSync_Rotation>().enabled   = !isEnable;
+        GetComponent<Rigidbody>().useGravity        = !isEnable;
+
+        if (isEnable)
+        {
+            transform.localRotation = Quaternion.identity;
+            transform.localPosition = Vector3.zero;
+        }
+    }
 
     //---------------------------------------------------------------------
 	//      コマンド
@@ -839,4 +452,45 @@ public class GirlController : NetworkBehaviour
             rControl.SetExploding();
         }
     }
+ 
+    [ Command ]
+    void    CmdRidingVehicle( NetworkInstanceId _NetID, NetworkInstanceId _TargetNetID, bool _Enable )
+    {
+        RpcRidingVehicle( _NetID, _TargetNetID, _Enable );
+    }
+    [ Command ]
+    public void    CmdPlaceDrone( NetworkInstanceId _NetID )
+    {
+        RpcPlaceDrone( _NetID );
+    }
+    
+    [ ClientRpc ]
+    void    RpcRidingVehicle( NetworkInstanceId _NetID, NetworkInstanceId _TargetNetID, bool _Enable )
+    {
+        //  対象オブジェクトを探す
+        GameObject rIdentity        =  ClientScene.FindLocalObject( _NetID );
+        GameObject rTarget          =  ClientScene.FindLocalObject( _TargetNetID );
+        
+        rIdentity.GetComponent<GirlController>().RideVehicle( rTarget, _Enable );
+                
+    }
+    [ ClientRpc ]
+    void    RpcPlaceDrone( NetworkInstanceId _NetID )
+    {
+        GameObject org = GameObject.Find("SkillItemShell").transform.GetChild(0).gameObject;
+
+        //  オブジェクト生成
+        GameObject  rObj    =   Instantiate( org );
+        Transform   rTrans  =   rObj.transform;
+        GameObject  rGirl   =   ClientScene.FindLocalObject( _NetID );
+
+        rObj.SetActive(true);
+        rObj.transform.SetParent( rGirl.transform );
+
+        //  配置設定
+        rObj.transform.localPosition = new Vector3( 0.3f, 2.3f, -0.5f );
+        rObj.transform.localRotation = Quaternion.identity;
+    }
+
+
 }

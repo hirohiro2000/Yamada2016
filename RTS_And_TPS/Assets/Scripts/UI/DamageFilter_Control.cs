@@ -79,7 +79,10 @@ public class DamageFilter_Control : MonoBehaviour {
                 //  心音
                 if( m_PlaySound ){
                     if( timeRate >= 0.95f ){
-                        SoundController.PlayNow( "HeartS", 0.0f, 1.0f, 0.85f, 2.0f );
+                        //SoundController.PlayNow( "HeartS", 0.0f, 1.0f, 0.85f, 1.0f );
+                        //SoundController.PlayNow( "HeartS", 0.0f, 1.0f, 1.0f, 1.0f );
+                        SoundController.PlayNow( "HeartS", 0.0f, 0.9f, 1.0f, 1.0f );
+                        //SoundController.PlayNow( "HeartS", 0.1f, 1.0f, 2.0f,  1.0f );
                         m_PlaySound =   false;
                     }
                 }

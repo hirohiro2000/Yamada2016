@@ -545,7 +545,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 155426}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -46.668114, y: 6, z: 55.811195}
+  m_LocalPosition: {x: -48.932354, y: 6, z: 55.654995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -900,11 +900,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 531631570deda454eae7244c0e3630c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_bullet: {fileID: 180896, guid: 96c12297e05f0cc4695f884bff8928fc, type: 2}
+  m_bullet: {fileID: 180896, guid: d4c9ab88a76ffc44e88800e2e553c13e, type: 2}
   m_firePointTransforms:
   - {fileID: 437342}
   m_orientatedTransform: {fileID: 463804}
-  m_seName: 
+  c_ShotSound: {fileID: 158640, guid: dbbcd5aacc3734140bba0ac38ae5a32a, type: 2}
 --- !u!114 &11422238
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -918,6 +918,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_rResoureceParam: {fileID: 11458148}
   m_rHealthBar: {fileID: 11445210}
+  m_rLevelText: {fileID: 11415304}
 --- !u!114 &11430918
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -968,25 +969,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 763b25596baf47b4eac7eabbd537575d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_CompleteEmission:
+  - {fileID: 158640, guid: bd6b8853680fedf4685925782f4063a2, type: 2}
+  c_DuringSound: {fileID: 158640, guid: c2989b3a60c8736428f930122066ef23, type: 2}
   height:
     serializedVersion: 2
     m_Curve:
     - time: 0
-      value: -5.5
-      inSlope: 5.5
-      outSlope: 5.5
+      value: -3.3418338
+      inSlope: 3.3418338
+      outSlope: 3.3418338
       tangentMode: 10
     - time: 1
       value: 0
-      inSlope: 5.5
-      outSlope: 5.5
+      inSlope: 3.3418338
+      outSlope: 3.3418338
       tangentMode: 10
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
   originHeight: 0
   timer: 0
-  timeSpeed: 1
+  timeSpeed: 0.1
   originalPlate: {fileID: 118720, guid: 49e23c7961287d6448353cd1ea4ae4a8, type: 2}
 --- !u!114 &11444898
 MonoBehaviour:
@@ -1085,8 +1089,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002d41c214277184fae0483bea09af24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_name: "\u9AD8\u706B\u529B\u30BF\u30EC\u30C3\u30C8"
-  m_summary: "\u5A01\u529B\u304C\u9AD8\u3044"
+  c_HitEmission: {fileID: 158640, guid: 955e542a3a25cd14eb990e918dee7f74, type: 2}
+  c_ExplodedData:
+  - rPosition: {fileID: 422584}
+    rEmitObj: {fileID: 180030, guid: b4a7ee3c742ac2244b8f56bb7d127886, type: 2}
+  - rPosition: {fileID: 400616}
+    rEmitObj: {fileID: 116476, guid: 1c3738868975da0419bd9a1ab119d463, type: 2}
+  c_DestroyEmit: {fileID: 158640, guid: aecaaf1ca3d909a48a533dc2afd80c55, type: 2}
+  m_name: "\u72D9\u6483\u30BF\u30EC\u30C3\u30C8"
+  m_summary: "\u5FB9\u7532\u5F3E\u3092\u9AD8\u901F\u3067\u767A\u5C04\u3059\u308B"
   m_createCost: 138
   m_breakCost: 23
   m_level: 0
@@ -1094,19 +1105,19 @@ MonoBehaviour:
   m_levelInformations:
     list:
     - hp: 15
-      power: 8
-      range: 10
-      interval: 0.5
+      power: 28
+      range: 360
+      interval: 2
       upCost: 117
     - hp: 20
-      power: 12
-      range: 12
-      interval: 0.3
+      power: 32
+      range: 360
+      interval: 1.5
       upCost: 161
     - hp: 40
-      power: 20
-      range: 14
-      interval: 0.1
+      power: 48
+      range: 360
+      interval: 1
       upCost: 0
 --- !u!114 &11463846
 MonoBehaviour:
@@ -1255,8 +1266,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.75
-  m_Height: 3.4
+  m_Radius: 1.75
+  m_Height: 10
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!208 &20875652
@@ -1268,7 +1279,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 0
-  m_Extents: {x: 0.75, y: 1.7, z: 0.75}
+  m_Extents: {x: 1.75, y: 5, z: 1.75}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 0

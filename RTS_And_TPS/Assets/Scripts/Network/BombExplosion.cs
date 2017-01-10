@@ -10,6 +10,9 @@ public class BombExplosion : NetworkBehaviour {
     public  GameObject  c_Explosion     =   null;
     public  bool        c_CallOnDestroy =   true;
 
+    public  bool        c_SetATKPoint   =   false;
+    public  float       c_ATK           =   0.0f;
+
     private GameManager m_rGameManager  =   null;
     private bool        m_IsGameQuit    =   false;
 
@@ -55,6 +58,12 @@ public class BombExplosion : NetworkBehaviour {
         //  あたり判定のフレーム数を設定
         ExplosionAttack rEXATK  =   rCol.GetComponent< ExplosionAttack >();
         rEXATK.c_DestroyCounter =   1;
+
+        //  攻撃力設定
+        if( c_SetATKPoint ){
+            AttackPointList rAtk    =   rCol.GetComponent< AttackPointList >();
+            rAtk.baseAttackPoint    =   c_ATK;
+        }
 
         //  オブジェクトをアクティベート
         rObj.SetActive( true );

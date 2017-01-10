@@ -41,7 +41,7 @@ public class ItemController : NetworkBehaviour
             float       screenRatio = Screen.width / 1280.0f;
 
 			add.transform.SetParent( GameObject.Find("Canvas").transform );
-			add.transform.position	= new Vector3( ( i*80 + 72 ) * screenRatio, 130 * screenRatio, 0 );
+			add.transform.position	= new Vector3( ( i*80 + 72 ) * screenRatio, 180 * screenRatio, 0 );
 			add.transform.GetChild(1).GetComponent<Text>().text = m_resourceCreator.m_resources[i].GetComponent<ResourceParameter>().GetCreateCost().ToString();
             
             RTSOnItemFrame onFrame = add.GetComponent<RTSOnItemFrame>();
@@ -110,7 +110,7 @@ public class ItemController : NetworkBehaviour
                 }
                 
                 // 大きさ更新
-                if ( isEnoughCost && m_curForcus == i )
+                if ( m_curForcus == i )
                 {
                     m_frameList[i].transform.localScale = new Vector3( forcus,forcus,forcus );
                 }
@@ -119,13 +119,6 @@ public class ItemController : NetworkBehaviour
                     m_frameList[i].transform.localScale = new Vector3( basic,basic,basic );
                 }
 
-			}
-		}
-		{
-			if( Input.GetKeyDown( KeyCode.Space ) )
-			{
-				m_curForcus++;
-				m_curForcus %= m_kindMax;
 			}
 		}
 	}
@@ -142,6 +135,10 @@ public class ItemController : NetworkBehaviour
 	{
 		return m_curForcus;
 	}
+    public int GetNumKind()
+    {
+        return m_kindMax;
+    }
 	public ResourceParameter GetForcusResourceParam()
 	{
         if ( m_curForcus == -1 )            return null;
@@ -176,6 +173,10 @@ public class ItemController : NetworkBehaviour
 		{
             m_frameList[i].SetActive( isActive );
         }
+    }
+    public void SetActive( bool isActive, int index )
+    {
+        m_frameList[index].SetActive( isActive );
     }
     public void SetForcus( int forcusID )
     {

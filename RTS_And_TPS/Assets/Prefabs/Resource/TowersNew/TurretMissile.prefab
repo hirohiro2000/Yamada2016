@@ -168,7 +168,7 @@ GameObject:
   - 4: {fileID: 446564}
   - 114: {fileID: 11481800}
   m_Layer: 0
-  m_Name: _Health (1)
+  m_Name: _Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -419,7 +419,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 182442}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -49.09553, y: 6, z: 57.439953}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -683,28 +683,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002d41c214277184fae0483bea09af24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_name: "6\u9023\u8A98\u5C0E\u30DF\u30B5\u30A4\u30EB"
-  m_summary: "\u6575\u3092\u8FFD\u5C3E\u3059\u308B"
-  m_createCost: 112
+  c_HitEmission: {fileID: 158640, guid: 955e542a3a25cd14eb990e918dee7f74, type: 2}
+  c_ExplodedData:
+  - rPosition: {fileID: 438424}
+    rEmitObj: {fileID: 129914, guid: 8585b2a4d24f9014e912dde4dd8e677a, type: 2}
+  - rPosition: {fileID: 448526}
+    rEmitObj: {fileID: 183494, guid: 1193b3192f27cbb4bb2981507bf9eae3, type: 2}
+  c_DestroyEmit: {fileID: 158640, guid: aecaaf1ca3d909a48a533dc2afd80c55, type: 2}
+  m_name: "\u516D\u9023\u88C5\u30DF\u30B5\u30A4\u30EB\u30DD\u30C3\u30C9"
+  m_summary: "\u8A98\u5C0E\u30DF\u30B5\u30A4\u30EB\u3092\u767A\u5C04\u3059\u308B"
+  m_createCost: 341
   m_breakCost: 79
   m_level: 0
   m_curHp: 0
   m_levelInformations:
     list:
     - hp: 15
-      power: 8
-      range: 10
-      interval: 0.5
+      power: 82
+      range: 60
+      interval: 5
       upCost: 117
     - hp: 20
-      power: 12
-      range: 12
-      interval: 0.3
+      power: 124
+      range: 60
+      interval: 5
       upCost: 161
     - hp: 40
-      power: 20
-      range: 14
-      interval: 0.1
+      power: 256
+      range: 60
+      interval: 5
       upCost: 0
 --- !u!114 &11474682
 MonoBehaviour:
@@ -832,6 +839,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_rResoureceParam: {fileID: 11457280}
   m_rHealthBar: {fileID: 11448554}
+  m_rLevelText: {fileID: 11485562}
 --- !u!114 &11484656
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -913,7 +921,7 @@ MonoBehaviour:
   - {fileID: 409002}
   - {fileID: 486806}
   m_orientatedTransform: {fileID: 438424}
-  m_seName: 
+  c_ShotSound: {fileID: 158640, guid: cab077a80e2c12a4bb422c50d5413d59, type: 2}
 --- !u!114 &11497402
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -925,25 +933,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 763b25596baf47b4eac7eabbd537575d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_CompleteEmission:
+  - {fileID: 158640, guid: bd6b8853680fedf4685925782f4063a2, type: 2}
+  c_DuringSound: {fileID: 158640, guid: c2989b3a60c8736428f930122066ef23, type: 2}
   height:
     serializedVersion: 2
     m_Curve:
-    - time: 0
-      value: -5.5
-      inSlope: 5.5
-      outSlope: 5.5
+    - time: -0.004428383
+      value: -4.022008
+      inSlope: 4.0042753
+      outSlope: 4.0042753
       tangentMode: 10
     - time: 1
       value: 0
-      inSlope: 5.5
-      outSlope: 5.5
+      inSlope: 4.0042753
+      outSlope: 4.0042753
       tangentMode: 10
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
   originHeight: 0
   timer: 0
-  timeSpeed: 1
+  timeSpeed: 0.1
   originalPlate: {fileID: 118720, guid: 49e23c7961287d6448353cd1ea4ae4a8, type: 2}
 --- !u!136 &13610620
 CapsuleCollider:
@@ -954,10 +965,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 1
-  m_Height: 4
+  m_Radius: 1.75
+  m_Height: 10
   m_Direction: 1
-  m_Center: {x: 0, y: 1.7, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!208 &20859748
 NavMeshObstacle:
   m_ObjectHideFlags: 1
@@ -967,7 +978,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 0
-  m_Extents: {x: 0.75, y: 1.7, z: 0.75}
+  m_Extents: {x: 1.75, y: 5, z: 1.75}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 0

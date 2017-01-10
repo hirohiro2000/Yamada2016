@@ -387,7 +387,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 194466}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -49.331085, y: 6, z: 50.93922}
+  m_LocalPosition: {x: -43.413464, y: 6, z: 54.712383}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -724,6 +724,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_rResoureceParam: {fileID: 11483616}
   m_rHealthBar: {fileID: 11476472}
+  m_rLevelText: {fileID: 11445636}
 --- !u!114 &11414412
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -994,25 +995,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 763b25596baf47b4eac7eabbd537575d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_CompleteEmission:
+  - {fileID: 158640, guid: bd6b8853680fedf4685925782f4063a2, type: 2}
+  c_DuringSound: {fileID: 158640, guid: c2989b3a60c8736428f930122066ef23, type: 2}
   height:
     serializedVersion: 2
     m_Curve:
     - time: 0
-      value: -5.5
-      inSlope: 5.56875
-      outSlope: 5.56875
+      value: -2.507709
+      inSlope: 2.576459
+      outSlope: 2.576459
       tangentMode: 10
     - time: 1
       value: 0.06875001
-      inSlope: 5.56875
-      outSlope: 5.56875
+      inSlope: 2.576459
+      outSlope: 2.576459
       tangentMode: 10
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
   originHeight: 0
   timer: 0
-  timeSpeed: 1
+  timeSpeed: 0.25
   originalPlate: {fileID: 118720, guid: 49e23c7961287d6448353cd1ea4ae4a8, type: 2}
 --- !u!114 &11460030
 MonoBehaviour:
@@ -1075,6 +1079,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002d41c214277184fae0483bea09af24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_HitEmission: {fileID: 158640, guid: 955e542a3a25cd14eb990e918dee7f74, type: 2}
+  c_ExplodedData:
+  - rPosition: {fileID: 419272}
+    rEmitObj: {fileID: 126254, guid: 4c705578a03bca24bba57faa3e752779, type: 2}
+  c_DestroyEmit: {fileID: 158640, guid: aecaaf1ca3d909a48a533dc2afd80c55, type: 2}
   m_name: "\u30AF\u30EA\u30B9\u30BF\u30EB\u683D\u57F9\u30AD\u30C3\u30C8"
   m_summary: "\u8CC7\u6E90\u3092\u63A1\u96C6\u3067\u304D\u308B"
   m_createCost: 50
@@ -1083,6 +1092,16 @@ MonoBehaviour:
   m_curHp: 0
   m_levelInformations:
     list:
+    - hp: 10
+      power: 0
+      range: 0
+      interval: 0
+      upCost: 70
+    - hp: 10
+      power: 0
+      range: 0
+      interval: 0
+      upCost: 105
     - hp: 10
       power: 0
       range: 0
@@ -1146,7 +1165,7 @@ NavMeshObstacle:
   m_Carve: 1
   m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
+  m_TimeToStationary: 0.25
 --- !u!222 &22236690
 CanvasRenderer:
   m_ObjectHideFlags: 1

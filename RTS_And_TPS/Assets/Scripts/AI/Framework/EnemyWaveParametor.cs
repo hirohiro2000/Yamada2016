@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 
 /**
 *@brief 敵の全体的なparameter情報
 */
-public class EnemyWaveParametor : MonoBehaviour {
+public class EnemyWaveParametor : NetworkBehaviour {
 
     //[SerializeField, HeaderAttribute("1ウェーブでの最大出現数")]
     //private int NumMaxSpawnEnemy = 20;
@@ -18,7 +20,8 @@ public class EnemyWaveParametor : MonoBehaviour {
     //private int NumIncrementSpawnEnemy = 4;
     //public int GetNumIncrementSpawnEnemy() { return NumIncrementSpawnEnemy; }
 
-    public int m_current_level { get; private set; }
+    [ SyncVar ]
+    public int m_current_level  =   0;// { get; private set; }
 
     void Awake()
     {

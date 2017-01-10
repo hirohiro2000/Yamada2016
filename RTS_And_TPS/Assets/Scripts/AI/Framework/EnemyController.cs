@@ -54,6 +54,11 @@ public class EnemyController : NetworkBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        //  クライアント側でのみパラメータの初期化処理を行う
+        if( !NetworkServer.active ){
+            EnemyWaveParametor  rWaveParam  =   FunctionManager.GetAccessComponent< EnemyWaveParametor >( "EnemySpawnRoot" );
+            SetWaveParametor_InClient( rWaveParam );
+        }
 
         if (m_personal_param == null)
         {
@@ -116,7 +121,7 @@ public class EnemyController : NetworkBehaviour {
         }
 	}
 
-    public void SetWaveParametor(EnemyWaveParametor wave_param)
+    public  void    SetWaveParametor(EnemyWaveParametor wave_param)
     {
         //  体力設定     
         Health rHealth = GetComponent<Health>();
@@ -124,5 +129,10 @@ public class EnemyController : NetworkBehaviour {
             m_personal_param.GetHPUpMultipleRate());
         else UserLog.ErrorTerauchi(gameObject.name + "no attach Health !!");
         m_task_director.SetWaveparamtor(wave_param, m_personal_param);
+    }
+    private void    SetWaveParametor_InClient( EnemyWaveParametor _WaveParam )
+    {
+        //  体力関係のパラメータはHealth内で同期されているので、それ以外のパラメータだけをクライアント側で初期化
+        m_task_director.SetWaveparamtor( _WaveParam, m_personal_param );
     }
 }

@@ -152,8 +152,10 @@ public class TPSPlayer_HP : NetworkBehaviour {
             m_rDFCtrl.SetEffect( 0.6f, 1.0f );
         }
 
-        //  ダメージ音
-        SoundController.PlayNow( "Damage", transform, transform.position, 0.0f, 0.15f, Random.Range( 0.8f, 1.2f ), 2.0f );
+        //  ダメージ音  
+        float   pitch   =   Random.Range( 0.69f, 0.79f );
+        SoundController.PlayNow( "Damage", transform, transform.position, 0.0f, 0.2f * 0.75f, pitch, 2.0f );
+        SoundController.PlayNow( "Damage2", transform, transform.position, 0.0f, 0.15f * 0.75f, pitch, 2.0f );
     }
     void    DamageProc_CallBackEnemy( DamageResult _rDamageResult, CollisionInfo _rInfo )
     {
@@ -221,9 +223,9 @@ public class TPSPlayer_HP : NetworkBehaviour {
             &&  m_CurHP > m_PrevHPInLocal ){
                 m_RecoveryNow   =   true;
 
-                //  回復音再生
+                //  回復音再生 
                 //SoundController.PlayNow( "Recovery", transform, transform.position, 0.0f, 1.0f, 0.86f, 2.0f );
-                m_rRecSound =   SoundController.PlayNow( "Recovery2", transform, transform.position, 0.0f, 1.0f, 1.0f, 2.0f ).gameObject;
+                m_rRecSound =   SoundController.PlayNow( "Recovery2", transform, transform.position, 0.0f, 0.05f, 1.0f, 5.0f ).gameObject;
             }
             if( m_CurHP < m_PrevHPInLocal ){
                 m_RecoveryNow   =   false;
@@ -341,6 +343,13 @@ public class TPSPlayer_HP : NetworkBehaviour {
             
                     rShaker.SetShake( vShake.normalized, 0.5f, 0.2f, shakePower );
                 }
+            }
+
+            //  ダメージ音再生
+            if( damage > 0.0f ){
+                float   pitch   =   Random.Range( 0.49f, 0.59f );
+                SoundController.PlayNow( "Damage", transform, transform.position, 0.0f, 0.2f * 0.75f, pitch, 2.0f );
+                SoundController.PlayNow( "Damage2", transform, transform.position, 0.0f, 0.15f * 0.75f, pitch, 2.0f );
             }
         }
 
@@ -513,6 +522,19 @@ public class TPSPlayer_HP : NetworkBehaviour {
 
         //  復活判定
         m_IsDying   =   m_CurHP == 0.0f;
+    }
+
+    [ Command ]
+    public  void    CmdForciblyRevival( int _clientID)
+    {
+        //  蘇生を記録
+        m_rGameManager.SetToList_Rivival( _clientID, 1 );
+        
+        //  復活
+        SetRecovery( m_MaxHP * 1.0f );
+        
+        //  タイマーリセット
+        m_RevivalTimer  =   0.0f;
     }
 
     //  アクセス

@@ -1,8 +1,8 @@
 ﻿
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 using System.Collections;
-
 
 [System.Serializable]
 public class WeaponList
@@ -170,7 +170,7 @@ public class WeaponParameter
 			return "∞";
 		return cntHavingAmmo.ToString();
 	}
-	public float DispReloadProgress()
+	public float  DispReloadProgress()
 	{
 		float cnt;
 		float max;
@@ -322,6 +322,12 @@ public class TPSShotController : NetworkBehaviour {
     private SoundController     m_seShot            =   null;
     private bool                m_PlayNoAmmo        =   false;
 
+    //ＵＩ
+    private Text                m_uiWeaponAmmo         = null;
+    private Text                m_uiWeaponHavingAmmo   = null;
+    private GameObject          m_uiWeaponReloadTime   = null;
+
+
 	// Use this for initialization
 	void    Start()
     {
@@ -459,20 +465,26 @@ public class TPSShotController : NetworkBehaviour {
 					fireCnt = 0;
                 }
 
-//                TPSWeaponBar.Consumption(1.0f);
-
                 // 発砲音
                 if (m_seShot != null)
                 {
                     m_seShot.transform.position = firePoint.position;
                     m_seShot.PlayOneShot();
                 }
+
             }
 		}
 		//UIの描画
-		WeaponAmmoUIList UIList = WeaponAmmoUIList.Aceess(m_ID);
-		if (UIList != null)
-			UIList.Disp(weapons.list.ToArray(),cntWeaponIndex);
+//		WeaponAmmoUIList UIList = WeaponAmmoUIList.Aceess(m_ID);
+//		if (UIList != null)
+//			UIList.Disp(weapons.list.ToArray(),cntWeaponIndex);
+
+        if ( m_uiWeaponAmmo       == null ) m_uiWeaponAmmo        = GameObject.Find("TPS_HUD").transform.FindChild("Weapon").GetChild(m_ID+1).transform.FindChild("Ammo").GetComponent<Text>();           // [BackGround]があるから１つ加算
+        if ( m_uiWeaponHavingAmmo == null ) m_uiWeaponHavingAmmo  = GameObject.Find("TPS_HUD").transform.FindChild("Weapon").GetChild(m_ID+1).transform.FindChild("HavingAmmo").GetComponent<Text>();     // [BackGround]があるから１つ加算
+        if ( m_uiWeaponReloadTime == null ) m_uiWeaponReloadTime  = GameObject.Find("TPS_HUD").transform.FindChild("Weapon").GetChild(m_ID+1).transform.FindChild("ReloadTime").gameObject;               // [BackGround]があるから１つ加算
+        m_uiWeaponAmmo.text         = cntWeaponList.param.DispAmmo();
+        m_uiWeaponHavingAmmo.text   = cntWeaponList.param.DispHavingAmmo();
+        m_uiWeaponReloadTime.transform.localScale = new Vector3( 1.0f, cntWeaponList.param.DispReloadProgress(), 1.0f );
 
         //  弾切れサウンドフラグリセット
         if( !Input.GetKey( shotKey ) ){

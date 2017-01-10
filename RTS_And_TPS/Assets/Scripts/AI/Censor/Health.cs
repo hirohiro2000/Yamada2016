@@ -5,8 +5,22 @@ using   System.Collections;
 
 public class Health : NetworkBehaviour {
 
+    //  ダメージタイプ
+    public  enum    DamageType{
+        TPSAttack,
+        RTSAttack_Gun,
+        RTSAttack_Rifle,
+        RTSAttack_Laser,
+        RTSAttack_Bomb,
+        RTSAttack_Missile,
+    }
+
     public  GameObject      c_ExplodedObj   =   null;
     public  GameObject[]    c_DeathEmission =   null;
+
+    public  GameObject      c_HitEmission   =   null;
+    public  GameObject      c_WeakEmission  =   null;
+    public  GameObject      c_THitEmission  =   null;
 
     [ SyncVar ]
     public  int         Resource        =   0;
@@ -30,7 +44,7 @@ public class Health : NetworkBehaviour {
 
     private bool        m_IsGameQuit    =   false;
 
-    void Awake()
+    void    Awake()
     {
         m_damage_bank = transform.GetComponent<DamageBank>();
         m_damage_bank.AdvancedDamagedCallback   +=  DamageProc_CallBack;
@@ -68,7 +82,7 @@ public class Health : NetworkBehaviour {
             GameObject          rPlayer     =   m_rLinkManager.m_rLocalPlayer;
             if( rPlayer ){
                 rControl.c_PartnerID        =   KillerID;
-                rControl.c_Score            =   Resource + Mathf.Max( Level - 1, 0 );
+                rControl.c_Score            =   Resource;// + Mathf.Max( Level - 1, 0 );
             }
         }
 
@@ -120,6 +134,21 @@ public class Health : NetworkBehaviour {
         //  既に死亡している場合は処理を行わない
         if( HP <= 0.0f )    return;
 
+        //  ヒット音 
+        {
+            bool    weakHit =   _rDamageResult.GetTotalDamage() > _rDamageResult.GetBaseDamage();
+            bool    isRTS   =   _rInfo.attackedObject.GetComponent< RTSAttack_Net >();
+
+            GameObject  rEmit   =   ( weakHit )? c_WeakEmission : c_HitEmission;
+                        rEmit   =   ( isRTS )?   c_THitEmission : rEmit;
+
+            if( rEmit ){
+                GameObject  rObj    =   Instantiate( rEmit );
+                Transform   rTrans  =   rObj.transform;
+                rTrans.position     =   _rInfo.contactPoint;
+            }
+        }
+
         //  ＴＰＳプレイヤーとのダメージ処理 
         DamageProc_WidthTPSPlayer( _rDamageResult, _rInfo );
         //  タワーとのダメージ処理
@@ -147,7 +176,7 @@ public class Health : NetworkBehaviour {
             float   damage  =   ( weakHit )? MaxHP * myRatio * 0.2f * _rDamageResult.GetBaseDamage(): _rDamageResult.GetTotalDamage();
 
             //  送信
-            m_rLinkManager.m_rLocalNPControl.CmdSendDamageEnemy( netId, damage, weakHit );
+            m_rLinkManager.m_rLocalNPControl.CmdSendDamageEnemy( netId, damage, weakHit, false );
         }
     }
     void    DamageProc_WidthTower( DamageResult _rDamageResult, CollisionInfo _rInfo )
@@ -164,17 +193,17 @@ public class Health : NetworkBehaviour {
 
         //  ダメージをサーバーに送信
         if( m_rLinkManager.m_rLocalNPControl ){
-            m_rLinkManager.m_rLocalNPControl.CmdSendDamageEnemy( netId, _rDamageResult.GetTotalDamage(), false );
+            m_rLinkManager.m_rLocalNPControl.CmdSendDamageEnemy( netId, _rDamageResult.GetTotalDamage(), false, true );
         }
     }
 
-    public  void   CorrectionHP(int level,float correcion_rate)
+    public  void    CorrectionHP(int level,float correcion_rate)
     {
         MaxHP   =   DefaultHP + (level * correcion_rate);
         HP      =   MaxHP;
         Level   =   level;
     }
-    public  void    GiveDamage( float _Damage, int _AttackerID, bool _HitWeak )
+    public  void    GiveDamage( float _Damage, int _AttackerID, bool _HitWeak, bool _IsTowerAttack )
     {
         //  既に死んでいる場合は処理を行わない
         if( HP <= 0.0f )    return;
@@ -196,8 +225,8 @@ public class Health : NetworkBehaviour {
             //  ヘッドショット
             if( _HitWeak ){
                 //  レコードを通知
-                if( NetworkServer.active )  m_rGameManager.SetAcqRecord( "ヘッドショットキル！ + 20", KillerID );
-                                            m_rGameManager.RpcRecordNotice( "ヘッドショットキル！ + 20", KillerID );
+                if( NetworkServer.active )  m_rGameManager.SetAcqRecord     ( "ヘッドショットキル！ + 20", KillerID );
+                                            m_rGameManager.RpcRecordNotice  ( "ヘッドショットキル！ + 20", KillerID );
                 //  スコアを獲得
                 m_rGameManager.AddGlobalScore( 20, KillerID );
                 //  獲得リソース増加
@@ -206,6 +235,12 @@ public class Health : NetworkBehaviour {
                 //  ヘッドショットキルを記録
                 m_rGameManager.SetToList_HSKill( KillerID, 1 );
             }
+
+            //  キルを通知（RTS） 
+            //if( _IsTowerAttack ){
+            //    if( NetworkServer.active )  m_rGameManager.SetAcqRecord     ( "あなたの防衛施設が敵を撃破しました！", KillerID );
+            //                                m_rGameManager.RpcRecordNotice  ( "あなたの防衛施設が敵を撃破しました！", KillerID );
+            //}
 
             //  キルを記録
             m_rGameManager.SetToList_Kill( KillerID, 1 );
