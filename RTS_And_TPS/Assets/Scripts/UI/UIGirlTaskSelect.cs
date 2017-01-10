@@ -76,6 +76,111 @@ public class UIGirlTaskSelect : MonoBehaviour
     //---------------------------------------------------------------------
     //      ステート
     //---------------------------------------------------------------------   	
+#if false
+
+    void UpdateCommon( Vector3 computePosition )
+    {
+		m_buttonOk.SetActive(false);
+		m_buttonLevel.SetActive(false);
+		m_buttonBreak.SetActive(false);
+		m_buttonCancel.SetActive(false);
+		m_resourceCreator.SetGuideVisibleDisable();
+
+		//	change state
+        bool isAnyKey = ( Input.GetKeyDown(KeyCode.F) || Input.GetMouseButtonDown(1) );
+
+		if( !isAnyKey )			return;
+
+
+        //  効果音再生（パネルを出す）
+        SoundController.PlayNow( "UI_MenuOpen", 0.0f, 0.1f, 1.0f, 1.0f );
+
+		{
+            m_mode = MODE.eCreate;
+            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = true;
+            m_itemController.SetActive(true);
+            m_itemController.SetForcus( -1 );
+		}
+    }
+    void UpdateCreate( Vector3 computePosition )
+    {
+		//	リソースのUI設定
+        m_resourceInformation.m_gridSplitSpacePlane.transform.position  = computePosition;
+        m_resourceInformation.m_gridSplitSpacePlane.transform.position += new Vector3(0, 0.04f, 0);
+          
+		//	リソースの範囲表示更新
+        int forcus = m_itemController.GetForcus();
+        if ( forcus != -1 )
+        {
+		    m_resourceCreator.UpdateGuideResource( forcus, computePosition );
+		    m_resourceCreator.UpdateGuideRange( forcus, computePosition );
+        }
+        else
+        { 
+            m_resourceCreator.SetGuideVisibleDisable();
+        }
+
+		var param = m_resourceInformation.GetResourceParamFromPosition( computePosition );
+        if( param )
+        {
+            m_itemController.SetActive( false );
+            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = false;
+            m_resourceCreator.SetGuideVisibleDisable();
+        }
+        else
+        {
+            m_itemController.SetActive( true );
+            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = true;
+        } 
+        
+        //
+        if ( Input.GetKeyDown( KeyCode.F ) || Input.GetMouseButtonDown(1) )
+        {  
+            m_mode = MODE.eCommon;
+            m_itemController.SetActive( false );
+            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = false;
+            m_resourceCreator.SetGuideVisibleDisable();
+        }
+
+    }
+    void UpdateConvert( Vector3 computePosition )
+    {
+		var param = m_resourceInformation.GetResourceParamFromPosition( computePosition );
+        if( !param )
+        {
+			m_buttonLevel.SetActive(false);
+			m_buttonBreak.SetActive(false);
+			m_buttonCancel.SetActive(false);
+                        
+            return;
+        }
+
+    	m_buttonLevel.SetActive( param.CheckWhetherCanUpALevel() && param.GetCurLevelParam().GetUpCost() <= m_itemController.GetHaveCost() );
+        m_buttonBreak.SetActive(true);
+        m_buttonCancel.SetActive(true);
+
+		//	リソースのUI設定
+		m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().GetUpCost().ToString();
+		m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.GetBreakCost().ToString();
+
+		//	リソースの範囲表示更新
+		m_resourceCreator.UpdateGuideRange( computePosition );
+
+        if (Input.GetKeyDown(KeyCode.V) && param.CheckWhetherCanUpALevel() && param.GetCurLevelParam().GetUpCost() <= m_itemController.GetHaveCost() )
+        {
+            // 強化
+            result = RESULT.eLevel;
+        }
+        else if (Input.GetKeyDown(KeyCode.F))
+        {
+            // 破壊
+            result = RESULT.eBreak;
+        }
+    }
+
+
+#else
+
     void UpdateCommon( Vector3 computePosition )
     {
 		m_buttonOk.SetActive(false);
@@ -216,6 +321,10 @@ public class UIGirlTaskSelect : MonoBehaviour
             return;
         }
 
+		//	リソースの範囲表示更新
+	    m_resourceCreator.UpdateGuideRange( computePosition, param.GetCurLevelParam().range );
+
+
     	m_buttonLevel.SetActive( param.CheckWhetherCanUpALevel() && param.GetCurLevelParam().GetUpCost() <= m_itemController.GetHaveCost() );
         m_buttonBreak.SetActive(true);
         m_buttonCancel.SetActive(true);
@@ -295,133 +404,8 @@ public class UIGirlTaskSelect : MonoBehaviour
         }
 
     }
-      
-
-//    void UpdateCommon( Vector3 computePosition )
-//    {
-//		m_buttonOk.SetActive(false);
-//		m_buttonLevel.SetActive(false);
-//		m_buttonBreak.SetActive(false);
-//		m_buttonCancel.SetActive(false);
-//		m_resourceCreator.SetGuideVisibleDisable();
-//
-//		//	change state
-//		if( !Input.GetKeyDown( m_cancelKey ))
-//			return;
-//
-//        //  効果音再生（パネルを出す）
-//        SoundController.PlayNow( "UI_MenuOpen", 0.0f, 0.1f, 1.0f, 1.0f );
-//
-//        var param = m_resourceInformation.GetResourceParamFromPosition( computePosition );
-//        if( param )
-//		{
-//			m_buttonLevel.SetActive( param.CheckWhetherCanUpALevel() && param.GetCurLevelParam().GetUpCost() <= m_itemController.GetHaveCost() );
-//			m_buttonBreak.SetActive(true);
-//			m_buttonCancel.SetActive(true);
-//			m_mode = MODE.eConvert;
-//		}
-//		else
-//		{
-//            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = true;
-//            m_itemController.SetActive(true);
-//			m_mode = MODE.eCreate;
-//		}
-//    }
-//    void UpdateCreate( Vector3 computePosition )
-//    {
-//		var param = m_resourceInformation.GetResourceParamFromPosition( computePosition );
-//        if( param )
-//        {
-//            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = false;
-//            m_resourceCreator.SetGuideVisibleDisable();
-//            m_itemController.SetActive(false);
-//    		m_towerInfoPanel.SetActive(false);
-//
-//            // ＵＩ更新
-//			m_buttonLevel.SetActive( param.CheckWhetherCanUpALevel() && param.GetCurLevelParam().GetUpCost() <= m_itemController.GetHaveCost() );
-//			m_buttonBreak.SetActive(true);
-//			m_buttonCancel.SetActive(true);
-//
-//            m_mode = MODE.eConvert;
-//            return;
-//        }
-//
-//        if ( Input.GetKeyDown( m_cancelKey ))
-//        {
-//            Reset();
-//            return;
-//        }
-//
-//		//	リソースのUI設定
-//        m_resourceInformation.m_gridSplitSpacePlane.transform.position  = computePosition;
-//        m_resourceInformation.m_gridSplitSpacePlane.transform.position += new Vector3(0, 0.04f, 0);
-//        
-//		//	リソースの範囲表示更新
-//        int forcus = m_itemController.GetForcus();
-//        if ( forcus != -1 )
-//        {
-//		    m_resourceCreator.UpdateGuideResource( forcus, computePosition );
-//		    m_resourceCreator.UpdateGuideRange( forcus, computePosition );
-//        }
-//        else
-//        {
-//            m_resourceCreator.SetGuideVisibleDisable();
-//        }
-//
-//
-//        // 生成( ショートカット )
-//        for (int i = 0; i < m_itemController.GetNumKind(); i++)
-//        {
-//            if ( Input.GetKeyDown(KeyCode.Alpha1+ i)             == false ) continue;
-//            if ( m_itemController.CheckWhetherTheCostIsEnough(i) == false ) continue;
-//
-//            result = RESULT.eOK;
-//            m_itemController.SetForcus(i);
-//        }
-//
-//    }
-//    void UpdateConvert( Vector3 computePosition )
-//    {
-//		var param = m_resourceInformation.GetResourceParamFromPosition( computePosition );
-//        if( !param )
-//        {
-//			m_buttonLevel.SetActive(false);
-//			m_buttonBreak.SetActive(false);
-//			m_buttonCancel.SetActive(false);
-//
-//            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = true;
-//            m_itemController.SetActive(true);
-//    		m_towerInfoPanel.SetActive(true);
-//            m_mode = MODE.eCreate;
-//
-//            return;
-//        }
-//
-//        if ( Input.GetKeyDown( m_cancelKey ))
-//        {
-//            Reset();
-//            return;
-//        }
-//
-//		//	リソースのUI設定
-//		m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().GetUpCost().ToString();
-//		m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.GetBreakCost().ToString();
-//
-//		//	リソースの範囲表示更新
-//		m_resourceCreator.UpdateGuideRange( computePosition );
-//
-//        if (Input.GetKeyDown(m_okKey) && param.CheckWhetherCanUpALevel() && param.GetCurLevelParam().GetUpCost() <= m_itemController.GetHaveCost() )
-//        {
-//            // 強化
-//            result = RESULT.eLevel;
-//        }
-//        else if (Input.GetKeyDown(m_breakKey))
-//        {
-//            // 破壊
-//            result = RESULT.eBreak;
-//        }
-//    }
-    
+ 
+#endif
 
 
     // ボタン専用設定
@@ -457,6 +441,9 @@ public class UIGirlTaskSelect : MonoBehaviour
         if ( m_mode == MODE.eCreate && param == null )
         {
             result = RESULT.eOK;
+            //  効果音再生  
+            SoundController.PlayNow("UI_Click2", 0.0f, 0.1f, 1.24f, 1.0f);
+            SoundController.PlayNow("UI_Click", 0.0f, 0.1f, 0.84f, 1.0f);
             return;
         }
 
@@ -478,6 +465,38 @@ public class UIGirlTaskSelect : MonoBehaviour
             //  効果音再生
             SoundController.PlayNow("UI_NG", 0.0f, 0.1f, 0.64f, 1.0f);
         }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        Vector3 computePosition = m_resourceInformation.m_gridSplitSpacePlane.transform.position;
+//		var param = m_resourceInformation.GetResourceParamFromPosition( computePosition );
+//        if ( param != null )  return;
+//
+//        if (m_itemController.CheckWhetherTheCostIsEnough(forcusID))
+//        {
+//            result = RESULT.eOK;
+//     		m_towerInfoPanel.SetActive(false);
+//            m_itemController.SetForcus( forcusID );
+//            //  効果音再生  
+//            SoundController.PlayNow("UI_Click2", 0.0f, 0.1f, 1.24f, 1.0f);
+//            SoundController.PlayNow("UI_Click", 0.0f, 0.1f, 0.84f, 1.0f);
+//        }
+//        else
+//        {
+//            //  効果音再生
+//            SoundController.PlayNow("UI_NG", 0.0f, 0.1f, 0.64f, 1.0f);
+//        }
     }
     public void SelectOK()
     {

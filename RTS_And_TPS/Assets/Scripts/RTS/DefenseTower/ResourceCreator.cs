@@ -108,7 +108,7 @@ public class ResourceCreator : NetworkBehaviour
 		var gridParam = m_resourcesInformation.GetResourceParamFromPosition( pos );
 		UpdateGuideRange( pos, gridParam.GetCurLevelParam().range );
 	}
-	private void UpdateGuideRange( Vector3 pos, float range )
+	public void UpdateGuideRange( Vector3 pos, float range )
 	{
 		//	ガイドリソースの範囲の更新
 		Vector3		gridPos		= m_resourcesInformation.ComputeGridPosition( pos );

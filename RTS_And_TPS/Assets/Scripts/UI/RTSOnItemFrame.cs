@@ -42,8 +42,7 @@ public class RTSOnItemFrame : MonoBehaviour,
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-//        m_itemController.SetForcus(-1);
-//        m_uiGirlTaskSelect.SetForcus(-1);
+        m_uiGirlTaskSelect.SetForcusByButton(-1);
 //        m_cursor.Destruction(this.transform.parent.gameObject);
     }
     public void OnPointerClick(PointerEventData eventData)
