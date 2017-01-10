@@ -110,7 +110,7 @@ public class ItemController : NetworkBehaviour
                 }
                 
                 // 大きさ更新
-                if ( isEnoughCost && m_curForcus == i )
+                if ( m_curForcus == i )
                 {
                     m_frameList[i].transform.localScale = new Vector3( forcus,forcus,forcus );
                 }
@@ -119,13 +119,6 @@ public class ItemController : NetworkBehaviour
                     m_frameList[i].transform.localScale = new Vector3( basic,basic,basic );
                 }
 
-			}
-		}
-		{
-			if( Input.GetKeyDown( KeyCode.Space ) )
-			{
-				m_curForcus++;
-				m_curForcus %= m_kindMax;
 			}
 		}
 	}
@@ -180,6 +173,10 @@ public class ItemController : NetworkBehaviour
 		{
             m_frameList[i].SetActive( isActive );
         }
+    }
+    public void SetActive( bool isActive, int index )
+    {
+        m_frameList[index].SetActive( isActive );
     }
     public void SetForcus( int forcusID )
     {

@@ -61,14 +61,14 @@ public class ResourceCreator : NetworkBehaviour
 	{
 		const float rot = 360.0f / 8.0f;
 
-		if (Input.GetKeyDown(KeyCode.U))
+		if (Input.GetKeyDown(KeyCode.R))
 		{
 			m_rotateAngle += rot;
 		}
-		else if (Input.GetKeyDown(KeyCode.O))
-		{
-			m_rotateAngle -= rot;
-		}
+//		else if (Input.GetKeyDown(KeyCode.O))
+//		{
+//			m_rotateAngle -= rot;
+//		}
 	}
 	public override void OnNetworkDestroy()
 	{
@@ -108,7 +108,7 @@ public class ResourceCreator : NetworkBehaviour
 		var gridParam = m_resourcesInformation.GetResourceParamFromPosition( pos );
 		UpdateGuideRange( pos, gridParam.GetCurLevelParam().range );
 	}
-	private void UpdateGuideRange( Vector3 pos, float range )
+	public void UpdateGuideRange( Vector3 pos, float range )
 	{
 		//	ガイドリソースの範囲の更新
 		Vector3		gridPos		= m_resourcesInformation.ComputeGridPosition( pos );

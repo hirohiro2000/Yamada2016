@@ -112,7 +112,7 @@ public class GirlController : NetworkBehaviour
             CmdExplodingC4();
         }
         //  ジャンプする
-        if( Input.GetKeyDown( KeyCode.M )
+        if( Input.GetKeyDown( KeyCode.Space )
         &&  Mathf.Abs( m_rRigid.velocity.y ) < 0.01f ){
             m_rRigid.AddForce( Vector3.up * m_JumpForce, ForceMode.Impulse );
         }
@@ -209,7 +209,7 @@ public class GirlController : NetworkBehaviour
 	}
     void UpdateVehicle()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.N))
         {
             CmdRidingVehicle(gameObject.GetComponent<NetworkIdentity>().netId, m_ridingVehicle.GetComponent<NetworkIdentity>().netId, false);
             return;

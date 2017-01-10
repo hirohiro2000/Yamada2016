@@ -24,15 +24,26 @@ public class RTSCursor : MonoBehaviour
         eUI,
     }
 
+    [SerializeField]
+    private Texture2D          m_cursorTexture = null;
+
     static public MODE        m_curMode    { get; private set; }
     static public GameObject  m_requester  { get; private set; }
-    
-    public void Start()
+
+    private void Start()
     {
         m_curMode = MODE.eNone;
         m_requester = null;
     }
-    public bool Require( GameObject requester, MODE mode )
+    private void OnDisable ()
+    {
+        Cursor.SetCursor( null, Vector2.zero, CursorMode.Auto );
+    }
+    private void Update()
+    {
+        Cursor.SetCursor(m_cursorTexture, Vector2.zero, CursorMode.Auto);
+    }
+    public  bool Require( GameObject requester, MODE mode )
     {
         if ( m_requester != null )        return false;
         if ( mode        == MODE.eNone )  return false;
@@ -42,7 +53,7 @@ public class RTSCursor : MonoBehaviour
         
         return true;
     }
-    public void Destruction( GameObject reqester )
+    public  void Destruction( GameObject reqester )
     {
         if ( m_requester != reqester )  return;
 
