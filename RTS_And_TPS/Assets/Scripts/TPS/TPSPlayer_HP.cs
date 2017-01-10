@@ -154,8 +154,8 @@ public class TPSPlayer_HP : NetworkBehaviour {
 
         //  ダメージ音  
         float   pitch   =   Random.Range( 0.69f, 0.79f );
-        SoundController.PlayNow( "Damage", transform, transform.position, 0.0f, 0.2f, pitch, 2.0f );
-        SoundController.PlayNow( "Damage2", transform, transform.position, 0.0f, 0.15f, pitch, 2.0f );
+        SoundController.PlayNow( "Damage", transform, transform.position, 0.0f, 0.2f * 0.75f, pitch, 2.0f );
+        SoundController.PlayNow( "Damage2", transform, transform.position, 0.0f, 0.15f * 0.75f, pitch, 2.0f );
     }
     void    DamageProc_CallBackEnemy( DamageResult _rDamageResult, CollisionInfo _rInfo )
     {
@@ -343,6 +343,13 @@ public class TPSPlayer_HP : NetworkBehaviour {
             
                     rShaker.SetShake( vShake.normalized, 0.5f, 0.2f, shakePower );
                 }
+            }
+
+            //  ダメージ音再生
+            if( damage > 0.0f ){
+                float   pitch   =   Random.Range( 0.49f, 0.59f );
+                SoundController.PlayNow( "Damage", transform, transform.position, 0.0f, 0.2f * 0.75f, pitch, 2.0f );
+                SoundController.PlayNow( "Damage2", transform, transform.position, 0.0f, 0.15f * 0.75f, pitch, 2.0f );
             }
         }
 
