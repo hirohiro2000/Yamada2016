@@ -20,6 +20,9 @@ public class EnemyTaskDirector : MonoBehaviour {
     GameObject                      m_task_folder;
     public GameObject            m_owner { get; private set; }
     public AnimationController m_anime_controller { get; private set; }
+    public TaskBase.Status m_before_task_status { get; private set; }
+    public TaskBase.Status m_current_task_status { get; private set; }
+    public string m_before_task_name { get; private set; }
 
     void Awake()
     {
@@ -27,6 +30,7 @@ public class EnemyTaskDirector : MonoBehaviour {
         m_anime_controller = GetComponent<AnimationController>();
         m_owner = gameObject;
         InitializeTaskArray();
+        m_before_task_status = TaskBase.Status.Error;
     }
 
     void InitializeTaskArray()
@@ -96,7 +100,11 @@ public class EnemyTaskDirector : MonoBehaviour {
             
             //Debug.Log("exit_task is " + m_current_task.name);
             m_current_task.Exit(target_director, this);
+            m_before_task_name = m_current_task.GetType().Name;
+            m_before_task_status = m_current_task_status;
         }
+
+
         m_current_task = new_task;
         m_current_task.Enter(target_director, this);
         //Debug.Log("new_task is " + m_current_task.name);
@@ -111,13 +119,13 @@ public class EnemyTaskDirector : MonoBehaviour {
         //test_text.text = target_director.m_current_target.name;
         //task_text.text = m_current_task.name;
 
-        TaskBase.Status current_status = TaskBase.Status.Active;
+        TaskBase.Status current_status = TaskBase.Status.Error;
         if (m_current_task)
             current_status = m_current_task.Execute(target_director, this);
         //else
-           // Debug.Log(gameObject.name +  " current_task is null");
-
-        return current_status;
+        // Debug.Log(gameObject.name +  " current_task is null");
+        m_current_task_status = current_status;
+        return m_current_task_status;
     }
 
     /**
