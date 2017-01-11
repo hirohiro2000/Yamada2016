@@ -45,7 +45,6 @@ public class ItemController : NetworkBehaviour
                 
             RTSOnItemFrame onFrame = add.GetComponent<RTSOnItemFrame>();
             onFrame.id = i;
-            onFrame.m_itemController = this;
 
 			Text text = add.transform.GetChild(2).GetComponent<Text>();
 			ResourceParameter resource = m_resourceCreator.m_resources[i].GetComponent<ResourceParameter>();
