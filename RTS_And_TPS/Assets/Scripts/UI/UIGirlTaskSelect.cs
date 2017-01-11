@@ -11,14 +11,16 @@ public class UIGirlTaskSelect : MonoBehaviour
 	public	GameObject			m_buttonLevel				= null;
 	public	GameObject			m_buttonBreak				= null;
 	public	GameObject			m_towerInfoPanel			= null;
+	public	GameObject			m_towerInfoPanelEx			= null;
 
     public ResourceInformation	m_resourceInformation		= null;
     public ResourceCreator      m_resourceCreator           = null;
 	public ItemController		m_itemController            = null;
 
-	private const KeyCode		m_okKey							= KeyCode.Z;
-	private const KeyCode		m_cancelKey						= KeyCode.X;
-	private const KeyCode		m_breakKey						= KeyCode.C;
+//	private const KeyCode		m_okKey							= KeyCode.Z;
+//	private const KeyCode		m_cancelKey						= KeyCode.X;
+//	private const KeyCode		m_breakKey						= KeyCode.C;
+
 
     private enum MODE
     {
@@ -51,7 +53,7 @@ public class UIGirlTaskSelect : MonoBehaviour
 //            case MODE.eConvert: UpdateConvert( girlPosition ); break;
             default: break;
         }
-
+                   
         UpdateConvert( girlPosition );
 
         return result;
@@ -180,7 +182,6 @@ public class UIGirlTaskSelect : MonoBehaviour
 
 
 #else
-
     void UpdateCommon( Vector3 computePosition )
     {
 		m_buttonOk.SetActive(false);
@@ -190,16 +191,15 @@ public class UIGirlTaskSelect : MonoBehaviour
 		m_resourceCreator.SetGuideVisibleDisable();
 
 		//	change state
-        bool isAnyKey = ( Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E ) || Input.GetMouseButtonDown(1) );
+        bool isAnyKey = ( Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(1) );
 
 		if( !isAnyKey )			return;
-
 
         //  効果音再生（パネルを出す）
         SoundController.PlayNow( "UI_MenuOpen", 0.0f, 0.1f, 1.0f, 1.0f );
 
-//        var param = m_resourceInformation.GetResourceParamFromPosition( computePosition );
-//        if( param )
+        var param = m_resourceInformation.GetResourceParamFromPosition( computePosition );
+        if( param ) return;
 //		{
 //			m_mode = MODE.eConvert;
 //			m_buttonLevel.SetActive( param.CheckWhetherCanUpALevel() && param.GetCurLevelParam().GetUpCost() <= m_itemController.GetHaveCost() );
@@ -211,8 +211,40 @@ public class UIGirlTaskSelect : MonoBehaviour
             m_mode = MODE.eSelect;
             m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = true;
             m_itemController.SetActive(true);
-            m_itemController.SetForcus( 0 );
-		}
+
+    		if( Input.GetKeyDown( KeyCode.Q ))
+            {
+                m_mode = MODE.eSelect;
+                m_itemController.SetActive( true );
+                m_resourceCreator.SetGuideVisibleDisable();
+                int forcus = Mathf.Clamp( m_itemController.GetForcus(), 0, m_itemController.GetNumKind() );
+                forcus--;
+                if (forcus == -1)
+                {
+                    forcus = m_itemController.GetNumKind()-1;
+                }                
+                SetForcus( forcus );
+                m_itemController.SetForcus( forcus );
+
+            }
+            if ( Input.GetKeyDown( KeyCode.E ))
+            {
+                m_mode = MODE.eSelect;
+                m_itemController.SetActive( true );
+                m_resourceCreator.SetGuideVisibleDisable();
+                int forcus = Mathf.Clamp( m_itemController.GetForcus(), 0, m_itemController.GetNumKind() );
+                forcus++;
+                if (forcus == m_itemController.GetNumKind())
+                {   
+                    forcus = 0;
+                }
+                SetForcus( forcus );
+                m_itemController.SetForcus( forcus );
+            }
+
+
+        }
+
     }
     void UpdateCreate( Vector3 computePosition )
     {
@@ -236,6 +268,7 @@ public class UIGirlTaskSelect : MonoBehaviour
         if ( Input.GetKeyDown( KeyCode.X ) || Input.GetMouseButtonDown(1) )
         {
             m_mode = MODE.eSelect;
+            SetForcus( m_itemController.GetForcus() );
             m_itemController.SetActive( true );
             m_resourceCreator.SetGuideVisibleDisable();
         }
@@ -312,17 +345,28 @@ public class UIGirlTaskSelect : MonoBehaviour
     void UpdateConvert( Vector3 computePosition )
     {
 		var param = m_resourceInformation.GetResourceParamFromPosition( computePosition );
-        if( !param )
+        if( !param || m_mode == MODE.eSelect || m_mode == MODE.eCreate )
         {
 			m_buttonLevel.SetActive(false);
 			m_buttonBreak.SetActive(false);
 			m_buttonCancel.SetActive(false);
-                        
+            m_towerInfoPanelEx.SetActive(false);    
             return;
         }
 
 		//	リソースの範囲表示更新
 	    m_resourceCreator.UpdateGuideRange( computePosition, param.GetCurLevelParam().range );
+//        if ( m_towerInfoPanelEx.activeInHierarchy == false )
+        {
+            m_towerInfoPanelEx.SetActive(true);
+            m_towerInfoPanelEx.transform.FindChild("Kind").GetComponent<Text>().text       = param.m_name;
+            m_towerInfoPanelEx.transform.FindChild("Summary").GetComponent<Text>().text    = "概要:　　　" + param.m_summary;
+            m_towerInfoPanelEx.transform.FindChild("Power").GetComponent<Text>().text      = "攻撃力:　　" + param.GetLevelParam(param.m_level).power + " 　  ＞";
+            m_towerInfoPanelEx.transform.FindChild("Interval").GetComponent<Text>().text   = "発射間隔:　" + param.GetLevelParam(param.m_level).interval + "　＞　　　秒/発";
+            m_towerInfoPanelEx.transform.FindChild("PowerLv").GetComponent<Text>().text    = param.GetLevelParam(param.m_level+1).power.ToString();
+            m_towerInfoPanelEx.transform.FindChild("IntervalLv").GetComponent<Text>().text = param.GetLevelParam(param.m_level+1).interval.ToString();
+        }
+
 
 
     	m_buttonLevel.SetActive( param.CheckWhetherCanUpALevel() && param.GetCurLevelParam().GetUpCost() <= m_itemController.GetHaveCost() );
@@ -333,19 +377,17 @@ public class UIGirlTaskSelect : MonoBehaviour
 		m_buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().GetUpCost().ToString();
 		m_buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.GetBreakCost().ToString();
 
-		//	リソースの範囲表示更新
-		m_resourceCreator.UpdateGuideRange( computePosition );
-
-        if (Input.GetKeyDown(m_okKey) && param.CheckWhetherCanUpALevel() && param.GetCurLevelParam().GetUpCost() <= m_itemController.GetHaveCost() )
+        if (Input.GetKeyDown(KeyCode.Q) && param.CheckWhetherCanUpALevel() && param.GetCurLevelParam().GetUpCost() <= m_itemController.GetHaveCost() )
         {
             // 強化
             result = RESULT.eLevel;
         }
-        else if (Input.GetKeyDown(m_breakKey))
+        else if (Input.GetKeyDown(KeyCode.E))
         {
             // 破壊
             result = RESULT.eBreak;
         }
+
     }
     void UpdateSelectResource( Vector3 computePosition )
     {
@@ -404,10 +446,8 @@ public class UIGirlTaskSelect : MonoBehaviour
         }
 
     }
- 
 #endif
-
-
+                                                          
     // ボタン専用設定
     public void SetForcus( int forcusID )
     {
@@ -416,7 +456,7 @@ public class UIGirlTaskSelect : MonoBehaviour
             m_towerInfoPanel.SetActive(false);
         }
         else
-        {
+        {                   
 		    //	リソースのUI設定
             m_towerInfoPanel.SetActive(true);
 		    var param = m_itemController.GetResourceParam( forcusID );

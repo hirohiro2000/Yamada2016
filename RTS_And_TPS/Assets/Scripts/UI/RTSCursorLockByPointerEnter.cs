@@ -12,19 +12,19 @@ public class RTSCursorLockByPointerEnter : MonoBehaviour,
     void Start()
     {
         Transform   rHUD    = GameObject.Find( "Canvas" ).transform.FindChild("RTS_HUD");
-        m_cursor            = rHUD.GetComponent<RTSCursor>();
+//        m_cursor            = rHUD.GetComponent<RTSCursor>();
     }
     void OnDisable()
     {
-        m_cursor.Destruction(gameObject);
+//        m_cursor.Destruction(gameObject);
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        m_cursor.Require(gameObject, RTSCursor.MODE.eUI);
+//        m_cursor.Require(gameObject, RTSCursor.MODE.eUI);
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        m_cursor.Destruction(gameObject);
+//        m_cursor.Destruction(gameObject);
     }
 
 }
