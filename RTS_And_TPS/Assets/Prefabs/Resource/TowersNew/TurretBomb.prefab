@@ -72,6 +72,7 @@ GameObject:
   - 208: {fileID: 20816640}
   - 114: {fileID: 11458356}
   - 136: {fileID: 13682656}
+  - 114: {fileID: 11433042}
   m_Layer: 11
   m_Name: TurretBomb
   m_TagString: Untagged
@@ -728,6 +729,23 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &11433042
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 121248}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cf08b9d6c8278b4fbf86428e19b290a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_renderer:
+  - {fileID: 2392660}
+  - {fileID: 2314168}
+  - {fileID: 2328514}
+  m_matFocusFieldTower: {fileID: 2100000, guid: dcc79ce86eaf2084890ae57cde8ba07a,
+    type: 2}
 --- !u!114 &11449012
 MonoBehaviour:
   m_ObjectHideFlags: 1

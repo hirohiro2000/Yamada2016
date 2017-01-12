@@ -75,6 +75,7 @@ public class GameManager : NetworkBehaviour {
 
     private Text                    m_rWaveText     =   null;
     private Text                    m_rResourceText =   null;
+    private Text                    m_rResourceTextOutline =   null;
     private Text                    m_rScoreText    =   null;
     private AcqScore_Control        m_rAcqScore     =   null;
     private AcqRecord_Control       m_rAcqRecord    =   null;
@@ -97,6 +98,7 @@ public class GameManager : NetworkBehaviour {
          
         m_rWaveText     =   FunctionManager.GetAccessComponent< Text >( "Canvas/Column_Wave/Text_Score" );
         m_rResourceText =   FunctionManager.GetAccessComponent< Text >( "Canvas/Column_Resource/Text_Resource" );
+        m_rResourceTextOutline =   FunctionManager.GetAccessComponent< Text >( "Canvas/Column_Resource/Text_Resource (Outline)" );
         m_rScoreText    =   FunctionManager.GetAccessComponent< Text >( "Canvas/Column_Score/Text_Score" );
         m_rAcqScore     =   FunctionManager.GetAccessComponent< AcqScore_Control >( "Canvas/AcqScore" );
         m_rAcqRecord    =   FunctionManager.GetAccessComponent< AcqRecord_Control >( "Canvas/AcqRecord" );
@@ -179,9 +181,10 @@ public class GameManager : NetworkBehaviour {
 
         //  ＵＩの更新  
         {
-            if( m_rWaveText )       m_rWaveText.text        =   m_WaveLevel.ToString();
-            if( m_rResourceText )   m_rResourceText.text    =   ( ( int )m_Resource ).ToString();
-            if( m_rScoreText )      m_rScoreText.text       =   ( ( int )m_GlobalScore ).ToString();
+            if( m_rWaveText )               m_rWaveText.text                =   m_WaveLevel.ToString();
+            if( m_rResourceText )           m_rResourceText.text            =   ( ( int )m_Resource ).ToString();
+            if( m_rResourceTextOutline )    m_rResourceTextOutline.text     =   ( ( int )m_Resource ).ToString();
+            if( m_rScoreText )              m_rScoreText.text               =   ( ( int )m_GlobalScore ).ToString();
 
             //  ダメージフィルター更新  
             if( m_rLinkManager
