@@ -62,7 +62,7 @@ public class TPS_CameraController : MonoBehaviour
 
         {
             Vector3 targetPosition = m_target.transform.position + new Vector3(0.0f, m_cameraHeight, 0.0f);
-            lookAt = Vector3.Lerp( lookAt, targetPosition, 0.1f );
+            lookAt = Vector3.Lerp( lookAt, targetPosition, 0.1f * Time.deltaTime * 60.0f );
         }
 
 

@@ -1813,8 +1813,10 @@ MonoBehaviour:
   ShotPower: 120
   ShotRange: 50
   m_use_pqs: 1
+  m_use_navmesh: 1
   m_use_bone_controller: 1
   NumDefaultBurstShot: 1
+  m_owner_height: 1
 --- !u!114 &11421112
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2045,6 +2047,7 @@ MonoBehaviour:
   FieldDetailY: 5
   IsRamdomPoint: 0
   MaxSamplingCount: -1
+  AdjustHeight: 0
 --- !u!114 &11448276
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2105,7 +2108,7 @@ MonoBehaviour:
   c_THitEmission: {fileID: 158640, guid: e30cf765421362b4db85bbf113a13ca7, type: 2}
   Resource: 10
   Score: 150
-  DefaultHP: 6
+  DefaultHP: 8
 --- !u!114 &11459226
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2268,7 +2271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424eb86e768c73d479649ba3c2cbcf23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HPUpMultipleRate: 5
+  HPUpMultipleRate: 10
   MoveSpeedUpMultipleRate: 1.5
   MaxmoveSpeed: 60
   MaxAcceleration: 1000000

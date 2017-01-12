@@ -1540,8 +1540,10 @@ MonoBehaviour:
   ShotPower: 120
   ShotRange: 12
   m_use_pqs: 0
+  m_use_navmesh: 1
   m_use_bone_controller: 0
   NumDefaultBurstShot: 1
+  m_owner_height: 1
 --- !u!114 &11459546
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1802,7 +1804,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424eb86e768c73d479649ba3c2cbcf23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HPUpMultipleRate: 10
+  HPUpMultipleRate: 20
   MoveSpeedUpMultipleRate: 0.75
   MaxmoveSpeed: 30
   MaxAcceleration: 1000000

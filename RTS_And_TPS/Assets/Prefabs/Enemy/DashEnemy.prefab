@@ -892,7 +892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424eb86e768c73d479649ba3c2cbcf23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HPUpMultipleRate: 3
+  HPUpMultipleRate: 6
   MoveSpeedUpMultipleRate: 0.75
   MaxmoveSpeed: 80
   MaxAcceleration: 10000000
@@ -1043,8 +1043,10 @@ MonoBehaviour:
   ShotPower: 120
   ShotRange: 5
   m_use_pqs: 0
+  m_use_navmesh: 1
   m_use_bone_controller: 0
   NumDefaultBurstShot: 1
+  m_owner_height: 1
 --- !u!114 &11475158
 MonoBehaviour:
   m_ObjectHideFlags: 1
