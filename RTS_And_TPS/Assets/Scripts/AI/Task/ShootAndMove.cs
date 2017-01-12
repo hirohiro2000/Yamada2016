@@ -1,0 +1,357 @@
+﻿using UnityEngine;
+using System.Collections;
+using UnityEngine.Networking;
+
+public class ShootAndMove : TaskBase {
+
+    public enum ShootType
+    {
+         FullAuto,
+         Burst 
+    }
+
+    [SerializeField,HeaderAttribute("発射するオブジェクト")]
+    private GameObject BulletObject = null;
+
+    [SerializeField, HeaderAttribute("弾を発射する間隔(秒)")]
+    private float ShotIntarvalSecond = 3.0f;
+
+    [SerializeField, HeaderAttribute("弾の速度")]
+    private float ShotPower = 2.0f;
+
+    [SerializeField, HeaderAttribute("弾を撃つ範囲")]
+    private float ShotRange = 7.0f;
+
+    [SerializeField, HeaderAttribute("trueにするとPQSを使った位置取りを行う(基本触るな)")]
+    private bool m_use_pqs = false;
+
+    [SerializeField, HeaderAttribute("navmeshを使用した移動をするかどうか")]
+    private bool m_use_navmesh = true;
+
+    [SerializeField, HeaderAttribute("trueにするとBodylControllerを使ったAnimation制御が行われる")]
+    private bool m_use_bone_controller = false;
+
+    [SerializeField, HeaderAttribute("Defaultの弾バースト数")]
+    private int NumDefaultBurstShot = 3;
+
+    [SerializeField, HeaderAttribute("自分の高さ")]
+    private float m_owner_height = 1.0f;
+
+    private int m_num_burstshot;
+    private Transform m_shoot_object = null;
+    private Vector3 m_shoot_point = new Vector3();
+    private Vector3 m_move_point = Vector3.zero;       //PQSを使う場合move_point = target.position + m_move_point 
+    private NavMeshAgent m_navmesh_accessor = null;
+    private bool m_is_active = false;
+
+
+    private GameObject m_attack_object_root = null;
+
+    private float m_shot_pos_update_intarval = 1.0f;
+    private float m_agent_speed = .0f;
+
+    private PQSQuery m_pqs_info = null;
+    private BoneController m_bone_controller = null;
+
+    delegate void TargetingPointFunction(TargetingSystem target_system);
+    private TargetingPointFunction m_targeting_function;
+
+    bool m_point_create_result = false; //PQSポイント作成に成功したかどうか
+    PointQuerySystem.ResultData m_result_data = new PointQuerySystem.ResultData();
+    private float m_original_move_speed = .0f;
+    private float m_move_speed = .0f;
+
+    //変更するかも
+    private float m_target_height = 0.3f;
+ 
+    void Awake()
+    {
+        m_shoot_object = transform.FindChild("ShootObject");
+        m_num_burstshot = NumDefaultBurstShot;
+        
+    }
+
+    void SetDestination(Vector3 pos)
+    {
+        if (m_use_navmesh)
+            m_navmesh_accessor.SetDestination(pos);
+        else
+            m_move_point = pos;
+    }
+
+    void Resume()
+    {
+        if (m_use_navmesh)
+            m_navmesh_accessor.Resume();
+    }
+
+    void SetSpeed(float speed)
+    {
+        if (m_use_navmesh)
+            m_navmesh_accessor.speed = speed;
+    }
+
+    void Move()
+    {
+        if (m_use_navmesh)
+            return;
+
+        Vector3 target_point = /*m_owner_object.transform.position +*/ m_move_point;
+        Vector3 me_tor_target = target_point - m_owner_object.transform.position;
+        if (me_tor_target.magnitude > m_move_speed)
+            me_tor_target = me_tor_target.normalized * m_move_speed;
+
+        m_owner_object.transform.position = Vector3.Lerp(m_owner_object.transform.position, target_point, 0.025f);
+       // m_owner_object.transform.position += me_tor_target * Time.deltaTime; ;
+    }
+
+    private void UpdateTargetingPointDefault(TargetingSystem targeting_system)
+    {
+        //targeting_systemでもcheckしているがなぜかエラーでるのでとりあえず
+        if (targeting_system.IsTargetArive())
+        {
+            m_move_point = targeting_system.m_current_target.transform.position;
+            SetDestination(m_move_point);
+        }
+    }
+
+    private void CalculateNewMovePoint(TargetingSystem target_system)
+    {
+        //PointQuerySystem.ResultData result;
+        //PQSに失敗した場合は動くMovePointはtargetのpositionにしてreturn
+        if (!target_system.m_pqs.CalculateNewPoint(m_pqs_info,
+            target_system.m_current_target.transform,
+            m_owner_object.transform,
+            m_owner_height,
+            m_target_height,
+            ref m_result_data,
+           m_use_navmesh))
+        {
+           
+            m_move_point = target_system.m_current_target.transform.position;
+            m_point_create_result = false; 
+            SetDestination(m_move_point);
+            Resume();
+            return;
+        }
+
+        //成功した場合はoffsetのベクトルを保存してその位置に移動する
+        m_move_point = m_result_data.pos;
+        SetDestination(target_system.m_current_target.transform.position + m_result_data.target_pos_offset);
+        m_point_create_result = true;
+        Resume();
+        return;
+    }
+
+    private void UpdateTargetingPointUsePQS(TargetingSystem target_system)
+    {
+   
+       if(!m_point_create_result)
+        {
+            CalculateNewMovePoint(target_system);
+            return;
+        }
+
+       //現在のターゲット位置からのOffsetで移動可能かを評価する
+       //だめな場合は新たにPointを打ち直す
+       if(!target_system.m_pqs.IsValidCurrentPoint(target_system.m_current_target.transform,
+           m_result_data.target_pos_offset,
+           m_pqs_info,
+           m_target_height))
+        {
+            CalculateNewMovePoint(target_system);
+            return;
+        }
+        //m_move_point = Vector3.zero;
+       SetDestination(target_system.m_current_target.transform.position + m_move_point);
+    }
+
+    private void InitializeMoveAlg()
+    {
+        if (m_use_pqs)
+        {
+            m_pqs_info = GetComponent<PQSQuery>();
+            if (m_pqs_info == null)
+                UserLog.ErrorTerauchi(m_owner_object.name + "no attach PQSquecy!!");
+            m_targeting_function = UpdateTargetingPointUsePQS;
+           // m_targeting_function = UpdateTargetingPointDefault;
+
+        }
+        else
+        {
+            m_targeting_function = UpdateTargetingPointDefault;
+        }
+    }
+
+    void Start()
+    {
+
+        var enemy_root = GameObject.Find("EnemySpawnRoot");
+        m_attack_object_root = enemy_root.GetComponent<ReferenceWrapper>().m_attack_object_root;
+       
+    }
+
+    IEnumerator UpdateLookPointAndMovePoint(TargetingSystem target_system)
+    {
+        Resume();
+        while(m_is_active)
+        {
+            //targeting_systemでもcheckしているがなぜかエラーでるのでとりあえず
+            if(target_system.IsTargetArive())
+                m_shoot_point = target_system.m_current_target.transform.position;
+
+            //   m_owner_object.transform.LookAt(m_shoot_point);
+            //射撃位置更新a
+            m_shoot_object.LookAt(m_shoot_point);
+            //if(m_use_bone_controller)
+            //{
+            //    m_bone_controller.m_target_direction = m_shoot_point - m_owner_object.transform.position;
+            //}
+                
+
+
+            //移動位置更新
+            m_targeting_function(target_system);
+           
+            yield return new WaitForSeconds(m_shot_pos_update_intarval);
+        }
+    }
+
+    IEnumerator Attack(TargetingSystem target_system)
+    {
+        while(m_is_active)
+        {
+            StartCoroutine(BurstShoot(target_system,0.3f));
+            yield return new WaitForSeconds(ShotIntarvalSecond);
+        }
+    }
+
+    public float GetShotRange()
+    {
+        return ShotRange;
+    }
+
+    public override void Initialize(GameObject owner)
+    {
+        base.Initialize(owner);
+        InitializeMoveAlg();
+        var enemy_root = GameObject.Find("EnemySpawnRoot");
+       // m_home_base = enemy_root.GetComponent<ReferenceWrapper>().m_home_base;
+        m_navmesh_accessor = owner.GetComponent<NavMeshAgent>();
+        m_original_move_speed = m_navmesh_accessor.speed;
+        m_move_speed = m_original_move_speed;
+        m_agent_speed = m_navmesh_accessor.speed;
+        if(!m_use_navmesh)
+        {
+            m_navmesh_accessor.enabled = false;
+        }
+
+        if (m_use_bone_controller)
+            m_bone_controller = GetComponent<BoneController>();
+    }
+
+    public override void SetWaveParametor(
+        EnemyWaveParametor wave_param,
+        EnemyPersonalParametor personal_param)
+    {
+        int rate = wave_param.m_current_level - personal_param.m_emearge_level;
+        float temp= rate * personal_param.GetBurstIncrementRate();
+        m_num_burstshot = NumDefaultBurstShot + (int)temp;
+        m_num_burstshot = Mathf.Clamp(m_num_burstshot, 1, personal_param.GetMaxBurstShot());
+         rate = wave_param.m_current_level - personal_param.m_emearge_level;
+        m_move_speed = m_original_move_speed + (personal_param.GetMoveSpeedUpMultipleRate() * rate);
+    }
+
+    public override void Enter(TargetingSystem target_system, EnemyTaskDirector task_director)
+    {
+        m_is_active = true;
+        StartCoroutine(UpdateLookPointAndMovePoint(target_system));
+        StartCoroutine(Attack(target_system));
+        task_director.m_anime_controller.SetTrigger("ToShootAndMove");
+
+       SetSpeed( m_move_speed);
+        //ほかのキャラクターのルートをたどる可能性があるから改良する
+        //   m_navmesh_accessor.SetDestination(m_home_base.transform.position);
+    }
+
+    public override Status Execute(TargetingSystem target_system, EnemyTaskDirector task_director)
+    {
+        //UpdateIsReachHomeBase(target_system);
+        Status current_status = EvaluteStatus(target_system, task_director);
+        if(m_use_navmesh)
+            task_director.m_anime_controller.SetFloat("MoveSpeed", m_navmesh_accessor.velocity.magnitude);
+        //targeting_systemでもcheckしているがなぜかエラーでるのでとりあえず
+        if (target_system.IsTargetArive())
+            m_shoot_point = target_system.m_current_target.transform.position;
+        if (m_use_bone_controller)
+        {
+            m_bone_controller.m_target_direction = m_shoot_point - m_owner_object.transform.position;
+        }
+        Move();
+        return current_status;
+    }
+
+    public override void Exit(TargetingSystem target_system, EnemyTaskDirector task_director)
+    {
+        m_is_active = false;
+        Resume();
+        SetSpeed(m_agent_speed);
+    }
+
+    private Status EvaluteStatus(TargetingSystem target_system, EnemyTaskDirector task_director)
+    {
+        if (target_system.m_current_target == null)
+            return Status.Completed;
+
+        float dist = (m_owner_object.transform.position - target_system.m_current_target.transform.position).magnitude;
+        if (dist >= ShotRange)
+            return Status.Failed;
+
+        return Status.Active;
+    }
+
+    private bool IsCanLineofFire(TargetingSystem target_system,
+        float target_height)
+    {
+        var line_of_fire = GetComponent<PFilterLineofFire>();
+        return line_of_fire.IsCanCreate(target_system.m_current_target.transform, m_owner_object.transform.position, target_height);
+    }
+
+    IEnumerator BurstShoot(TargetingSystem target_system,float target_height)
+    {
+
+        for (int i = 0; i < m_num_burstshot; i++)
+        {
+            //射線が通ってなかったら射撃しない
+            if(!IsCanLineofFire(target_system,target_height))
+            {
+                break;
+            }
+            GameObject shot_object = Instantiate(BulletObject);
+            shot_object.transform.position = m_shoot_object.transform.position;
+            Vector3 target_position = target_system.m_current_target.transform.position;
+            //とりあえずちょっと上にあげた後に散らばらせる
+            //ここの散らばらせ方はそのうち帰るかも
+            target_position += new Vector3(
+                UnityEngine.Random.Range(-0.5f, 0.5f),
+                 0.7f + UnityEngine.Random.Range(-0.4f, 0.4f),
+                 UnityEngine.Random.Range(-0.5f, 0.5f));
+         
+            Vector3 vec = (target_position - shot_object.transform.position).normalized * ShotPower;
+            var rigid_body = shot_object.GetComponent<Rigidbody>();
+            shot_object.transform.parent = m_attack_object_root.transform;
+            if (rigid_body)
+            {
+                rigid_body.AddForce(vec);
+            }
+            else
+            {
+                UserLog.ErrorTerauchi(m_owner_object.name + "ShootAndMove Bullet No attach RigidBody!!");
+            }
+            yield return null;
+          //  yield return new WaitForSeconds(ShotIntarvalSecond);
+        }
+
+    }
+
+}
