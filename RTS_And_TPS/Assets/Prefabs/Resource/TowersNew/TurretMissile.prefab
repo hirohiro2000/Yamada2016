@@ -209,6 +209,7 @@ GameObject:
   - 114: {fileID: 11497402}
   - 208: {fileID: 20859748}
   - 136: {fileID: 13610620}
+  - 114: {fileID: 11425864}
   m_Layer: 11
   m_Name: TurretMissile
   m_TagString: Untagged
@@ -585,6 +586,23 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.39215687}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &11425864
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 182442}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cf08b9d6c8278b4fbf86428e19b290a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_renderer:
+  - {fileID: 2305308}
+  - {fileID: 2323218}
+  - {fileID: 2317222}
+  m_matFocusFieldTower: {fileID: 2100000, guid: dcc79ce86eaf2084890ae57cde8ba07a,
+    type: 2}
 --- !u!114 &11427474
 MonoBehaviour:
   m_ObjectHideFlags: 1

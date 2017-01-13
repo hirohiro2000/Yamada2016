@@ -201,6 +201,7 @@ GameObject:
   - 114: {fileID: 11415968}
   - 208: {fileID: 20887676}
   - 136: {fileID: 13608178}
+  - 114: {fileID: 11427934}
   m_Layer: 11
   m_Name: TurretMachineGun
   m_TagString: Untagged
@@ -869,6 +870,25 @@ MonoBehaviour:
       range: 40
       interval: 0.3
       upCost: 0
+--- !u!114 &11427934
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 155278}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cf08b9d6c8278b4fbf86428e19b290a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_renderer:
+  - {fileID: 2365136}
+  - {fileID: 2351228}
+  - {fileID: 2382126}
+  - {fileID: 2343390}
+  - {fileID: 2392266}
+  m_matFocusFieldTower: {fileID: 2100000, guid: dcc79ce86eaf2084890ae57cde8ba07a,
+    type: 2}
 --- !u!114 &11428122
 MonoBehaviour:
   m_ObjectHideFlags: 1

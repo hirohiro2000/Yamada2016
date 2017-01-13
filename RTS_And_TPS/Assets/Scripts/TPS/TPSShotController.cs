@@ -478,7 +478,7 @@ public class TPSShotController : NetworkBehaviour {
 //		WeaponAmmoUIList UIList = WeaponAmmoUIList.Aceess(m_ID);
 //		if (UIList != null)
 //			UIList.Disp(weapons.list.ToArray(),cntWeaponIndex);
-
+           
         if ( m_uiWeaponAmmo       == null ) m_uiWeaponAmmo        = GameObject.Find("TPS_HUD").transform.FindChild("Weapon").GetChild(m_ID+1).transform.FindChild("Ammo").GetComponent<Text>();           // [BackGround]があるから１つ加算
         if ( m_uiWeaponHavingAmmo == null ) m_uiWeaponHavingAmmo  = GameObject.Find("TPS_HUD").transform.FindChild("Weapon").GetChild(m_ID+1).transform.FindChild("HavingAmmo").GetComponent<Text>();     // [BackGround]があるから１つ加算
         if ( m_uiWeaponReloadTime == null ) m_uiWeaponReloadTime  = GameObject.Find("TPS_HUD").transform.FindChild("Weapon").GetChild(m_ID+1).transform.FindChild("ReloadTime").gameObject;               // [BackGround]があるから１つ加算
