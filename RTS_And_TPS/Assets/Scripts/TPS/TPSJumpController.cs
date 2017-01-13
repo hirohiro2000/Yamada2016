@@ -129,6 +129,7 @@ public class TPSJumpController : MonoBehaviour {
 				SetFallPower(-Power);
 				cntHoverTime = maxHoverTime;
 				isJumped = true;
+				characterMover.JumpLock();
             }
 
 		}

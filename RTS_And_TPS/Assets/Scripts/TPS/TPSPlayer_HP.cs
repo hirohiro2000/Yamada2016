@@ -24,7 +24,7 @@ public class TPSPlayer_HP : NetworkBehaviour {
     private float                   c_DamageHeight  =   10.0f;
     private float                   c_HDRatio       =   1.0f;
 
-    private CharacterController     m_rCharaCtrl    =   null;
+    private CharacterMover			m_rCharaCtrl    =   null;
     private bool                    m_PrevGrounded  =   false;
     private float                   m_LastHeight    =   0.0f;
 
@@ -68,7 +68,7 @@ public class TPSPlayer_HP : NetworkBehaviour {
 
         //  アクセスの取得
 	    m_rDamageBank   =   GetComponent< DamageBank >();
-        m_rCharaCtrl    =   GetComponent< CharacterController >();
+        m_rCharaCtrl    =   GetComponent< CharacterMover >();
         m_rTPSControl   =   GetComponent< TPSPlayer_Control >();
         m_rRTSControl   =   GetComponent< RTSPlayer_Control >();
         m_rNetPlayer    =   GetComponent< NetPlayer_Control >();

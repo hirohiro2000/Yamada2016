@@ -34,8 +34,11 @@ public class CharacterMover : MonoBehaviour {
 	}
 
 	bool IsGrounded = false;
+	float jumpLockTime = .0f;
+
 
 	Vector3 totalSpeed;
+	Vector3 lastTotalSpeed;
 	// Use this for initialization
 	void    Start()
     {
@@ -50,6 +53,11 @@ public class CharacterMover : MonoBehaviour {
     public  Vector3  GetTotalSpeed()
     {
         return  totalSpeed;
+    }
+	public void JumpLock()
+	{
+		jumpLockTime = 0.3f;
+		IsGrounded = false;
     }
 
 	public bool isGrounded
@@ -68,17 +76,31 @@ public class CharacterMover : MonoBehaviour {
         if( !m_rIdentity.isLocalPlayer )    return;
 
 		//rigidBody.velocity = new Vector3(totalSpeed.x, rigidBody.velocity.y, totalSpeed.z);
-		totalSpeed.y = .0f;
-        transform.position = transform.position + totalSpeed * Time.deltaTime;
+		//totalSpeed.y = .0f;
+		//transform.position = transform.position + totalSpeed * Time.deltaTime;
 
-        if (Physics.SphereCast(new Ray(transform.position, Vector3.down), 1.5f, 0.5f))
-        {
-			IsGrounded = true;
-        }
-		else
-		{
-			IsGrounded = false;
-        }
+		jumpLockTime -= Time.deltaTime;
+
+		IsGrounded = false;
+		lastTotalSpeed = totalSpeed;
+
 		totalSpeed = Vector3.zero;
     }
+
+	void FixedUpdate()
+	{
+		transform.position = transform.position + lastTotalSpeed * Time.fixedDeltaTime + new Vector3(rigidBody.velocity.x,.0f, rigidBody.velocity.z) * -Time.fixedDeltaTime;
+		rigidBody.velocity = new Vector3(.0f, rigidBody.velocity.y, .0f);
+	}
+
+	void OnCollisionStay(Collision col)
+	{
+		if (!m_rIdentity.isLocalPlayer) return;
+
+		if (jumpLockTime >= .0f) return;
+		if (col.contacts[0].normal.y > 0.5f)
+		{
+			IsGrounded = true;
+        }
+	}
 }
