@@ -9,6 +9,7 @@ public class TaskBase : MonoBehaviour {
 
     public enum Status
     {
+        Error = -1,
         Active,
         Completed,
         Failed,
