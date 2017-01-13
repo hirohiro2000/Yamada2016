@@ -107,15 +107,16 @@ public class TPSJumpController : MonoBehaviour {
 		{
 			cntEnableTime = .0f;
 		}
-		if(characterController.isGrounded == true || (characterController.collisionFlags & CollisionFlags.Below) != 0)
+		if(characterMover.isGrounded == true )
 		{
-			fallPower = 0.3f;
+			//fallPower = 0.3f;
+			SetFallPower(0.3f);
 			isJumped = false;
 			isCanHover = false;
         }
 		else
 		{
-			fallPower += Time.deltaTime;
+			AddFallPower(Time.deltaTime);
         }
 
         //  瀕死状態の場合はジャンプできない
@@ -123,15 +124,16 @@ public class TPSJumpController : MonoBehaviour {
         &&  !m_rTPSHP.m_IsDying )
 		{
 			//cntEnableTime = maxEnableTime;
-			if (characterController.isGrounded == true || (characterController.collisionFlags & CollisionFlags.Below) != 0)
+			if (characterMover.isGrounded == true )
 			{
-				fallPower = -Power;
+				SetFallPower(-Power);
 				cntHoverTime = maxHoverTime;
 				isJumped = true;
+				characterMover.JumpLock();
             }
 
 		}
-		if (Input.GetButton("Jump") == false && characterController.isGrounded == false)
+		if (Input.GetButton("Jump") == false && characterMover.isGrounded == false)
 		{
 			isCanHover = true;
 		}
@@ -180,17 +182,29 @@ public class TPSJumpController : MonoBehaviour {
 		//}
 		//characterController.Move(Physics.gravity * fallPower * Time.deltaTime);
 
-		characterMover.AddSpeed(Physics.gravity * fallPower);
+		//characterMover.AddSpeed(Physics.gravity * fallPower);
 
 		if ((characterController.isGrounded == false) && (beforeIsGrounded == true) && isJumped == false)
 		{
 			fallPower = .0f;
 			characterMover.AddSpeed(Vector3.up * 2.0f);
 		}
-		beforeIsGrounded = characterController.isGrounded || (characterController.collisionFlags & CollisionFlags.Below) != 0;
+		beforeIsGrounded = characterController.isGrounded;
 
     }
 
+	void SetFallPower(float power)
+	{
+		//fallPower += power;
+		Vector3 dir = (Physics.gravity * power).normalized;
+		rigidBody.velocity = rigidBody.velocity + Vector3.Dot(rigidBody.velocity, dir) * -dir;
+        rigidBody.velocity = rigidBody.velocity + Physics.gravity * power;
+	}
+	void AddFallPower(float power)
+	{
+		//fallPower = power;
+		rigidBody.velocity = rigidBody.velocity + Physics.gravity * power;
+    }
 
 	void OnGUI()
 	{
