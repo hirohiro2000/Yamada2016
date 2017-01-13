@@ -357,8 +357,6 @@ public class TPSMoveController : MonoBehaviour
 		right.Normalize();
 
         Vector2 controllerAxis = new Vector2( Input.GetAxis("Horizontal"), Input.GetAxis("Vertical") );
-
-		Debug.Log(controllerAxis);
         inputDir = Vector3.zero;
 
 
