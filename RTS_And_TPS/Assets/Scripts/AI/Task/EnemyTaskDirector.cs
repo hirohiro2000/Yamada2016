@@ -163,6 +163,12 @@ public class EnemyTaskDirector : MonoBehaviour {
         {
             task.SetWaveParametor(wave_param,personal_param);
         }
+
+        var nav_mesh_agent = GetComponent<NavMeshAgent>();
+        if(nav_mesh_agent)
+        {
+            nav_mesh_agent.angularSpeed += 40.0f;   
+        }
     }
 
 }
