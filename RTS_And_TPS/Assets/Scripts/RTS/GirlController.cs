@@ -114,7 +114,7 @@ public class GirlController : NetworkBehaviour
             m_rRigid.AddForce( Vector3.up * m_JumpForce, ForceMode.Impulse );
         }
         //　乗れるロボットの検索
-        if ( Input.GetKeyDown(KeyCode.Space) )
+        if ( Input.GetKeyDown(KeyCode.N) )
         {
             float       nearDistanceSq   = 4.5f;
             GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");

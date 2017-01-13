@@ -112,7 +112,7 @@ public class UIGirlTaskSelect : MonoBehaviour
             forcus = -1;
         }
         // そのまま使用
-        if( Input.GetKeyDown( KeyCode.F ))
+        if( Input.GetKeyDown( KeyCode.X ))
         {
             forcus = Mathf.Clamp( m_itemController.GetForcus(), 0, m_itemController.GetNumKind() );
         }
