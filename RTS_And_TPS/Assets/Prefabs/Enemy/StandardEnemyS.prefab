@@ -1263,7 +1263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424eb86e768c73d479649ba3c2cbcf23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HPUpMultipleRate: 5
+  HPUpMultipleRate: 10
   MoveSpeedUpMultipleRate: 1.5
   MaxmoveSpeed: 60
   MaxAcceleration: 1000000
@@ -1466,8 +1466,10 @@ MonoBehaviour:
   ShotPower: 120
   ShotRange: 12
   m_use_pqs: 0
+  m_use_navmesh: 1
   m_use_bone_controller: 0
   NumDefaultBurstShot: 1
+  m_owner_height: 1
 --- !u!114 &11459546
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1594,7 +1596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08e157a94c3e4554db5f289e0f987a88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  c_ParentName: 456e656d79537061776e526f6f74
+  c_ParentName: EnemySpawnRoot
 --- !u!114 &11477544
 MonoBehaviour:
   m_ObjectHideFlags: 1

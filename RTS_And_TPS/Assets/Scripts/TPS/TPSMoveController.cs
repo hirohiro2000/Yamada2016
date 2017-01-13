@@ -141,7 +141,7 @@ public class TPSMoveController : MonoBehaviour
             m_Energy    =   Mathf.Max( m_Energy, 0.0f );
 
             //  ダッシュ
-            _rParent.characterMover.AddSpeed( _rParent.transform.forward.normalized * c_DashSpeed * Time.deltaTime * 60.0f );
+            _rParent.characterMover.AddSpeed( _rParent.transform.forward.normalized * c_DashSpeed );
         }
         private void    Update_Recovery( TPSMoveController _rParent )
         {
@@ -409,7 +409,7 @@ public class TPSMoveController : MonoBehaviour
             m_animationController.ChangeSpeed( 1.0f );
         }
 
-        //  浮いている間はアニメーションを再生しない
+        //  浮いている間はアニメーションを再生しない 
         if( !characterController.isGrounded ){
             m_animationController.ChangeSpeed( 0.0f );
         }
