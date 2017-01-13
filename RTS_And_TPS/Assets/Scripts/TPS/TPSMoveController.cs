@@ -177,6 +177,7 @@ public class TPSMoveController : MonoBehaviour
 	//float sensitivity = 0.1f;
 
 	Vector3 inputDir;
+	Vector3 m_KnockBackSpeed;
 
 	Rigidbody _rigidBody;
 	Rigidbody rigidBody
@@ -357,6 +358,7 @@ public class TPSMoveController : MonoBehaviour
 
         Vector2 controllerAxis = new Vector2( Input.GetAxis("Horizontal"), Input.GetAxis("Vertical") );
 
+		Debug.Log(controllerAxis);
         inputDir = Vector3.zero;
 
 
@@ -410,10 +412,19 @@ public class TPSMoveController : MonoBehaviour
         }
 
         //  浮いている間はアニメーションを再生しない
-        if( !characterController.isGrounded ){
+        if( !characterMover.isGrounded)
+		{
             m_animationController.ChangeSpeed( 0.0f );
         }
-    }
+
+
+		//ノックバック処理
+		{
+			characterMover.AddSpeed(m_KnockBackSpeed);
+			m_KnockBackSpeed *= Mathf.Max(1.0f - 8.0f * Time.deltaTime,.0f);
+
+		}
+	}
 
     void UpdateAdjustMoveForce( Vector3 forward, Vector3 right )
     {
@@ -460,8 +471,9 @@ public class TPSMoveController : MonoBehaviour
             impluseForce = Vector3.Lerp(impluseForce, Vector3.zero, dampRate * Time.deltaTime);
         }
 
+		characterMover.AddSpeed(totalForce);
 
-    }
+	}
     Vector3 AvoidPower(Vector3[] directions)
     {
         Vector3 outVec = Vector3.zero;
@@ -512,7 +524,8 @@ public class TPSMoveController : MonoBehaviour
 			dir.y = .0f;
 			dir.Normalize();
 			transform.position = transform.position + dir * 0.2f;
-        }
+			m_KnockBackSpeed += dir * 20.0f;
+		}
     }
 
 }

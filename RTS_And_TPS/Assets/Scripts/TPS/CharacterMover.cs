@@ -20,6 +20,21 @@ public class CharacterMover : MonoBehaviour {
 		}
 	}
 
+	Rigidbody _rigidBody;
+	Rigidbody rigidBody
+	{
+		get
+		{
+			if (_rigidBody == null)
+			{
+				_rigidBody = GetComponent<Rigidbody>();
+			}
+			return _rigidBody;
+		}
+	}
+
+	bool IsGrounded = false;
+
 	Vector3 totalSpeed;
 	// Use this for initialization
 	void    Start()
@@ -37,13 +52,33 @@ public class CharacterMover : MonoBehaviour {
         return  totalSpeed;
     }
 
+	public bool isGrounded
+	{
+		get
+		{
+			//return characterController.isGrounded;
+			return IsGrounded;
+        }
+	}
+
 	// Update is called once per frame
 	void Update ()
 	{
         //  自分のキャラクター以外は処理を行わない
         if( !m_rIdentity.isLocalPlayer )    return;
 
-		characterController.Move(totalSpeed * Time.deltaTime);
+		//rigidBody.velocity = new Vector3(totalSpeed.x, rigidBody.velocity.y, totalSpeed.z);
+		totalSpeed.y = .0f;
+        transform.position = transform.position + totalSpeed * Time.deltaTime;
+
+        if (Physics.SphereCast(new Ray(transform.position, Vector3.down), 1.5f, 0.5f))
+        {
+			IsGrounded = true;
+        }
+		else
+		{
+			IsGrounded = false;
+        }
 		totalSpeed = Vector3.zero;
     }
 }
