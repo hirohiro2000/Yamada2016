@@ -347,9 +347,9 @@ public class TPSPlayer_HP : NetworkBehaviour {
 
             //  ダメージ音再生
             if( damage > 0.0f ){
-                float   pitch   =   Random.Range( 0.69f, 0.79f );
-                SoundController.PlayNow( "Damage", transform, transform.position, 0.0f, 0.2f * 0.75f, pitch, 2.0f );
-                SoundController.PlayNow( "Damage2", transform, transform.position, 0.0f, 0.15f * 0.75f, pitch, 2.0f );
+                float   pitch   =   Random.Range( 0.59f, 0.59f );
+                SoundController.PlayNow( "Damage", transform, transform.position, 0.0f, 0.2f * 1, pitch, 2.0f );
+                SoundController.PlayNow( "Damage2", transform, transform.position, 0.0f, 0.15f * 1, pitch, 2.0f );
             }
         }
 
