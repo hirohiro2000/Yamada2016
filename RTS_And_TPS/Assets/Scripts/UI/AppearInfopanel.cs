@@ -22,7 +22,7 @@ public class AppearInfopanel : MonoBehaviour
 
             Vector2 size = rt.localScale;
 
-            size.x += 20.0f*Time.deltaTime;
+            size.x += 50.0f*Time.deltaTime;
 
             rt.localScale = size;
             
@@ -43,7 +43,7 @@ public class AppearInfopanel : MonoBehaviour
 
             Vector3 size = rt.localScale;
 
-            size.x -= 20.0f*Time.deltaTime;
+            size.x -= 50.0f*Time.deltaTime;
 
             rt.localScale = size;
             
@@ -74,7 +74,7 @@ public class AppearInfopanel : MonoBehaviour
 
         gameObject.SetActive(true);
         m_targetActiveFlag = true;
-        m_openWaitTimer   = 0.5f;
+        m_openWaitTimer   = 0.25f;
 
     }
     void Close()

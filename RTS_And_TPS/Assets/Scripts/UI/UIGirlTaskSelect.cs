@@ -307,7 +307,7 @@ public class UIGirlTaskSelect : MonoBehaviour
         if ( m_curConvertTarget != param.gameObject )
         {
             // ＵＩに誤りがあるので初期化処理を行います
-
+                                                              
             //　ターゲットの変更の場合
             if ( m_curConvertTarget != null )
             {
@@ -316,9 +316,15 @@ public class UIGirlTaskSelect : MonoBehaviour
                 m_curConvertTarget = null;
             }
 
+            // ＵＩは開かれていますか？
+            if ( m_uiConvert.activeInHierarchy == false )
+            {
+                // パネルを出す
+                m_uiConvert.SetActive(true);
 
-            //
-            m_uiConvert.SetActive(true);
+                // 効果音再生
+                SoundController.PlayNow( "UI_MenuOpen", 0.0f, 0.1f, 1.0f, 1.0f );
+            }
             
             // ボタンに必要なコストを設定します
             Transform buttonBreak = m_uiConvert.transform.GetChild(1);
