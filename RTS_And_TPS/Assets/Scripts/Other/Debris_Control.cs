@@ -198,15 +198,19 @@ public class Debris_Control : MonoBehaviour {
         }
     }
 
-    public  void    SetMove( Transform _rTrans )
+    public  void    SetMove( Transform _rTrans, float _MoveTime )
     {
+        c_MoveTime      =   _MoveTime;
+
         m_State         =   State.Move;
         m_StartPoint    =   transform.position;
         m_rTarget       =   _rTrans;
         
         //  コンポーネント削除
-        Destroy( GetComponent< Rigidbody >() );
-        Destroy( GetComponent< Collider >() );
+        Rigidbody   rRigid  =   GetComponent< Rigidbody >();
+        Collider    rCol    =   GetComponent< Collider >();
+        if( rRigid )    Destroy( rRigid );
+        if( rCol )      Destroy( rCol );
 
         //  効果音再生 
         if( c_MoveEmission
