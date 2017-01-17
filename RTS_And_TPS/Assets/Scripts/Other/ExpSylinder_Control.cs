@@ -30,9 +30,7 @@ public class ExpSylinder_Control : MonoBehaviour {
     void    Awake()
     {
         m_NumDebris =   transform.childCount - 1;
-    }
-	void    Start()
-    {
+
         //  アクセスを取得
         m_rExpManager   =   FunctionManager.GetAccessComponent< ExplodedManager >( "ExplodedManager" );
 
@@ -48,9 +46,14 @@ public class ExpSylinder_Control : MonoBehaviour {
                     Rigidbody   rRigid      =   transform.GetChild( i ).GetComponent< Rigidbody >();
                     if( !rRigid )   continue;
 
-                    rRigid.velocity         =   Vector3.zero;
-                    rRigid.angularVelocity  =   Vector3.zero;
-                    rRigid.isKinematic      =   true;
+                    //rRigid.velocity         =   Vector3.zero;
+                    //rRigid.angularVelocity  =   Vector3.zero;
+                    //rRigid.isKinematic      =   true;
+
+                    //  物理コンポーネント削除
+                    Collider    rCol        =   transform.GetChild( i ).GetComponent< Collider >();
+                    if( rRigid )    DestroyImmediate( rRigid );
+                    if( rCol )      DestroyImmediate( rCol );
                 }
             }
             else{
@@ -58,7 +61,9 @@ public class ExpSylinder_Control : MonoBehaviour {
                 m_rExpManager.m_rExpObjList.Add( gameObject );
             }
         }
-
+    }
+	void    Start()
+    {
         //  目標をセット
         UpdateTargetTrans();
 
@@ -77,7 +82,7 @@ public class ExpSylinder_Control : MonoBehaviour {
         m_WaitTimer =   Mathf.Max( m_WaitTimer, 0.0f );
         if( m_WaitTimer > 0.0f )    return;
 
-        //  子を移動させる
+        //  子を移動させる 
         {
             m_CatchTimer    -=  Time.deltaTime;
             m_CatchTimer    =   Mathf.Max( m_CatchTimer, 0.0f );
@@ -89,7 +94,9 @@ public class ExpSylinder_Control : MonoBehaviour {
                     Debris_Control  rControl    =   transform.GetChild( i ).GetComponent< Debris_Control >();
                     if( rControl.IsMove() ) continue;
 
-                    rControl.SetMove( m_rTargetTrans );
+                    float   distance    =   ( m_rTargetTrans )? ( transform.GetChild( i ).position - m_rTargetTrans.position ).magnitude : 0.0f;
+                    float   moveTime    =   Mathf.Max( 1.0f, 0.5f + distance / ( 6.0f * 7.5f ) );
+                    rControl.SetMove( m_rTargetTrans, moveTime );
                     rControl.c_TargetID =   c_PartnerID;
                     rControl.c_Score    =   ( float )c_Score / Mathf.Max( 1, m_NumDebris );
                     rControl.c_ForMe    =   m_ForMe;

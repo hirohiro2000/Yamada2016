@@ -36,7 +36,7 @@ public class GameManager : NetworkBehaviour {
 
     //  固定パラメータ
     public  float                   c_StartCDTime   =   3.0f;
-    private float                   c_WaveInterval  =   30.0f;
+    private float                   c_WaveInterval  =   36.6f;
     public  float                   c_StartResource =   150.0f;
 
     //  内部パラメータ
