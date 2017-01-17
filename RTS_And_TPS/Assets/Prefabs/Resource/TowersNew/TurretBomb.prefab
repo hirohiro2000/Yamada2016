@@ -605,19 +605,19 @@ MonoBehaviour:
   m_levelInformations:
     list:
     - hp: 15
-      power: 16
-      range: 18
-      interval: 4
-      upCost: 236
+      power: 82
+      range: 60
+      interval: 5
+      upCost: 117
     - hp: 20
-      power: 22
-      range: 18
-      interval: 3
-      upCost: 274
+      power: 124
+      range: 60
+      interval: 5
+      upCost: 161
     - hp: 40
-      power: 28
-      range: 18
-      interval: 2
+      power: 256
+      range: 60
+      interval: 5
       upCost: 0
 --- !u!114 &11410948
 MonoBehaviour:
@@ -745,6 +745,8 @@ MonoBehaviour:
   - {fileID: 2314168}
   - {fileID: 2328514}
   m_matFocusFieldTower: {fileID: 2100000, guid: dcc79ce86eaf2084890ae57cde8ba07a,
+    type: 2}
+  m_matPermeateFieldTower: {fileID: 2100000, guid: 861a77341aa61fa469f9a4c0ebd04248,
     type: 2}
 --- !u!114 &11449012
 MonoBehaviour:
