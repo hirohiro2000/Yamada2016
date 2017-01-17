@@ -76,17 +76,22 @@ public class EnemyGenerator : NetworkBehaviour
     *@param  生成する敵の総数
     *@param  最初の生成までの遅延時間（秒） 
     */
-    public void BeginGenerate(int wave_level, int num_spawn, float delay_second)
+    public void BeginGenerate(int wave_level, int enemyLevel, int num_spawn, float delay_second)
     {
         m_is_running = true;
-        m_parametor.LevelUp();
+
+        //for( int i = 0; i < enemyLevel - m_parametor.m_current_level; i++ ){
+        //    m_parametor.LevelUp();
+        //}
+        m_parametor.SetLevel( enemyLevel );
+
         //出現数はWavemanagerが管理してたので
         //num_spawn = Mathf.Clamp(
         //    m_parametor.GetNumStartSpawnEnemy() + (m_parametor.GetNumIncrementSpawnEnemy() * (m_parametor.m_current_level -1)),
         //    1,
         //    m_parametor.GetNumMaxSpawnEnemy());
         UnLockEnemy(wave_level);
-        StartCoroutine(Execute(wave_level, num_spawn, delay_second));
+        StartCoroutine(Execute(enemyLevel, num_spawn, delay_second));
     }
 
     /**
@@ -178,7 +183,7 @@ public class EnemyGenerator : NetworkBehaviour
             for (int i = 0; i < m_num_spawn_one_frame; i++)
             {
                 EnemyData create_enemy_data = m_generate_director.DirectionGenerateEnemy(m_current_generate_list);
-                GameObject new_enemy = CreateEnemyInstance(Random.Range(1, level + 1), create_enemy_data);
+                GameObject new_enemy = CreateEnemyInstance( level, create_enemy_data);
 
                 if (new_enemy) {
                     NetworkIdentity rIndentity = new_enemy.GetComponent<NetworkIdentity>();
