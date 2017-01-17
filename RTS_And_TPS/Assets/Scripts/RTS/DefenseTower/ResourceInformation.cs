@@ -137,7 +137,7 @@ public class ResourceInformation : NetworkBehaviour
 	//---------------------------------------------------------------------
 	//  compute
 	//---------------------------------------------------------------------
-	private void ComputeGridResourceExistentID( Vector3 pos, out int i, out int j )
+	public void ComputeGridResourceExistentID( Vector3 pos, out int i, out int j )
 	{
         pos -=  m_GridOffset;
 

@@ -17,6 +17,10 @@ public class PlayerHealthBar : MonoBehaviour {
     {
         m_rText.text    =   m_rNPControl.c_PlayerName;
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+
+        if( m_rLinkManager.m_LocalPlayerID == m_rNPControl.c_ClientID ){
+            gameObject.SetActive( false );
+        }
     }
     void    Update()
     {

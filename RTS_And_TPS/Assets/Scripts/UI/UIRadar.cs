@@ -139,7 +139,7 @@ public class UIRadar : MonoBehaviour
                 //  リストに登録されているかチェック
                 if( CheckWhetherRegistedInList( rDrum ) )  continue;
                 //  登録されていない場合は追加
-                Add( rDrum, m_drumColor, false ); 
+                Add( rDrum, 0.6f, m_drumColor, false ); 
             }
 
             //  無効になった項目を削除
@@ -221,6 +221,8 @@ public class UIRadar : MonoBehaviour
 
         }
 
+        //  表示順変更
+        m_playerFighter.transform.SetAsLastSibling();
     }
 
     //  リストに登録されているかどうかチェック
@@ -245,6 +247,19 @@ public class UIRadar : MonoBehaviour
         data.dst = Instantiate(instance.m_enemyFighter);
         data.dst.transform.SetParent( instance.transform );
         data.dst.transform.localScale = Vector3.one;
+        data.dst.GetComponent<RawImage>().color = rgba;
+        data.canClamp = canClampIcon;
+        data.dst.SetActive(true);
+
+        instance.m_uiSymbolList.Add(data);
+    }
+    static public void Add(GameObject src, float _Scale, Color rgba, bool canClampIcon = true )
+    {
+        DATA data = new DATA();
+        data.reference = src;
+        data.dst = Instantiate(instance.m_enemyFighter);
+        data.dst.transform.SetParent( instance.transform );
+        data.dst.transform.localScale = Vector3.one * _Scale;
         data.dst.GetComponent<RawImage>().color = rgba;
         data.canClamp = canClampIcon;
         data.dst.SetActive(true);
@@ -276,7 +291,7 @@ public class UIRadar : MonoBehaviour
     }
     static public void AddEnemy(GameObject src)
     {
-        Add(src, instance.m_enemyColor);
+        Add(src, 1.2f, instance.m_enemyColor);
     }
     static public void AddResource(GameObject src)
     {

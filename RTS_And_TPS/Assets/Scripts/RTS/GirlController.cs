@@ -59,10 +59,7 @@ public class GirlController : NetworkBehaviour
 	{
         Transform   rHUD                      = GameObject.Find( "Canvas" ).transform.FindChild("RTS_HUD");
         m_uiGirlTask                          = rHUD.GetComponent<UIGirlTaskSelect>();
-        m_uiGirlTask.m_resourceInformation    = GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
-        m_uiGirlTask.m_resourceCreator        = GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
-        m_uiGirlTask.m_itemController         = GetComponent<ItemController>();
-        m_uiGirlTask.Reset();
+        m_uiGirlTask.Initialize( this );
 
 		m_resourceInformation			= GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
 		m_resourceCreator				= GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
@@ -117,7 +114,7 @@ public class GirlController : NetworkBehaviour
             m_rRigid.AddForce( Vector3.up * m_JumpForce, ForceMode.Impulse );
         }
         //　乗れるロボットの検索
-        if ( Input.GetKeyDown(KeyCode.Space) )
+        if ( Input.GetKeyDown(KeyCode.N) )
         {
             float       nearDistanceSq   = 4.5f;
             GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
@@ -319,10 +316,7 @@ public class GirlController : NetworkBehaviour
 	//---------------------------------------------------------------------   
 	public  void    SetActiveButton( bool _IsActive )
     {
-        m_uiGirlTask.m_buttonOk.SetActive( _IsActive );
-        m_uiGirlTask.m_buttonCancel.SetActive( _IsActive );
-        m_uiGirlTask.m_buttonLevel.SetActive( _IsActive );
-        m_uiGirlTask.m_buttonBreak.SetActive( _IsActive );
+        m_uiGirlTask.m_uiConvert.SetActive( _IsActive );
     }
 
     //---------------------------------------------------------------------

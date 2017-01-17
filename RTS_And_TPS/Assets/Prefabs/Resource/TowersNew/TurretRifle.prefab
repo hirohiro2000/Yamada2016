@@ -235,6 +235,7 @@ GameObject:
   - 208: {fileID: 20875652}
   - 136: {fileID: 13615978}
   - 114: {fileID: 11435794}
+  - 114: {fileID: 11493020}
   m_Layer: 11
   m_Name: TurretRifle
   m_TagString: Untagged
@@ -1099,7 +1100,7 @@ MonoBehaviour:
   m_name: "\u72D9\u6483\u30BF\u30EC\u30C3\u30C8"
   m_summary: "\u5FB9\u7532\u5F3E\u3092\u9AD8\u901F\u3067\u767A\u5C04\u3059\u308B"
   m_createCost: 138
-  m_breakCost: 23
+  m_breakCost: 55
   m_level: 0
   m_curHp: 0
   m_levelInformations:
@@ -1209,6 +1210,27 @@ MonoBehaviour:
   - {fileID: 461868}
   IsStaticObject: 1
   Tag: 4
+--- !u!114 &11493020
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 155426}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cf08b9d6c8278b4fbf86428e19b290a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_renderer:
+  - {fileID: 2346572}
+  - {fileID: 2313506}
+  - {fileID: 2347360}
+  - {fileID: 2370898}
+  - {fileID: 2357668}
+  - {fileID: 2331776}
+  - {fileID: 2397240}
+  m_matFocusFieldTower: {fileID: 2100000, guid: dcc79ce86eaf2084890ae57cde8ba07a,
+    type: 2}
 --- !u!114 &11494338
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -315,6 +315,7 @@ GameObject:
   - 114: {fileID: 11458484}
   - 65: {fileID: 6553574}
   - 114: {fileID: 11426208}
+  - 114: {fileID: 11439138}
   m_Layer: 11
   m_Name: CrystalFarm
   m_TagString: Untagged
@@ -861,6 +862,24 @@ MonoBehaviour:
     list:
     - type: 3
       multiple: 1
+--- !u!114 &11439138
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 194466}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cf08b9d6c8278b4fbf86428e19b290a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_renderer:
+  - {fileID: 2310036}
+  - {fileID: 2357172}
+  - {fileID: 2350960}
+  - {fileID: 2316492}
+  m_matFocusFieldTower: {fileID: 2100000, guid: dcc79ce86eaf2084890ae57cde8ba07a,
+    type: 2}
 --- !u!114 &11445636
 MonoBehaviour:
   m_ObjectHideFlags: 1

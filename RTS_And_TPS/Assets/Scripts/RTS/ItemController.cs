@@ -34,21 +34,19 @@ public class ItemController : NetworkBehaviour
 		m_textList = new List<Text>();
 		m_resourceList = new List<ResourceParameter>();
 
-
+        Transform   rHUD        = GameObject.Find( "Canvas" ).transform.FindChild("RTS_HUD");
+        Transform   rFrameShell = rHUD.FindChild("FrameShell");
 		for( int i=0; i<m_kindMax; ++i )
 		{
-			GameObject  add			= Instantiate( m_itemFrame );
+			GameObject  add			= rFrameShell.GetChild(i).gameObject;
             float       screenRatio = Screen.width / 1280.0f;
 
-			add.transform.SetParent( GameObject.Find("Canvas").transform );
-			add.transform.position	= new Vector3( ( i*80 + 72 ) * screenRatio, 180 * screenRatio, 0 );
-			add.transform.GetChild(1).GetComponent<Text>().text = m_resourceCreator.m_resources[i].GetComponent<ResourceParameter>().GetCreateCost().ToString();
-            
+			add.transform.SetParent( rFrameShell );
+                
             RTSOnItemFrame onFrame = add.GetComponent<RTSOnItemFrame>();
             onFrame.id = i;
-            onFrame.m_itemController = this;
 
-			Text text = add.transform.GetChild(1).GetComponent<Text>();
+			Text text = add.transform.GetChild(2).GetComponent<Text>();
 			ResourceParameter resource = m_resourceCreator.m_resources[i].GetComponent<ResourceParameter>();
             text.text = resource.GetCreateCost().ToString();
 
@@ -100,14 +98,7 @@ public class ItemController : NetworkBehaviour
                 bool isEnoughCost = CheckWhetherTheCostIsEnough( i );
 
                 // 色更新
-                if ( isEnoughCost )
-                {
-                    image.color = Color.white;
-                }
-                else
-                {
-                    image.color = Color.gray;
-                }
+                m_frameList[i].transform.GetChild(1).gameObject.SetActive(!isEnoughCost);
                 
                 // 大きさ更新
                 if ( m_curForcus == i )

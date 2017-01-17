@@ -69,7 +69,8 @@ public class Health : NetworkBehaviour {
 
         //  破砕オブジェクト生成
         if( c_ExplodedObj
-        &&  Camera.main ){
+        &&  Camera.main
+        && HP <= 0){    //ちゃんと死んだときだけ
             GameObject  rObj    =   Instantiate( c_ExplodedObj );
             Transform   rTrans  =   rObj.transform;
 

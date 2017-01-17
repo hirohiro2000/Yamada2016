@@ -50,7 +50,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 444364}
   - 135: {fileID: 13539700}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: _Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,6 +246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_ExplodedObj: {fileID: 177388, guid: 363ead8d89291f64484915c2595be04f, type: 2}
   c_BreakEffect: {fileID: 173550, guid: 6c6981e84a8bc96478f108ce25e6d04d, type: 2}
+  c_BreakSE: {fileID: 0}
   m_Score: 50
   m_Resource: 75
 --- !u!114 &11498798
