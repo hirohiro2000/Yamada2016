@@ -336,6 +336,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002d41c214277184fae0483bea09af24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_HitEmission: {fileID: 0}
+  c_ExplodedData: []
+  c_DestroyEmit: {fileID: 0}
   m_name: "\u30C9\u30ED\u30FC\u30F3"
   m_summary: "\u30C9\u30ED\u30FC\u30F3"
   m_createCost: 10
@@ -445,6 +448,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 763b25596baf47b4eac7eabbd537575d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  c_CompleteEmission: []
+  c_DuringSound: {fileID: 0}
   height:
     serializedVersion: 2
     m_Curve:
