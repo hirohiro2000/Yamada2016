@@ -767,6 +767,8 @@ MonoBehaviour:
   - {fileID: 2316080}
   m_matFocusFieldTower: {fileID: 2100000, guid: dcc79ce86eaf2084890ae57cde8ba07a,
     type: 2}
+  m_matPermeateFieldTower: {fileID: 2100000, guid: 861a77341aa61fa469f9a4c0ebd04248,
+    type: 2}
 --- !u!114 &11407946
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -815,19 +817,19 @@ MonoBehaviour:
   m_levelInformations:
     list:
     - hp: 15
-      power: 32
-      range: 50
-      interval: 3
+      power: 82
+      range: 60
+      interval: 5
       upCost: 117
     - hp: 20
-      power: 32
-      range: 50
-      interval: 3
+      power: 124
+      range: 60
+      interval: 5
       upCost: 161
     - hp: 40
-      power: 32
-      range: 50
-      interval: 3
+      power: 256
+      range: 60
+      interval: 5
       upCost: 0
 --- !u!114 &11413732
 MonoBehaviour:

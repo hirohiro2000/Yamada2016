@@ -420,8 +420,8 @@ MonoBehaviour:
       power: 0
       range: 0
       interval: 0
-      upCost: 224
-    - hp: 200
+      upCost: 105
+    - hp: 10
       power: 0
       range: 0
       interval: 0
@@ -467,6 +467,8 @@ MonoBehaviour:
   m_renderer:
   - {fileID: 2323922}
   m_matFocusFieldTower: {fileID: 2100000, guid: dcc79ce86eaf2084890ae57cde8ba07a,
+    type: 2}
+  m_matPermeateFieldTower: {fileID: 2100000, guid: 861a77341aa61fa469f9a4c0ebd04248,
     type: 2}
 --- !u!114 &11426790
 MonoBehaviour:
