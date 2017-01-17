@@ -38,12 +38,6 @@ public class CrystalFarm_Control : NetworkBehaviour {
 	// Update is called once per frame
 	void    Update()
     {
-	    if( NetworkServer.active ){
-            if( Input.GetKeyDown( KeyCode.K ) ){
-                GenerateCrystal();
-            }
-        }
-
         //  エネルギー表示更新
         UpdateEnergyMesh( m_Energy );
 	}

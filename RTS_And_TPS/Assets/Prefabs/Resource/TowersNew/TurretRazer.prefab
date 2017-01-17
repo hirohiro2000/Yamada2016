@@ -808,7 +808,7 @@ MonoBehaviour:
   c_DestroyEmit: {fileID: 158640, guid: aecaaf1ca3d909a48a533dc2afd80c55, type: 2}
   m_name: "\u9AD8\u51FA\u529B\u30EC\u30FC\u30B6\u30FC\u7832"
   m_summary: "\u8CAB\u901A\u30EC\u30FC\u30B6\u30FC\u3092\u767A\u5C04\u3059\u308B"
-  m_createCost: 144
+  m_createCost: 234
   m_breakCost: 58
   m_level: 0
   m_curHp: 0
@@ -817,7 +817,7 @@ MonoBehaviour:
     - hp: 15
       power: 16
       range: 50
-      interval: 3
+      interval: 4
       upCost: 117
     - hp: 20
       power: 24
@@ -827,7 +827,7 @@ MonoBehaviour:
     - hp: 40
       power: 32
       range: 50
-      interval: 3
+      interval: 2
       upCost: 0
 --- !u!114 &11413732
 MonoBehaviour:
