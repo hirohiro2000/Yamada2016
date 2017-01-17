@@ -100,19 +100,19 @@ namespace   UnityEngine.Networking
                 //ypos    +=  spacing;
                 ypos    +=  ( int )( spacing * 1.5f );
 
-                //if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "LAN Local" ) ){
-                //    //  ホスト開始 
-                //    m_rNetworkManager.StartHost();
-                //}
-                //ypos    +=  spacing;
+                if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "LAN Local" ) ){
+                    //  ホスト開始 
+                    m_rNetworkManager.StartHost();
+                }
+                ypos    +=  spacing;
                 
-                //if( GUI.Button( new Rect( xpos, ypos, 106, 20 ), "LAN IP" ) ){
-                //    //  クライアント開始
-                //    m_rNetworkManager.StartClient();
-                //}
-                //m_rNetworkManager.networkAddress
-                //    =   GUI.TextField( new Rect( xpos + 110, ypos, 90, 20 ), m_rNetworkManager.networkAddress );
-                //ypos    +=  ( int )( spacing * 1.5f );
+                if( GUI.Button( new Rect( xpos, ypos, 106, 20 ), "LAN IP" ) ){
+                    //  クライアント開始
+                    m_rNetworkManager.StartClient();
+                }
+                m_rNetworkManager.networkAddress
+                    =   GUI.TextField( new Rect( xpos + 110, ypos, 90, 20 ), m_rNetworkManager.networkAddress );
+                ypos    +=  ( int )( spacing * 1.5f );
                 
 
                 //if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "LAN Server Only(S)" ) ){
