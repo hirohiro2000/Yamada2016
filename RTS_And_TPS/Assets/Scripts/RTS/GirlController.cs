@@ -206,6 +206,8 @@ public class GirlController : NetworkBehaviour
 	}
     void UpdateVehicle()
     {
+        transform.localRotation = Quaternion.identity;
+        transform.localPosition = Vector3.zero;
         if (Input.GetKeyDown(KeyCode.N))
         {
             CmdRidingVehicle(gameObject.GetComponent<NetworkIdentity>().netId, m_ridingVehicle.GetComponent<NetworkIdentity>().netId, false);
