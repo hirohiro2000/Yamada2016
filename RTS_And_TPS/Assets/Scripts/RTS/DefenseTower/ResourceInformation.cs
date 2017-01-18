@@ -176,8 +176,9 @@ public class ResourceInformation : NetworkBehaviour
 		//	四捨五入
 		int splitScaleX = (int)(( pos.x / m_gridSplitSpaceScale ) + ( Mathf.Sign( pos.x )>0? 0.5f:-0.5f ));
 		int splitScaleZ = (int)(( pos.z / m_gridSplitSpaceScale ) + ( Mathf.Sign( pos.z )>0? 0.5f:-0.5f ));
+		int splitScaleY = (int)( pos.y + 0.5f );
 
-		return new Vector3( splitScaleX*m_gridSplitSpaceScale, pos.y, splitScaleZ*m_gridSplitSpaceScale ) + m_GridOffset;
+		return new Vector3( splitScaleX*m_gridSplitSpaceScale, splitScaleY, splitScaleZ*m_gridSplitSpaceScale ) + m_GridOffset;
 	}
 
 

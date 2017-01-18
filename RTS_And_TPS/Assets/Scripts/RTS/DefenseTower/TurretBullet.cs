@@ -19,6 +19,14 @@ public class TurretBullet : MonoBehaviour
 	{
 		m_rEnemyShell   =   GameObject.Find( "EnemySpawnRoot" ).GetComponent< ReferenceWrapper >();
 		m_target		=	m_rEnemyShell.GetNearEnemyTransform( transform.position, float.MaxValue );
+
+		if( m_target != null )
+		{
+			if( m_target.FindChild("Eye") )
+			{
+				m_target = m_target.FindChild("Eye");
+			}
+		}
 	}
 	
 	// Update is called once per frame
