@@ -20,7 +20,7 @@ public class RTSOnItemFrame : MonoBehaviour,
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        m_uiGirlTaskSelect.SetForcus(-1);
+//        m_uiGirlTaskSelect.SetForcus(-1);
     }
     public void OnPointerClick(PointerEventData eventData)
     {
