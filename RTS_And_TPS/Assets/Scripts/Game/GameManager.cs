@@ -7,7 +7,7 @@ using   System.Collections;
 using   System.Collections.Generic;
 
 public class GameManager : NetworkBehaviour {
-
+          
     //  シーン内の状態 
     public  enum    State{
         Ready,      //  準備時間
