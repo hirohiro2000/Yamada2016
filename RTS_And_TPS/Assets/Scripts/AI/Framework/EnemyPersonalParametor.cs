@@ -22,8 +22,13 @@ public class EnemyPersonalParametor : MonoBehaviour {
     private float MaxAcceleration = 10;
     public float GetMaxAcceleration() { return MaxAcceleration; }
 
-    [SerializeField, HeaderAttribute("攻撃力の加算レート(まだ未使用)")]
+    [SerializeField, HeaderAttribute("攻撃力をウェーブごとにどれだけ加算していくか")]
     private float AttackPowerIncrementRate = .0f;
+    public float GetAttackPowerIncrementRate() { return AttackPowerIncrementRate; }
+
+    [SerializeField, HeaderAttribute("最大攻撃力")]
+    private float MaxAttackPower = 1.0f;
+    public float GetMaxAttackPower() { return MaxAttackPower; }
 
     [SerializeField, HeaderAttribute("射撃のバースト弾数をウェーブごとにどれだけ加算するかのrate")]
     private float BurstIncrementRate = 0.2f;
