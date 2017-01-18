@@ -187,6 +187,12 @@ public class NetPlayer_Control : NetworkBehaviour {
         //  爆破
         rMine.Exploding( connectionToClient.connectionId );
     }
+    //  難易度変更
+    [ Command ]
+    public  void    CmdChangeDifficult( GameManager.GameDifficulty _Difficulty )
+    {
+        m_rGameManager.SetDifficulty( _Difficulty );
+    }
 //*********************************************************************************
 //      リクエスト
 //*********************************************************************************

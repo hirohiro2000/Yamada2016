@@ -373,12 +373,12 @@ public class GameManager : NetworkBehaviour {
                 //  難易度を下げる 
                 if( m_Difficulty > GameDifficulty.Easy
                 &&  GUI.Button( new Rect( 195, 286, 46, 20 ), "<<" ) ){
-                    CmdChangeDifficult( ( GameDifficulty )Mathf.Max( ( int )m_Difficulty - 1, 0 ) );
+                    m_rLinkManager.m_rLocalNPControl.CmdChangeDifficult( ( GameDifficulty )Mathf.Max( ( int )m_Difficulty - 1, 0 ) );
                 }
                 //  難易度を上げる
                 if( m_Difficulty < GameDifficulty.DeathMarch
                 &&  GUI.Button( new Rect( 255, 286, 46, 20 ), ">>" ) ){
-                    CmdChangeDifficult( ( GameDifficulty )Mathf.Min( ( int )m_Difficulty + 1, ( int )GameDifficulty.DeathMarch ) );
+                    m_rLinkManager.m_rLocalNPControl.CmdChangeDifficult( ( GameDifficulty )Mathf.Min( ( int )m_Difficulty + 1, ( int )GameDifficulty.DeathMarch ) );
                 }
             }
         }
@@ -1079,14 +1079,6 @@ public class GameManager : NetworkBehaviour {
     public  GameDifficulty  GetDifficulty()
     {
         return  m_Difficulty;
-    }
-//=========================================================================================
-//      コマンド
-//=========================================================================================
-    [ Command ]
-    public  void    CmdChangeDifficult( GameDifficulty _Difficulty )
-    {
-        SetDifficulty( _Difficulty );
     }
 //=========================================================================================
 //      リクエスト
