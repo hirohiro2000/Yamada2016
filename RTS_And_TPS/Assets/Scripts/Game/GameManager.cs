@@ -7,6 +7,13 @@ using   System.Collections;
 using   System.Collections.Generic;
 
 public class GameManager : NetworkBehaviour {
+    //  難易度
+    public  enum    GameDifficulty{
+        Easy,       //  簡単
+        Normal,     //  普通
+        Hard,       //  高難易度
+        DeathMarch  //  最高難易度
+    }
           
     //  シーン内の状態 
     public  enum    State{
@@ -40,6 +47,8 @@ public class GameManager : NetworkBehaviour {
     public  float                   c_StartResource =   150.0f;
 
     //  内部パラメータ
+    [ SyncVar ]
+    private GameDifficulty          m_Difficulty    =   GameDifficulty.Normal;    
     [ SyncVar ]
     private State                   m_State         =   State.Ready;
     [ SyncVar ]
@@ -345,6 +354,32 @@ public class GameManager : NetworkBehaviour {
             if( rMessage.displayTime >  0.0f
             &&  rMessage.delay       == 0.0f ){
                 PrintMessage( rMessage.message );
+            }
+        }
+
+        //  難易度選択    
+        if( m_State == State.Ready ){
+            //  難易度選択   
+            GUI.Box( new Rect( 183, 232, 130, 83 ), "Difficulty" );
+            {
+                string[]    c_DifficultName =   {   "Easy", "Normal",   "Hard", "Death March"   };
+                string      difcultStr      =   c_DifficultName[ ( int )m_Difficulty ];
+
+                //  選択されている難易度
+                GUI.Box( new Rect( 195, 260, 106, 20 ), "" );
+                //  テキスト
+                FunctionManager.GUILabel( FunctionManager.AR_TYPE.MIDDLE_CENTER, new Vector2( 195, -260 ), difcultStr, Vector2.one * 0.5f, new Vector2( 106, 20 ) );
+
+                //  難易度を下げる 
+                if( m_Difficulty > GameDifficulty.Easy
+                &&  GUI.Button( new Rect( 195, 286, 46, 20 ), "<<" ) ){
+                    m_rLinkManager.m_rLocalNPControl.CmdChangeDifficult( ( GameDifficulty )Mathf.Max( ( int )m_Difficulty - 1, 0 ) );
+                }
+                //  難易度を上げる
+                if( m_Difficulty < GameDifficulty.DeathMarch
+                &&  GUI.Button( new Rect( 255, 286, 46, 20 ), ">>" ) ){
+                    m_rLinkManager.m_rLocalNPControl.CmdChangeDifficult( ( GameDifficulty )Mathf.Min( ( int )m_Difficulty + 1, ( int )GameDifficulty.DeathMarch ) );
+                }
             }
         }
 
@@ -1005,32 +1040,45 @@ public class GameManager : NetworkBehaviour {
     }
 
     //  アクセス
-    public  void    AddResource( float _AddValue )
+    [ Server ]
+    public  void            AddResource( float _AddValue )
     {
         m_Resource      +=  _AddValue;
         m_Resource      =   Mathf.Max( m_Resource, 0.0f );
     }
-    public  void    AddGlobalScore( float _AddScore, int _ClientID )
+    [ Server ]
+    public  void            AddGlobalScore( float _AddScore, int _ClientID )
     {
         m_GlobalScore   +=  _AddScore;
 
         //  個人スコア加算
         SetToList_Score( _ClientID, _AddScore );
     }
-    public  State   GetState(){
+    [ Server ]
+    public  void            SetDifficulty( GameDifficulty _Difficulty )
+    {
+        m_Difficulty    =   _Difficulty;
+    }
+
+    //  取得
+    public  State           GetState(){
         return  m_State;
     }
-    public  float   GetGameSpeed()
+    public  float           GetGameSpeed()
     {
         return  m_GameSpeed;
     }
-    public  float   GetResource()
+    public  float           GetResource()
     {
         return  m_Resource;
     }
-    public  float   GetGlobalScore()
+    public  float           GetGlobalScore()
     {
         return  m_GlobalScore;
+    }
+    public  GameDifficulty  GetDifficulty()
+    {
+        return  m_Difficulty;
     }
 //=========================================================================================
 //      リクエスト

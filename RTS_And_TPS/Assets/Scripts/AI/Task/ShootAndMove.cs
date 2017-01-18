@@ -61,6 +61,9 @@ public class ShootAndMove : TaskBase {
     private float m_original_move_speed = .0f;
     private float m_move_speed = .0f;
 
+    private float m_defaut_attack_power = .0f;
+    private float m_attack_power = 1.0f;
+
     //変更するかも
     private float m_target_height = 0.3f;
  
@@ -68,6 +71,8 @@ public class ShootAndMove : TaskBase {
     {
         m_shoot_object = transform.FindChild("ShootObject");
         m_num_burstshot = NumDefaultBurstShot;
+
+        m_defaut_attack_power = BulletObject.GetComponent<AttackPointList>().baseAttackPoint;
         
     }
 
@@ -260,6 +265,10 @@ public class ShootAndMove : TaskBase {
         m_num_burstshot = Mathf.Clamp(m_num_burstshot, 1, personal_param.GetMaxBurstShot());
          rate = wave_param.m_current_level - personal_param.m_emearge_level;
         m_move_speed = m_original_move_speed + (personal_param.GetMoveSpeedUpMultipleRate() * rate);
+   
+        m_attack_power = m_defaut_attack_power + personal_param.GetAttackPowerIncrementRate() *(wave_param.m_current_level -  1);
+        m_attack_power = Mathf.Clamp(m_attack_power, m_defaut_attack_power, personal_param.GetMaxAttackPower());
+       
     }
 
     public override void Enter(TargetingSystem target_system, EnemyTaskDirector task_director)
@@ -340,6 +349,10 @@ public class ShootAndMove : TaskBase {
             Vector3 vec = (target_position - shot_object.transform.position).normalized * ShotPower;
             var rigid_body = shot_object.GetComponent<Rigidbody>();
             shot_object.transform.parent = m_attack_object_root.transform;
+
+            var temp = shot_object.GetComponent<AttackPointList>();
+            temp.baseAttackPoint = m_attack_power;
+
             if (rigid_body)
             {
                 rigid_body.AddForce(vec);

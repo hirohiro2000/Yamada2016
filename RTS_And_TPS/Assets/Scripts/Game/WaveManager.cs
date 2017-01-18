@@ -8,6 +8,7 @@ public class WaveManager : NetworkBehaviour {
     
     //  内部パラメータ
     private int                 m_WaveLevel     =   0;
+    private bool                m_IsMultiMode   =   false;
 
     //  関連アクセス
     //private EnemyShell_Control  m_rEnemyShell   =   null;
@@ -78,8 +79,29 @@ public class WaveManager : NetworkBehaviour {
         if( isPeak ){
             numPop  *=  2;
         }
+        //  マルチプレイモードでは出現量が２倍
+        if( m_IsMultiMode ){
+            numPop  *=  2;
+        }
 
-        m_ganerator.BeginGenerate( m_WaveLevel, numPop, _Delay );
+        //  敵のレベル
+        int     enemyLevel  =   m_WaveLevel;
+            //  難易度に応じて敵のレベルを変更
+            int[]   baseLevel       =   {
+                1,   1,   5,   10
+            };
+            float[] difficultRate   =   {
+                0.334f,   1.0f,   1.0f,   1.0f
+            };
+            int     difficult       =   ( int )m_rGameManager.GetDifficulty();
+            enemyLevel  =  baseLevel[ difficult ] + ( int )( ( enemyLevel - 1 ) * difficultRate[ difficult ] );
+
+            //  マルチプレイモードでは敵のレベルが２倍
+            //if( m_IsMultiMode ){
+            //    enemyLevel  *=  2;
+            //}
+
+        m_ganerator.BeginGenerate( m_WaveLevel, enemyLevel, numPop, _Delay );
 
         // スキル初期化
         SkillInvoker.StartWave();
@@ -132,5 +154,8 @@ public class WaveManager : NetworkBehaviour {
     public  void    StartWave()
     {
         StandbyWave( 0.0f );
+
+        //  開始時に複数人以上いた場合はマルチプレイモードにする
+        m_IsMultiMode   =   NetworkManager.singleton.numPlayers >= 2;
     }
 }

@@ -32,4 +32,7 @@ public class EnemyWaveParametor : NetworkBehaviour {
     {
         m_current_level++;
     }
+    public  void    SetLevel( int _Level ){
+        m_current_level =   _Level;
+    }
 }

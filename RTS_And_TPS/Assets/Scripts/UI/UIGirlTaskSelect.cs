@@ -44,8 +44,8 @@ public class UIGirlTaskSelect : MonoBehaviour
     // [GirlController]専用の初期化関数
     public void Initialize( GirlController girl )
     {
-        m_createStep             = CREATE_STEP.eCommon;
-        result                   = RESULT.eNone;
+        result       = RESULT.eNone;
+        m_createStep = CREATE_STEP.eCommon;
         m_itemController         = girl.GetComponent<ItemController>();
         m_resourceInformation    = GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
         m_resourceCreator        = GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
@@ -62,16 +62,31 @@ public class UIGirlTaskSelect : MonoBehaviour
                 m_uiCanvas = canvasArr[i];
             }
         }
-
     }
 
     // ＵＩ情報を更新をして行うべきタスクを戻り値として返す
     public RESULT Select( Vector3 girlPosition )
     {
+        if ( m_createStep == CREATE_STEP.eCommon )
+        {
+            result          = RESULT.eNone;
+            m_createStep    = CREATE_STEP.eCreate;
+            m_towerInfoPanel.GetComponent<AppearInfopanel>().SetActive( false );
+            m_uiForcusFrame.SetActive( true );
+            
+            m_itemController.SetForcus(0);
+            Text text = m_uiForcusFrame.transform.GetChild(2).GetComponent<Text>();
+            ResourceParameter resource = m_resourceCreator.m_resources[ m_itemController.GetForcus() ].GetComponent<ResourceParameter>();
+            text.text = resource.GetCreateCost().ToString();
+            m_uiForcusFrame.transform.GetChild(0).GetComponent<RawImage>().texture = m_resourceCreator.m_textures[ m_itemController.GetForcus() ].GetComponent<Image>().mainTexture;
+            return result;
+        }
+
+
+
         //  建築用ＵＩの更新
         switch (m_createStep)
         {
-            case CREATE_STEP.eCommon:  UpdateCommon( girlPosition );           break;
             case CREATE_STEP.eSelect:  UpdateSelectResource( girlPosition );   break;
             case CREATE_STEP.eCreate:  UpdateCreate( girlPosition );           break;
             default: break;
@@ -92,55 +107,6 @@ public class UIGirlTaskSelect : MonoBehaviour
     //---------------------------------------------------------------------
     //      建築用ＵＩの更新
     //---------------------------------------------------------------------   	
-    void UpdateCommon( Vector3 computePosition )
-    {
-		//	Can you move to selection phase ?
-        bool canToSelectState = ( Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(1) );
-		if( !canToSelectState )			return;
-
-        // リソースが存在する時は'Q'と'E'が使用できません
-        if (( Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E) ) && m_resourceInformation.GetResourceParamFromPosition( computePosition ) )
-        {
-            return;
-        }
-
-        int forcus = m_itemController.GetForcus();
-
-        // 選択されていない状態から始める
-        if( Input.GetMouseButtonDown(1) )
-        {
-            forcus = -1;
-        }
-        // そのまま使用
-        if( Input.GetKeyDown( KeyCode.X ))
-        {
-            forcus = Mathf.Clamp( m_itemController.GetForcus(), 0, m_itemController.GetNumKind() );
-        }
-        // 左にスライド
-        if( Input.GetKeyDown( KeyCode.Q ))
-        {
-            forcus = ( ( forcus+m_itemController.GetNumKind()-1 ) % m_itemController.GetNumKind() );
-        }
-        // 右にスライド
-        if ( Input.GetKeyDown( KeyCode.E ))
-        {
-            forcus = ( (forcus+1) % m_itemController.GetNumKind() );
-        }
-
-
-        // Go to [Select]
-        m_createStep = CREATE_STEP.eSelect;
-        m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = true;
-        m_resourceCreator.SetGuideVisibleDisable();
-        m_itemController.SetActive(true);
-        m_uiResourceBG.SetActive(true);
-        SetForcus( forcus );
-
-        
-        //  効果音再生（パネルを出す）
-        SoundController.PlayNow( "UI_MenuOpen", 0.0f, 0.1f, 1.0f, 1.0f );
-
-    }
     void UpdateSelectResource( Vector3 computePosition )
     { 
         //       
@@ -170,7 +136,7 @@ public class UIGirlTaskSelect : MonoBehaviour
         }
         
         // Go to [Create]
-        if ( Input.GetKeyDown( KeyCode.F ) && ( m_itemController.CheckWhetherTheCostIsEnough( m_itemController.GetForcus() ) ) )
+        if ( Input.GetKeyDown( KeyCode.X ) || Input.GetMouseButtonDown(1) )
         {
             m_createStep = CREATE_STEP.eCreate;
      		m_towerInfoPanel.GetComponent<AppearInfopanel>().SetActive( false );
@@ -185,22 +151,21 @@ public class UIGirlTaskSelect : MonoBehaviour
     
             //  効果音再生（パネルを出す）
             SoundController.PlayNow( "UI_MenuOpen", 0.0f, 0.1f, 1.0f, 1.0f );
-
         }
-        // Back to [Common]
-        if ( Input.GetKeyDown( KeyCode.X ) || Input.GetMouseButtonDown(1))
-        {
-            m_createStep = CREATE_STEP.eCommon;
-            m_itemController.SetActive( false );
-    		m_towerInfoPanel.GetComponent<AppearInfopanel>().SetActive( false );
-            m_uiResourceBG.SetActive( false );
-            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = false;
-            m_resourceCreator.SetGuideVisibleDisable();
 
-            //  効果音再生（パネルを出す）
-            SoundController.PlayNow( "UI_MenuOpen", 0.0f, 0.1f, 1.0f, 1.0f );
-
-        }
+//        // Back to [Common]
+//        if ( Input.GetKeyDown( KeyCode.X ) || Input.GetMouseButtonDown(1))
+//        {
+//            m_createStep = CREATE_STEP.eCommon;
+//            m_itemController.SetActive( false );
+//    		m_towerInfoPanel.GetComponent<AppearInfopanel>().SetActive( false );
+//            m_uiResourceBG.SetActive( false );
+//            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = false;
+//            m_resourceCreator.SetGuideVisibleDisable();
+//
+//            //  効果音再生（パネルを出す）
+//            SoundController.PlayNow( "UI_MenuOpen", 0.0f, 0.1f, 1.0f, 1.0f );
+//        }
 
     }
     void UpdateCreate( Vector3 computePosition )
@@ -210,6 +175,19 @@ public class UIGirlTaskSelect : MonoBehaviour
         {
             m_resourceCreator.SetGuideVisibleDisable();
             m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = false;
+
+            // 残高不足の判定
+            int balance = ( m_itemController.GetHaveCost() - m_itemController.GetForcusResourceParam().GetCreateCost() );
+            if ( balance < 0 )
+            {
+                m_uiForcusFrame.transform.GetChild(2).GetComponent<Text>().enabled      = false;
+                m_uiForcusFrame.transform.GetChild(0).GetComponent<RawImage>().enabled  = false;
+            }
+            else
+            {
+                m_uiForcusFrame.transform.GetChild(2).GetComponent<Text>().enabled      = true;
+                m_uiForcusFrame.transform.GetChild(0).GetComponent<RawImage>().enabled  = true;
+            }
         }
         else
         {
@@ -221,55 +199,98 @@ public class UIGirlTaskSelect : MonoBehaviour
             m_resourceInformation.m_gridSplitSpacePlane.transform.position  = computePosition;
             m_resourceInformation.m_gridSplitSpacePlane.transform.position += new Vector3(0, 0.04f, 0);
 
-            //　建築イベントの発生
-            if ( Input.GetKeyDown( KeyCode.F ))
+            // 残高不足の判定
+            int balance = ( m_itemController.GetHaveCost() - m_itemController.GetForcusResourceParam().GetCreateCost() );
+            if ( balance < 0 )
             {
-                result = RESULT.eOK;
-                //  効果音再生  
-                SoundController.PlayNow("UI_Click2", 0.0f, 0.1f, 1.24f, 1.0f);
-                SoundController.PlayNow("UI_Click", 0.0f, 0.1f, 0.84f, 1.0f);
+                m_uiForcusFrame.transform.GetChild(2).GetComponent<Text>().enabled      = false;
+                m_uiForcusFrame.transform.GetChild(0).GetComponent<RawImage>().enabled  = false;
+                m_resourceCreator.SetGuideVisibleDisable();
+                m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = false;
             }
-              
+            else
+            {
+                m_uiForcusFrame.transform.GetChild(2).GetComponent<Text>().enabled      = true;
+                m_uiForcusFrame.transform.GetChild(0).GetComponent<RawImage>().enabled  = true;
+
+                //　建築イベントの発生
+                if ( Input.GetKeyDown( KeyCode.F ))
+                {
+                    result = RESULT.eOK;
+                    //  効果音再生  
+                    SoundController.PlayNow("UI_Click2", 0.0f, 0.1f, 1.24f, 1.0f);
+                    SoundController.PlayNow("UI_Click", 0.0f, 0.1f, 0.84f, 1.0f);
+                }
+
+            }
+
+
+            // 左にスライド
+    		if( Input.GetKeyDown( KeyCode.Q ))
+            {
+                int forcus = m_itemController.GetForcus();
+                for (int i = 0; i < m_itemController.GetNumKind(); i++)
+                {
+                    forcus--;
+                    if ( forcus < 0 )   forcus = m_itemController.GetNumKind()-1;
+    
+                    balance = ( m_itemController.GetHaveCost() - m_itemController.GetResourceParam(forcus).GetCreateCost() );
+                    if ( balance >= 0 )
+                    {
+                        break;
+                    }
+                }
+    
+                m_itemController.SetForcus( forcus );
+    			Text text = m_uiForcusFrame.transform.GetChild(2).GetComponent<Text>();
+    			ResourceParameter resource = m_resourceCreator.m_resources[ m_itemController.GetForcus() ].GetComponent<ResourceParameter>();
+                text.text = resource.GetCreateCost().ToString();
+                m_uiForcusFrame.transform.GetChild(0).GetComponent<RawImage>().texture = m_resourceCreator.m_textures[ m_itemController.GetForcus() ].GetComponent<Image>().mainTexture;
+    
+                // 効果音再生
+                SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, Random.Range( 0.95f, 1.05f ), 1.0f );
+            }
+            // 右にスライド
+            if ( Input.GetKeyDown( KeyCode.E ))
+            {
+                int forcus = m_itemController.GetForcus();
+                for (int i = 0; i < m_itemController.GetNumKind(); i++)
+                {
+                    forcus++;
+                    if ( forcus >= m_itemController.GetNumKind() )   forcus = 0;
+    
+                    balance = ( m_itemController.GetHaveCost() - m_itemController.GetResourceParam(forcus).GetCreateCost() );
+                    if ( balance >= 0 )
+                    {
+                        break;
+                    }
+                }
+    
+                m_itemController.SetForcus( forcus );
+    			Text text = m_uiForcusFrame.transform.GetChild(2).GetComponent<Text>();
+    			ResourceParameter resource = m_resourceCreator.m_resources[ m_itemController.GetForcus() ].GetComponent<ResourceParameter>();
+                text.text = resource.GetCreateCost().ToString();
+                m_uiForcusFrame.transform.GetChild(0).GetComponent<RawImage>().texture = m_resourceCreator.m_textures[ m_itemController.GetForcus() ].GetComponent<Image>().mainTexture;
+                
+                // 効果音再生
+                SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, Random.Range( 0.95f, 1.05f ), 1.0f );
+            }       
+            // Back to [Select]
+            if ( Input.GetKeyDown( KeyCode.X ) || Input.GetMouseButtonDown(1) )
+            {
+                m_createStep = CREATE_STEP.eSelect;
+                SetForcus( m_itemController.GetForcus() );
+                m_itemController.SetActive( true );
+                m_uiResourceBG.SetActive( true );
+                m_uiForcusFrame.SetActive( false );
+                m_resourceCreator.SetGuideVisibleDisable();
+            }
+
+
         }
-
-
-        
-		//	Can you move to selection phase ?
-        bool canToSelectState = Input.GetKeyDown( KeyCode.X ) || Input.GetMouseButtonDown(1)
-                             || Input.GetKeyDown( KeyCode.Q ) || Input.GetKeyDown( KeyCode.E );
-
-        // 残高不足の判定
-        int balance = ( m_itemController.GetHaveCost() - m_itemController.GetForcusResourceParam().GetCreateCost() );
-        if ( balance < 0 )
-        {
-            canToSelectState = true;
-        }
-
-        if ( !canToSelectState )    return;
-        
-        int forcus = m_itemController.GetForcus();
-
-        // 左にスライド
-        if( Input.GetKeyDown( KeyCode.Q ))
-        {
-            forcus = ( ( forcus+m_itemController.GetNumKind()-1 ) % m_itemController.GetNumKind() );
-        }
-        // 右にスライド
-        if ( Input.GetKeyDown( KeyCode.E ))
-        {
-            forcus = ( (forcus+1) % m_itemController.GetNumKind() );
-        }
-        
-        // Back to [Select]
-        m_createStep = CREATE_STEP.eSelect;
-        SetForcus( forcus );
-        m_itemController.SetActive( true );
-        m_uiResourceBG.SetActive( true );
-        m_uiForcusFrame.SetActive( false );
-        m_resourceCreator.SetGuideVisibleDisable();
 
     }
-
+              
     //---------------------------------------------------------------------
     //      コンバート用ＵＩの更新
     //---------------------------------------------------------------------   	
@@ -278,7 +299,7 @@ public class UIGirlTaskSelect : MonoBehaviour
         var param = m_resourceInformation.GetResourceParamFromPosition(computePosition);
 
         // コンバートできる状態ですか？
-        if (param == null || m_createStep != CREATE_STEP.eCommon)
+        if (param == null)
         {
             // コンバート処理ができないのでUIを閉じます
             if ( m_uiConvert.activeInHierarchy )
@@ -579,19 +600,19 @@ public class UIGirlTaskSelect : MonoBehaviour
     }
     public void ClikedForcusFrame()
     {
-        if ( m_itemController.GetForcus() == -1 )   return;
-        if ( m_createStep != CREATE_STEP.eCreate)   return;
+        if ( m_itemController.GetForcus() == -1 )       return;
+        if ( m_createStep != CREATE_STEP.eCreate)       return;
+        if ( !m_itemController.CheckWhetherTheCostIsEnough(m_itemController.GetForcus()) ) return;
 
         Vector3 computePosition = m_resourceInformation.m_gridSplitSpacePlane.transform.position;
 		var param = m_resourceInformation.GetResourceParamFromPosition( computePosition );
-        if ( m_createStep == CREATE_STEP.eCreate && param == null )
-        {
-            // 建築
-            result = RESULT.eOK;
-            //  効果音再生  
-            SoundController.PlayNow("UI_Click2", 0.0f, 0.1f, 1.24f, 1.0f);
-            SoundController.PlayNow("UI_Click", 0.0f, 0.1f, 0.84f, 1.0f);
-        }
+        if ( param != null )    return;
+
+        // 建築
+        result = RESULT.eOK;
+        //  効果音再生  
+        SoundController.PlayNow("UI_Click2", 0.0f, 0.1f, 1.24f, 1.0f);
+        SoundController.PlayNow("UI_Click", 0.0f, 0.1f, 0.84f, 1.0f);
     }
 
 }

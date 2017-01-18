@@ -201,10 +201,9 @@ Shader "Unlit/FocusFieldTower"
                 float3 lightDir			: TEXCOORD1;
                 float3 normal			: TEXCOORD2;
                 LIGHTING_COORDS(3, 4)
-                float3 vertexLighting	: TEXCOORD5;
-				float3 viewNormal		: TEXCOORD6;
-				float4 viewPos			: TEXCOORD7;
-				float4 vertex			: TEXCOORD8;
+				float3 viewNormal		: TEXCOORD5;
+				float4 viewPos			: TEXCOORD6;
+				float4 vertex			: TEXCOORD7;
 			};
 
 			uniform float4		_Color;
@@ -230,26 +229,6 @@ Shader "Unlit/FocusFieldTower"
 				o.viewPos		= mul(UNITY_MATRIX_MV, v.vertex);
 				o.vertex		= v.vertex;
 
-                o.vertexLighting = float3(0.0, 0.0, 0.0);
-
-                #ifdef VERTEXLIGHT_ON
-
-                float3 worldN	= mul((float3x3)_Object2World, SCALED_NORMAL);
-                float4 worldPos = mul(_Object2World, v.vertex);
-
-                for (int index = 0; index < 4; index++) 
-				{    
-                   float4 lightPosition = float4(unity_4LightPosX0[index], unity_4LightPosY0[index], unity_4LightPosZ0[index], 1.0);
-                   float3 vertexToLightSource = float3(lightPosition - worldPos);        
-                   float3 lightDirection = normalize(vertexToLightSource);
-                   float squaredDistance = dot(vertexToLightSource, vertexToLightSource);
-                   float attenuation = 1.0 / (1.0  + unity_4LightAtten0[index] * squaredDistance);
-                   float3 diffuseReflection = attenuation * float3(unity_LightColor[index]) * float3(_Color) * max(0.0, dot(worldN, lightDirection));         
-                   o.vertexLighting = o.vertexLighting + diffuseReflection * 2;
-                }
-
-                #endif
-
                 return o;
             }
 
@@ -259,7 +238,7 @@ Shader "Unlit/FocusFieldTower"
                 fixed atten = LIGHT_ATTENUATION(i);
 
                 fixed4 tex = tex2D(_MainTex, i.uv);
-                tex *= _Color + fixed4(i.vertexLighting, 1.0);
+                tex *= _Color;
 
                 fixed diff = saturate(dot(i.normal, i.lightDir));
 
