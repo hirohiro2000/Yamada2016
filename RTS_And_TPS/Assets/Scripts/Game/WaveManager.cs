@@ -7,8 +7,8 @@ using   System.Collections.Generic;
 public class WaveManager : NetworkBehaviour {
     
     //  内部パラメータ
-    private int                 m_WaveLevel     =   0;
-    private bool                m_IsMultiMode   =   false;
+    public  int                 m_WaveLevel     =   0;
+    public  bool                m_IsMultiMode   =   false;
 
     //  関連アクセス
     //private EnemyShell_Control  m_rEnemyShell   =   null;
@@ -83,25 +83,24 @@ public class WaveManager : NetworkBehaviour {
         if( m_IsMultiMode ){
             numPop  *=  2;
         }
+        //  難易度に応じて出現量変更
+        float[] popDiffRate =   {
+            1.0f,   1.0f,   1.5f,   2.0f
+        };
+        float   popRate     =   popDiffRate[ ( int )m_rGameManager.GetDifficulty() ];
+        numPop  =   ( int )( numPop *  popRate );
 
         //  敵のレベル
         int     enemyLevel  =   m_WaveLevel;
-            //  難易度に応じて敵のレベルを変更
-            int[]   baseLevel       =   {
-                1,   1,   5,   10
-            };
-            float[] difficultRate   =   {
-                0.334f,   1.0f,   1.0f,   1.0f
-            };
+            //  難易度に応じて敵のレベルを変更 
+            int[]   baseLevel       =   {   1,      1,       5,     10      };
+            float[] difficultRate   =   {   0.334f, 1.0f,   1.0f,   1.0f    };
+            int[]   difficultUnLock =   {   0,      0,      3,      6       };
             int     difficult       =   ( int )m_rGameManager.GetDifficulty();
+            int     unLockLevel     =   difficultUnLock[ difficult ] + m_WaveLevel;
             enemyLevel  =  baseLevel[ difficult ] + ( int )( ( enemyLevel - 1 ) * difficultRate[ difficult ] );
 
-            //  マルチプレイモードでは敵のレベルが２倍
-            //if( m_IsMultiMode ){
-            //    enemyLevel  *=  2;
-            //}
-
-        m_ganerator.BeginGenerate( m_WaveLevel, enemyLevel, numPop, _Delay );
+        m_ganerator.BeginGenerate( m_WaveLevel, enemyLevel, unLockLevel, numPop, _Delay );
 
         // スキル初期化
         SkillInvoker.StartWave();
@@ -153,9 +152,18 @@ public class WaveManager : NetworkBehaviour {
     //  ゲーム開始
     public  void    StartWave()
     {
-        StandbyWave( 0.0f );
-
         //  開始時に複数人以上いた場合はマルチプレイモードにする
         m_IsMultiMode   =   NetworkManager.singleton.numPlayers >= 2;
+        
+        //  難易度に応じて敵をアンロック
+        int[]   difficultUnLock =   {
+            0,  0,  3,  6
+        };
+        int     difficult       =   ( int )m_rGameManager.GetDifficulty();
+        int     unLockLevel     =   difficultUnLock[ difficult ];
+        m_ganerator.EnemyUnlock( 1, unLockLevel );
+
+        //  最初のウェーブをスタンバイ
+        StandbyWave( 0.0f );
     }
 }

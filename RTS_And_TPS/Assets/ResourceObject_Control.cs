@@ -52,19 +52,36 @@ public class ResourceObject_Control : NetworkBehaviour {
         //  破砕オブジェクト生成
         if( c_ExplodedObj
         &&  Camera.main ){
-            GameObject  rObj    =   Instantiate( c_ExplodedObj );
-            Transform   rTrans  =   rObj.transform;
+            //  最適化するかどうか
+            bool    doSaving    =   false;
+            int     savingLine  =   3;
+            {
+                ExplodedManager rExpManager =   FunctionManager.GetAccessComponent< ExplodedManager >( "ExplodedManager" );
+                doSaving        =   ( rExpManager.m_rExpObjList.Count + 1 >= savingLine )? true : false;
+            }
 
-            rTrans.position     =   transform.position;
-            rTrans.localScale   =   transform.localScale;
-            rTrans.rotation     =   transform.rotation;
+            //  最適化される場合は直接リソースを加算して終了
+            if( doSaving ){
+                if( m_KillerID == m_rLinkManager.m_LocalPlayerID ){
+                    m_rLinkManager.m_rLocalNPControl.CmdAddResource( m_Resource );
+                }
+            }
+            //  最適化されない場合だけ破片を出す 
+            else{
+                GameObject  rObj    =   Instantiate( c_ExplodedObj );
+                Transform   rTrans  =   rObj.transform;
 
-            //  パラメータ設定
-            ExpSylinder_Control rControl    =   rObj.GetComponent< ExpSylinder_Control >();
-            GameObject          rPlayer     =   m_rLinkManager.m_rLocalPlayer;
-            if( rPlayer ){
-                rControl.c_PartnerID        =   m_KillerID;
-                rControl.c_Score            =   m_Resource;
+                rTrans.position     =   transform.position;
+                rTrans.localScale   =   transform.localScale;
+                rTrans.rotation     =   transform.rotation;
+
+                //  パラメータ設定
+                ExpSylinder_Control rControl    =   rObj.GetComponent< ExpSylinder_Control >();
+                GameObject          rPlayer     =   m_rLinkManager.m_rLocalPlayer;
+                if( rPlayer ){
+                    rControl.c_PartnerID        =   m_KillerID;
+                    rControl.c_Score            =   m_Resource;
+                }
             }
         }
 

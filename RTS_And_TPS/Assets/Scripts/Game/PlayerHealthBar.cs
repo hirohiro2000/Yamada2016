@@ -17,13 +17,14 @@ public class PlayerHealthBar : MonoBehaviour {
     {
         m_rText.text    =   m_rNPControl.c_PlayerName;
         m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
-
-        if( m_rLinkManager.m_LocalPlayerID == m_rNPControl.c_ClientID ){
-            gameObject.SetActive( false );
-        }
     }
     void    Update()
     {
+        if( m_rNPControl.c_ClientID == m_rLinkManager.m_LocalPlayerID ){
+            gameObject.SetActive( false );
+            return;
+        }
+
         //  ＨＰバー更新
         m_rHealthBar.setValue( m_rHealth.m_CurHP / m_rHealth.m_MaxHP );
 

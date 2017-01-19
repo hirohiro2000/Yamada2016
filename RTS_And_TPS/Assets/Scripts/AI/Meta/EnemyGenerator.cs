@@ -76,7 +76,16 @@ public class EnemyGenerator : NetworkBehaviour
     *@param  生成する敵の総数
     *@param  最初の生成までの遅延時間（秒） 
     */
-    public void BeginGenerate(int wave_level, int enemyLevel, int num_spawn, float delay_second)
+    public  void    EnemyUnlock( int _Start, int _End )
+    {
+        int numLoop =   Mathf.Max( _End - _Start );
+        if( numLoop == 0 )  return;
+
+        for( int i = 0; i < numLoop; i++ ){
+            UnLockEnemy( _Start + i );
+        }
+    }
+    public void BeginGenerate(int wave_level, int enemyLevel, int unlockLevel, int num_spawn, float delay_second)
     {
         m_is_running = true;
 
@@ -90,7 +99,7 @@ public class EnemyGenerator : NetworkBehaviour
         //    m_parametor.GetNumStartSpawnEnemy() + (m_parametor.GetNumIncrementSpawnEnemy() * (m_parametor.m_current_level -1)),
         //    1,
         //    m_parametor.GetNumMaxSpawnEnemy());
-        UnLockEnemy(wave_level);
+        UnLockEnemy(unlockLevel);
         StartCoroutine(Execute(enemyLevel, num_spawn, delay_second));
     }
 

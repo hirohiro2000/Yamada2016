@@ -1267,9 +1267,10 @@ MonoBehaviour:
   MoveSpeedUpMultipleRate: 1
   MaxmoveSpeed: 60
   MaxAcceleration: 1000000
-  AttackPowerIncrementRate: 0
-  BurstIncrementRate: 0.4
-  MaxBurstShot: 15
+  AttackPowerIncrementRate: 0.334
+  MaxAttackPower: 7
+  BurstIncrementRate: 0.334
+  MaxBurstShot: 3
 --- !u!114 &11414632
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2068,7 +2069,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_Radius: 0.6
   m_Speed: 6
-  m_Acceleration: 8
+  m_Acceleration: 16
   avoidancePriority: 50
   m_AngularSpeed: 100200300
   m_StoppingDistance: 4

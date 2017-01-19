@@ -141,8 +141,8 @@ public class ResourceParameter : NetworkBehaviour
 
         //  オーナーのクライアントでのみダメージ処理を行う
         if( m_rLinkManager.m_LocalPlayerID == m_rResControl.c_OwnerID ){
-            //  ダメージを受ける
-            GiveDamage( ( int )_rDamageResult.GetTotalDamage() );
+            //  ダメージを送信
+            m_rLinkManager.m_rLocalNPControl.CmdSendDamageTower( netId, ( int )_rDamageResult.GetTotalDamage() );
         }
     }
 
@@ -191,6 +191,7 @@ public class ResourceParameter : NetworkBehaviour
         if( NetworkServer.active )  m_rGameManager.SetAcqRecord     ( m_name + "を強化しました！", 3.0f, m_rResControl.c_OwnerID );
                                     m_rGameManager.RpcRecordNoticeD ( m_name + "を強化しました！", 3.0f, m_rResControl.c_OwnerID );
 	}
+    [ Server ]
 	public void GiveDamage( int damage )
 	{
 		m_curHp -= damage;

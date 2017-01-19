@@ -1501,7 +1501,7 @@ MonoBehaviour:
   c_WeakEmission: {fileID: 158640, guid: 87f7f9010dff2b24dab8eaa15d0461f3, type: 2}
   c_THitEmission: {fileID: 158640, guid: e30cf765421362b4db85bbf113a13ca7, type: 2}
   Resource: 3
-  Score: 30
+  Score: 90
   DefaultHP: 3
 --- !u!114 &11474200
 MonoBehaviour:
@@ -1633,10 +1633,10 @@ MonoBehaviour:
   MoveSpeedUpMultipleRate: 1
   MaxmoveSpeed: 60
   MaxAcceleration: 1000000
-  AttackPowerIncrementRate: 0.2
-  MaxAttackPower: 3
-  BurstIncrementRate: 0.2
-  MaxBurstShot: 3
+  AttackPowerIncrementRate: 0.477
+  MaxAttackPower: 10
+  BurstIncrementRate: 0
+  MaxBurstShot: 0
 --- !u!114 &11498580
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1892,7 +1892,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_Radius: 0.5
   m_Speed: 6
-  m_Acceleration: 8
+  m_Acceleration: 16
   avoidancePriority: 50
   m_AngularSpeed: 100200300
   m_StoppingDistance: 0

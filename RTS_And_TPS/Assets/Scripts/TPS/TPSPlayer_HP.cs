@@ -325,8 +325,8 @@ public class TPSPlayer_HP : NetworkBehaviour {
             //  ダメージチェック
             if( damage > 0.0f ){
                 //  ダメージを送信
-                if( m_rRTSControl ) m_rRTSControl.CmdSendDamage( damage );
-                if( m_rTPSControl ) m_rTPSControl.CmdSendDamage( damage );
+                if( m_rRTSControl ) m_rRTSControl.CmdSendDamage( Mathf.Max( 0, Mathf.Min( damage, m_CurHP - 1.0f ) ) );
+                if( m_rTPSControl ) m_rTPSControl.CmdSendDamage( Mathf.Max( 0, Mathf.Min( damage, m_CurHP - 1.0f ) ) );
                 //  ダメージエフェクト
                 if( m_rDFCtrl )     m_rDFCtrl.SetEffect( 0.6f, 1.5f );
             }
