@@ -78,10 +78,10 @@ public class EnemyGenerator : NetworkBehaviour
     */
     public  void    EnemyUnlock( int _Start, int _End )
     {
-        int numLoop =   Mathf.Max( _End - _Start );
+        int numLoop =   Mathf.Max( _End - _Start, 0 );
         if( numLoop == 0 )  return;
 
-        for( int i = 0; i < numLoop; i++ ){
+        for( int i = 0; i < numLoop + 1; i++ ){
             UnLockEnemy( _Start + i );
         }
     }

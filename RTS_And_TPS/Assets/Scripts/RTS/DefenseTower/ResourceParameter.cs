@@ -139,7 +139,7 @@ public class ResourceParameter : NetworkBehaviour
             rTrans.position     =   _rInfo.contactPoint;
         }
 
-        //  オーナーのクライアントでのみダメージ処理を行う
+        //  オーナーのクライアントでのみダメージ処理を行う  
         if( m_rLinkManager.m_LocalPlayerID == m_rResControl.c_OwnerID ){
             //  ダメージを送信
             m_rLinkManager.m_rLocalNPControl.CmdSendDamageTower( netId, ( int )_rDamageResult.GetTotalDamage() );

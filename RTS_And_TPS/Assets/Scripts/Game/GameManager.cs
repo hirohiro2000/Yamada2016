@@ -346,6 +346,9 @@ public class GameManager : NetworkBehaviour {
             );
             if( GUI.Button( rect, "x " + ( int )m_GameSpeed ) ){
                 m_rLinkManager.m_rLocalNPControl.CmdChange_GameSpeed( ( m_GameSpeed > 1.0f )? 1.0f : 2.0f );
+
+                //  効果音再生
+                SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, 1.0f, 1.0f );
             }
         }
         //  外部からのメッセージ
@@ -374,11 +377,17 @@ public class GameManager : NetworkBehaviour {
                 if( m_Difficulty > GameDifficulty.Easy
                 &&  GUI.Button( new Rect( 195, 286, 46, 20 ), "<<" ) ){
                     m_rLinkManager.m_rLocalNPControl.CmdChangeDifficult( ( GameDifficulty )Mathf.Max( ( int )m_Difficulty - 1, 0 ) );
+
+                    //  効果音再生
+                    SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, 1.0f, 1.0f );
                 }
                 //  難易度を上げる
                 if( m_Difficulty < GameDifficulty.DeathMarch
                 &&  GUI.Button( new Rect( 255, 286, 46, 20 ), ">>" ) ){
                     m_rLinkManager.m_rLocalNPControl.CmdChangeDifficult( ( GameDifficulty )Mathf.Min( ( int )m_Difficulty + 1, ( int )GameDifficulty.DeathMarch ) );
+
+                    //  効果音再生
+                    SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, 1.0f, 1.0f );
                 }
             }
         }
