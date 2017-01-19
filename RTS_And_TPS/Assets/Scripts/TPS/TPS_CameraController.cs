@@ -26,6 +26,13 @@ public class TPS_CameraController : MonoBehaviour
 
     private Vector2   m_shake               = Vector2.zero;
 
+	private float m_zoomValue = .0f;
+
+	private float m_zoomMultiple = 2.5f;
+
+	private float m_DefFOV;
+
+
 	[SerializeField, Range(0.005f, 0.1f)]
 	private float m_rotateSpeed = 0.04f;
 
@@ -46,7 +53,9 @@ public class TPS_CameraController : MonoBehaviour
 
         transform.parent = null;
 
-    }
+		m_DefFOV = Camera.main.fieldOfView;
+
+	}
 
     void Update()
     {        
@@ -69,8 +78,15 @@ public class TPS_CameraController : MonoBehaviour
 		{
 			float inputH = Input.GetAxis("Mouse X") * m_rotateSpeed;
 			float inputV = Input.GetAxis("Mouse Y") * m_rotateSpeed;
+			float inputWheel = Input.GetAxis("Mouse ScrollWheel");
 
-            if (Input.GetKey(KeyCode.LeftControl))
+			//ズーム処理
+			m_zoomValue += inputWheel;
+
+			m_zoomValue = Mathf.Clamp01(m_zoomValue);
+			Camera.main.fieldOfView = m_DefFOV / ((m_zoomMultiple - 1.0f) * m_zoomValue + 1.0f);
+
+			if (Input.GetKey(KeyCode.LeftControl))
             {
                 // 回転を行わない
             }
@@ -80,8 +96,8 @@ public class TPS_CameraController : MonoBehaviour
                 {
                     inputV = -inputV;
                 }
-                m_camPolar.x += inputH;
-                m_camPolar.y = Mathf.Clamp( m_camPolar.y + inputV, m_minVerticalDeg*Mathf.Deg2Rad, m_maxVerticalDeg*Mathf.Deg2Rad );
+                m_camPolar.x += inputH / ((m_zoomMultiple - 1.0f) * m_zoomValue + 1.0f);
+                m_camPolar.y = Mathf.Clamp( m_camPolar.y + inputV / ((m_zoomMultiple - 1.0f) * m_zoomValue + 1.0f), m_minVerticalDeg*Mathf.Deg2Rad, m_maxVerticalDeg*Mathf.Deg2Rad );
             }
 
             Vector3 p = lookAt + ToVector( m_camPolar.x + m_shake.x, m_camPolar.y + m_shake.y, m_camPolar.z );

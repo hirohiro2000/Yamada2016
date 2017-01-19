@@ -88,16 +88,22 @@ public class SkyManager : MonoBehaviour {
 			"_UpTex",
 			"_DownTex",
 		};
-		for (int i = 0; i < 6; i++)
-		{
-			//前のNextをPrevに
-			RenderSettings.skybox.SetTexture(PrevPropertys[i], RenderSettings.skybox.GetTexture(NextPropertys[i]));
-			//引数のマテリアルのテクスチャをNextに
-			RenderSettings.skybox.SetTexture(NextPropertys[i], New.GetTexture(NewPropertys[i]));
-			m_BlendValue = value;
-			RenderSettings.skybox.SetFloat("_SkyBlend", m_BlendValue);
+		//for (int i = 0; i < 6; i++)
+		//{
+		//	//前のNextをPrevに
+		//	RenderSettings.skybox.SetTexture("_Tex", RenderSettings.skybox.GetTexture(NextPropertys[i]));
+		//	//引数のマテリアルのテクスチャをNextに
+		//	RenderSettings.skybox.SetTexture(NextPropertys[i], New.GetTexture(NewPropertys[i]));
+		//	m_BlendValue = value;
+		//	RenderSettings.skybox.SetFloat("_SkyBlend", m_BlendValue);
 
-		}
+		//}
 
+		//前のNextをPrevに
+		RenderSettings.skybox.SetTexture("_Tex", RenderSettings.skybox.GetTexture("_Tex2"));
+		//引数のマテリアルのテクスチャをNextに
+		RenderSettings.skybox.SetTexture("_Tex2", New.GetTexture("_Tex"));
+		m_BlendValue = value;
+		RenderSettings.skybox.SetFloat("_SkyBlend", m_BlendValue);
 	}
 }
