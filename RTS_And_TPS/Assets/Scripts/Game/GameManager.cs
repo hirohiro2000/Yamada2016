@@ -941,6 +941,16 @@ public class GameManager : NetworkBehaviour {
         if( m_State != State.Ready )    return;
 
         ChangeState( State.CountDown );
+
+        //  難易度に応じて開始資源を変更
+        {
+            float[] c_ResourceRatio =   {
+                1.0f,   1.0f,   2.0f,   4.0f
+            };
+            float   resourceRate    =   c_ResourceRatio[ ( int )m_Difficulty ];
+
+            m_Resource  =   c_StartResource * resourceRate;
+        }
     }
     public  void    StartWaveInterval()
     {

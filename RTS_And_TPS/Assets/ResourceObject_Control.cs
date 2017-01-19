@@ -7,7 +7,7 @@ public class ResourceObject_Control : NetworkBehaviour {
 
     public  GameObject      c_ExplodedObj   =   null;
     public  GameObject      c_BreakEffect   =   null;
-    public  SoundController c_BreakSE       =   null;
+    public  GameObject      c_BreakSE       =   null;
 
 
     public  int             m_Score         =   0;
@@ -60,14 +60,20 @@ public class ResourceObject_Control : NetworkBehaviour {
                 doSaving        =   ( rExpManager.m_rExpObjList.Count + 1 >= savingLine )? true : false;
             }
 
-            //  最適化される場合は直接リソースを加算して終了
-            if( doSaving ){
-                if( m_KillerID == m_rLinkManager.m_LocalPlayerID ){
-                    m_rLinkManager.m_rLocalNPControl.CmdAddResource( m_Resource );
-                }
-            }
-            //  最適化されない場合だけ破片を出す 
-            else{
+            ////  最適化される場合は直接リソースを加算して終了 
+            //if( doSaving ){
+            //    if( m_KillerID == m_rLinkManager.m_LocalPlayerID ){
+            //        m_rLinkManager.m_rLocalNPControl.CmdAddResource( m_Resource );
+            //        m_rGameManager.SetAcqResource( m_Resource );
+            //    }
+            //    //  最適化される場合は効果音だけ再生
+            //    if( c_BreakSE ){
+            //        Instantiate( c_BreakSE, transform.position, transform.rotation );
+            //    }
+            //}
+            ////  最適化されない場合だけ破片を出す 
+            //else
+            {
                 GameObject  rObj    =   Instantiate( c_ExplodedObj );
                 Transform   rTrans  =   rObj.transform;
 
