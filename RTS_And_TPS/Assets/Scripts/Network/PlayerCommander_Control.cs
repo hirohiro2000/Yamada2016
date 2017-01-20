@@ -27,11 +27,6 @@ public class PlayerCommander_Control : NetworkBehaviour {
 
             //  プレイヤー名取得
             m_EditName          =   PlayerPrefs.GetString( "PlayerName", "Null" );
-
-            //  BGM再生
-            //BGMManager.ChangeBGM( "BGM1", 0.5f, 0.0f, 0.0f );
-            //SoundController bgm = SoundController.Create("BGM1",this.transform);
-            //bgm.Play();
         }
     }
 	
@@ -69,6 +64,9 @@ public class PlayerCommander_Control : NetworkBehaviour {
                 if( m_rGameManager.GetState() <= GameManager.State.InGame ){
                     DetermPlayerName( m_EditName );
                     CmdLaunchTPSPlayer();
+
+                    //  効果音再生
+                    SoundController.PlayNow( "UI_Click", 0.0f, 0.1f, 1.0f, 1.0f );
                 }
             }
             //  女の子で出撃
@@ -76,6 +74,9 @@ public class PlayerCommander_Control : NetworkBehaviour {
                 if( m_rGameManager.GetState() <= GameManager.State.InGame ){
                     DetermPlayerName( m_EditName );
                     CmdLaunchRTSPlayer();
+
+                    //  効果音再生
+                    SoundController.PlayNow( "UI_Click", 0.0f, 0.1f, 1.0f, 1.0f );
                 }
             }
             //  敵ロボットで出撃
@@ -83,6 +84,9 @@ public class PlayerCommander_Control : NetworkBehaviour {
                 if( m_rGameManager.GetState() <= GameManager.State.InGame ){
                     DetermPlayerName( m_EditName );
                     CmdLaunchTPSPlayerE();
+
+                    //  効果音再生
+                    SoundController.PlayNow( "UI_Click", 0.0f, 0.1f, 1.0f, 1.0f );
                 }
             }
         }

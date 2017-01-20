@@ -893,12 +893,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HPUpMultipleRate: 6
-  MoveSpeedUpMultipleRate: 0.75
+  MoveSpeedUpMultipleRate: 0.5
   MaxmoveSpeed: 80
   MaxAcceleration: 10000000
-  AttackPowerIncrementRate: 0
-  BurstIncrementRate: 0.2
-  MaxBurstShot: 4
+  AttackPowerIncrementRate: 0.167
+  MaxAttackPower: 3.5
+  BurstIncrementRate: 0.167
+  MaxBurstShot: 2
 --- !u!114 &11449572
 MonoBehaviour:
   m_ObjectHideFlags: 1

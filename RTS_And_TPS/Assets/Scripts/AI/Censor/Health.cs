@@ -15,12 +15,13 @@ public class Health : NetworkBehaviour {
         RTSAttack_Missile,
     }
 
-    public  GameObject      c_ExplodedObj   =   null;
-    public  GameObject[]    c_DeathEmission =   null;
+    public  GameObject      c_ExplodedObj       =   null;
+    public  GameObject[]    c_DeathEmission     =   null;
+    public  GameObject      c_DeathExplosion    =   null;
 
-    public  GameObject      c_HitEmission   =   null;
-    public  GameObject      c_WeakEmission  =   null;
-    public  GameObject      c_THitEmission  =   null;
+    public  GameObject      c_HitEmission       =   null;
+    public  GameObject      c_WeakEmission      =   null;
+    public  GameObject      c_THitEmission      =   null;
 
     [ SyncVar ]
     public  int         Resource        =   0;
@@ -70,7 +71,8 @@ public class Health : NetworkBehaviour {
         //  破砕オブジェクト生成
         if( c_ExplodedObj
         &&  Camera.main
-        && HP <= 0){    //ちゃんと死んだときだけ
+        //&& HP <= 0      //ちゃんと死んだときだけ
+            ){
             GameObject  rObj    =   Instantiate( c_ExplodedObj );
             Transform   rTrans  =   rObj.transform;
 
@@ -97,6 +99,15 @@ public class Health : NetworkBehaviour {
                 Transform   rTrans  =   rObj.transform;
                 rTrans.position     =   transform.position;
             }
+        }
+        //  死亡時の爆発
+        if( c_DeathExplosion ){
+            //  生成
+            GameObject  rObj    =   Instantiate( c_DeathExplosion );
+            Transform   rTrans  =   rObj.transform;
+            rTrans.position     =   transform.position;
+
+            rTrans.FindChild( "AttackArea_ToEnemy" ).GetComponent< TPSAttack_Net >().c_AttackerID   =   KillerID;
         }
 
         //  カメラシェイク（撃破したプレイヤーのクライアントだけ）

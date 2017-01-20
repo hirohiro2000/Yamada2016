@@ -128,6 +128,21 @@ public class NetPlayer_Control : NetworkBehaviour {
         //  ダメージを与える
         rHaelth.GiveDamage( _Damage, connectionToClient.connectionId );
     }
+    //  タワーへのダメージを送信
+    [ Command ]
+    public  void    CmdSendDamageTower( NetworkInstanceId _NetID, int _Damage )
+    {
+        //  対象オブジェクトを探す
+        NetworkIdentity     rIdentity   =   FunctionManager.FindIdentityAtNetID( _NetID );
+        if( !rIdentity )    return;
+
+        //  コンポーネント取得
+        ResourceParameter   rParam      =   rIdentity.GetComponent< ResourceParameter >();
+        if( !rParam )       return;
+
+        //  ダメージを与える
+        rParam.GiveDamage( _Damage );
+    }
     //  発射コマンドを送信
     [ Command ]
     public  void    CmdFire_Client( Vector3 _Position, Vector3 _Target, int _WeaponID, int _ChildID )
@@ -186,6 +201,12 @@ public class NetPlayer_Control : NetworkBehaviour {
 
         //  爆破
         rMine.Exploding( connectionToClient.connectionId );
+    }
+    //  難易度変更
+    [ Command ]
+    public  void    CmdChangeDifficult( GameManager.GameDifficulty _Difficulty )
+    {
+        m_rGameManager.SetDifficulty( _Difficulty );
     }
 //*********************************************************************************
 //      リクエスト

@@ -6,13 +6,19 @@ using System.Collections.Generic;
 
 public class FiringDevice : NetworkBehaviour
 {
-	public GameObject		        m_bullet;
-	public List< Transform >		m_firePointTransforms	= null;
-	public Transform		        m_orientatedTransform	= null;
+	[SerializeField]
+	private GameObject		        m_bullet				= null;
+
+	[SerializeField]
+	private List< Transform >		m_firePointTransforms	= null;
+
+	[SerializeField]
+	private Transform		        m_orientatedTransform	= null;
 
 	private ReferenceWrapper        m_rEnemyShell			= null;
 	private	ResourceParameter	    m_resourceParam			= null;
     private RTSResourece_Control    m_RTSResControl			= null;
+	private ResourceAppear			m_resourceAppear		= null;
 
     private float                   m_IntervalTimer			= 0.0f;
 
@@ -24,15 +30,18 @@ public class FiringDevice : NetworkBehaviour
 		m_rEnemyShell       = GameObject.Find( "EnemySpawnRoot" ).GetComponent< ReferenceWrapper >();
 		m_resourceParam		= GetComponent<ResourceParameter>();
         m_RTSResControl     = GetComponent<RTSResourece_Control>();
+		m_resourceAppear	= GetComponent<ResourceAppear>();
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-        //  サーバーでのみ処理を行う 
-        //if( !isServer ) return;
-
-        //  タイマー更新
+		//	生えてるときは動かない
+		if( !m_resourceAppear.IsEnd() )
+			return;
+       
+     
+		//  タイマー更新
         m_IntervalTimer +=  Time.deltaTime;
         m_IntervalTimer =   Mathf.Min( m_IntervalTimer, m_resourceParam.GetCurLevelParam().interval );
 
@@ -44,7 +53,11 @@ public class FiringDevice : NetworkBehaviour
 		if( !m_rEnemyShell.CheckWhetherWithinTheRange( transform.position, m_resourceParam.GetCurLevelParam().range ))
 			return;
 
+
+		//	ターゲットに向く
+		Tragetting();
 		
+	
 		//	壁判定
 		{
 			var		target		= m_rEnemyShell.GetNearEnemyTransform( transform.position, m_resourceParam.GetCurLevelParam().range ).FindChild("Eye");
@@ -55,10 +68,6 @@ public class FiringDevice : NetworkBehaviour
 			if( Physics.Raycast( m_orientatedTransform.position, dir, vector.magnitude, layerMask ))
 				return;
 		}
-
-
-		//
-		Tragetting();
 
 
 		//	発射
@@ -126,7 +135,7 @@ public class FiringDevice : NetworkBehaviour
 			//m_orientatedTransform.rotation	=   Quaternion.LookRotation( forward );
 
 			//	補間
-			m_orientatedTransform.rotation	=	Quaternion.Slerp( m_orientatedTransform.rotation, Quaternion.LookRotation( forward ), 0.2f );
+			m_orientatedTransform.rotation	=	Quaternion.Slerp( m_orientatedTransform.rotation, Quaternion.LookRotation( forward ), Time.deltaTime*2.0f );
         }
     }
 

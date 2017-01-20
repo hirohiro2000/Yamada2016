@@ -206,6 +206,8 @@ public class GirlController : NetworkBehaviour
 	}
     void UpdateVehicle()
     {
+        transform.localRotation = Quaternion.identity;
+        transform.localPosition = Vector3.zero;
         if (Input.GetKeyDown(KeyCode.N))
         {
             CmdRidingVehicle(gameObject.GetComponent<NetworkIdentity>().netId, m_ridingVehicle.GetComponent<NetworkIdentity>().netId, false);
@@ -262,7 +264,8 @@ public class GirlController : NetworkBehaviour
         var obj         = m_resourceCreator.AddResource(resourceID);
         var forcusParam = m_itemCntroller.GetForcusResourceParam();
         
-        m_itemCntroller.AddResourceCost(-forcusParam.GetCreateCost());
+        //m_itemCntroller.AddResourceCost(-forcusParam.GetCreateCost());
+        GetComponent< NetPlayer_Control >().CmdAddResource( -forcusParam.GetCreateCost() );
         
         //	置かれたのがドローンだったらドローン操作に切り替え
         const int droneID = 8;

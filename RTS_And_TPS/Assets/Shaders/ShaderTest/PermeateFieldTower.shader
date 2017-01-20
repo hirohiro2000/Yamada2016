@@ -18,8 +18,6 @@ Shader "Unlit/PermeateFieldTower"
 	
 			#pragma vertex vert
 			#pragma fragment frag
-			#pragma target 3.0
-			#pragma multi_compile_fwdadd_fullshadows
 			#include "UnityCG.cginc"
 			#include "AutoLight.cginc"
 
@@ -179,12 +177,6 @@ Shader "Unlit/PermeateFieldTower"
 			Blend  OneMinusDstColor One
 			ZTest  Always
 			ZWrite Off
-
-			Stencil
-			{
-				Ref 2
-				Comp notequal
-			}
 
 			CGPROGRAM
 		#pragma vertex   vert

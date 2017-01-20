@@ -98,6 +98,8 @@ public class ResourceAppear : MonoBehaviour
     {
         timer = 1.0f;
     }
-
-
+	 public bool IsEnd()
+    {
+        return timer >= 1.0f;
+    }
 }

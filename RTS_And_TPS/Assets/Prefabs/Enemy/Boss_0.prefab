@@ -2611,8 +2611,9 @@ MonoBehaviour:
   MoveSpeedUpMultipleRate: 0.75
   MaxmoveSpeed: 20
   MaxAcceleration: 1000000
-  AttackPowerIncrementRate: 0
-  BurstIncrementRate: 0.1
+  AttackPowerIncrementRate: 0.334
+  MaxAttackPower: 7
+  BurstIncrementRate: 0.334
   MaxBurstShot: 6
 --- !u!114 &11449572
 MonoBehaviour:

@@ -1661,12 +1661,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HPUpMultipleRate: 5
-  MoveSpeedUpMultipleRate: 1.5
+  MoveSpeedUpMultipleRate: 1
   MaxmoveSpeed: 60
   MaxAcceleration: 1000000
-  AttackPowerIncrementRate: 0
-  BurstIncrementRate: 0.2
-  MaxBurstShot: 3
+  AttackPowerIncrementRate: 0.167
+  MaxAttackPower: 3.5
+  BurstIncrementRate: 0.167
+  MaxBurstShot: 2
 --- !u!114 &11495468
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1947,7 +1948,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_Radius: 0.5
   m_Speed: 6
-  m_Acceleration: 32
+  m_Acceleration: 16
   avoidancePriority: 50
   m_AngularSpeed: 100200300
   m_StoppingDistance: 0
