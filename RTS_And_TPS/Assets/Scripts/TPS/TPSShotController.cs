@@ -323,9 +323,7 @@ public class TPSShotController : NetworkBehaviour {
     private bool                m_PlayNoAmmo        =   false;
 
     //ＵＩ
-    private Text                m_uiWeaponAmmo         = null;
-    private Text                m_uiWeaponHavingAmmo   = null;
-    private GameObject          m_uiWeaponReloadTime   = null;
+    private UIWeapon            m_uiWeapon          =   null;
 
 
 	// Use this for initialization
@@ -356,6 +354,10 @@ public class TPSShotController : NetworkBehaviour {
 			}
 
 		}
+
+        m_uiWeapon = GameObject.Find("TPS_HUD").transform.FindChild("Weapon").GetChild(m_ID+1).GetComponent<UIWeapon>();
+        m_uiWeapon.Initialize();
+        m_uiWeapon.Change( 0 );
 
 		return;
 	
@@ -475,16 +477,9 @@ public class TPSShotController : NetworkBehaviour {
             }
 		}
 		//UIの描画
-//		WeaponAmmoUIList UIList = WeaponAmmoUIList.Aceess(m_ID);
-//		if (UIList != null)
-//			UIList.Disp(weapons.list.ToArray(),cntWeaponIndex);
-           
-        if ( m_uiWeaponAmmo       == null ) m_uiWeaponAmmo        = GameObject.Find("TPS_HUD").transform.FindChild("Weapon").GetChild(m_ID+1).transform.FindChild("Ammo").GetComponent<Text>();           // [BackGround]があるから１つ加算
-        if ( m_uiWeaponHavingAmmo == null ) m_uiWeaponHavingAmmo  = GameObject.Find("TPS_HUD").transform.FindChild("Weapon").GetChild(m_ID+1).transform.FindChild("HavingAmmo").GetComponent<Text>();     // [BackGround]があるから１つ加算
-        if ( m_uiWeaponReloadTime == null ) m_uiWeaponReloadTime  = GameObject.Find("TPS_HUD").transform.FindChild("Weapon").GetChild(m_ID+1).transform.FindChild("ReloadTime").gameObject;               // [BackGround]があるから１つ加算
-        m_uiWeaponAmmo.text         = cntWeaponList.param.DispAmmo();
-        m_uiWeaponHavingAmmo.text   = cntWeaponList.param.DispHavingAmmo();
-        m_uiWeaponReloadTime.transform.localScale = new Vector3( 1.0f, cntWeaponList.param.DispReloadProgress(), 1.0f );
+        m_uiWeapon.InternalUpdateByShotcontroller( cntWeaponList );
+
+
 
         //  弾切れサウンドフラグリセット
         if( !Input.GetKey( shotKey ) ){
@@ -614,6 +609,8 @@ public class TPSShotController : NetworkBehaviour {
 		playerRecoil.holdingWeapon = cntWeaponList.data.weaponRecoilData;
 
         m_seShot = cntWeaponList.data.CreateSoundController(this.gameObject);
+
+        m_uiWeapon.Change( cntWeaponIndex );
 
     }
 

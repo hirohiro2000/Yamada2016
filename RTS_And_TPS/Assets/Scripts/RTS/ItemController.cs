@@ -52,15 +52,14 @@ public class ItemController : NetworkBehaviour
 
             add.transform.GetChild(0).GetComponent<RawImage>().texture = m_resourceCreator.m_textures[i].GetComponent<Image>().mainTexture;
 
-            add.SetActive( false );
-
 			m_frameList.Add( add );
 
 			m_textList.Add(text);
 			m_resourceList.Add(resource);
-
 		}
-	}
+        rFrameShell.gameObject.SetActive(false);
+
+    }
 	public  override    void    OnNetworkDestroy()
 	{
         base.OnNetworkDestroy();

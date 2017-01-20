@@ -39,8 +39,6 @@ public class GirlController : NetworkBehaviour
 	public float				m_moveSpeed						= 1.0f;
     public float                m_LiftingForce					= 1.0f;
     public float                m_JumpForce                     = 0.0f;
-    public GameObject           m_symbolPivot					= null;
-	public GameObject		    m_routingError					= null;
 
 	private enum ActionState
 	{
