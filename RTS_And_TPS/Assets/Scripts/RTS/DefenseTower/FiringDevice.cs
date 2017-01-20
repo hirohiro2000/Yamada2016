@@ -55,7 +55,7 @@ public class FiringDevice : NetworkBehaviour
 
 
 		//	ターゲットに向く
-		Tragetting();
+		Targetting();
 		
 	
 		//	壁判定
@@ -119,7 +119,7 @@ public class FiringDevice : NetworkBehaviour
 
 
 	//
-	void Tragetting()
+	void Targetting()
     {
 		var trs = m_rEnemyShell.GetNearEnemyTransform( m_orientatedTransform.position, m_resourceParam.GetCurLevelParam().range );
         if( trs )
@@ -135,7 +135,7 @@ public class FiringDevice : NetworkBehaviour
 			//m_orientatedTransform.rotation	=   Quaternion.LookRotation( forward );
 
 			//	補間
-			m_orientatedTransform.rotation	=	Quaternion.Slerp( m_orientatedTransform.rotation, Quaternion.LookRotation( forward ), Time.deltaTime*2.0f );
+			m_orientatedTransform.rotation	=	Quaternion.Slerp( m_orientatedTransform.rotation, Quaternion.LookRotation( forward ), Time.deltaTime*5.0f );
         }
     }
 
