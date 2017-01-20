@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+
 // UIと女の子のやり取りを補助するクラス
 public class UIGirlTaskSelect : MonoBehaviour
 {
@@ -17,18 +18,7 @@ public class UIGirlTaskSelect : MonoBehaviour
 	private ItemController		m_itemController            { get; set; }
     public  GameObject          m_curConvertTarget          { get; set; }
 
-
-    private RectTransform       m_parentTrans               { get; set; }
-    private Camera              m_uiCamera                  { get; set; }
-    private Canvas              m_uiCanvas                  { get; set; }
-
-    public  enum CREATE_STEP
-    {
-        eCommon,
-        eSelect,
-        eCreate,
-    }
-    public  CREATE_STEP         m_createStep        { get; private set; }
+    private bool isInit { get; set; }
 
     public  enum RESULT
     {
@@ -40,64 +30,36 @@ public class UIGirlTaskSelect : MonoBehaviour
         eErr = -1,
     }
     private RESULT result               { get; set; }
-    
+
     // [GirlController]専用の初期化関数
     public void Initialize( GirlController girl )
     {
-        result       = RESULT.eNone;
-        m_createStep = CREATE_STEP.eCommon;
+        result                   = RESULT.eNone;
         m_itemController         = girl.GetComponent<ItemController>();
+        m_itemController.SetForcus( 0 );
         m_resourceInformation    = GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
         m_resourceCreator        = GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
 
-        RectTransform rt = GetComponent<RectTransform>();
-        m_parentTrans = rt.parent.GetComponent<RectTransform>();
+        m_uiResourceBG.GetComponent<UIForcusSelect>().Initialize( this, m_itemController );
+        m_uiForcusFrame.GetComponent<UIForcusFrame>().Initialize( this, m_itemController );
 
-        Canvas[] canvasArr = m_uiConvert.GetComponentsInParent<Canvas>();
-        for (int i = 0; i < canvasArr.Length; i++)
-        {
-            if (canvasArr[i].isRootCanvas)
-            {
-                m_uiCamera = canvasArr[i].worldCamera;
-                m_uiCanvas = canvasArr[i];
-            }
-        }
     }
 
     // ＵＩ情報を更新をして行うべきタスクを戻り値として返す
     public RESULT Select( Vector3 girlPosition )
     {
-        if ( m_createStep == CREATE_STEP.eCommon )
+        if ( isInit == false )
         {
-            result          = RESULT.eNone;
-            m_createStep    = CREATE_STEP.eCreate;
-            m_towerInfoPanel.GetComponent<AppearInfopanel>().SetActive( false );
-            m_uiForcusFrame.SetActive( true );
-            
-            m_itemController.SetForcus(0);
-            Text text = m_uiForcusFrame.transform.GetChild(2).GetComponent<Text>();
-            ResourceParameter resource = m_resourceCreator.m_resources[ m_itemController.GetForcus() ].GetComponent<ResourceParameter>();
-            text.text = resource.GetCreateCost().ToString();
-            m_uiForcusFrame.transform.GetChild(0).GetComponent<RawImage>().texture = m_resourceCreator.m_textures[ m_itemController.GetForcus() ].GetComponent<Image>().mainTexture;
+            isInit = true;
             return result;
         }
 
-
-
-        //  建築用ＵＩの更新
-        switch (m_createStep)
-        {
-            case CREATE_STEP.eSelect:  UpdateSelectResource( girlPosition );   break;
-            case CREATE_STEP.eCreate:  UpdateCreate( girlPosition );           break;
-            default: break;
-        }
-                   
-        // コンバート用ＵＩの更新
-        UpdateConvert( girlPosition );
+        UpdateGuide( girlPosition );
+        UpdateEvent( girlPosition );
 
         return result;
     }
-
+             
     // 初期状態に戻す
     public void Reset()
     {
@@ -105,372 +67,51 @@ public class UIGirlTaskSelect : MonoBehaviour
     }
 
     //---------------------------------------------------------------------
-    //      建築用ＵＩの更新
+    //      入力情報の更新
     //---------------------------------------------------------------------   	
-    void UpdateSelectResource( Vector3 computePosition )
-    { 
-        //       
-		var param = m_resourceInformation.GetResourceParamFromPosition( computePosition );
-        if (param)
+    void UpdateEvent(Vector3 computePosition)
+    {
+        if ( !m_uiConvert.activeInHierarchy )
         {
-            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = false;
-        }
-        else
-        {    
-            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = true;
-            m_resourceInformation.m_gridSplitSpacePlane.transform.position  = computePosition;
-            m_resourceInformation.m_gridSplitSpacePlane.transform.position += new Vector3(0, 0.04f, 0);
-        }
-        
-        // 左にスライド
-		if( Input.GetKeyDown( KeyCode.Q ))
-        {
-            int forcus = ( ( m_itemController.GetForcus()+m_itemController.GetNumKind()-1 ) % m_itemController.GetNumKind() );
-            SetForcus( forcus );
-        }
-        // 右にスライド
-        if ( Input.GetKeyDown( KeyCode.E ))
-        {
-            int forcus = ( (m_itemController.GetForcus()+1) % m_itemController.GetNumKind() );
-            SetForcus( forcus );
-        }
-        
-        // Go to [Create]
-        if ( Input.GetKeyDown( KeyCode.X ) || Input.GetMouseButtonDown(1) )
-        {
-            m_createStep = CREATE_STEP.eCreate;
-     		m_towerInfoPanel.GetComponent<AppearInfopanel>().SetActive( false );
-            m_itemController.SetActive( false );
-            m_uiResourceBG.SetActive( false );
-            m_uiForcusFrame.SetActive( true );
-
-			Text text = m_uiForcusFrame.transform.GetChild(2).GetComponent<Text>();
-			ResourceParameter resource = m_resourceCreator.m_resources[ m_itemController.GetForcus() ].GetComponent<ResourceParameter>();
-            text.text = resource.GetCreateCost().ToString();
-            m_uiForcusFrame.transform.GetChild(0).GetComponent<RawImage>().texture = m_resourceCreator.m_textures[ m_itemController.GetForcus() ].GetComponent<Image>().mainTexture;
-    
-            //  効果音再生（パネルを出す）
-            SoundController.PlayNow( "UI_MenuOpen", 0.0f, 0.1f, 1.0f, 1.0f );
-        }
-
-//        // Back to [Common]
-//        if ( Input.GetKeyDown( KeyCode.X ) || Input.GetMouseButtonDown(1))
-//        {
-//            m_createStep = CREATE_STEP.eCommon;
-//            m_itemController.SetActive( false );
-//    		m_towerInfoPanel.GetComponent<AppearInfopanel>().SetActive( false );
-//            m_uiResourceBG.SetActive( false );
-//            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = false;
-//            m_resourceCreator.SetGuideVisibleDisable();
-//
-//            //  効果音再生（パネルを出す）
-//            SoundController.PlayNow( "UI_MenuOpen", 0.0f, 0.1f, 1.0f, 1.0f );
-//        }
-
-    }
-    void UpdateCreate( Vector3 computePosition )
-    {           
-        // 自分がいるマスの情報による処理の分岐（タワーがある場合ガイドが非表示になり建築できません）
-        if( m_resourceInformation.GetResourceParamFromPosition( computePosition ) )
-        {
-            m_resourceCreator.SetGuideVisibleDisable();
-            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = false;
-
-            // 残高不足の判定
-            int balance = ( m_itemController.GetHaveCost() - m_itemController.GetForcusResourceParam().GetCreateCost() );
-            if ( balance < 0 )
+            if ( Input.GetKeyDown(KeyCode.X ) || Input.GetMouseButtonDown(1) )
             {
-                m_uiForcusFrame.transform.GetChild(2).GetComponent<Text>().enabled      = false;
-                m_uiForcusFrame.transform.GetChild(0).GetComponent<RawImage>().enabled  = false;
-            }
-            else
-            {
-                m_uiForcusFrame.transform.GetChild(2).GetComponent<Text>().enabled      = true;
-                m_uiForcusFrame.transform.GetChild(0).GetComponent<RawImage>().enabled  = true;
+                bool active0 = !m_uiForcusFrame.activeInHierarchy;
+                m_uiForcusFrame.SetActive( active0 );
+
+                bool active1 = !m_uiResourceBG.activeInHierarchy;
+                m_uiResourceBG.SetActive( active1 );
             }
         }
         else
         {
-            // 建築予定のタワーとガイドの更新
-            m_resourceCreator.UpdateGuideResource( m_itemController.GetForcus(), computePosition );
-            m_resourceCreator.UpdateGuideRange( m_itemController.GetForcus(), computePosition );
-
-            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = true;
-            m_resourceInformation.m_gridSplitSpacePlane.transform.position  = computePosition;
-            m_resourceInformation.m_gridSplitSpacePlane.transform.position += new Vector3(0, 0.04f, 0);
-
-            // 残高不足の判定
-            int balance = ( m_itemController.GetHaveCost() - m_itemController.GetForcusResourceParam().GetCreateCost() );
-            if ( balance < 0 )
+            if ( Input.GetKeyDown(KeyCode.X ) )
             {
-                m_uiForcusFrame.transform.GetChild(2).GetComponent<Text>().enabled      = false;
-                m_uiForcusFrame.transform.GetChild(0).GetComponent<RawImage>().enabled  = false;
-                m_resourceCreator.SetGuideVisibleDisable();
-                m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = false;
+                m_uiConvert.SetActive( false );
             }
-            else
-            {
-                m_uiForcusFrame.transform.GetChild(2).GetComponent<Text>().enabled      = true;
-                m_uiForcusFrame.transform.GetChild(0).GetComponent<RawImage>().enabled  = true;
-
-                //　建築イベントの発生
-                if ( Input.GetKeyDown( KeyCode.F ))
-                {
-                    result = RESULT.eOK;
-                    //  効果音再生  
-                    SoundController.PlayNow("UI_Click2", 0.0f, 0.1f, 1.24f, 1.0f);
-                    SoundController.PlayNow("UI_Click", 0.0f, 0.1f, 0.84f, 1.0f);
-                }
-
-            }
-
-
-            // 左にスライド
-    		if( Input.GetKeyDown( KeyCode.Q ))
-            {
-                int forcus = m_itemController.GetForcus();
-                for (int i = 0; i < m_itemController.GetNumKind(); i++)
-                {
-                    forcus--;
-                    if ( forcus < 0 )   forcus = m_itemController.GetNumKind()-1;
-    
-                    balance = ( m_itemController.GetHaveCost() - m_itemController.GetResourceParam(forcus).GetCreateCost() );
-                    if ( balance >= 0 )
-                    {
-                        break;
-                    }
-                }
-    
-                m_itemController.SetForcus( forcus );
-    			Text text = m_uiForcusFrame.transform.GetChild(2).GetComponent<Text>();
-    			ResourceParameter resource = m_resourceCreator.m_resources[ m_itemController.GetForcus() ].GetComponent<ResourceParameter>();
-                text.text = resource.GetCreateCost().ToString();
-                m_uiForcusFrame.transform.GetChild(0).GetComponent<RawImage>().texture = m_resourceCreator.m_textures[ m_itemController.GetForcus() ].GetComponent<Image>().mainTexture;
-    
-                // 効果音再生
-                SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, Random.Range( 0.95f, 1.05f ), 1.0f );
-            }
-            // 右にスライド
-            if ( Input.GetKeyDown( KeyCode.E ))
-            {
-                int forcus = m_itemController.GetForcus();
-                for (int i = 0; i < m_itemController.GetNumKind(); i++)
-                {
-                    forcus++;
-                    if ( forcus >= m_itemController.GetNumKind() )   forcus = 0;
-    
-                    balance = ( m_itemController.GetHaveCost() - m_itemController.GetResourceParam(forcus).GetCreateCost() );
-                    if ( balance >= 0 )
-                    {
-                        break;
-                    }
-                }
-    
-                m_itemController.SetForcus( forcus );
-    			Text text = m_uiForcusFrame.transform.GetChild(2).GetComponent<Text>();
-    			ResourceParameter resource = m_resourceCreator.m_resources[ m_itemController.GetForcus() ].GetComponent<ResourceParameter>();
-                text.text = resource.GetCreateCost().ToString();
-                m_uiForcusFrame.transform.GetChild(0).GetComponent<RawImage>().texture = m_resourceCreator.m_textures[ m_itemController.GetForcus() ].GetComponent<Image>().mainTexture;
-                
-                // 効果音再生
-                SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, Random.Range( 0.95f, 1.05f ), 1.0f );
-            }       
-            // Back to [Select]
-            if ( Input.GetKeyDown( KeyCode.X ) || Input.GetMouseButtonDown(1) )
-            {
-                m_createStep = CREATE_STEP.eSelect;
-                SetForcus( m_itemController.GetForcus() );
-                m_itemController.SetActive( true );
-                m_uiResourceBG.SetActive( true );
-                m_uiForcusFrame.SetActive( false );
-                m_resourceCreator.SetGuideVisibleDisable();
-            }
-
-
         }
 
     }
-              
+    void UpdateActiveUI()
+    {
+
+    }
+
     //---------------------------------------------------------------------
-    //      コンバート用ＵＩの更新
+    //      ガイド情報の更新
     //---------------------------------------------------------------------   	
-    void UpdateConvert(Vector3 computePosition)
+    void UpdateGuide(Vector3 computePosition)
     {
         var param = m_resourceInformation.GetResourceParamFromPosition(computePosition);
-
-        // コンバートできる状態ですか？
-        if (param == null)
+        if ( param )
         {
-            // コンバート処理ができないのでUIを閉じます
-            if ( m_uiConvert.activeInHierarchy )
-            {
-                m_towerInfoPanelEx.GetComponent<AppearInfopanel>().SetActive(false);
-                m_uiConvert.SetActive(false);
-                m_resourceCreator.SetGuideVisibleDisable();
-            }
-
-            // コンバートを行うターゲットをリセットします
-            if (m_curConvertTarget != null)
-            {
-                m_curConvertTarget.GetComponent<MaterialSwitchToConvert>().Deactivate();
-                m_curConvertTarget.GetComponent<MaterialSwitchToConvert>().enabled = false;
-                m_curConvertTarget = null;
-            }
-
-            // [処理が中断されました]
-            return;
+            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = false;
         }
-
-        // [--以下からコンバート情報の更新を行います--]
-
-        
-        // ＵＩの情報とターゲットの情報は正しいですか？
-        if ( m_curConvertTarget != param.gameObject )
+        else
         {
-            // ＵＩに誤りがあるので初期化処理を行います
-                                                              
-            //　ターゲットの変更の場合
-            if ( m_curConvertTarget != null )
-            {
-                m_curConvertTarget.GetComponent<MaterialSwitchToConvert>().Deactivate();
-                m_curConvertTarget.GetComponent<MaterialSwitchToConvert>().enabled = false;
-                m_curConvertTarget = null;
-            }
-
-            // ＵＩは開かれていますか？
-            if ( m_uiConvert.activeInHierarchy == false )
-            {
-                // パネルを出す
-                m_uiConvert.SetActive(true);
-
-                // 効果音再生
-                SoundController.PlayNow( "UI_MenuOpen", 0.0f, 0.1f, 1.0f, 1.0f );
-            }
-            
-            // ボタンに必要なコストを設定します
-            Transform buttonBreak = m_uiConvert.transform.GetChild(1);
-            buttonBreak.transform.FindChild("Point").GetComponent<Text>().text = "+" + param.GetBreakCost().ToString();
-
-            // タワーのレベルは上限ですか？
-            if ( param.CheckWhetherCanUpALevel() == false )
-            {
-                // [上限]
-                Transform buttonLevel = m_uiConvert.transform.GetChild(0);
-                buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "";
-
-                // ターゲットの情報を設定します
-                m_towerInfoPanelEx.GetComponent<AppearInfopanel>().SetActive(true);
-                m_towerInfoPanelEx.transform.FindChild("Kind").GetComponent<Text>().text            = param.m_name;
-                m_towerInfoPanelEx.transform.FindChild("Summary").GetComponent<Text>().text         = "概要:　　　" + param.m_summary;
-                m_towerInfoPanelEx.transform.FindChild("Power").GetComponent<Text>().text           = "攻撃力:　　" + param.GetLevelParam(param.m_level).power;
-                m_towerInfoPanelEx.transform.FindChild("Interval").GetComponent<Text>().text        = "発射間隔:　" + param.GetLevelParam(param.m_level).interval;
-                m_towerInfoPanelEx.transform.FindChild("PowerLv").GetComponent<Text>().text         = param.GetLevelParam(param.m_level).power.ToString();
-                m_towerInfoPanelEx.transform.FindChild("IntervalLv").GetComponent<Text>().text      = param.GetLevelParam(param.m_level).interval.ToString();
-
-            }
-            else
-            {
-                // [上限ではありません]
-                Transform buttonLevel = m_uiConvert.transform.GetChild(0);
-                buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + param.GetCurLevelParam().GetUpCost().ToString();
-
-                // ターゲットの情報を設定します
-                m_towerInfoPanelEx.GetComponent<AppearInfopanel>().SetActive(true);
-                m_towerInfoPanelEx.transform.FindChild("Kind").GetComponent<Text>().text            = param.m_name;
-                m_towerInfoPanelEx.transform.FindChild("Summary").GetComponent<Text>().text         = "概要:　　　" + param.m_summary;
-                m_towerInfoPanelEx.transform.FindChild("Power").GetComponent<Text>().text           = "攻撃力:　　" + param.GetLevelParam(param.m_level).power;
-                m_towerInfoPanelEx.transform.FindChild("Interval").GetComponent<Text>().text        = "発射間隔:　" + param.GetLevelParam(param.m_level).interval;
-                m_towerInfoPanelEx.transform.FindChild("PowerLv").GetComponent<Text>().text         = param.GetLevelParam(param.m_level + 1).power.ToString();
-                m_towerInfoPanelEx.transform.FindChild("IntervalLv").GetComponent<Text>().text      = param.GetLevelParam(param.m_level + 1).interval.ToString();
-
-            }           
-
-            // ターゲットのマテリアルを変更します
-            param.gameObject.GetComponent<MaterialSwitchToConvert>().Activate();
-            param.gameObject.GetComponent<MaterialSwitchToConvert>().enabled = true;
-
-            //
-            m_curConvertTarget = param.gameObject;
-
+            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = true;
+            m_resourceInformation.m_gridSplitSpacePlane.transform.position  = computePosition;
+            m_resourceInformation.m_gridSplitSpacePlane.transform.position += new Vector3(0, 0.04f, 0);
         }
-
-        //  [--更新処理--]
-        {
-            //	射程範囲のガイドを更新します
-            m_resourceCreator.UpdateGuideRange(computePosition, param.GetCurLevelParam().range);
-        
-            // ＵＩの位置ターゲットの位置によって更新します
-            Vector3 screenPos = Camera.main.WorldToScreenPoint(m_curConvertTarget.transform.position);
-            Vector2 localPos  = Vector2.zero;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(m_parentTrans, screenPos, m_uiCamera, out localPos);
-            m_uiConvert.GetComponent<RectTransform>().localPosition = localPos;
-
-            // LvUP用
-            Transform buttonLevel = m_uiConvert.transform.GetChild(0);
-            buttonLevel.transform.GetChild(0).gameObject.SetActive( !(param.CheckWhetherCanUpALevel() && param.GetCurLevelParam().GetUpCost() <= m_itemController.GetHaveCost() ) );
-        }
-        
-
-
-        //  [--イベント処理--]
-
-        
-        // LvUPを行いますか？
-        if (Input.GetKeyDown(KeyCode.Q) && param.CheckWhetherCanUpALevel() && param.GetCurLevelParam().GetUpCost() <= m_itemController.GetHaveCost())
-        {
-
-            // LvUP処理
-            result = RESULT.eLevel;
-
-            // タワーのレベルは上限に達しましたか？
-            if (param.m_levelInformations.Length-1 == param.m_level+1)
-            {
-                // [上限に達しました]
-                Transform buttonLevel = m_uiConvert.transform.GetChild(0);
-                buttonLevel.transform.GetChild(0).gameObject.SetActive(true);
-                buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "";
-
-                LevelParam nextParam = param.m_levelInformations[param.m_level + 1];
-                m_towerInfoPanelEx.transform.FindChild("Power").GetComponent<Text>().text           = "攻撃力:　　" + nextParam.power;
-                m_towerInfoPanelEx.transform.FindChild("Interval").GetComponent<Text>().text        = "発射間隔:　" + nextParam.interval;
-                m_towerInfoPanelEx.transform.FindChild("PowerLv").GetComponent<Text>().text         = nextParam.power.ToString();
-                m_towerInfoPanelEx.transform.FindChild("IntervalLv").GetComponent<Text>().text      = nextParam.interval.ToString();
-
-                // [処理が中断されました]
-                return;
-            }
-            else
-            {
-                // 上限でないのでLvUP情報を更新します
-                m_towerInfoPanelEx.transform.FindChild("Power").GetComponent<Text>().text           = "攻撃力:　　" + param.m_levelInformations[param.m_level + 1].power;
-                m_towerInfoPanelEx.transform.FindChild("Interval").GetComponent<Text>().text        = "発射間隔:　" + param.m_levelInformations[param.m_level + 1].interval;
-                m_towerInfoPanelEx.transform.FindChild("PowerLv").GetComponent<Text>().text         = param.m_levelInformations[param.m_level + 2].power.ToString();
-                m_towerInfoPanelEx.transform.FindChild("IntervalLv").GetComponent<Text>().text      = param.m_levelInformations[param.m_level + 2].interval.ToString();
-            }
-
-            // ボタンの情報の更新
-            {
-                // 消費コスト
-                float nextCost = param.m_levelInformations[param.m_level + 1].GetUpCost();                                    
-
-                // 使用後の残高
-                float balance = m_itemController.GetHaveCost() - param.m_levelInformations[param.m_level].GetUpCost();        
-
-                Transform buttonLevel = m_uiConvert.transform.GetChild(0);
-                buttonLevel.transform.GetChild(0).gameObject.SetActive( (balance - nextCost < 0) );                         
-                buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "-" + nextCost.ToString();
-            }
-
-
-        }
-
-        // 破壊しますか？
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            result = RESULT.eBreak;
-        }  
-           
-
     }
 
     //---------------------------------------------------------------------
@@ -506,7 +147,6 @@ public class UIGirlTaskSelect : MonoBehaviour
         // Go to [Create]
         if (m_itemController.CheckWhetherTheCostIsEnough(forcusID))
         {
-            m_createStep = CREATE_STEP.eCreate;
             m_towerInfoPanel.GetComponent<AppearInfopanel>().SetActive(false);
      		m_itemController.SetActive(false);
             m_uiResourceBG.SetActive( false );
@@ -546,14 +186,8 @@ public class UIGirlTaskSelect : MonoBehaviour
             {
                 // [上限に達しました]
                 Transform buttonLevel = m_uiConvert.transform.GetChild(0);
-                buttonLevel.transform.GetChild(0).gameObject.SetActive(true);
-                buttonLevel.transform.FindChild("Point").GetComponent<Text>().text = "";
-
-                LevelParam nextParam = target.m_levelInformations[target.m_level + 1];
-                m_towerInfoPanelEx.transform.FindChild("Power").GetComponent<Text>().text           = "攻撃力:　　" + nextParam.power;
-                m_towerInfoPanelEx.transform.FindChild("Interval").GetComponent<Text>().text        = "発射間隔:　" + nextParam.interval;
-                m_towerInfoPanelEx.transform.FindChild("PowerLv").GetComponent<Text>().text         = nextParam.power.ToString();
-                m_towerInfoPanelEx.transform.FindChild("IntervalLv").GetComponent<Text>().text      = nextParam.interval.ToString();
+                buttonLevel.gameObject.SetActive(false);
+                m_towerInfoPanelEx.SetActive(false);
 
                 // [処理が中断されました]
                 return;
@@ -600,19 +234,27 @@ public class UIGirlTaskSelect : MonoBehaviour
     }
     public void ClikedForcusFrame()
     {
-        if ( m_itemController.GetForcus() == -1 )       return;
-        if ( m_createStep != CREATE_STEP.eCreate)       return;
+        if ( m_itemController.GetForcus() == -1 )               return;
         if ( !m_itemController.CheckWhetherTheCostIsEnough(m_itemController.GetForcus()) ) return;
 
         Vector3 computePosition = m_resourceInformation.m_gridSplitSpacePlane.transform.position;
 		var param = m_resourceInformation.GetResourceParamFromPosition( computePosition );
         if ( param != null )    return;
-
+               
         // 建築
-        result = RESULT.eOK;
+        if (m_uiConvert.activeInHierarchy)
+        {
+            result = RESULT.eOK;
+        }
+        else
+        {
+            m_uiConvert.SetActive( true );
+        }
+
         //  効果音再生  
         SoundController.PlayNow("UI_Click2", 0.0f, 0.1f, 1.24f, 1.0f);
         SoundController.PlayNow("UI_Click", 0.0f, 0.1f, 0.84f, 1.0f);
     }
 
 }
+
