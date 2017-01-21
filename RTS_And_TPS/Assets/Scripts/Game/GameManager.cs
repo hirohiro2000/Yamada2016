@@ -1100,6 +1100,31 @@ public class GameManager : NetworkBehaviour {
         return  m_Difficulty;
     }
 //=========================================================================================
+//      中継
+//=========================================================================================
+    public  void            CallToMyGirl_RideToRobo()
+    {
+        GameObject      rLocalPlayer    =   m_rLinkManager.m_rLocalPlayer;
+        if( !rLocalPlayer )     return;
+
+        GirlController  rGirlControl    =   rLocalPlayer.GetComponent< GirlController >();
+        if( !rGirlControl )     return;
+
+        //  呼び出し
+        rGirlControl.RideToRobo();
+    }
+    public  void            CallToMyGirl_GetOffToRobo()
+    {
+        GameObject      rLocalPlayer    =   m_rLinkManager.m_rLocalPlayer;
+        if( !rLocalPlayer )     return;
+
+        GirlController  rGirlControl    =   rLocalPlayer.GetComponent< GirlController >();
+        if( !rGirlControl )     return;
+
+        //  呼び出し
+        rGirlControl.GetOutOfTheRobo();
+    }
+//=========================================================================================
 //      リクエスト
 //=========================================================================================
     //  メッセージ共有

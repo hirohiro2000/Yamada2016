@@ -142,6 +142,24 @@ public class TPSPlayer_Control : NetworkBehaviour {
         CmdChangeToCommander( _IsFriend );
     }
 //=================================================================================
+//      雑多
+//=================================================================================
+    //  女の子が搭乗しているかどうかを調べる
+    public  bool    CheckWhetherIsBoardingGirl()
+    {
+        GameObject[]    playerList  =   GameObject.FindGameObjectsWithTag( "Player" );
+        for( int i = 0; i < playerList.Length; i++ ){
+            GirlController  rGirl   =   playerList[ i ].GetComponent< GirlController >();
+            if( !rGirl )            continue;
+            if( !rGirl.IsRide() )   continue;
+
+            return  true;
+        }
+
+        return  false;
+    }
+
+//=================================================================================
 //      通信
 //=================================================================================
     //  ダメージ送信

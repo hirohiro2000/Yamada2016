@@ -40,6 +40,9 @@ public class GirlController : NetworkBehaviour
     public float                m_LiftingForce					= 1.0f;
     public float                m_JumpForce                     = 0.0f;
 
+    private GameObject          m_rRideButton                   = null;
+    private GameObject          m_rGetOffButton                 = null;
+
 	private enum ActionState
 	{
 		Common,
@@ -58,6 +61,9 @@ public class GirlController : NetworkBehaviour
         Transform   rHUD                      = GameObject.Find( "Canvas" ).transform.FindChild("RTS_HUD");
         m_uiGirlTask                          = rHUD.GetComponent<UIGirlTaskSelect>();
         m_uiGirlTask.Initialize( this );
+
+        m_rRideButton                   = rHUD.FindChild( "RideButton" ).gameObject;
+        m_rGetOffButton                 = rHUD.FindChild( "GetOffButton" ).gameObject;
 
 		m_resourceInformation			= GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
 		m_resourceCreator				= GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
@@ -84,35 +90,13 @@ public class GirlController : NetworkBehaviour
 		//  瀕死状態では処理を行わない
         if( m_rPlayerHP.m_IsDying ) return;
         
-        //  ドラム缶を置く
-        if( Input.GetKeyDown( KeyCode.B )
-        &&  m_rGameManager.GetResource() >= c_DrumCost ){
-            CmdPlaceDrum( transform.position + transform.forward * 2.0f, new Vector3( 0.0f, transform.eulerAngles.y, 0.0f ) );
-            m_rLinkManager.m_rLocalNPControl.CmdAddResource( -c_DrumCost );
-        }
-        //  時限爆弾を置く
-        if( Input.GetKeyDown( KeyCode.N )
-        &&  m_rGameManager.GetResource() >= c_TimeBombCost ){
-            CmdPlaceTimeBomb( transform.position + transform.forward * 2.0f + Vector3.up * 2.0f, new Vector3( 0.0f, transform.eulerAngles.y, 0.0f ) );
-            m_rLinkManager.m_rLocalNPControl.CmdAddResource( -c_TimeBombCost );
-        }
-        //  C4爆弾を置く
-        if( Input.GetKeyDown( KeyCode.Comma ) 
-        &&  m_rGameManager.GetResource() >= c_C4Cost ){
-            m_rLinkManager.m_rLocalNPControl.CmdAddResource( -c_C4Cost );
-            CmdPlaceC4( transform.position + transform.forward * 2.0f + Vector3.up * 2.0f, transform.forward );
-        }
-        //  C4爆弾を起動する
-        if( Input.GetKeyDown( KeyCode.Period ) ){
-            CmdExplodingC4();
-        }
         //  ジャンプする
         if( Input.GetKeyDown( KeyCode.Space )
         &&  Mathf.Abs( m_rRigid.velocity.y ) < 0.01f ){
             m_rRigid.AddForce( Vector3.up * m_JumpForce, ForceMode.Impulse );
         }
         //　乗れるロボットの検索
-        if ( Input.GetKeyDown(KeyCode.N) )
+        if ( Input.GetKeyDown(KeyCode.V) )
         {
             float       nearDistanceSq   = 4.5f;
             GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
@@ -136,6 +120,14 @@ public class GirlController : NetworkBehaviour
 		}
 
         UpdateAnimation();
+
+        //  搭乗関係のUIを更新
+        {
+            if( m_actionState == ActionState.Common )   m_rRideButton.SetActive( FindAroundRobot( 4.5f ) );
+            else                                        m_rRideButton.SetActive( false );
+
+            m_rGetOffButton.SetActive( m_actionState == ActionState.Ride );
+        }
     }
 	void FixedUpdate () 
 	{
@@ -204,9 +196,35 @@ public class GirlController : NetworkBehaviour
 	}
     void UpdateVehicle()
     {
+        //  搭乗中のアクション
+        {
+            //  ドラム缶を置く
+            if( Input.GetKeyDown( KeyCode.B )
+            &&  m_rGameManager.GetResource() >= c_DrumCost ){
+                CmdPlaceDrum( transform.position + transform.forward * 2.0f, new Vector3( 0.0f, transform.eulerAngles.y, 0.0f ) );
+                m_rLinkManager.m_rLocalNPControl.CmdAddResource( -c_DrumCost );
+            }
+            //  時限爆弾を置く
+            if( Input.GetKeyDown( KeyCode.N )
+            &&  m_rGameManager.GetResource() >= c_TimeBombCost ){
+                CmdPlaceTimeBomb( transform.position + transform.forward * 2.0f + Vector3.up * 2.0f, new Vector3( 0.0f, transform.eulerAngles.y, 0.0f ) );
+                m_rLinkManager.m_rLocalNPControl.CmdAddResource( -c_TimeBombCost );
+            }
+            //  C4爆弾を置く
+            if( Input.GetKeyDown( KeyCode.Comma ) 
+            &&  m_rGameManager.GetResource() >= c_C4Cost ){
+                m_rLinkManager.m_rLocalNPControl.CmdAddResource( -c_C4Cost );
+                CmdPlaceC4( transform.position + transform.forward * 2.0f + Vector3.up * 2.0f, transform.forward );
+            }
+            //  C4爆弾を起動する
+            if( Input.GetKeyDown( KeyCode.Period ) ){
+                CmdExplodingC4();
+            }
+        }
+
         transform.localRotation = Quaternion.identity;
         transform.localPosition = Vector3.zero;
-        if (Input.GetKeyDown(KeyCode.N))
+        if (Input.GetKeyDown(KeyCode.V))
         {
             CmdRidingVehicle(gameObject.GetComponent<NetworkIdentity>().netId, m_ridingVehicle.GetComponent<NetworkIdentity>().netId, false);
             return;
@@ -320,6 +338,34 @@ public class GirlController : NetworkBehaviour
         m_uiGirlTask.m_uiConvert.SetActive( _IsActive );
     }
 
+    //  ロボットに乗る
+    public  void    RideToRobo()
+    {
+        float       nearDistanceSq   = 4.5f;
+        GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
+        for (int i = 0; i < playerList.Length; i++)
+        {               
+            if (this.gameObject == playerList[i])                                                           continue;
+            if (playerList[i].GetComponent<GirlController>() != null)                                       continue;
+        
+            float distanceSq = ( transform.position - playerList[i].transform.position ).sqrMagnitude;
+            if ( distanceSq > nearDistanceSq )    continue; 
+        
+            CmdRidingVehicle( gameObject.GetComponent<NetworkIdentity>().netId, playerList[i].GetComponent<NetworkIdentity>().netId, true );
+        }
+    }
+    //  ロボットから降りる
+    public  void    GetOutOfTheRobo()
+    {
+        CmdRidingVehicle(gameObject.GetComponent<NetworkIdentity>().netId, m_ridingVehicle.GetComponent<NetworkIdentity>().netId, false);
+    }
+
+    //  搭乗中かどうか
+    public  bool    IsRide()
+    {
+        return  m_actionState == ActionState.Ride;
+    }
+
     //---------------------------------------------------------------------
 	//      
 	//---------------------------------------------------------------------
@@ -351,11 +397,33 @@ public class GirlController : NetworkBehaviour
         GetComponent<LerpSync_Rotation>().enabled   = !isEnable;
         GetComponent<Rigidbody>().useGravity        = !isEnable;
 
+        //  モデルを表示 / 非表示
+        transform.GetChild( 0 ).gameObject.SetActive( !isEnable );
+
         if (isEnable)
         {
             transform.localRotation = Quaternion.identity;
             transform.localPosition = Vector3.zero;
         }
+    }
+
+    //  乗れるロボットが周囲に居るかどうか
+    GameObject  FindAroundRobot( float _CheckDistance )
+    {
+        float           nearDistanceSq  =   _CheckDistance;
+        GameObject[]    playerList      =   GameObject.FindGameObjectsWithTag("Player");
+        for (int i = 0; i < playerList.Length; i++)
+        {               
+            if (this.gameObject == playerList[i])                           continue;
+            if (playerList[i].GetComponent< TPSPlayer_Control >() == null)  continue;
+        
+            float distanceSq = ( transform.position - playerList[i].transform.position ).sqrMagnitude;
+            if ( distanceSq > nearDistanceSq )    continue; 
+        
+            return  playerList[ i ];
+        }
+
+        return  null;
     }
 
     //---------------------------------------------------------------------
