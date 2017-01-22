@@ -348,7 +348,7 @@ public class GameManager : NetworkBehaviour {
                 m_rLinkManager.m_rLocalNPControl.CmdChange_GameSpeed( ( m_GameSpeed > 1.0f )? 1.0f : 2.0f );
 
                 //  効果音再生
-                SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, 1.0f, 1.0f );
+                SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.05f, 1.0f, 1.0f );
             }
         }
         //  外部からのメッセージ
@@ -379,7 +379,7 @@ public class GameManager : NetworkBehaviour {
                     m_rLinkManager.m_rLocalNPControl.CmdChangeDifficult( ( GameDifficulty )Mathf.Max( ( int )m_Difficulty - 1, 0 ) );
 
                     //  効果音再生
-                    SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, 1.0f, 1.0f );
+                    SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.05f, 1.0f, 1.0f );
                 }
                 //  難易度を上げる
                 if( m_Difficulty < GameDifficulty.DeathMarch
@@ -387,7 +387,7 @@ public class GameManager : NetworkBehaviour {
                     m_rLinkManager.m_rLocalNPControl.CmdChangeDifficult( ( GameDifficulty )Mathf.Min( ( int )m_Difficulty + 1, ( int )GameDifficulty.DeathMarch ) );
 
                     //  効果音再生
-                    SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, 1.0f, 1.0f );
+                    SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.05f, 1.0f, 1.0f );
                 }
             }
         }
@@ -1102,12 +1102,20 @@ public class GameManager : NetworkBehaviour {
 //=========================================================================================
 //      中継
 //=========================================================================================
-    public  void            CallToMyGirl_RideToRobo()
+    private GirlController  GetMyGirlControl()
     {
         GameObject      rLocalPlayer    =   m_rLinkManager.m_rLocalPlayer;
-        if( !rLocalPlayer )     return;
+        if( !rLocalPlayer )     return  null;
 
         GirlController  rGirlControl    =   rLocalPlayer.GetComponent< GirlController >();
+        if( !rGirlControl )     return  null;
+
+        return  rGirlControl;
+    }
+//----------------------------------------------------------------------------------------- 
+    public  void            CallToMyGirl_RideToRobo()
+    {
+        GirlController  rGirlControl    =   GetMyGirlControl();
         if( !rGirlControl )     return;
 
         //  呼び出し
@@ -1115,14 +1123,65 @@ public class GameManager : NetworkBehaviour {
     }
     public  void            CallToMyGirl_GetOffToRobo()
     {
-        GameObject      rLocalPlayer    =   m_rLinkManager.m_rLocalPlayer;
-        if( !rLocalPlayer )     return;
-
-        GirlController  rGirlControl    =   rLocalPlayer.GetComponent< GirlController >();
+        GirlController  rGirlControl    =   GetMyGirlControl();
         if( !rGirlControl )     return;
 
         //  呼び出し
         rGirlControl.GetOutOfTheRobo();
+    }
+
+    public  void            CallToMyGirl_PlaceDrum()
+    {
+        GirlController  rGirlControl    =   GetMyGirlControl();
+        if( !rGirlControl )     return;
+
+        //  呼び出し
+        rGirlControl.PlaceDrum();
+    }
+    public  void            CallToMyGirl_PlaceTimeBomb()
+    {
+        GirlController  rGirlControl    =   GetMyGirlControl();
+        if( !rGirlControl )     return;
+
+        //  呼び出し
+        rGirlControl.PlaceTimeBomb();
+    }
+    public  void            CallToMyGirl_PlaceC4()
+    {
+        GirlController  rGirlControl    =   GetMyGirlControl();
+        if( !rGirlControl )     return;
+
+        //  呼び出し
+        rGirlControl.PlaceC4();
+    }
+    public  void            CallToMyGirl_ExplodingC4()
+    {
+        GirlController  rGirlControl    =   GetMyGirlControl();
+        if( !rGirlControl )     return;
+
+        //  呼び出し
+        rGirlControl.ExplodingC4();
+    }
+
+    public  void            CallToMyGirl_PlaceOK()
+    {
+        GirlController  rGirlControl    =   GetMyGirlControl();
+        if( !rGirlControl )     return;
+
+        //  呼び出し
+        rGirlControl.PlaceOK();
+    }
+
+//=========================================================================================
+//      サウンド
+//=========================================================================================
+    public  void            PlaySound_UI_Select( float _Volume )
+    {
+        SoundController.PlayNow( "UI_FocusChange", 0.0f, _Volume, 1.0f, 1.0f );
+    }
+    public  void            PlaySound_UI_Determ( float _Volume )
+    {
+        SoundController.PlayNow( "UI_Click", 0.0f, _Volume, 1.0f, 1.0f );
     }
 //=========================================================================================
 //      リクエスト

@@ -15,7 +15,7 @@ public class C4_Control : NetworkBehaviour {
     [ SyncVar ]
     public  Vector3 m_StartForce    =   Vector3.zero;
 
-    private float   c_Delay         =   0.2f;
+    private float   c_Delay         =   0.4f;
     private float   m_DelayTimer    =   0.0f;
 
     private Light   m_rLight        =   null;
@@ -45,7 +45,13 @@ public class C4_Control : NetworkBehaviour {
     {
         //  共通処理
         if( m_IsActive ){
+            Color   prevColor   =   m_rLight.color;
             m_rLight.color  =   c_ActiveColor;
+
+            //  効果音を鳴らす
+            if( prevColor != m_rLight.color ){
+                SoundController.PlayNow( "TB_CountDown_End", transform, transform.position, 0.0f, 0.5f, 1.0f, 12.0f );
+            }
         }
 
         //  サーバーでの処理
@@ -77,7 +83,7 @@ public class C4_Control : NetworkBehaviour {
 
         //  停止
         GetComponent< Rigidbody >().isKinematic =   true;
-        GetComponent< Collider >().enabled      =   false;
+        //GetComponent< Collider >().enabled      =   false;
     }
 
     //  爆発

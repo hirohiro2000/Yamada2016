@@ -248,7 +248,7 @@ public class UIGirlTaskSelect : MonoBehaviour
                 m_uiForcusFrame.transform.GetChild(0).GetComponent<RawImage>().texture = m_resourceCreator.m_textures[ m_itemController.GetForcus() ].GetComponent<Image>().mainTexture;
     
                 // 効果音再生
-                SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, Random.Range( 0.95f, 1.05f ), 1.0f );
+                SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.05f, Random.Range( 0.95f, 1.05f ), 1.0f );
             }
             // 右にスライド
             if ( Input.GetKeyDown( KeyCode.E ))
@@ -273,7 +273,7 @@ public class UIGirlTaskSelect : MonoBehaviour
                 m_uiForcusFrame.transform.GetChild(0).GetComponent<RawImage>().texture = m_resourceCreator.m_textures[ m_itemController.GetForcus() ].GetComponent<Image>().mainTexture;
                 
                 // 効果音再生
-                SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, Random.Range( 0.95f, 1.05f ), 1.0f );
+                SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.05f, Random.Range( 0.95f, 1.05f ), 1.0f );
             }       
             // Back to [Select]
             if ( Input.GetKeyDown( KeyCode.X ) || Input.GetMouseButtonDown(1) )
@@ -496,7 +496,7 @@ public class UIGirlTaskSelect : MonoBehaviour
 		    m_towerInfoPanel.transform.FindChild("Interval").GetComponent<Text>().text = "発射間隔:　" + param.GetLevelParam(0).interval + "秒/発";
 
             // 効果音再生
-            SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, Random.Range( 0.95f, 1.05f ), 1.0f );
+            SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.05f, Random.Range( 0.95f, 1.05f ), 1.0f );
         }
     }
     

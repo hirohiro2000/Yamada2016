@@ -337,6 +337,18 @@ public class TPSPlayer_HP : NetworkBehaviour {
                     if( m_rRTSControl ) m_rRTSControl.RpcChangeToCommander( m_rNetPlayer.c_ClientID, !m_IsEnemy );
                     if( m_rTPSControl ) m_rTPSControl.RpcChangeToCommander( m_rNetPlayer.c_ClientID, !m_IsEnemy );
 
+                    //  全てのプレイヤーをコマンダーに戻す
+                    GameObject[]    players =   GameObject.FindGameObjectsWithTag( "Player" );
+                    for( int i = 0; i < players.Length; i++ ){
+                        if( players[ i ] == gameObject )    continue;
+
+                        TPSPlayer_Control   rTPS    =   players[ i ].GetComponent< TPSPlayer_Control >();
+                        RTSPlayer_Control   rRTS    =   players[ i ].GetComponent< RTSPlayer_Control >();
+                        NetPlayer_Control   rNet    =   players[ i ].GetComponent< NetPlayer_Control >();
+                        if( rTPS )  rTPS.RpcChangeToCommander( rNet.c_ClientID, !m_IsEnemy );
+                        if( rRTS )  rRTS.RpcChangeToCommander( rNet.c_ClientID, !m_IsEnemy );
+                    }
+
                     //  スクリプト制御停止
                     this.enabled    =   false;
                 }
@@ -542,8 +554,12 @@ public class TPSPlayer_HP : NetworkBehaviour {
             }
             //  味方プレイヤーの場合
             else{
+                bool    isUnion =   m_IsRobot
+                                &&  m_rTPSControl.CheckWhetherIsBoardingGirl();
+
                 //  生存者がいる場合は瀕死状態へ
-                if( CheckWhetherAliveFriend() ){
+                if( CheckWhetherAliveFriend()
+                &&  !isUnion ){
                     m_IsDying       =   true;
                     m_DeathTimer    =   c_DeathTime;
                     m_RevivalTimer  =   0.0f;
@@ -556,6 +572,18 @@ public class TPSPlayer_HP : NetworkBehaviour {
                     //  コマンダーに戻る
                     if( m_rTPSControl ) m_rTPSControl.RpcChangeToCommander( m_rNetPlayer.c_ClientID, !m_IsEnemy );
                     if( m_rRTSControl ) m_rRTSControl.RpcChangeToCommander( m_rNetPlayer.c_ClientID, !m_IsEnemy );
+
+                    //  全てのプレイヤーをコマンダーに戻す
+                    GameObject[]    players =   GameObject.FindGameObjectsWithTag( "Player" );
+                    for( int i = 0; i < players.Length; i++ ){
+                        if( players[ i ] == gameObject )    continue;
+
+                        TPSPlayer_Control   rTPS    =   players[ i ].GetComponent< TPSPlayer_Control >();
+                        RTSPlayer_Control   rRTS    =   players[ i ].GetComponent< RTSPlayer_Control >();
+                        NetPlayer_Control   rNet    =   players[ i ].GetComponent< NetPlayer_Control >();
+                        if( rTPS )  rTPS.RpcChangeToCommander( rNet.c_ClientID, !m_IsEnemy );
+                        if( rRTS )  rRTS.RpcChangeToCommander( rNet.c_ClientID, !m_IsEnemy );
+                    }
                 }
             }
         }

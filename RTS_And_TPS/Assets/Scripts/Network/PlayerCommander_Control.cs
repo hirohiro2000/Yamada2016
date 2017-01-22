@@ -66,7 +66,7 @@ public class PlayerCommander_Control : NetworkBehaviour {
                     CmdLaunchTPSPlayer();
 
                     //  効果音再生
-                    SoundController.PlayNow( "UI_Click", 0.0f, 0.1f, 1.0f, 1.0f );
+                    SoundController.PlayNow( "UI_Click", 0.0f, 0.05f, 1.0f, 1.0f );
                 }
             }
             //  女の子で出撃
@@ -76,7 +76,7 @@ public class PlayerCommander_Control : NetworkBehaviour {
                     CmdLaunchRTSPlayer();
 
                     //  効果音再生
-                    SoundController.PlayNow( "UI_Click", 0.0f, 0.1f, 1.0f, 1.0f );
+                    SoundController.PlayNow( "UI_Click", 0.0f, 0.05f, 1.0f, 1.0f );
                 }
             }
             //  敵ロボットで出撃
@@ -86,7 +86,7 @@ public class PlayerCommander_Control : NetworkBehaviour {
                     CmdLaunchTPSPlayerE();
 
                     //  効果音再生
-                    SoundController.PlayNow( "UI_Click", 0.0f, 0.1f, 1.0f, 1.0f );
+                    SoundController.PlayNow( "UI_Click", 0.0f, 0.05f, 1.0f, 1.0f );
                 }
             }
         }

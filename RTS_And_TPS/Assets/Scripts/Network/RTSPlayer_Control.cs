@@ -79,14 +79,17 @@ public class RTSPlayer_Control : NetworkBehaviour {
         rMainCamera.GetComponent< AudioListener >().enabled     =   false;
         
         //  ＲＴＳカメラ有効化
-        GameObject  rRTSCamera  =   GameObject.Find( "RTSCamera" );
-        Transform   rRTSCParent =   rRTSCamera.transform.parent;
+        GameObject  rRTSCamera      =   GameObject.Find( "RTSCamera" );
+        GameObject  rRTSCameraAdd   =   GameObject.Find( "RTSCamera_Add" );
+        Transform   rRTSCParent     =   rRTSCamera.transform.parent;
         rRTSCamera.GetComponent< Camera >().enabled         =   true;
         rRTSCamera.GetComponent< AudioListener >().enabled  =   true;
         rRTSCParent.GetComponent< RTSCamera >().enabled     =   true;
         rRTSCParent.GetComponent< RTSCamera >().m_target    =   transform;
         rRTSCParent.GetComponent< RTSCamera >().ForcusOnPlayer();
-
+        if( rRTSCameraAdd ){
+            rRTSCameraAdd.GetComponent< Camera >().enabled  =   true;
+        }
     }
     //  終了処理
     public  void    EndProc()
@@ -104,16 +107,20 @@ public class RTSPlayer_Control : NetworkBehaviour {
         UIRadar.SetPlayer( gameObject );
 
         //  メインカメラを復旧
-        GameObject  rMainCamera =   GameObject.Find( "Main Camera" );
+        GameObject  rMainCamera     =   GameObject.Find( "Main Camera" );
         rMainCamera.GetComponent< Camera >().enabled            =   true;
         rMainCamera.GetComponent< AudioListener >().enabled     =   true;
 
         //  ＲＴＳカメラ無効化
-        GameObject  rRTSCamera  =   GameObject.Find( "RTSCamera" );
-        Transform   rRTSCParent =   rRTSCamera.transform.parent;
+        GameObject  rRTSCamera      =   GameObject.Find( "RTSCamera" );
+        GameObject  rRTSCameraAdd   =   GameObject.Find( "RTSCamera_Add" );
+        Transform   rRTSCParent     =   rRTSCamera.transform.parent;
         rRTSCamera.GetComponent< Camera >().enabled         =   false;
         rRTSCamera.GetComponent< AudioListener >().enabled  =   false;
         rRTSCParent.GetComponent< RTSCamera >().enabled     =   false;
+        if( rRTSCameraAdd ){
+            rRTSCameraAdd.GetComponent< Camera >().enabled  =   false;
+        }
 
         //  リソース情報無効化
         GameObject.Find( "ResourceInformation" )
