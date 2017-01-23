@@ -5688,6 +5688,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_Emission:
   - {fileID: 158640, guid: d6337b29c93a18b4dad17620acfb066b, type: 2}
+  c_OnCollision: 1
+  c_OnTrigger: 1
 --- !u!114 &11411446
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5837,6 +5839,7 @@ MonoBehaviour:
   m_moveSpeed: 5
   m_LiftingForce: 200
   m_JumpForce: 15
+  c_PlaceRideOnly: 0
 --- !u!114 &11437936
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6057,6 +6060,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_Emission:
   - {fileID: 158640, guid: d6337b29c93a18b4dad17620acfb066b, type: 2}
+  c_OnCollision: 1
+  c_OnTrigger: 1
 --- !u!114 &11486632
 MonoBehaviour:
   m_ObjectHideFlags: 1

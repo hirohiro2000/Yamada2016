@@ -318,6 +318,9 @@ public class TPSPlayer_HP : NetworkBehaviour {
                     //  復活
                     SetRecovery( m_MaxHP * 1.0f );
 
+                    //  蘇生を通知
+                    RpcRevivalOK();
+
                     //  タイマーリセット
                     m_RevivalTimer  =   0.0f;
                 }
@@ -513,6 +516,32 @@ public class TPSPlayer_HP : NetworkBehaviour {
         return  false;
     }
 
+    //  通知
+    [ ClientRpc ]
+    void    RpcRevivalOK()
+    {
+        //  ロボットが蘇生された
+        if( m_rTPSControl ){
+            SoundController.PlayNow( "Voice_R_Revival", transform, transform.position, 0.0f, 1.0f, 1.0f, 6.0f );
+        }
+        //  女の子が蘇生された
+        if( m_rRTSControl ){
+            SoundController.PlayNow( "Voice_G_Thanks", transform, transform.position, 0.0f, 1.0f, 1.0f, 6.0f );
+        }
+    }
+    [ ClientRpc ]
+    void    RpcDying()
+    {
+        //  ロボットが瀕死状態になった
+        if( m_rTPSControl ){
+            SoundController.PlayNow( "Voice_R_Dying", transform, transform.position, 0.0f, 1.0f, 1.0f, 6.0f );
+        }
+        //  女の子が瀕死状態になった
+        if( m_rRTSControl ){
+            SoundController.PlayNow( "Voice_G_Dying", transform, transform.position, 0.0f, 1.0f, 1.0f, 6.0f );
+        }
+    }
+
     //  外部からの操作
     public  void    SetDamage( float _Damage )
     {
@@ -566,6 +595,8 @@ public class TPSPlayer_HP : NetworkBehaviour {
 
                     //  他のプレイヤーに通知
                     m_rGameManager.RpcRecordNoticeE_ToOther( "仲間が救助を求めています！", m_rNetPlayer.c_ClientID );
+                    //  瀕死を通知
+                    RpcDying();
                 }
                 //  生存者がいない場合はゲームオーバー
                 else{

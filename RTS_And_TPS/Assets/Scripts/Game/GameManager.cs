@@ -89,6 +89,7 @@ public class GameManager : NetworkBehaviour {
     private AcqScore_Control        m_rAcqScore     =   null;
     private AcqRecord_Control       m_rAcqRecord    =   null;
     private AcqScore_Control        m_rAcqResource  =   null;
+    private AcqScore_Control        m_rAcqResourceM =   null;
     private DamageFilter_Control    m_rDFControl    =   null;
 
     private StageDrum_Control       m_rSDrumControl =   null;
@@ -112,6 +113,7 @@ public class GameManager : NetworkBehaviour {
         m_rAcqScore     =   FunctionManager.GetAccessComponent< AcqScore_Control >( "Canvas/AcqScore" );
         m_rAcqRecord    =   FunctionManager.GetAccessComponent< AcqRecord_Control >( "Canvas/AcqRecord" );
         m_rAcqResource  =   FunctionManager.GetAccessComponent< AcqScore_Control >( "Canvas/AcqResource" );
+        m_rAcqResourceM =   FunctionManager.GetAccessComponent< AcqScore_Control >( "Canvas/AcqResource_Minus" );
         m_rDFControl    =   FunctionManager.GetAccessComponent< DamageFilter_Control >( "Canvas/DamageFilter" );
 
         //  パラメータを初期化
@@ -129,6 +131,9 @@ public class GameManager : NetworkBehaviour {
         //  サーバーでの処理
         if( NetworkServer.active ){
             ReplaceStageDrum();
+
+            //  難易度読み込み
+            m_Difficulty    =   ( GameDifficulty )PlayerPrefs.GetInt( "Difficulty", ( int )GameDifficulty.Normal );
         }
 	}
 	
@@ -944,7 +949,7 @@ public class GameManager : NetworkBehaviour {
 
     }
 
-    //  外部からの操作
+    //  外部からの操作    
     public  void    StartCountDown()
     {
         if( m_State != State.Ready )    return;
@@ -960,6 +965,9 @@ public class GameManager : NetworkBehaviour {
 
             m_Resource  =   c_StartResource * resourceRate;
         }
+
+        //  難易度を保存
+        PlayerPrefs.SetInt( "Difficulty", ( int )m_Difficulty );
     }
     public  void    StartWaveInterval()
     {
@@ -1031,6 +1039,10 @@ public class GameManager : NetworkBehaviour {
     public  void    SetAcqResource( float _AddResource )
     {
         m_rAcqResource.SetAddScore( _AddResource ); 
+    }
+    public  void    SetAcqResource_Minus( float _MinusResource )
+    {
+        m_rAcqResourceM.SetAddScore( _MinusResource ); 
     }
 
     public  void    SetDamageFilterEffect()

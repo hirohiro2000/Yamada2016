@@ -25,6 +25,9 @@ public class RTSPlayer_Control : NetworkBehaviour {
             //  開始処理
             StartProc();
         }
+
+        //  出撃ボイス
+        SoundController.PlayNow( "Voice_G_Launch", transform, transform.position, 0.0f, 1.0f, 1.0f, 10.0f );
 	}
 	
 	// Update is called once per frame

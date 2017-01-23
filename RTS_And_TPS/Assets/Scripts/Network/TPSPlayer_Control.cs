@@ -36,6 +36,9 @@ public class TPSPlayer_Control : NetworkBehaviour {
             //  リジッドボディ無効化
             GetComponent< Rigidbody >().isKinematic =   true;
         }
+
+        //  出撃ボイス
+        SoundController.PlayNow( "Voice_R_Launch", transform, transform.position, 0.0f, 1.0f, 1.0f, 10.0f );
 	}
 	
 	// Update is called once per frame
@@ -72,13 +75,15 @@ public class TPSPlayer_Control : NetworkBehaviour {
             GameObject  rAroundGirl =   FindAroundGirl( 4.5f );
             bool        rideGirl    =   CheckWhetherIsBoardingGirl();
             bool        aroundGirl  =   rAroundGirl;
+            bool        isAlive     =   m_rHP.m_CurHP > 0;
 
             //  ボタンの表示
-            m_rRideButton.SetActive( !rideGirl && aroundGirl );
-            m_rGetOffButton.SetActive( rideGirl );
+            m_rRideButton.SetActive( !rideGirl && aroundGirl && isAlive );
+            m_rGetOffButton.SetActive( rideGirl && isAlive );
 
             //  搭乗
-            if( Input.GetKeyDown( KeyCode.V ) ){
+            if( Input.GetKeyDown( KeyCode.V )
+            &&  isAlive ){
                         if( aroundGirl && !rideGirl )   CmdRideOnGirl( true );
                 else    if( rideGirl )                  CmdRideOnGirl( false );
             }

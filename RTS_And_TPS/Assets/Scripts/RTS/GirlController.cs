@@ -128,7 +128,8 @@ public class GirlController : NetworkBehaviour
             m_rRigid.AddForce( Vector3.up * m_JumpForce, ForceMode.Impulse );
         }
         //　乗れるロボットの検索
-        if ( Input.GetKeyDown(KeyCode.V) )
+        if( Input.GetKeyDown( KeyCode.V )
+        &&  m_rPlayerHP.m_CurHP > 0 )
         {
             float       nearDistanceSq   = 4.5f;
             GameObject[] playerList = GameObject.FindGameObjectsWithTag("Player");
@@ -144,6 +145,20 @@ public class GirlController : NetworkBehaviour
             }
         }
 
+        //  爆弾のショートカットキー
+        if( m_actionState   == ActionState.Ride
+        ||  c_PlaceRideOnly == false ){
+            if( Input.GetKeyDown( KeyCode.Alpha1 ) )    PlaceDrum();
+            if( Input.GetKeyDown( KeyCode.Alpha2 ) )    PlaceTimeBomb();
+            if( Input.GetKeyDown( KeyCode.Alpha3 ) )    PlaceC4();
+            if( Input.GetKeyDown( KeyCode.Alpha4 ) )    ExplodingC4();
+
+            if( Input.GetKeyDown( KeyCode.Alpha1 ) )    SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.05f, 1.0f, 1.0f );
+            if( Input.GetKeyDown( KeyCode.Alpha2 ) )    SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.05f, 1.0f, 1.0f );
+            if( Input.GetKeyDown( KeyCode.Alpha3 ) )    SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.05f, 1.0f, 1.0f );
+            if( Input.GetKeyDown( KeyCode.Alpha4 ) )    SoundController.PlayNow( "UI_Click", 0.0f, 0.05f, 1.0f, 1.0f );
+        }
+
         switch ( m_actionState )
 		{
 		case ActionState.Common:			UpdateCommon();		break;
@@ -155,7 +170,9 @@ public class GirlController : NetworkBehaviour
 
         //  搭乗関係のUIを更新
         {
-            if( m_actionState == ActionState.Common )   m_rRideButton.SetActive( FindAroundRobot( 4.5f ) );
+            bool    isAlive     =   m_rPlayerHP.m_CurHP > 0;
+
+            if( m_actionState == ActionState.Common )   m_rRideButton.SetActive( FindAroundRobot( 4.5f ) && isAlive );
             else                                        m_rRideButton.SetActive( false );
             
 
@@ -326,6 +343,9 @@ public class GirlController : NetworkBehaviour
         
         //m_itemCntroller.AddResourceCost(-forcusParam.GetCreateCost());
         GetComponent< NetPlayer_Control >().CmdAddResource( -forcusParam.GetCreateCost() );
+
+        //  支出を通知
+        m_rGameManager.SetAcqResource_Minus( forcusParam.GetBreakCost() );
         
         //	置かれたのがドローンだったらドローン操作に切り替え
         const int droneID = 8;
@@ -520,6 +540,9 @@ public class GirlController : NetworkBehaviour
 
         CmdPlaceDrum( _Position, new Vector3( 0.0f, transform.eulerAngles.y, 0.0f ) );
         m_rLinkManager.m_rLocalNPControl.CmdAddResource( -c_DrumCost );
+
+        //  支出を通知
+        m_rGameManager.SetAcqResource_Minus( c_DrumCost );
     }
     void    PlaceAction_TimeBomb( Vector3 _Position )
     {
@@ -527,6 +550,9 @@ public class GirlController : NetworkBehaviour
 
         CmdPlaceTimeBomb( _Position, new Vector3( 0.0f, transform.eulerAngles.y, 0.0f ) );
         m_rLinkManager.m_rLocalNPControl.CmdAddResource( -c_TimeBombCost );
+
+        //  支出を通知
+        m_rGameManager.SetAcqResource_Minus( c_TimeBombCost );
     }
     void    PlaceAction_C4( Vector3 _Position )
     {
@@ -534,6 +560,9 @@ public class GirlController : NetworkBehaviour
 
         CmdPlaceC4( _Position, new Vector3( 0.0f, transform.eulerAngles.y, 0.0f ) );
         m_rLinkManager.m_rLocalNPControl.CmdAddResource( -c_C4Cost );
+
+        //  支出を通知
+        m_rGameManager.SetAcqResource_Minus( c_C4Cost );
     }
 
     //---------------------------------------------------------------------
@@ -594,6 +623,10 @@ public class GirlController : NetworkBehaviour
         //  効果音再生
         if( isEnable )  SoundController.PlayNow( "RideOn", null, transform.position, 0.0f, 1.0f, 1.0f, 4.0f );
         else            SoundController.PlayNow( "GetOutOff", null, transform.position, 0.0f, 1.0f, 1.0f, 4.0f );
+
+        //  ボイス再生
+        if( isEnable )  SoundController.PlayNow( "Voice_G_Chest", transform, transform.position, 0.0f, 1.0f, 1.0f, 10.0f );
+        else            SoundController.PlayNow( "Voice_G_Thanks2", transform, transform.position, 0.0f, 1.0f, 1.0f, 10.0f );
     }
 
     //  乗れるロボットが周囲に居るかどうか
