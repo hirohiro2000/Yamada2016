@@ -39,6 +39,7 @@ public class TitleUIController : MonoBehaviour {
 
     public void BeginCredit()
     {
+       
         DisableAllButton();
         m_staff_credit_root.SetActive(true);
     }
@@ -51,6 +52,10 @@ public class TitleUIController : MonoBehaviour {
 
     void DisableAllButton()
     {
+        var text_root = m_menu_button_root.GetComponentsInChildren<Text>();
+        foreach (var text in text_root)
+            text.color = Color.white;
+      
         m_menu_button_root.SetActive(false);
         m_title_image.enabled = false;
     }
