@@ -311,6 +311,7 @@ GameObject:
   - 65: {fileID: 6522082}
   - 114: {fileID: 11448156}
   - 114: {fileID: 11459648}
+  - 114: {fileID: 11476986}
   m_Layer: 0
   m_Name: DashEnemy
   m_TagString: Enemy
@@ -948,6 +949,7 @@ MonoBehaviour:
   c_ExplodedObj: {fileID: 102618, guid: c66536897f4a0164e91d83e720dfdd34, type: 2}
   c_DeathEmission:
   - {fileID: 158640, guid: b5436835d1c6a274b91afac7de96a911, type: 2}
+  c_DeathExplosion: {fileID: 0}
   c_HitEmission: {fileID: 158640, guid: 38f5b6ca5be88b24fa93fb9005151237, type: 2}
   c_WeakEmission: {fileID: 158640, guid: 87f7f9010dff2b24dab8eaa15d0461f3, type: 2}
   c_THitEmission: {fileID: 158640, guid: e30cf765421362b4db85bbf113a13ca7, type: 2}
@@ -1107,6 +1109,17 @@ MonoBehaviour:
     i15: 32
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &11476986
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 196732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36dbf9a6f87378d4b941c712039785d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11485130
 MonoBehaviour:
   m_ObjectHideFlags: 1
