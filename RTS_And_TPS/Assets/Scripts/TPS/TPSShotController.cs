@@ -282,6 +282,8 @@ public class TPSShotController : NetworkBehaviour {
 	int cntWeaponIndex;
 	WeaponList cntWeaponList = null;
 
+	[SerializeField]
+	ParticleSystem m_FireEffect = null;
 
 	float AimDistance;
 
@@ -516,6 +518,9 @@ public class TPSShotController : NetworkBehaviour {
 
 		GameObject emit = Instantiate(cntWeaponList.weapon.gameObject, firePoint, Quaternion.LookRotation(forward)) as GameObject;
 
+		//エフェクト出現
+		m_FireEffect.Emit(50);
+
 		//cloneをまとめる
         string parentName = emit.name + "s";
 		GameObject parent = GameObject.Find(parentName);
@@ -557,8 +562,11 @@ public class TPSShotController : NetworkBehaviour {
 
 		GameObject  emit  = Instantiate( weapons[ _WeaponID ].weapon.gameObject, firePoint, Quaternion.LookRotation(forward)) as GameObject;
 
+		//エフェクト出現
+		m_FireEffect.Emit(50);
+
 		//cloneをまとめる
-        string parentName = emit.name + "s";
+		string parentName = emit.name + "s";
 		GameObject parent = GameObject.Find(parentName);
 		if (parent == null)
 		{
