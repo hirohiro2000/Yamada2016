@@ -13,8 +13,9 @@ public class RTSOnForcusFrame : MonoBehaviour, IPointerClickHandler
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        if( eventData.button == PointerEventData.InputButton.Right )  return;
-
+        if( eventData.button == PointerEventData.InputButton.Right )    return;
+        if ( m_uiGirlTaskSelect.canCreate( m_uiGirlTaskSelect.m_computePosition ) == false )                  return;
+                   
         m_uiGirlTaskSelect.ClikedForcusFrame();
     }
 

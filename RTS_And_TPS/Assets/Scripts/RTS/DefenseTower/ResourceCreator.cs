@@ -129,7 +129,7 @@ public class ResourceCreator : NetworkBehaviour
 	//  
 	//---------------------------------------------------------------------
 	void ChangeGuideState( GameObject obj, bool ena )
-	{
+	{               
 		if (obj.GetComponent<Collider>())
 			obj.GetComponent<Collider>().enabled = ena;
 
@@ -139,13 +139,16 @@ public class ResourceCreator : NetworkBehaviour
 		if (obj.GetComponent<NavMeshObstacle>())
 			obj.GetComponent<NavMeshObstacle>().enabled = ena;
 
-		for (int i = 0; i < obj.transform.childCount; ++i)
+		if (obj.GetComponent<ResourceAppear>())
+			obj.GetComponent<ResourceAppear>().enabled = ena;
+
+        for (int i = 0; i < obj.transform.childCount; ++i)
 		{
 			if( obj.transform.GetChild(i).GetComponent<Collider>())
 				obj.transform.GetChild(i).GetComponent<Collider>().enabled = ena;
 		}
 
-        obj.transform.FindChild("_Health").gameObject.SetActive(false);
+        obj.transform.FindChild("_Health").gameObject.SetActive(ena);
 
 	}
 

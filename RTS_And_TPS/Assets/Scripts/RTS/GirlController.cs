@@ -183,12 +183,13 @@ public class GirlController : NetworkBehaviour
         UIGirlTaskSelect.RESULT task = m_uiGirlTask.Select( editTarget );
         switch ( task )
         {
-            case UIGirlTaskSelect.RESULT.eOK:       Create(editTarget,m_itemCntroller.GetForcus());    break;
-            case UIGirlTaskSelect.RESULT.eLevel:    Convert(editTarget);                                break;
-            case UIGirlTaskSelect.RESULT.eBreak:    Break(editTarget);                                  break;
+            case UIGirlTaskSelect.RESULT.eOK:           Create(m_uiGirlTask.m_editTargetPosition,m_itemCntroller.GetForcus());     break;
+            case UIGirlTaskSelect.RESULT.eLevel:        Convert(m_uiGirlTask.m_editTargetPosition);                                break;
+            case UIGirlTaskSelect.RESULT.eBreak:        Break(m_uiGirlTask.m_editTargetPosition);                                  break;
+            case UIGirlTaskSelect.RESULT.eConfirming:   Confirming(editTarget);                                                    break;
             default: break;
         }
-        if ( task != UIGirlTaskSelect.RESULT.eNone )
+        if ( task != UIGirlTaskSelect.RESULT.eNone && task != UIGirlTaskSelect.RESULT.eConfirming )
         {
             m_uiGirlTask.Reset();
         }
@@ -308,6 +309,36 @@ public class GirlController : NetworkBehaviour
 
         m_itemCntroller.AddResourceCost( param.GetBreakCost() );
         CmdBreakResource( targetPosition );
+
+        return true;
+    }
+    bool Confirming( Vector3 targetPosition )
+    {
+        Vector3 local = transform.position - m_uiGirlTask.m_editTargetPosition;
+
+        float halfScale = m_resourceInformation.m_gridSplitSpaceScale*0.5f;
+
+        if ( local.x > halfScale )
+        {
+            local.x = halfScale-0.01f;
+        }
+        if ( local.x < -halfScale )
+        {
+            local.x = -halfScale+0.01f;
+        }
+        if ( local.z > halfScale )
+        {
+            local.z = halfScale-0.01f;
+        }
+        if ( local.z < -halfScale )
+        {
+            local.z = -halfScale+0.01f;
+        }
+
+        Vector3 world = m_uiGirlTask.m_editTargetPosition + local;
+        world.y = transform.position.y;
+
+        transform.position = world;
 
         return true;
     }

@@ -87,8 +87,8 @@ public class ItemController : NetworkBehaviour
 		}
 
 		{
-			const float forcus	= 1.2f;
-			const float basic	= 0.8f;
+			const float forcus	= 1.05f;
+			const float basic	= 0.9f;
 		
 			for( int i=0; i<m_kindMax; ++i )
 			{
@@ -96,9 +96,20 @@ public class ItemController : NetworkBehaviour
 
                 bool isEnoughCost = CheckWhetherTheCostIsEnough( i );
 
-                // 色更新
+
                 m_frameList[i].transform.GetChild(1).gameObject.SetActive(!isEnoughCost);
-                
+                m_frameList[i].transform.GetChild(3).gameObject.SetActive( m_curForcus == i && isEnoughCost );
+
+                // 色更新
+                if ( m_curForcus == i && isEnoughCost )
+                {
+                    image.color = new Color( 0.11f, 0.11f, 0.11f, 1.0f );
+                }
+                else
+                {
+                    image.color = new Color( 0.08f, 0.08f, 0.08f, 1.0f );
+                }
+
                 // 大きさ更新
                 if ( m_curForcus == i )
                 {
