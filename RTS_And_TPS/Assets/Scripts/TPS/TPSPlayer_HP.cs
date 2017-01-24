@@ -31,7 +31,7 @@ public class TPSPlayer_HP : NetworkBehaviour {
     //  蘇生用パラメータ 
     private float                   c_RevivalTime   =   3.0f;
     private float                   c_RevivalRange  =   3.0f;
-    private float                   c_DeathTime     =   60.0f;//90.0f;
+    private float                   c_DeathTime     =   90.0f;
 
     [ SyncVar ]
     private float                   m_RevivalTimer  =   0.0f;
@@ -50,7 +50,7 @@ public class TPSPlayer_HP : NetworkBehaviour {
     private bool                    m_RecoveryNow   =   false;
 
     //  無敵タイマー
-    private float                   c_InvTime       =   0.5f;
+    private float                   c_InvTime       =   1.0f;
     private float                   m_InvTimer      =   0.0f;
 
     //  外部へのアクセス

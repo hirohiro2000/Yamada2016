@@ -186,6 +186,9 @@ public class NetPlayer_Control : NetworkBehaviour {
     public  void    CmdAddResource( float _AddResource )
     {
         m_rGameManager.AddResource( _AddResource );
+
+        if( _AddResource > 0.0f )   m_rGameManager.SetToList_Income( connectionToClient.connectionId,  _AddResource );
+        if( _AddResource < 0.0f )   m_rGameManager.SetToList_Consum( connectionToClient.connectionId, -_AddResource );
     }
     //  地雷を起爆
     [ Command ]

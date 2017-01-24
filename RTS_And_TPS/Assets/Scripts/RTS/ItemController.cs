@@ -19,6 +19,7 @@ public class ItemController : NetworkBehaviour
 	private int					m_curForcus				= -1;
 
     private GameManager         m_rGameManager          = null;
+    private LinkManager         m_rLinkManager          = null;
 
 	// Use this for initialization
 	void Start ()
@@ -27,6 +28,7 @@ public class ItemController : NetworkBehaviour
         if( !isLocalPlayer ) return;
 
         m_rGameManager          = GameObject.Find("GameManager").GetComponent<GameManager>();
+        m_rLinkManager          = GameObject.Find("LinkManager").GetComponent<LinkManager>();
 		m_resourceCreator		= GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
 		m_kindMax				= m_resourceCreator.m_resources.Length;
 
@@ -155,7 +157,8 @@ public class ItemController : NetworkBehaviour
 	//------------------------------------------------------------	
 	public void AddResourceCost( int cost )
 	{
-        m_rGameManager.AddResource( cost );
+        //m_rGameManager.AddResource( cost );
+        m_rLinkManager.m_rLocalNPControl.CmdAddResource( cost );
 	}
     public void SetActive( bool isActive )
     {
