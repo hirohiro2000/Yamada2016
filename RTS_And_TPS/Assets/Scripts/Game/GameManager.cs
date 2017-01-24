@@ -75,6 +75,8 @@ public class GameManager : NetworkBehaviour {
     private SyncListInt             m_rDeathList    =   new SyncListInt();
     private SyncListInt             m_rRivivalList  =   new SyncListInt();
     private SyncListInt             m_rHSKillList   =   new SyncListInt();
+    private SyncListFloat           m_rIncomeList   =   new SyncListFloat();
+    private SyncListFloat           m_rConsumList   =   new SyncListFloat();
 
     //  外部へのアクセス
     private LinkManager             m_rLinkManager  =   null;
@@ -89,6 +91,7 @@ public class GameManager : NetworkBehaviour {
     private AcqScore_Control        m_rAcqScore     =   null;
     private AcqRecord_Control       m_rAcqRecord    =   null;
     private AcqScore_Control        m_rAcqResource  =   null;
+    private AcqScore_Control        m_rAcqResourceM =   null;
     private DamageFilter_Control    m_rDFControl    =   null;
 
     private StageDrum_Control       m_rSDrumControl =   null;
@@ -112,6 +115,7 @@ public class GameManager : NetworkBehaviour {
         m_rAcqScore     =   FunctionManager.GetAccessComponent< AcqScore_Control >( "Canvas/AcqScore" );
         m_rAcqRecord    =   FunctionManager.GetAccessComponent< AcqRecord_Control >( "Canvas/AcqRecord" );
         m_rAcqResource  =   FunctionManager.GetAccessComponent< AcqScore_Control >( "Canvas/AcqResource" );
+        m_rAcqResourceM =   FunctionManager.GetAccessComponent< AcqScore_Control >( "Canvas/AcqResource_Minus" );
         m_rDFControl    =   FunctionManager.GetAccessComponent< DamageFilter_Control >( "Canvas/DamageFilter" );
 
         //  パラメータを初期化
@@ -129,6 +133,9 @@ public class GameManager : NetworkBehaviour {
         //  サーバーでの処理
         if( NetworkServer.active ){
             ReplaceStageDrum();
+
+            //  難易度読み込み
+            m_Difficulty    =   ( GameDifficulty )PlayerPrefs.GetInt( "Difficulty", ( int )GameDifficulty.Normal );
         }
 	}
 	
@@ -303,8 +310,8 @@ public class GameManager : NetworkBehaviour {
         //  タイマーを進める
         m_StateTimer    +=  Time.deltaTime;
 
-        //  タイマーチェック
-        if( m_StateTimer >= 1.7f + 7.5f ){ 
+        //  タイマーチェック  
+        if( m_StateTimer >= 1.7f + 7.5f + 5.0f ){ 
             //  リストをクリア
             for( int i = 0; i < m_rIsReadyList.Count; i++ ){
                 m_rIsReadyList[ i ] =   false;
@@ -335,7 +342,7 @@ public class GameManager : NetworkBehaviour {
         CheckWhetherExist_Bool( m_rIsReadyList, numClient );
     }
 
-    //  ＵＩ描画
+    //  ＵＩ描画 
     void    OnGUI()
     {
         //  ゲームスピード変更
@@ -348,7 +355,7 @@ public class GameManager : NetworkBehaviour {
                 m_rLinkManager.m_rLocalNPControl.CmdChange_GameSpeed( ( m_GameSpeed > 1.0f )? 1.0f : 2.0f );
 
                 //  効果音再生
-                SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, 1.0f, 1.0f );
+                SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.05f, 1.0f, 1.0f );
             }
         }
         //  外部からのメッセージ
@@ -379,7 +386,7 @@ public class GameManager : NetworkBehaviour {
                     m_rLinkManager.m_rLocalNPControl.CmdChangeDifficult( ( GameDifficulty )Mathf.Max( ( int )m_Difficulty - 1, 0 ) );
 
                     //  効果音再生
-                    SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, 1.0f, 1.0f );
+                    SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.05f, 1.0f, 1.0f );
                 }
                 //  難易度を上げる
                 if( m_Difficulty < GameDifficulty.DeathMarch
@@ -387,7 +394,7 @@ public class GameManager : NetworkBehaviour {
                     m_rLinkManager.m_rLocalNPControl.CmdChangeDifficult( ( GameDifficulty )Mathf.Min( ( int )m_Difficulty + 1, ( int )GameDifficulty.DeathMarch ) );
 
                     //  効果音再生
-                    SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, 1.0f, 1.0f );
+                    SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.05f, 1.0f, 1.0f );
                 }
             }
         }
@@ -444,13 +451,19 @@ public class GameManager : NetworkBehaviour {
         }
         //  ゲーム終了
         if( m_State == State.GameOver
-        &&  CheckTimeShift( m_StateTimer, 5.2f + 1.7f, 5.2f + 1.2f + 3.2f ) ){
+        &&  CheckTimeShift( m_StateTimer, 6.9f, 10.4f ) ){
             PrintMessage( "ゲーム 終了" );
+        }
+        if( m_State == State.GameOver
+        &&  CheckTimeShift( m_StateTimer, 11.4f, 14.9f ) ){
+            PrintMessage( "お疲れ様でした" );
         }
 
         //  リザルト画面表示
-        if( m_State == State.Reuslt
-        &&  m_StateTimer >= 1.7f
+        if( 
+            m_State == State.Reuslt
+        &&  
+        m_StateTimer >= 1.5f
         &&  !GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) )
         {
             ResultButton_Input  input;
@@ -528,6 +541,8 @@ public class GameManager : NetworkBehaviour {
     };
     ResultButton_Input  PrintResult( float _Timer )
     {
+        _Timer  =   10000.0f;
+
         //  ボタンの入力データ
         ResultButton_Input  inputData   =   new ResultButton_Input( false, false );
 
@@ -541,7 +556,38 @@ public class GameManager : NetworkBehaviour {
         }
 
         //  フレーム
-        GUI.Box( new Rect( 0.0f, 0.0f, 480.0f, 310.0f ), "Result" );
+        GUI.Box( new Rect( 0.0f, 0.0f, 480.0f, 310.0f ), "" );
+        GUI.Box( new Rect( 0.0f, 0.0f, 480.0f, 36.0f ),  "Result" );
+
+        //  結果発表
+        {
+            GUI.Label( new Rect( 22.0f, 50.0f, 200.0f, 26.0f ), "Mode" ); 
+            GUI.Label( new Rect( 22.0f, 76.0f, 200.0f, 26.0f ), "Difficult" );
+            GUI.Label( new Rect( 22.0f, 112.0f, 200.0f, 26.0f ), "Wave" );
+            GUI.Label( new Rect( 22.0f, 138.0f, 200.0f, 26.0f ), "Score" );
+
+            string[]    difficultName   =   {   "Easy",     "Normal",   "Hard",     "Death March"   };
+            string      modeStr         =   ( m_rWaveManager.m_IsMultiMode )? "Multi" : "Single";
+            string      difficultStr    =   difficultName[ ( int )m_Difficulty ];
+            string      waveStr         =   m_WaveLevel.ToString();
+            string      scoreStr        =   m_GlobalScore.ToString();
+             
+            FunctionManager.GUILabel( FunctionManager.AR_TYPE.TOP_RIGHT, new Vector2( -326.0f,  -50.0f ), modeStr,      new Vector2( 1.0f, 1.0f ), new Vector2( 480, 310 ) );
+            FunctionManager.GUILabel( FunctionManager.AR_TYPE.TOP_RIGHT, new Vector2( -326.0f,  -76.0f ), difficultStr, new Vector2( 1.0f, 1.0f ), new Vector2( 480, 310 ) );
+            FunctionManager.GUILabel( FunctionManager.AR_TYPE.TOP_RIGHT, new Vector2( -326.0f, -112.0f ), waveStr,      new Vector2( 1.0f, 1.0f ), new Vector2( 480, 310 ) );
+            FunctionManager.GUILabel( FunctionManager.AR_TYPE.TOP_RIGHT, new Vector2( -326.0f, -138.0f ), scoreStr,     new Vector2( 1.0f, 1.0f ), new Vector2( 480, 310 ) );
+        }
+
+        //  線
+        GUI.BeginGroup( new Rect( 174.0f, 36.0f, 2.0f, 139.0f ) );
+            GUI.Box( new Rect( -1.0f, -5.0f, 12.0f, 149.0f ), "" );
+        GUI.EndGroup();
+
+        //  ハイスコア
+        {
+            GUI.Label( new Rect( 300.0f, 38.0f, 100.0f, 26.0f ), "High Score" );
+            //GUI.Label( new Rect( 200.0f, 40.0f, 300.0f, 26.0f ), "Easy      Normal       Hard        Death March" );
+        }
         
         //  項目の表示
         {
@@ -553,7 +599,7 @@ public class GameManager : NetworkBehaviour {
                 playerName[ i ] =   m_rNameList[ i ];
             }
 
-            //  順位を決定
+            //  順位を決定 
             List< ForSort > rSortList   =   new List< ForSort >();
             {
                 for( int i = 0; i < 8; i++ )    rSortList.Add( new ForSort( i, -100 ) );
@@ -563,40 +609,37 @@ public class GameManager : NetworkBehaviour {
                 rSortList.Sort( ( a, b ) => b.score - a.score );
             }
 
-            //  項目の種類
+            //  項目の種類 
             {
-                GUI.BeginGroup( new Rect( -1.0f, 28.0f, 480.0f, 26 ) );
+                GUI.Box( new Rect( -5.0f, 175.0f, 490, 26 ), "" );
+                GUI.BeginGroup( new Rect( -1.0f, 178.0f, 480.0f, 26 ) );
 
-                //GUI.Label( new Rect( 174, 0.0f, 480.0f, 26.0f ), "Score" );
-                GUI.Label( new Rect( 264, 0.0f, 480.0f, 26.0f ), "Kill" );
-                GUI.Label( new Rect( 311, 0.0f, 480.0f, 26.0f ), "Death" );
-                GUI.Label( new Rect( 364, 0.0f, 480.0f, 26.0f ), "Revive" );
-                GUI.Label( new Rect( 420, 0.0f, 480.0f, 26.0f ), "Damage" );
+                //GUI.Label( new Rect( 176, 0.0f, 480.0f, 26.0f ), "Score" );
+                GUI.Label( new Rect( 253, 0.0f, 480.0f, 26.0f ), "Kill" );
+                GUI.Label( new Rect( 301, 0.0f, 480.0f, 26.0f ), "Death" );
+                GUI.Label( new Rect( 351, 0.0f, 480.0f, 26.0f ), "Resource" );
+                GUI.Label( new Rect( 418, 0.0f, 480.0f, 26.0f ), "Consum" );
 
                 GUI.EndGroup();
             }
 
             //  表示
-            float   interval_0  =   0.5f;//0.4f;
-            float   interval_1  =   1.0f;//0.8f;
-            for( int i = 0; i < 8; i++ ){
-                if( i <  3 && _Timer - 0.5f < interval_0 * 5 + interval_1 * ( 3 - i ) )  continue;
-                if( i >= 3 && _Timer - 0.5f < interval_0 * ( 8 - i ) )                   continue;
+            for( int i = 0; i < 2; i++ ){
 
                 int     playerID    =   rSortList[ i ].id;
                 bool    isActiveID  =   m_rLinkManager.CheckActiveClient( playerID );
                 //if( !CheckActiveClient( playerID ) )                                    continue;
 
                 //  自分の項目をピックアップ
-                if( playerID == m_rLinkManager.m_LocalPlayerID ){
-                    GUI.Box( new Rect( 0.0f, 50.0f + 26.0f * i, 480.0f, 26.0f ), "" );
-                }
+                //if( playerID == m_rLinkManager.m_LocalPlayerID ){
+                //    GUI.Box( new Rect( 0.0f, 207.0f + 26.0f * i, 480.0f, 26.0f ), "" );
+                //}
 
-                GUI.BeginGroup( new Rect( -1.0f, 52.0f + 26.0f * i, 480.0f, 26 ) );
+                GUI.BeginGroup( new Rect( -1.0f, 207.0f + 26.0f * i, 480.0f, 26 ) );
 
                 GUI.Label( new Rect( 26.0f, 0.0f, 480.0f, 26.0f ), rankSymbol[ i ] );
 
-                //  スコアを表示 
+                //  スコアを表示   
                 {
                     GUIStyle    fontStyle   =   new GUIStyle( GUI.skin.label );
                     fontStyle.alignment     =   TextAnchor.MiddleRight;
@@ -610,18 +653,19 @@ public class GameManager : NetworkBehaviour {
                     GUI.Label( new Rect( 217.0f - contentSize.x, 0.0f, contentSize.x, contentSize.y ), content, fontStyle );
                 }
 
-                //GUI.Label( new Rect( 168.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )? ( ( int ) m_rScoreList[ playerID ] ).ToString().PadLeft( 7, '_' ) : "_______" );
-
-                GUI.Label( new Rect( 262.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )?( ( m_rKillList.Count  > playerID )?   m_rKillList[ playerID ].ToString().PadLeft( 3, '_' ) : "__0" )    : "___" );
-                GUI.Label( new Rect( 318.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )?( ( m_rDeathList.Count > playerID )?   m_rDeathList[ playerID ].ToString().PadLeft( 3, '_' ) : "__0" )   : "___" );
-                GUI.Label( new Rect( 374.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )?( ( m_rRivivalList.Count > playerID )? m_rRivivalList[ playerID ].ToString().PadLeft( 3, '_' ) : "__0" ) : "___" );
-                GUI.Label( new Rect( 432.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )?( ( m_rDamageList.Count > playerID )?  ( ( int )m_rDamageList[ playerID ] ).ToString().PadLeft( 3, '_' ) : "__0" )  : "___" );
+                GUI.Label( new Rect( 252.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )?( ( m_rKillList.Count  > playerID )?   m_rKillList[ playerID ].ToString().PadLeft( 3, '_' ) : "__0" )    : "___" );
+                GUI.Label( new Rect( 308.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )?( ( m_rDeathList.Count > playerID )?   m_rDeathList[ playerID ].ToString().PadLeft( 3, '_' ) : "__0" )   : "___" );
+                GUI.Label( new Rect( 360.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )?( ( m_rIncomeList.Count > playerID )?  ( ( int )m_rIncomeList[ playerID ] ).ToString().PadLeft( 5, '_' ) : "____0" ) : "_____" );
+                GUI.Label( new Rect( 425.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )?( ( m_rConsumList.Count > playerID )?  ( ( int )m_rConsumList[ playerID ] ).ToString().PadLeft( 5, '_' ) : "____0" )  : "_____" );
                 if( isActiveID )    GUI.Label( new Rect( 64.0f, 0.0f, 480.0f, 26.0f ), playerName[ playerID ] );
                 else                GUI.Label( new Rect( 64.0f, 0.0f, 480.0f, 26.0f ), "________" );
 
                 GUI.EndGroup();
             }
         }
+
+        //  フレーム表示  
+        GUI.Box( new Rect( 0.0f, 260, 480.0f, 50.0f ), "" );
 
         //  ボタン表示
         if( _Timer - 0.5f > 5.5f + 2.0f ){
@@ -722,6 +766,22 @@ public class GameManager : NetworkBehaviour {
         //  値を設定
         m_rHSKillList[ _ClientID ]  +=  _AddValue;
     }
+    public  void    SetToList_Income( int _ClientID, float _AddValue )
+    {
+        //  項目がなければ拡張する
+        CheckWhetherExist_Float( m_rIncomeList, _ClientID + 1 );
+
+        //  値を設定
+        m_rIncomeList[ _ClientID ]  +=  _AddValue;
+    }
+    public  void    SetToList_Consum( int _ClientID, float _AddValue )
+    {
+        //  項目がなければ拡張する
+        CheckWhetherExist_Float( m_rConsumList, _ClientID + 1 );
+
+        //  値を設定
+        m_rConsumList[ _ClientID ]  +=  _AddValue;
+    }
 
     public  bool    GetFromList_IsReady( int _ClientID )
     {
@@ -755,6 +815,14 @@ public class GameManager : NetworkBehaviour {
     {
         return  m_rHSKillList[ _ClientID ];
     }
+    public  float   GetFromList_Income( int _ClientID )
+    {
+        return  m_rIncomeList[ _ClientID ];
+    }
+    public  float   GetFromList_Consum( int _ClientID )
+    {
+        return  m_rConsumList[ _ClientID ];
+    }
 
     public  int     GetNumItem_IsReady()
     {
@@ -787,6 +855,14 @@ public class GameManager : NetworkBehaviour {
     public  int     GetNumItem_HSKill()
     {
         return  m_rHSKillList.Count;
+    }
+    public  int     GetNumItem_Income()
+    {
+        return  m_rIncomeList.Count;
+    }
+    public  int     GetNumItem_Consum()
+    {
+        return  m_rConsumList.Count;
     }
 
     //  準備が完了したプレイヤーを数える
@@ -944,7 +1020,7 @@ public class GameManager : NetworkBehaviour {
 
     }
 
-    //  外部からの操作
+    //  外部からの操作    
     public  void    StartCountDown()
     {
         if( m_State != State.Ready )    return;
@@ -960,6 +1036,9 @@ public class GameManager : NetworkBehaviour {
 
             m_Resource  =   c_StartResource * resourceRate;
         }
+
+        //  難易度を保存
+        PlayerPrefs.SetInt( "Difficulty", ( int )m_Difficulty );
     }
     public  void    StartWaveInterval()
     {
@@ -1032,6 +1111,10 @@ public class GameManager : NetworkBehaviour {
     {
         m_rAcqResource.SetAddScore( _AddResource ); 
     }
+    public  void    SetAcqResource_Minus( float _MinusResource )
+    {
+        m_rAcqResourceM.SetAddScore( _MinusResource ); 
+    }
 
     public  void    SetDamageFilterEffect()
     {
@@ -1098,6 +1181,90 @@ public class GameManager : NetworkBehaviour {
     public  GameDifficulty  GetDifficulty()
     {
         return  m_Difficulty;
+    }
+//=========================================================================================
+//      中継
+//=========================================================================================
+    private GirlController  GetMyGirlControl()
+    {
+        GameObject      rLocalPlayer    =   m_rLinkManager.m_rLocalPlayer;
+        if( !rLocalPlayer )     return  null;
+
+        GirlController  rGirlControl    =   rLocalPlayer.GetComponent< GirlController >();
+        if( !rGirlControl )     return  null;
+
+        return  rGirlControl;
+    }
+//----------------------------------------------------------------------------------------- 
+    public  void            CallToMyGirl_RideToRobo()
+    {
+        GirlController  rGirlControl    =   GetMyGirlControl();
+        if( !rGirlControl )     return;
+
+        //  呼び出し
+        rGirlControl.RideToRobo();
+    }
+    public  void            CallToMyGirl_GetOffToRobo()
+    {
+        GirlController  rGirlControl    =   GetMyGirlControl();
+        if( !rGirlControl )     return;
+
+        //  呼び出し
+        rGirlControl.GetOutOfTheRobo();
+    }
+
+    public  void            CallToMyGirl_PlaceDrum()
+    {
+        GirlController  rGirlControl    =   GetMyGirlControl();
+        if( !rGirlControl )     return;
+
+        //  呼び出し
+        rGirlControl.PlaceDrum();
+    }
+    public  void            CallToMyGirl_PlaceTimeBomb()
+    {
+        GirlController  rGirlControl    =   GetMyGirlControl();
+        if( !rGirlControl )     return;
+
+        //  呼び出し
+        rGirlControl.PlaceTimeBomb();
+    }
+    public  void            CallToMyGirl_PlaceC4()
+    {
+        GirlController  rGirlControl    =   GetMyGirlControl();
+        if( !rGirlControl )     return;
+
+        //  呼び出し
+        rGirlControl.PlaceC4();
+    }
+    public  void            CallToMyGirl_ExplodingC4()
+    {
+        GirlController  rGirlControl    =   GetMyGirlControl();
+        if( !rGirlControl )     return;
+
+        //  呼び出し
+        rGirlControl.ExplodingC4();
+    }
+
+    public  void            CallToMyGirl_PlaceOK()
+    {
+        GirlController  rGirlControl    =   GetMyGirlControl();
+        if( !rGirlControl )     return;
+
+        //  呼び出し
+        rGirlControl.PlaceOK();
+    }
+
+//=========================================================================================
+//      サウンド
+//=========================================================================================
+    public  void            PlaySound_UI_Select( float _Volume )
+    {
+        SoundController.PlayNow( "UI_FocusChange", 0.0f, _Volume, 1.0f, 1.0f );
+    }
+    public  void            PlaySound_UI_Determ( float _Volume )
+    {
+        SoundController.PlayNow( "UI_Click", 0.0f, _Volume, 1.0f, 1.0f );
     }
 //=========================================================================================
 //      リクエスト

@@ -32,8 +32,16 @@ public class TimeBomb_Control : NetworkBehaviour {
 
             //  ライトの更新
             float   timeInSecond    =   m_CountTimer - ( int )m_CountTimer;
+            bool    prevEnabled     =   m_rLight.enabled;
             m_rLight.enabled        =   timeInSecond <= c_LightTime
                                     ||  m_CountTimer >= c_CountTime - 1.0f;
+
+            //  カウント音 
+            if( prevEnabled      == false
+            &&  m_rLight.enabled == true ){
+                if( m_CountTimer < c_CountTime - 1.0f ) SoundController.PlayNow( "TB_CountDown", null, transform.position, 0.0f, 1.0f, 1.26f, 6.0f );
+                else                                    SoundController.PlayNow( "TB_CountDown_End", null, transform.position, 0.0f, 1.0f, 1.26f, 12.0f );
+            }
         }
 
 	    //  サーバーでのみ更新処理を行う

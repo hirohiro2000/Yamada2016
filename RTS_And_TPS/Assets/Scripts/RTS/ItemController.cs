@@ -19,6 +19,7 @@ public class ItemController : NetworkBehaviour
 	private int					m_curForcus				= -1;
 
     private GameManager         m_rGameManager          = null;
+    private LinkManager         m_rLinkManager          = null;
 
 	// Use this for initialization
 	void Start ()
@@ -27,6 +28,7 @@ public class ItemController : NetworkBehaviour
         if( !isLocalPlayer ) return;
 
         m_rGameManager          = GameObject.Find("GameManager").GetComponent<GameManager>();
+        m_rLinkManager          = GameObject.Find("LinkManager").GetComponent<LinkManager>();
 		m_resourceCreator		= GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
 		m_kindMax				= m_resourceCreator.m_resources.Length;
 
@@ -87,8 +89,8 @@ public class ItemController : NetworkBehaviour
 		}
 
 		{
-			const float forcus	= 1.2f;
-			const float basic	= 0.8f;
+			const float forcus	= 1.05f;
+			const float basic	= 0.9f;
 		
 			for( int i=0; i<m_kindMax; ++i )
 			{
@@ -96,9 +98,20 @@ public class ItemController : NetworkBehaviour
 
                 bool isEnoughCost = CheckWhetherTheCostIsEnough( i );
 
-                // 色更新
+
                 m_frameList[i].transform.GetChild(1).gameObject.SetActive(!isEnoughCost);
-                
+                m_frameList[i].transform.GetChild(3).gameObject.SetActive( m_curForcus == i && isEnoughCost );
+
+                // 色更新
+                if ( m_curForcus == i && isEnoughCost )
+                {
+                    image.color = new Color( 0.11f, 0.11f, 0.11f, 1.0f );
+                }
+                else
+                {
+                    image.color = new Color( 0.08f, 0.08f, 0.08f, 1.0f );
+                }
+
                 // 大きさ更新
                 if ( m_curForcus == i )
                 {
@@ -155,7 +168,8 @@ public class ItemController : NetworkBehaviour
 	//------------------------------------------------------------	
 	public void AddResourceCost( int cost )
 	{
-        m_rGameManager.AddResource( cost );
+        //m_rGameManager.AddResource( cost );
+        m_rLinkManager.m_rLocalNPControl.CmdAddResource( cost );
 	}
     public void SetActive( bool isActive )
     {

@@ -90,6 +90,12 @@ public class ExplosionAttack : MonoBehaviour {
                             vEXP    =   vEXP.normalized * power;
                             vEXP.y  +=  upper;
                     rRigid.AddForce( vEXP, ForceMode.Impulse );
+
+                    //  相手がロボットなら飛翔フラグをセット
+                    CharacterMover  rMover  =   rRigid.GetComponent< CharacterMover >();
+                    if( !rMover )   continue;
+
+                    rMover.SetFlay( true );
                 }
             }
 

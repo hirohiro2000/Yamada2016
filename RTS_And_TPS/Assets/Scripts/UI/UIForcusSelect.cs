@@ -20,7 +20,7 @@ public class UIForcusSelect : MonoBehaviour
             m_itemController.SetActive(true);
             m_towerInfoPanel.GetComponent<AppearInfopanel>().SetActive(true);
         }
-	}
+	}       
 	private void OnDisable ()
     {
         if ( m_itemController )
@@ -45,10 +45,6 @@ public class UIForcusSelect : MonoBehaviour
             int forcus = m_itemController.GetForcus();
             forcus = ( forcus+m_itemController.GetNumKind()-1 ) % m_itemController.GetNumKind();
             m_girlTask.SetForcus( forcus );
-        }
-	    if ( Input.GetKeyDown(KeyCode.F) )
-        {
-            m_girlTask.SelectOK( m_itemController.GetForcus() );
         }
 
 	}

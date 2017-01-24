@@ -26,20 +26,10 @@ public class UIWeapon : MonoBehaviour
         m_ammo.text         = reference.param.DispAmmo();
         m_havingAmmo.text   = reference.param.DispHavingAmmo();
         m_reloadTime.transform.localScale = new Vector3( 1.0f, reference.param.DispReloadProgress(), 1.0f );
-
-        Color color = m_input.color;
-        color.a *= 0.75f;
-        m_input.color = color;
-              
     }
     public void Change( int index )
     {
         m_name.text = m_nameList[index];
-
-        Color color = m_input.color;
-        color.a = 5.0f;
-        m_input.color = color;
-
     }
 
 

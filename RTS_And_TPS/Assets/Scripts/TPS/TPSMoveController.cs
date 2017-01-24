@@ -108,6 +108,11 @@ public class TPSMoveController : MonoBehaviour
                 case    State.Recovery: Update_Recovery( _rParent );    break;
             }
 
+            //  もし女の子が搭乗中ならスタミナ無尽蔵
+            if( _rParent.m_rTPSControl.CheckWhetherIsBoardingGirl() ){
+                m_Energy    =   c_MaxEnergy;
+            }
+
             //  ＵＩ更新
             TPSBoosterBar.SetGage( m_Energy / c_MaxEnergy );
         }
@@ -126,13 +131,37 @@ public class TPSMoveController : MonoBehaviour
         }
         private void    Update_Dash( TPSMoveController _rParent )
         {
+            //  ダッシュを辞めるかどうか
+            if( !m_rDashChecker.IsDash() ){
+                //  コマンド送信
+                if( _rParent.m_rTPSHP.IsExhaustion() )  _rParent.m_rTPSHP.CmdSetExhaustion( false );
+
+                m_State =   State.Recovery;
+                return;
+            }
+
             //  消費エネルギー計算
             float   energyCost  =   c_DashEnergy * Time.deltaTime;
-            //  エネルギーが足りるかどうかチェック
-            if( m_Energy < energyCost
-            ||  !m_rDashChecker.IsDash() ){
-                //  回復状態へ
-                m_State =   State.Recovery;
+            //  エネルギーが足りるかどうかチェック 
+            if( m_Energy < energyCost ){
+                //  スタミナを０に
+                m_Energy    =   0.0f;
+                //  エネルギーが足りなければヒットポイントを消費して走る
+                if( _rParent.m_rTPSHP.m_CurHP - energyCost > 1.0f ){
+                    //  コマンド送信
+                    if( !_rParent.m_rTPSHP.IsExhaustion() ) _rParent.m_rTPSHP.CmdSetExhaustion( true );
+
+                    //  ダッシュ
+                    _rParent.characterMover.AddSpeed( _rParent.transform.forward.normalized * c_DashSpeed );
+                }
+                //  瀕死状態ならダッシュをやめてリカバリー状態へ
+                else{
+                    //  コマンド送信
+                    if( _rParent.m_rTPSHP.IsExhaustion() )  _rParent.m_rTPSHP.CmdSetExhaustion( false );
+
+                    m_State =   State.Recovery;
+                }
+
                 return;
             }
 
@@ -165,10 +194,11 @@ public class TPSMoveController : MonoBehaviour
         }
     }
 
-    private float           c_AnimeSpeed    =   0.5f;
-    private float           c_AnimeRatio    =   0.73f;
-    private NetworkIdentity m_rIdentity     =   null;
-    private TPSPlayer_HP    m_rTPSHP        =   null;
+    private float               c_AnimeSpeed    =   0.5f;
+    private float               c_AnimeRatio    =   0.73f;
+    private NetworkIdentity     m_rIdentity     =   null;
+    private TPSPlayer_HP        m_rTPSHP        =   null;
+    private TPSPlayer_Control   m_rTPSControl   =   null;
 
 	[SerializeField]
 	float speed = .0f;
@@ -230,7 +260,7 @@ public class TPSMoveController : MonoBehaviour
     float   avoidEnergy     = 4.0f;
 
     //  ダッシュ用
-    private DashControl m_rDashControl  =   null;
+    private DashControl         m_rDashControl  =   null;    
 
     // ２回連続に押下したかの判定用
     class DoublePress
@@ -320,8 +350,9 @@ public class TPSMoveController : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-        m_rIdentity =   GetComponent< NetworkIdentity >();
-        m_rTPSHP    =   GetComponent< TPSPlayer_HP >();
+        m_rIdentity     =   GetComponent< NetworkIdentity >();
+        m_rTPSHP        =   GetComponent< TPSPlayer_HP >();
+        m_rTPSControl   =   GetComponent< TPSPlayer_Control >();
 
         m_doublePressKeys = new DoublePress[4];
         m_doublePressKeys[0] = new DoublePress( KeyCode.W );
