@@ -3,10 +3,13 @@ using System.Collections;
 
 public class HitSound_Control : MonoBehaviour {
 
-    public  GameObject[]    c_Emission  =   null;
+    public  GameObject[]    c_Emission      =   null;
+    public  bool            c_OnCollision   =   true;
+    public  bool            c_OnTrigger     =   true;
 
     void    OnCollisionEnter( Collision _rCollision )
     {
+        if( c_OnCollision == false )    return;
         if( c_Emission == null )        return;
         if( c_Emission.Length == 0 )    return;
 
@@ -21,6 +24,7 @@ public class HitSound_Control : MonoBehaviour {
     }
     void    OnTriggerEnter( Collider _rCollision )
     {
+        if( c_OnTrigger == false )      return;
         if( c_Emission == null )        return;
         if( c_Emission.Length == 0 )    return;
 

@@ -15,6 +15,8 @@ public class TPSPlayer_Control : NetworkBehaviour {
     private bool                m_IsLock            =   true;
 
     private TPSPlayer_HP        m_rHP               =   null;
+    private GameObject          m_rRideButton       =   null;
+    private GameObject          m_rGetOffButton     =   null;
 
 	// Use this for initialization
 	void    Start()
@@ -27,10 +29,16 @@ public class TPSPlayer_Control : NetworkBehaviour {
             //  開始処理
             StartProc();
         }
-        //  自分のキャラクター以外はカメラを使用しない
+        //  自分のキャラクター以外
         else{
             c_rMyCamera.enabled =   false;
+
+            //  リジッドボディ無効化
+            GetComponent< Rigidbody >().isKinematic =   true;
         }
+
+        //  出撃ボイス
+        SoundController.PlayNow( "Voice_R_Launch", transform, transform.position, 0.0f, 1.0f, 1.0f, 10.0f );
 	}
 	
 	// Update is called once per frame
@@ -60,6 +68,26 @@ public class TPSPlayer_Control : NetworkBehaviour {
             Cursor.lockState    =   CursorLockMode.None;
             Cursor.visible      =   true;
         }
+
+        //  搭乗関係の処理
+        {
+            //  搭乗チェック、接近チェック
+            GameObject  rAroundGirl =   FindAroundGirl( 4.5f );
+            bool        rideGirl    =   CheckWhetherIsBoardingGirl();
+            bool        aroundGirl  =   rAroundGirl;
+            bool        isAlive     =   m_rHP.m_CurHP > 0;
+
+            //  ボタンの表示
+            m_rRideButton.SetActive( !rideGirl && aroundGirl && isAlive );
+            m_rGetOffButton.SetActive( rideGirl && isAlive );
+
+            //  搭乗
+            if( Input.GetKeyDown( KeyCode.V )
+            &&  isAlive ){
+                        if( aroundGirl && !rideGirl )   CmdRideOnGirl( true );
+                else    if( rideGirl )                  CmdRideOnGirl( false );
+            }
+        }
 	}
 
     //  開始処理
@@ -79,6 +107,9 @@ public class TPSPlayer_Control : NetworkBehaviour {
 
             UIRadar.SetPlayer( gameObject );
             UICompasCore.SetPlayer( gameObject ); 
+
+            m_rRideButton   =   rCanvasTrans.FindChild( "TPS_HUD" ).FindChild( "RideButton" ).gameObject;
+            m_rGetOffButton =   rCanvasTrans.FindChild( "TPS_HUD" ).FindChild( "GetOffButton" ).gameObject;
         }
 
         //  カメラのスクリプト生成  
@@ -142,8 +173,58 @@ public class TPSPlayer_Control : NetworkBehaviour {
         CmdChangeToCommander( _IsFriend );
     }
 //=================================================================================
+//      雑多
+//=================================================================================
+    //  女の子が搭乗しているかどうかを調べる
+    public  bool    CheckWhetherIsBoardingGirl()
+    {
+        GameObject[]    playerList  =   GameObject.FindGameObjectsWithTag( "Player" );
+        for( int i = 0; i < playerList.Length; i++ ){
+            GirlController  rGirl   =   playerList[ i ].GetComponent< GirlController >();
+            if( !rGirl )            continue;
+            if( !rGirl.IsRide() )   continue;
+
+            return  true;
+        }
+
+        return  false;
+    }
+    //  周囲に乗せられる女の子が居るかどうか
+    GameObject  FindAroundGirl( float _CheckDistance )
+    {
+        float           nearDistanceSq  =   _CheckDistance;
+        GameObject[]    playerList      =   GameObject.FindGameObjectsWithTag( "Player" );
+        for (int i = 0; i < playerList.Length; i++)
+        {               
+            if (this.gameObject == playerList[i])                           continue;
+            if (playerList[i].GetComponent< RTSPlayer_Control >() == null)  continue;
+        
+            float distanceSq = ( transform.position - playerList[i].transform.position ).sqrMagnitude;
+            if ( distanceSq > nearDistanceSq )    continue; 
+        
+            return  playerList[ i ];
+        }
+
+        return  null;
+    }
+//=================================================================================
 //      通信
 //=================================================================================
+    //  女の子を乗せる
+    [ Command ]
+    public  void    CmdRideOnGirl( bool _IsEnable )
+    {
+        GameObject[]    players =   GameObject.FindGameObjectsWithTag( "Player" );
+        for( int i = 0; i < players.Length; i++ ){
+            if( players[ i ] == gameObject )    continue;
+
+            GirlController  rGirl   =   players[ i ].GetComponent< GirlController >();
+            if( !rGirl )                        continue;
+
+            rGirl.RpcRidingVehicle( rGirl.netId, netId, _IsEnable );
+            return;
+        }
+    }
     //  ダメージ送信
     [ Command ]
     public  void    CmdSendDamage( float _Damage )

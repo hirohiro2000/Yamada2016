@@ -31,7 +31,7 @@ public class TPSPlayer_HP : NetworkBehaviour {
     //  蘇生用パラメータ 
     private float                   c_RevivalTime   =   3.0f;
     private float                   c_RevivalRange  =   3.0f;
-    private float                   c_DeathTime     =   60.0f;//90.0f;
+    private float                   c_DeathTime     =   90.0f;
 
     [ SyncVar ]
     private float                   m_RevivalTimer  =   0.0f;
@@ -49,12 +49,25 @@ public class TPSPlayer_HP : NetworkBehaviour {
     private float                   m_PrevHPInLocal =   0.0f;
     private bool                    m_RecoveryNow   =   false;
 
+    //  無敵タイマー
+    private float                   c_InvTime       =   1.0f;
+    private float                   m_InvTimer      =   0.0f;
+
     //  外部へのアクセス
     private DamageFilter_Control    m_rDFCtrl       =   null;
     private DyingMessage_Control    m_rDMControl    =   null;
     private GageControl             m_rRevivalGage  =   null;
     private LinkManager             m_rLinkManager  =   null;
     private GameManager             m_rGameManager  =   null;
+
+    //  搭乗関係のパラメータ
+    private float                   c_RepairSpeed   =   1.0f;
+    private bool                    m_IsRobot       =   false;
+
+    //  消耗関係のパラメータ
+    private float                   c_Exhaustion    =   2.5f;
+    [ SyncVar ]
+    private bool                    m_IsExhaustion  =   false;
 
 	//  Use this for initialization
 	void    Start()
@@ -85,6 +98,9 @@ public class TPSPlayer_HP : NetworkBehaviour {
 		
         m_CurHP         =   m_MaxHP;
         m_PrevHPInLocal =   m_CurHP;
+
+        //  セルフチェック
+        m_IsRobot       =   GetComponent< TPSPlayer_Control >();
 
         //  ローカルでのみ処理を行う
         if( isLocalPlayer ){
@@ -249,8 +265,25 @@ public class TPSPlayer_HP : NetworkBehaviour {
     }
     void    Update_InServer()
     {
+        //  無敵タイマー更新
+        m_InvTimer  -=  Time.deltaTime;
+        m_InvTimer  =   Mathf.Max( m_InvTimer, 0.0f );
+
+        //  消耗状態
+        if( m_IsExhaustion ){
+            m_CurHP -=  Time.deltaTime * c_Exhaustion;
+            m_CurHP =   Mathf.Max( m_CurHP, 1.0f );
+        }
+
         //  回復処理
         if( !m_IsDying ){
+            //  女の子が登場している場合は少しづつ回復する（ロボット）
+            if( m_IsRobot
+            &&  m_rTPSControl.CheckWhetherIsBoardingGirl() ){
+                m_CurHP +=  Time.deltaTime * c_RepairSpeed;
+                m_CurHP =   Mathf.Min( m_CurHP, m_MaxHP );
+            }
+
             //  ダメージを受けていない場合は自動回復
             if( m_CurHP >= m_PrevHP ){
                 m_NoDamageTimer +=  Time.deltaTime;
@@ -285,6 +318,9 @@ public class TPSPlayer_HP : NetworkBehaviour {
                     //  復活
                     SetRecovery( m_MaxHP * 1.0f );
 
+                    //  蘇生を通知
+                    RpcRevivalOK();
+
                     //  タイマーリセット
                     m_RevivalTimer  =   0.0f;
                 }
@@ -303,6 +339,18 @@ public class TPSPlayer_HP : NetworkBehaviour {
                     //  死亡
                     if( m_rRTSControl ) m_rRTSControl.RpcChangeToCommander( m_rNetPlayer.c_ClientID, !m_IsEnemy );
                     if( m_rTPSControl ) m_rTPSControl.RpcChangeToCommander( m_rNetPlayer.c_ClientID, !m_IsEnemy );
+
+                    //  全てのプレイヤーをコマンダーに戻す
+                    GameObject[]    players =   GameObject.FindGameObjectsWithTag( "Player" );
+                    for( int i = 0; i < players.Length; i++ ){
+                        if( players[ i ] == gameObject )    continue;
+
+                        TPSPlayer_Control   rTPS    =   players[ i ].GetComponent< TPSPlayer_Control >();
+                        RTSPlayer_Control   rRTS    =   players[ i ].GetComponent< RTSPlayer_Control >();
+                        NetPlayer_Control   rNet    =   players[ i ].GetComponent< NetPlayer_Control >();
+                        if( rTPS )  rTPS.RpcChangeToCommander( rNet.c_ClientID, !m_IsEnemy );
+                        if( rRTS )  rRTS.RpcChangeToCommander( rNet.c_ClientID, !m_IsEnemy );
+                    }
 
                     //  スクリプト制御停止
                     this.enabled    =   false;
@@ -468,16 +516,56 @@ public class TPSPlayer_HP : NetworkBehaviour {
         return  false;
     }
 
+    //  通知
+    [ ClientRpc ]
+    void    RpcRevivalOK()
+    {
+        //  ロボットが蘇生された
+        if( m_rTPSControl ){
+            SoundController.PlayNow( "Voice_R_Revival", transform, transform.position, 0.0f, 1.0f, 1.0f, 6.0f );
+        }
+        //  女の子が蘇生された
+        if( m_rRTSControl ){
+            SoundController.PlayNow( "Voice_G_Thanks", transform, transform.position, 0.0f, 1.0f, 1.0f, 6.0f );
+        }
+    }
+    [ ClientRpc ]
+    void    RpcDying()
+    {
+        //  ロボットが瀕死状態になった
+        if( m_rTPSControl ){
+            SoundController.PlayNow( "Voice_R_Dying", transform, transform.position, 0.0f, 1.0f, 1.0f, 6.0f );
+        }
+        //  女の子が瀕死状態になった
+        if( m_rRTSControl ){
+            SoundController.PlayNow( "Voice_G_Dying", transform, transform.position, 0.0f, 1.0f, 1.0f, 6.0f );
+        }
+    }
+
     //  外部からの操作
     public  void    SetDamage( float _Damage )
     {
         //  瀕死状態ではダメージを受けない
-        if( m_IsDying ) return;
+        if( m_IsDying )         return;
+        //  無敵状態ではダメージを受けない
+        if( m_InvTimer > 0 )    return;
+
+        //  現在のHP
+        float   prevHP  =   m_CurHP;
 
         //  ダメージを受ける 
         m_CurHP -=  _Damage;
         m_CurHP =   Mathf.Max( m_CurHP, 0.0f );
         m_CurHP =   Mathf.Min( m_CurHP, m_MaxHP );
+
+        //  元のHPが４割以上だったら最後に少し残す
+        if( prevHP  >  4
+        &&  m_CurHP <= 1 ){
+            m_CurHP     =   Mathf.Max( 1, m_CurHP );
+
+            //  若干の無敵時間を設定
+            m_InvTimer  =   c_InvTime;
+        }
 
         //  ダメージを記録
         m_rGameManager.SetToList_Damage( m_rNetPlayer.c_ClientID, Mathf.Max( _Damage, 0 ) );
@@ -495,20 +583,38 @@ public class TPSPlayer_HP : NetworkBehaviour {
             }
             //  味方プレイヤーの場合
             else{
+                bool    isUnion =   m_IsRobot
+                                &&  m_rTPSControl.CheckWhetherIsBoardingGirl();
+
                 //  生存者がいる場合は瀕死状態へ
-                if( CheckWhetherAliveFriend() ){
+                if( CheckWhetherAliveFriend()
+                &&  !isUnion ){
                     m_IsDying       =   true;
                     m_DeathTimer    =   c_DeathTime;
                     m_RevivalTimer  =   0.0f;
 
                     //  他のプレイヤーに通知
                     m_rGameManager.RpcRecordNoticeE_ToOther( "仲間が救助を求めています！", m_rNetPlayer.c_ClientID );
+                    //  瀕死を通知
+                    RpcDying();
                 }
                 //  生存者がいない場合はゲームオーバー
                 else{
                     //  コマンダーに戻る
                     if( m_rTPSControl ) m_rTPSControl.RpcChangeToCommander( m_rNetPlayer.c_ClientID, !m_IsEnemy );
                     if( m_rRTSControl ) m_rRTSControl.RpcChangeToCommander( m_rNetPlayer.c_ClientID, !m_IsEnemy );
+
+                    //  全てのプレイヤーをコマンダーに戻す
+                    GameObject[]    players =   GameObject.FindGameObjectsWithTag( "Player" );
+                    for( int i = 0; i < players.Length; i++ ){
+                        if( players[ i ] == gameObject )    continue;
+
+                        TPSPlayer_Control   rTPS    =   players[ i ].GetComponent< TPSPlayer_Control >();
+                        RTSPlayer_Control   rRTS    =   players[ i ].GetComponent< RTSPlayer_Control >();
+                        NetPlayer_Control   rNet    =   players[ i ].GetComponent< NetPlayer_Control >();
+                        if( rTPS )  rTPS.RpcChangeToCommander( rNet.c_ClientID, !m_IsEnemy );
+                        if( rRTS )  rRTS.RpcChangeToCommander( rNet.c_ClientID, !m_IsEnemy );
+                    }
                 }
             }
         }
@@ -525,10 +631,10 @@ public class TPSPlayer_HP : NetworkBehaviour {
     }
 
     [ Command ]
-    public  void    CmdForciblyRevival( int _clientID)
+    public  void    CmdForciblyRevival( int _ClientID )
     {
         //  蘇生を記録
-        m_rGameManager.SetToList_Rivival( _clientID, 1 );
+        m_rGameManager.SetToList_Rivival( _ClientID, 1 );
         
         //  復活
         SetRecovery( m_MaxHP * 1.0f );
@@ -536,10 +642,24 @@ public class TPSPlayer_HP : NetworkBehaviour {
         //  タイマーリセット
         m_RevivalTimer  =   0.0f;
     }
+    [ Command ]
+    public  void    CmdSendDamage( float _Damage )
+    {
+        SetDamage( _Damage );
+    }
+    [ Command ]
+    public  void    CmdSetExhaustion( bool _IsExhaustion )
+    {
+        m_IsExhaustion  =   _IsExhaustion;
+    }
 
     //  アクセス
     public  float   GetDeathTimer()
     {
         return  m_DeathTimer;
+    }
+    public  bool    IsExhaustion()
+    {
+        return  m_IsExhaustion;
     }
 }

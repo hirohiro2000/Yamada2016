@@ -18,6 +18,7 @@ GameObject:
   - 114: {fileID: 11415746}
   - 114: {fileID: 11403260}
   - 114: {fileID: 11482016}
+  - 114: {fileID: 11416406}
   m_Layer: 19
   m_Name: TimeBomb
   m_TagString: Untagged
@@ -296,8 +297,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c_AttackerID: 0
+  c_Spawn: 0
   c_Explosion: {fileID: 175442, guid: dfd503c0a45e8fb478f8c37b8021d0ab, type: 2}
   c_CallOnDestroy: 0
+  c_SetATKPoint: 0
+  c_ATK: 0
+--- !u!114 &11416406
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 132260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44afd6d1ab9de944dbde54db069982af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_Emission:
+  - {fileID: 158640, guid: d6171b6a44c7b6a48a642a6f4f29882b, type: 2}
+  c_OnCollision: 1
+  c_OnTrigger: 0
 --- !u!114 &11439498
 MonoBehaviour:
   m_ObjectHideFlags: 1

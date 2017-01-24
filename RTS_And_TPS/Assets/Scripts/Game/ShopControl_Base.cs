@@ -111,6 +111,9 @@ public class ShopControl_Base : MonoBehaviour {
         //  購入
         m_rLinkManager.m_rLocalNPControl.CmdAddResource( -m_Cost );
 
+        //  支出を通知
+        m_rGameManager.SetAcqResource_Minus( m_Cost );
+
         //  購入コスト増加
         m_Cost  +=  c_UPCost;
 
