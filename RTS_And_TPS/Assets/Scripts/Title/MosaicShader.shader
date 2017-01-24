@@ -4,7 +4,7 @@
 */
 {
     Properties{
-        BlockSize("Block Size", Float) = 15.0
+        BlockSize("BlockSize", Float) = 7.0
     }
 
     CGINCLUDE
