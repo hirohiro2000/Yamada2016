@@ -13,6 +13,7 @@ public class DeviationCalculator : MonoBehaviour
 	{
 		m_prev	= m_cur = transform.position;
 		m_eye	= transform.FindChild("Eye");
+		m_vel	= Vector3.zero;
 	}
 	
 	// Update is called once per frame
@@ -25,6 +26,6 @@ public class DeviationCalculator : MonoBehaviour
 
 	public Vector3 Get()
 	{
-		return transform.position + m_vel;
+		return (( m_eye == null )? transform.position : m_eye.position ) + m_vel;
 	}
 }
