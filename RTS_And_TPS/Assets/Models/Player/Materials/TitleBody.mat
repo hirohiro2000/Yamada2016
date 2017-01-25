@@ -6,10 +6,10 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: player_hair
+  m_Name: TitleBody
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _EMISSION
-  m_LightmapFlags: 1
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
   m_CustomRenderQueue: 2000
   stringTagMap: {}
   m_SavedProperties:
@@ -19,7 +19,7 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: 7a34083bb439d9a419d8b6adb6b47a09, type: 3}
+          m_Texture: {fileID: 2800000, guid: 5232922b6b69da847bd350ff3f6b5abd, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -144,7 +144,7 @@ Material:
       data:
         first:
           name: _Glossiness
-        second: 0.697
+        second: 0
       data:
         first:
           name: _BumpScale
@@ -180,7 +180,7 @@ Material:
       data:
         first:
           name: _DepthBias
-        second: 0.00012
+        second: 0
       data:
         first:
           name: _SpecularPower
@@ -189,11 +189,11 @@ Material:
       data:
         first:
           name: _EmissionColor
-        second: {r: 0.323, g: 0.2725474, b: 0.09367001, a: 1}
+        second: {r: 0, g: 0, b: 0, a: 1}
       data:
         first:
           name: _Color
-        second: {r: 0.709, g: 0.709, b: 0.709, a: 1}
+        second: {r: 0.753, g: 0.753, b: 0.753, a: 1}
       data:
         first:
           name: _OutlineColor
@@ -201,4 +201,4 @@ Material:
       data:
         first:
           name: _ShadowColor
-        second: {r: 0.5019608, g: 0.42861733, b: 0.37597847, a: 1}
+        second: {r: 0.541, g: 0.35767636, b: 0.265631, a: 1}
