@@ -2,16 +2,19 @@
 using System.Collections;
 
 public class MaterialSwitchToConvert : MonoBehaviour
-{
+{                   
     [SerializeField]
     private Renderer[]              m_renderer                  = null;
     [SerializeField]
     private Material                m_matFocusFieldTower        = null;
     [SerializeField]
     private Material                m_matPermeateFieldTower     = null;
+    [SerializeField]
+    private Material                m_matVirtualFieldTower      = null;
 
     private bool                    m_isActive      { get; set; }
     private bool                    m_canSee        { get; set; }
+    private bool                    m_isVirtual     { get; set; }
     private float                   m_UVAnimationY  { get; set; }
     private Material[]              m_mainMaterial  { get; set; }
     private MaterialPropertyBlock[] m_matProperty   { get; set; }
@@ -53,11 +56,17 @@ public class MaterialSwitchToConvert : MonoBehaviour
     {
         m_canSee = canSee;            
     }
+    public  void SetVirtual( bool isVirtual )
+    {
+        m_isVirtual = isVirtual;
+    }
     private void Update()
     {                  
         for (int i = 0; i < m_renderer.Length; i++)
         {
-            if (m_canSee)
+            if (m_isVirtual)
+                m_renderer[i].material = m_matVirtualFieldTower;
+            else if (m_canSee)
                 m_renderer[i].material = m_matFocusFieldTower;
             else
                 m_renderer[i].material = m_matPermeateFieldTower;

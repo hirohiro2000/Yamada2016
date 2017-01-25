@@ -30,7 +30,7 @@
 			uniform float4		_NormalMap_ST;
 			uniform float4		_SmoothMap_ST;
 			uniform float4		_MetalMap_ST;
-			uniform float4 		_MainColor;
+			uniform float4 		_Color;
 			uniform float 		_Smoothness;
 			uniform float		_Wrap;
 			uniform float		_BumpDepth;
@@ -100,7 +100,7 @@
 				float shadAtten = LIGHT_ATTENUATION(i);
 		
 				float4 tex = tex2D(_MainTex,    i.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw);
-				tex = tex  * _MainColor;
+				tex = tex  * _Color;
 				float  texS = tex2D(_SmoothMap, i.texcoord.xy * _SmoothMap_ST.xy + _SmoothMap_ST.zw);
 				texS = texS * _Smoothness;
 				float  texM = tex2D(_MetalMap,  i.texcoord.xy * _MetalMap_ST.xy + _MetalMap_ST.zw);
