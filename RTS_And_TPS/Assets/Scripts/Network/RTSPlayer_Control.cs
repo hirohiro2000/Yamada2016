@@ -62,6 +62,7 @@ public class RTSPlayer_Control : NetworkBehaviour {
             rCanvasTrans.FindChild( "RevivalGage" ).gameObject.SetActive( true );
 
             UIRadar.SetPlayer( gameObject );
+            UIOwnHealth.SetPlayer( gameObject );
         }
 
         //  リソース情報有効化
@@ -108,6 +109,7 @@ public class RTSPlayer_Control : NetworkBehaviour {
         rCanvasTrans.FindChild( "RevivalGage" ).gameObject.SetActive( false );
 
         UIRadar.SetPlayer( gameObject );
+        UIOwnHealth.SetPlayer( gameObject );
 
         //  メインカメラを復旧
         GameObject  rMainCamera     =   GameObject.Find( "Main Camera" );

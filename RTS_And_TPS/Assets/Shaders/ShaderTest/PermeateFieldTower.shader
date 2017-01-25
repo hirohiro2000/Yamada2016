@@ -1,5 +1,4 @@
-﻿
-Shader "Unlit/PermeateFieldTower"
+﻿Shader "Unlit/PermeateFieldTower"
 {
 	Properties
 	{
