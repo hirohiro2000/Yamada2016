@@ -148,7 +148,14 @@ public class ResourceCreator : NetworkBehaviour
 				obj.transform.GetChild(i).GetComponent<Collider>().enabled = ena;
 		}
 
-        obj.transform.FindChild("_Health").gameObject.SetActive(ena);
+        if (obj.transform.FindChild("_Health"))
+        {
+            obj.transform.FindChild("_Health").gameObject.SetActive(ena);
+        }
+        if ( obj.transform.FindChild("VisibilityChecker") )
+        {
+            obj.transform.FindChild("VisibilityChecker").gameObject.SetActive(ena);
+        }
 
 	}
 
