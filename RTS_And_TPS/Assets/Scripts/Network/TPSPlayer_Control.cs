@@ -221,7 +221,7 @@ public class TPSPlayer_Control : NetworkBehaviour {
             GirlController  rGirl   =   players[ i ].GetComponent< GirlController >();
             if( !rGirl )                        continue;
 
-            rGirl.RpcRidingVehicle( rGirl.netId, netId, _IsEnable );
+            rGirl.RpcRidingVehicle( rGirl.netId, netId, _IsEnable, false );
             return;
         }
     }
