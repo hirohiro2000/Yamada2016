@@ -18,7 +18,7 @@ public class TitleUIController : MonoBehaviour {
     void Awake()
     {
         m_menu_button_root = transform.FindChild("MemuButtonRoot").gameObject;
-        m_fade_controller = GetComponentInChildren<FadeController>();
+        m_fade_controller = GameObject.Find("FadeObject").GetComponent<FadeController>();
         m_title_button = transform.FindChild("TitleButton").gameObject;
         m_staff_credit_root = transform.FindChild("StaffCreditRoot").gameObject;
         m_staff_credit_root.GetComponent<StaffCredit>().SetCreditEndNotifyFunction(EndCredit);
