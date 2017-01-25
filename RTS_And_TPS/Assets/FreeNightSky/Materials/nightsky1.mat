@@ -143,10 +143,6 @@ Material:
         second: 0.02
       data:
         first:
-          name: _Metallic
-        second: 0
-      data:
-        first:
           name: _ZWrite
         second: 1
       data:
@@ -175,8 +171,12 @@ Material:
         second: 0
       data:
         first:
-          name: _Rotation
+          name: _Metallic
         second: 0
+      data:
+        first:
+          name: _Rotation
+        second: 200
     m_Colors:
       data:
         first:
