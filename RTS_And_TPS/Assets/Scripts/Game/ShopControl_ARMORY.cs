@@ -18,6 +18,20 @@ public  class   ShopControl_ARMORY  :   ShopControl_Base{
 
     }
 //================================================================================
+//      購入条件を満たしているかどうか
+//================================================================================
+    protected   override    bool    Check_Condisions( Collider _rCollider )
+    {
+        //  制御を取得
+        TPSPlayer_Control   rTPSControl =   _rCollider.GetComponentInParent< TPSPlayer_Control >();
+        if( !rTPSControl )                          return  false;
+
+        //  弾が満タンならだめ
+        if( rTPSControl.CheckWhetherIsFullAmmo() )  return  false;
+
+        return  true;
+    }
+//================================================================================
 //      購入された効果を適用
 //================================================================================
     protected   override    bool    Apply_PurchasedEffect( Collider _rCollider )

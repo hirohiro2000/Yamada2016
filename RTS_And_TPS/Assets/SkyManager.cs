@@ -9,6 +9,7 @@ public class SkyManager : MonoBehaviour {
         public  Material    skyMaterial     =   null;
         public  Material    cloudMaterial   =   null;
         public  float       cloudSpeed      =   0.0f;
+        public  Color       fogColor        =   Color.black;
     };
 
     public  SkyData[]       c_SkyData       =   null;
@@ -21,20 +22,29 @@ public class SkyManager : MonoBehaviour {
 
 	private float m_BlendValue;
 
+    private Color           m_PrevFogColor  =   Color.black;
+    private Color           m_NextFogColor  =   Color.black;
+
 	// Use this for initialization
 	void    Start()
     {
         m_rCloudControl =   transform.FindChild( "CloudSystem" ).GetComponent< Cloud_Control >();
+
+
 		ChangeMaterialTexture(c_SkyData[0].skyMaterial,1.0f);
     }
 	
 	// Update is called once per frame
 	void    Update()
     {
+        if( m_rCurData == null )    return;
+
 		m_BlendValue += Time.deltaTime / m_ChangeTime;
 		if (m_BlendValue > 1.0f)
 			m_BlendValue = 1.0f;
         RenderSettings.skybox.SetFloat("_SkyBlend", m_BlendValue);
+
+        RenderSettings.fogColor =   Color.Lerp( m_PrevFogColor, m_NextFogColor, m_BlendValue );
     }
 
     public  void    ChangeSky( int _SkyIndex )
@@ -52,6 +62,9 @@ public class SkyManager : MonoBehaviour {
 		//RenderSettings.skybox   =   rData.skyMaterial;
 		ChangeMaterialTexture(rData.skyMaterial,.0f);
 		m_BlendValue = .0f;
+
+        m_PrevFogColor  =   ( m_rCurData != null )? m_rCurData.fogColor : rData.fogColor;
+        m_NextFogColor  =   rData.fogColor;
 
 		m_rCloudControl.SetSpeed( rData.cloudSpeed );
         m_rCloudControl.SetMaterial( rData.cloudMaterial );

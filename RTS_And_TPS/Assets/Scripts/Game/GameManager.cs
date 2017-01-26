@@ -467,7 +467,7 @@ public class GameManager : NetworkBehaviour {
 
         //  リザルト画面表示
         if( 
-            m_State == State.Reuslt
+            m_State == State.Reuslt 
         &&  
         m_StateTimer >= 1.5f
         &&  !GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) )
@@ -620,9 +620,9 @@ public class GameManager : NetworkBehaviour {
                 GUI.Box( new Rect( -5.0f, 175.0f, 490, 26 ), "" );
                 GUI.BeginGroup( new Rect( -1.0f, 178.0f, 480.0f, 26 ) );
 
-                //GUI.Label( new Rect( 176, 0.0f, 480.0f, 26.0f ), "Score" );
+                //GUI.Label( new Rect( 176, 0.0f, 480.0f, 26.0f ), "Score" ); 
                 GUI.Label( new Rect( 253, 0.0f, 480.0f, 26.0f ), "Kill" );
-                GUI.Label( new Rect( 301, 0.0f, 480.0f, 26.0f ), "Death" );
+                GUI.Label( new Rect( 292, 0.0f, 480.0f, 26.0f ), "Damage" );
                 GUI.Label( new Rect( 351, 0.0f, 480.0f, 26.0f ), "Resource" );
                 GUI.Label( new Rect( 418, 0.0f, 480.0f, 26.0f ), "Consum" );
 
@@ -641,7 +641,7 @@ public class GameManager : NetworkBehaviour {
                 //    GUI.Box( new Rect( 0.0f, 207.0f + 26.0f * i, 480.0f, 26.0f ), "" );
                 //}
 
-                GUI.BeginGroup( new Rect( -1.0f, 207.0f + 26.0f * i, 480.0f, 26 ) );
+                GUI.BeginGroup( new Rect( -1.0f, 212.0f + 31.0f * i, 480.0f, 26 ) );
 
                 GUI.Label( new Rect( 26.0f, 0.0f, 480.0f, 26.0f ), rankSymbol[ i ] );
 
@@ -660,9 +660,9 @@ public class GameManager : NetworkBehaviour {
                 }
 
                 GUI.Label( new Rect( 252.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )?( ( m_rKillList.Count  > playerID )?   m_rKillList[ playerID ].ToString().PadLeft( 3, '_' ) : "__0" )    : "___" );
-                GUI.Label( new Rect( 308.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )?( ( m_rDeathList.Count > playerID )?   m_rDeathList[ playerID ].ToString().PadLeft( 3, '_' ) : "__0" )   : "___" );
+                GUI.Label( new Rect( 302.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )?( ( m_rDamageList.Count > playerID )?  ( ( int )m_rDamageList[ playerID ] ).ToString().PadLeft( 4, '_' ) :  "___0" ) :  "____" );
                 GUI.Label( new Rect( 360.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )?( ( m_rIncomeList.Count > playerID )?  ( ( int )m_rIncomeList[ playerID ] ).ToString().PadLeft( 5, '_' ) : "____0" ) : "_____" );
-                GUI.Label( new Rect( 425.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )?( ( m_rConsumList.Count > playerID )?  ( ( int )m_rConsumList[ playerID ] ).ToString().PadLeft( 5, '_' ) : "____0" )  : "_____" );
+                GUI.Label( new Rect( 425.0f, 0.0f, 480.0f, 26.0f ), ( isActiveID )?( ( m_rConsumList.Count > playerID )?  ( ( int )m_rConsumList[ playerID ] ).ToString().PadLeft( 5, '_' ) : "____0" ) : "_____" );
                 if( isActiveID )    GUI.Label( new Rect( 64.0f, 0.0f, 480.0f, 26.0f ), playerName[ playerID ] );
                 else                GUI.Label( new Rect( 64.0f, 0.0f, 480.0f, 26.0f ), "________" );
 
@@ -670,13 +670,13 @@ public class GameManager : NetworkBehaviour {
             }
         }
 
-        //  フレーム表示  
-        GUI.Box( new Rect( 0.0f, 260, 480.0f, 50.0f ), "" );
+        //  フレーム表示    
+        GUI.Box( new Rect( 0.0f, 274, 480.0f, 36.0f ), "" );
 
         //  ボタン表示
         if( _Timer - 0.5f > 5.5f + 2.0f ){
-            inputData.pushOK    =   GUI.Button( new Rect( 100, 272, 100.0f, 26.0f ), "続ける" );
-            inputData.pushQuit  =   GUI.Button( new Rect( 280, 272, 100.0f, 26.0f ), "やめる" );
+            inputData.pushOK    =   GUI.Button( new Rect( 100, 280, 100.0f, 24.0f ), "続ける" );
+            inputData.pushQuit  =   GUI.Button( new Rect( 280, 280, 100.0f, 24.0f ), "やめる" );
         }
 
         //  グループ終了

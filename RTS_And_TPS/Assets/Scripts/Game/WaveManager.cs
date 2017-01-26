@@ -8,6 +8,8 @@ public class WaveManager : NetworkBehaviour {
     
     //  内部パラメータ
     public  int                 m_WaveLevel     =   0;
+
+    [ SyncVar ]
     public  bool                m_IsMultiMode   =   false;
 
     //  関連アクセス
