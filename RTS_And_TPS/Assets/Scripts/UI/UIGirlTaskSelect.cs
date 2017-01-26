@@ -240,6 +240,10 @@ public class UIGirlTaskSelect : MonoBehaviour
             {
                 m_resourceCreator.UpdateGuideResource(m_itemController.GetForcus(), m_editTargetPosition);
             }
+            else
+            {
+                m_resourceCreator.SetGuideVisibleDisable();
+            }
 
             m_workingArea.SetActive(true);
             m_workingArea.transform.position = m_editTargetPosition;
