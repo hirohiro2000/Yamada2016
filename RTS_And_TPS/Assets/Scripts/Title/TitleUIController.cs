@@ -34,12 +34,23 @@ public class TitleUIController : MonoBehaviour {
 
     public void ChangeSceneSinglePlayer()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(GameSceneName);
+
+        m_fade_controller.BeginFade(
+            FadeController.FadeMode.Out, Color.black, 1.0f,
+            () =>
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene(GameSceneName);
+            });
     }
        
     public void ChangeSceneMultiPlayer()
     {
+        m_fade_controller.BeginFade(
+    FadeController.FadeMode.Out, Color.black, 1.0f,
+    () =>
+    {
         UnityEngine.SceneManagement.SceneManager.LoadScene(GameSceneName);
+    });
     }
 
     public void BeginCredit()
