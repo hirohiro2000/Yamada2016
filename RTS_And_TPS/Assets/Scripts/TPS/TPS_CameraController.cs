@@ -26,6 +26,8 @@ public class TPS_CameraController : MonoBehaviour
 
     private Vector2   m_shake               = Vector2.zero;
 
+    private bool      m_Zoom                = false;
+
 	private float m_zoomValue = .0f;
 
 	private float m_zoomMultiple = 2.5f;
@@ -79,12 +81,22 @@ public class TPS_CameraController : MonoBehaviour
 			float inputH = Input.GetAxis("Mouse X") * m_rotateSpeed;
 			float inputV = Input.GetAxis("Mouse Y") * m_rotateSpeed;
 			float inputWheel = Input.GetAxis("Mouse ScrollWheel");
+            bool  wheelClick = Input.GetMouseButtonDown(2);
 
-			//ズーム処理
-			m_zoomValue += inputWheel;
+			//  ズーム処理
+            {
+                //  ホイールボタンで一気に変更（値が遠い方へ）
+                if( wheelClick ){
+                    if( m_zoomValue < 0.5f )    m_zoomValue =   1.0f;
+                    else                        m_zoomValue =   0.0f;
+                }
 
-			m_zoomValue = Mathf.Clamp01(m_zoomValue);
-			Camera.main.fieldOfView = m_DefFOV / ((m_zoomMultiple - 1.0f) * m_zoomValue + 1.0f);
+                //  スクロール
+			    m_zoomValue += inputWheel;
+
+			    m_zoomValue = Mathf.Clamp01(m_zoomValue);
+			    Camera.main.fieldOfView = m_DefFOV / ((m_zoomMultiple - 1.0f) * m_zoomValue + 1.0f);
+            }
 
 			if (Input.GetKey(KeyCode.LeftControl))
             {

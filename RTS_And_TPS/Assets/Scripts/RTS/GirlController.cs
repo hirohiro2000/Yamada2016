@@ -650,14 +650,20 @@ public class GirlController : NetworkBehaviour
             }
         }
 
-        //  搭乗メッセージ
+        //  搭乗メッセージ 
         if( isLocalPlayer ){
             if( isEnable )  m_rGameManager.SetAcqRecord( "相棒に搭乗しました！", m_rLinkManager.m_LocalPlayerID );
-            else            m_rGameManager.SetAcqRecord( "相棒から降りました！", m_rLinkManager.m_LocalPlayerID );
+            else{
+                if( _ByMyself ) m_rGameManager.SetAcqRecord( "相棒から降りました！", m_rLinkManager.m_LocalPlayerID );
+                else            m_rGameManager.SetAcqRecord( "相棒から発射されました！", m_rLinkManager.m_LocalPlayerID );
+            }
         }
         else{
             if( isEnable )  m_rGameManager.SetAcqRecord( "相棒が搭乗しました！", m_rLinkManager.m_LocalPlayerID );
-            else            m_rGameManager.SetAcqRecord( "相棒を降ろしました！", m_rLinkManager.m_LocalPlayerID );
+            else{
+                if( _ByMyself ) m_rGameManager.SetAcqRecord( "相棒が降りました！", m_rLinkManager.m_LocalPlayerID );
+                else            m_rGameManager.SetAcqRecord( "相棒を発射しました！", m_rLinkManager.m_LocalPlayerID );
+            }
         }
 
         //  効果音再生
