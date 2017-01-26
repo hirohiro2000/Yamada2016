@@ -61,6 +61,13 @@ public class GirlController : NetworkBehaviour
     private float[]             c_BombRange                     = {     12.0f,    9.0f,    4.0f,    };
     private PlaceState          m_PlaceState                    = PlaceState.None;
 
+    [ SyncVar ]
+    private bool                m_IsPlacing                     = false;
+    [ SyncVar ]
+    private int                 m_PlaceObjID                    = 0;
+    [ SyncVar ]
+    private Vector2             m_PlaceLocalOffset              = Vector2.zero;
+
 	private enum ActionState
 	{
 		Common,
@@ -115,6 +122,30 @@ public class GirlController : NetworkBehaviour
 	{
 		//GameWorldParameterで強制的に書き換える
 		m_moveSpeed = GameWorldParameter.instance.RTSPlayer.WalkSpeed;
+
+        //  クローン側での処理
+        if( !isLocalPlayer ){
+            //  表示 / 非表示の切り替え
+            m_rPlaceCircle_B.gameObject.SetActive( m_PlaceObjID != -1 );
+            m_rPlaceCircle_Place.gameObject.SetActive( m_PlaceObjID != -1 );
+
+            //  サークルのサイズを更新
+            if( m_PlaceObjID != -1 ){
+                m_rPlaceCircle_B.localScale     =   new Vector3( c_BombRange[ m_PlaceObjID ],  c_BombRange[ m_PlaceObjID ],  1.0f ) * transform.lossyScale.x;
+            }
+
+            //  サークルの位置を更新
+            if( m_PlaceObjID != -1 ){
+                m_rPlaceCircle_B.localPosition  =   new Vector3( m_PlaceLocalOffset.x, 0.35f, m_PlaceLocalOffset.y );
+
+                //  カーソル位置計算
+                Vector3 placePoint      =   m_rPlaceCircle_B.position;
+                        placePoint.y    =   CheckHeight_OnField( placePoint + Vector3.up * 1000.0f ) + 0.35f;
+                
+                m_rPlaceCircle_B.position       =   placePoint;
+                m_rPlaceCircle_Place.position   =   placePoint;
+            }
+        }
 		
         //  自分のキャラクターの場合のみ処理を行う
         if( !isLocalPlayer )        return;
@@ -169,54 +200,9 @@ public class GirlController : NetworkBehaviour
         UpdateAnimation();
 
         //  搭乗関係のUIを更新
-        {
-            bool    isAlive     =   m_rPlayerHP.m_CurHP > 0;
-
-            if( m_actionState == ActionState.Common )   m_rRideButton.SetActive( FindAroundRobot( 4.5f ) && isAlive );
-            else                                        m_rRideButton.SetActive( false );
-            
-
-            m_rGetOffButton.SetActive( m_actionState == ActionState.Ride );
-
-            if( c_PlaceRideOnly ){
-                m_rBombButtonShell.SetActive( m_actionState == ActionState.Ride );
-                if( m_actionState != ActionState.Ride )     m_PlaceState    =   PlaceState.None;
-            }
-
-            //  配置関係の処理
-            {
-                //  表示を更新
-                m_rPlaceCircle.gameObject.SetActive( m_PlaceState != PlaceState.None );
-                m_rPlaceCircle_B.gameObject.SetActive( m_PlaceState != PlaceState.None );
-                m_rPlaceCircle_Place.gameObject.SetActive( m_PlaceState != PlaceState.None );
-
-                if( m_PlaceState != PlaceState.None ){
-                    //  配置しようとしている爆弾のＩＤ
-                    int     placeID     =   ( int )m_PlaceState;
-                    bool    isRide      =   m_actionState == ActionState.Ride;
-                    float   rideAdvance =   ( isRide )? 2.0f : 1.0f;
-
-                    //  サイズ更新
-                    m_rPlaceCircle.localScale   =   new Vector3( c_PlaceRange[ placeID ], c_PlaceRange[ placeID ], 1.0f ) * transform.lossyScale.x * rideAdvance;
-                    m_rPlaceCircle_B.localScale =   new Vector3( c_BombRange[ placeID ],  c_BombRange[ placeID ],  1.0f ) * transform.lossyScale.x;
-
-                    //  カーソル位置計算
-                    Vector3 cursorPoint;
-                    bool    checkOK =   CheckCursorPoint_OnPCRayTarget( out cursorPoint );
-                    if( checkOK ){
-                        Vector3 placePoint      =   ClampInHorizontalRange( m_rPlaceCircle.position, cursorPoint, c_PlaceRange[ placeID ] * 1.1f * rideAdvance );
-                                placePoint.y    =   CheckHeight_OnField( placePoint + Vector3.up * 1000.0f ) + 0.35f;
-
-                        m_rPlaceCircle_B.position       =   placePoint;
-                        m_rPlaceCircle_Place.position   =   placePoint;
-                    }
-
-                    //  表示を更新 
-                    m_rPlaceCircle_B.gameObject.SetActive( checkOK );
-                    m_rPlaceCircle_Place.gameObject.SetActive( checkOK );
-                }
-            }
-        }
+        Update_RideUI();
+        //  配置関係のUIを更新
+        Update_PlaceUI();
     }
 	void FixedUpdate () 
 	{
@@ -253,6 +239,64 @@ public class GirlController : NetworkBehaviour
 
     }
 
+    void    Update_RideUI()
+    {
+        bool    isAlive     =   m_rPlayerHP.m_CurHP > 0;
+
+        if( m_actionState == ActionState.Common )   m_rRideButton.SetActive( FindAroundRobot( 4.5f ) && isAlive );
+        else                                        m_rRideButton.SetActive( false );
+        
+        
+        m_rGetOffButton.SetActive( m_actionState == ActionState.Ride );
+        
+        if( c_PlaceRideOnly ){
+            m_rBombButtonShell.SetActive( m_actionState == ActionState.Ride );
+            if( m_actionState != ActionState.Ride )     m_PlaceState    =   PlaceState.None;
+        }
+    }
+    void    Update_PlaceUI()
+    {
+         //  表示を更新
+         m_rPlaceCircle.gameObject.SetActive( m_PlaceState != PlaceState.None );
+         m_rPlaceCircle_B.gameObject.SetActive( m_PlaceState != PlaceState.None );
+         m_rPlaceCircle_Place.gameObject.SetActive( m_PlaceState != PlaceState.None );
+        
+         if( m_PlaceState != PlaceState.None ){
+             //  配置しようとしている爆弾のＩＤ
+             int     placeID     =   ( int )m_PlaceState;
+             bool    isRide      =   m_actionState == ActionState.Ride;
+             float   rideAdvance =   ( isRide )? 2.0f : 1.0f;
+
+             //  サイズ更新
+             m_rPlaceCircle.localScale   =   new Vector3( c_PlaceRange[ placeID ], c_PlaceRange[ placeID ], 1.0f ) * transform.lossyScale.x * rideAdvance;
+             m_rPlaceCircle_B.localScale =   new Vector3( c_BombRange[ placeID ],  c_BombRange[ placeID ],  1.0f ) * transform.lossyScale.x;
+
+             //  カーソル位置計算
+             Vector3 cursorPoint;
+             bool    checkOK =   CheckCursorPoint_OnPCRayTarget( out cursorPoint );
+             if( checkOK ){
+                 Vector3 placePoint      =   ClampInHorizontalRange( m_rPlaceCircle.position, cursorPoint, c_PlaceRange[ placeID ] * 1.1f * rideAdvance );
+                         placePoint.y    =   CheckHeight_OnField( placePoint + Vector3.up * 1000.0f ) + 0.35f;
+
+                 m_rPlaceCircle_B.position       =   placePoint;
+                 m_rPlaceCircle_Place.position   =   placePoint;
+             }
+
+             //  表示を更新 
+             m_rPlaceCircle_B.gameObject.SetActive( checkOK );
+             m_rPlaceCircle_Place.gameObject.SetActive( checkOK );
+         }
+
+        //  クローン側への情報を更新
+        {
+            if( m_PlaceObjID != ( int )m_PlaceState ){
+                CmdChangePlaceState( ( int )m_PlaceState );
+            }
+            if( m_PlaceObjID != -1 ){
+                CmdUpdatePlaceLocalOffset( new Vector2( m_rPlaceCircle_B.localPosition.x, m_rPlaceCircle_B.localPosition.z ) );
+            }
+        }
+    }
     //---------------------------------------------------------------------
     //      ステート
     //---------------------------------------------------------------------   	
@@ -782,6 +826,17 @@ public class GirlController : NetworkBehaviour
             //  起爆
             rControl.SetExploding();
         }
+    }
+
+    [ Command ]
+    void    CmdChangePlaceState( int _PlaceObjID )
+    {
+        m_PlaceObjID    =   _PlaceObjID;
+    }
+    [ Command ]
+    void    CmdUpdatePlaceLocalOffset( Vector2 _LocalOffset )
+    {
+        m_PlaceLocalOffset  =   _LocalOffset;
     }
  
     [ Command ]

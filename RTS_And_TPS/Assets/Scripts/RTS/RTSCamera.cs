@@ -51,7 +51,7 @@ public class RTSCamera : MonoBehaviour
         }
 
         Vector3 dir = m_dir.normalized * m_targetDistance;
-        transform.position = m_camLookAt + dir;
+        transform.position = m_camLookAt + Vector3.up * 2.0f + dir;
         transform.LookAt( transform.position - m_dir );
 
     }
