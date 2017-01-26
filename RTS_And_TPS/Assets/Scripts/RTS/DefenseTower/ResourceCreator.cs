@@ -142,8 +142,11 @@ public class ResourceCreator : NetworkBehaviour
 		if (obj.GetComponent<ResourceAppear>())
 			obj.GetComponent<ResourceAppear>().enabled = ena;
 
-		if (obj.GetComponent<MaterialSwitchToConvert>())
-			obj.GetComponent<MaterialSwitchToConvert>().SetVirtual( !ena );
+        if (obj.GetComponent<MaterialSwitchToConvert>())
+        {
+            obj.GetComponent<MaterialSwitchToConvert>().enabled = !ena;
+            obj.GetComponent<MaterialSwitchToConvert>().SetVirtual(!ena);
+        }
 
         for (int i = 0; i < obj.transform.childCount; ++i)
 		{

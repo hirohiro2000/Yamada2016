@@ -265,7 +265,7 @@ public class GirlController : NetworkBehaviour
             case UIGirlTaskSelect.RESULT.eOK:           Create(m_uiGirlTask.m_editTargetPosition,m_itemCntroller.GetForcus());     break;
             case UIGirlTaskSelect.RESULT.eLevel:        Convert(m_uiGirlTask.m_editTargetPosition);                                break;
             case UIGirlTaskSelect.RESULT.eBreak:        Break(m_uiGirlTask.m_editTargetPosition);                                  break;
-//            case UIGirlTaskSelect.RESULT.eConfirming:   Confirming(editTarget);                                                    break;
+            case UIGirlTaskSelect.RESULT.eConfirming:   Confirming(editTarget);                                                    break;
             default: break;
         }
         if ( task != UIGirlTaskSelect.RESULT.eNone && task != UIGirlTaskSelect.RESULT.eConfirming )

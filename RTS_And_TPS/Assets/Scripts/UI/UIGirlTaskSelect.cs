@@ -205,7 +205,7 @@ public class UIGirlTaskSelect : MonoBehaviour
             {
                 SelectBreak();
             }
-            if ( Input.GetKeyDown(KeyCode.X ) || m_rightDoublePushChecker.GetDown() == DoublePushChecker.State.Push || !InRangeWorkArea(computePosition) )
+            if ( Input.GetKeyDown(KeyCode.X ) || m_rightDoublePushChecker.GetDown() == DoublePushChecker.State.Push )
             {
                 m_uiConvert.SetActive( false );
 
@@ -236,7 +236,11 @@ public class UIGirlTaskSelect : MonoBehaviour
             var param = m_resourceInformation.GetResourceParamFromPosition(computePosition);
             m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = true;
 
-            m_resourceCreator.UpdateGuideResource( m_itemController.GetForcus(), m_editTargetPosition );
+            if (!m_towerInfoPanelEx.activeInHierarchy)
+            {
+                m_resourceCreator.UpdateGuideResource(m_itemController.GetForcus(), m_editTargetPosition);
+            }
+
             m_workingArea.SetActive(true);
             m_workingArea.transform.position = m_editTargetPosition;
         }
@@ -339,7 +343,7 @@ public class UIGirlTaskSelect : MonoBehaviour
 		    var param = m_itemController.GetResourceParam( forcusID );
 		    m_towerInfoPanel.transform.FindChild("Kind").GetComponent<Text>().text      = param.m_name;
 		    m_towerInfoPanel.transform.FindChild("Summary").GetComponent<Text>().text   = "概要:　　　" + param.m_summary;
-            m_towerInfoPanel.transform.FindChild("HP").GetComponent<Text>().text        = "体力:  　　" + param.GetLevelParam(0).hp;
+            m_towerInfoPanel.transform.FindChild("HP").GetComponent<Text>().text        = "体力:  　　 " + param.GetLevelParam(0).hp;
             m_towerInfoPanel.transform.FindChild("Power").GetComponent<Text>().text     = "攻撃力:　　" + param.GetLevelParam(0).power;
             m_towerInfoPanel.transform.FindChild("Interval").GetComponent<Text>().text  = "発射間隔:　" + param.GetLevelParam(0).interval;
             m_towerInfoPanel.transform.FindChild("Range").GetComponent<Text>().text     = "射程距離:　" + param.GetLevelParam(0).range;

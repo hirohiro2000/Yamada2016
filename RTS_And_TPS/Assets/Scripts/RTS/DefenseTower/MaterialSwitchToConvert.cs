@@ -59,17 +59,45 @@ public class MaterialSwitchToConvert : MonoBehaviour
     public  void SetVirtual( bool isVirtual )
     {
         m_isVirtual = isVirtual;
+        for (int i = 0; i < m_renderer.Length; i++)
+        {
+            if (m_isVirtual)
+            {
+                m_renderer[i].material = m_matVirtualFieldTower;
+            }
+            else if (m_isActive)
+            {
+                if ( m_canSee )
+                    m_renderer[i].material = m_matFocusFieldTower;
+                else
+                    m_renderer[i].material = m_matPermeateFieldTower;
+            }
+            else
+            {
+                m_renderer[i].material = m_mainMaterial[i];
+            }
+        }
+
     }
     private void Update()
     {                  
         for (int i = 0; i < m_renderer.Length; i++)
         {
             if (m_isVirtual)
+            {
                 m_renderer[i].material = m_matVirtualFieldTower;
-            else if (m_canSee)
-                m_renderer[i].material = m_matFocusFieldTower;
+            }
+            else if (m_isActive)
+            {
+                if ( m_canSee )
+                    m_renderer[i].material = m_matFocusFieldTower;
+                else
+                    m_renderer[i].material = m_matPermeateFieldTower;
+            }
             else
-                m_renderer[i].material = m_matPermeateFieldTower;
+            {
+                m_renderer[i].material = m_mainMaterial[i];
+            }
             
             m_UVAnimationY -= 0.0001f;  
             m_matProperty[i].SetFloat( "_UVAnimationY", m_UVAnimationY );

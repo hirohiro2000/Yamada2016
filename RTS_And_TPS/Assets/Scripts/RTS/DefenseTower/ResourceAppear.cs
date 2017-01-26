@@ -90,6 +90,11 @@ public class ResourceAppear : MonoBehaviour
             }
         }
 
+
+        GetComponent<MaterialSwitchToConvert>().enabled = (timer < 1.0f);
+        GetComponent<MaterialSwitchToConvert>().SetVirtual(timer < 1.0f);
+
+
 		this.enabled = (timer < 1.0f);
 		plate.SetActive(timer < 1.0f);
 
@@ -98,8 +103,12 @@ public class ResourceAppear : MonoBehaviour
     {
         timer = 1.0f;
     }
-	 public bool IsEnd()
+    public bool IsEnd()
     {
         return timer >= 1.0f;
     }
+
+
+
+
 }

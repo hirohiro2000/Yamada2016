@@ -12,7 +12,7 @@ public class UIConfirm : MonoBehaviour
     }
     public Vector3                      m_target { get; set; }
 
-    private MODE                        m_mode                      { get; set;}
+    private MODE                        m_mode                      { get; set; }
     private RectTransform               m_parentTrans               { get; set; }
     private Camera                      m_uiCamera                  { get; set; }
     private Canvas                      m_uiCanvas                  { get; set; }

@@ -88,6 +88,7 @@ public class GameManager : NetworkBehaviour {
     private Text                    m_rResourceText =   null;
     private Text                    m_rResourceTextOutline =   null;
     private Text                    m_rScoreText    =   null;
+    private Text                    m_rDifficultyText    =   null;
     private AcqScore_Control        m_rAcqScore     =   null;
     private AcqRecord_Control       m_rAcqRecord    =   null;
     private AcqScore_Control        m_rAcqResource  =   null;
@@ -112,6 +113,7 @@ public class GameManager : NetworkBehaviour {
         m_rResourceText =   FunctionManager.GetAccessComponent< Text >( "Canvas/Column_Resource/Text_Resource" );
         m_rResourceTextOutline =   FunctionManager.GetAccessComponent< Text >( "Canvas/Column_Resource/Text_Resource (Outline)" );
         m_rScoreText    =   FunctionManager.GetAccessComponent< Text >( "Canvas/Column_Score/Text_Score" );
+        m_rDifficultyText    =   FunctionManager.GetAccessComponent< Text >( "Canvas/Column_Difficulty/Text" );
         m_rAcqScore     =   FunctionManager.GetAccessComponent< AcqScore_Control >( "Canvas/AcqScore" );
         m_rAcqRecord    =   FunctionManager.GetAccessComponent< AcqRecord_Control >( "Canvas/AcqRecord" );
         m_rAcqResource  =   FunctionManager.GetAccessComponent< AcqScore_Control >( "Canvas/AcqResource" );
@@ -396,6 +398,10 @@ public class GameManager : NetworkBehaviour {
                     //  効果音再生
                     SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.05f, 1.0f, 1.0f );
                 }
+
+                // 
+                if( m_rDifficultyText )     m_rDifficultyText.text  = difcultStr;
+
             }
         }
 
