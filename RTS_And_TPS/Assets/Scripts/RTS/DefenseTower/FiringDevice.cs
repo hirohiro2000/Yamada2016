@@ -124,11 +124,7 @@ public class FiringDevice : NetworkBehaviour
 		var trs = m_rEnemyShell.GetNearEnemyTransform( m_orientatedTransform.position, m_resourceParam.GetCurLevelParam().range );
         if( trs )
         {
-			trs	= trs.FindChild("Eye");
-
-            Vector3 forward = trs.position - m_orientatedTransform.position;
-
-            //forward.y   =   0.0f;
+            Vector3 forward = trs.GetComponent<DeviationCalculator>().Get() - m_orientatedTransform.position;
             forward.Normalize();
         
 			//	即時
