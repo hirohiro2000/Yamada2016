@@ -1228,7 +1228,7 @@ public class GameManager : NetworkBehaviour {
 
         //  終了
         //SoundController.PlayNow( "Voice_G2D_Result", 16.0f, 0.1f, 1.0f, 10.0f ); 
-        if( m_NewRecord )   SoundController.PlayNow( "Voice_G2D_Result_" + Random.Range( 0, 2 ), 16.4f, 0.1f, 1.0f, 10.0f );
+        if( !m_NewRecord )  SoundController.PlayNow( "Voice_G2D_Result_" + Random.Range( 0, 2 ), 16.4f, 0.1f, 1.0f, 10.0f );
         else                SoundController.PlayNow( "Voice_G2D_Result_" + Random.Range( 2, 4 ), 16.4f, 0.1f, 1.0f, 10.0f );
     }
     void    StandbyProc_GameOverInServer()
