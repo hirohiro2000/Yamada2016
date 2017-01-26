@@ -121,7 +121,7 @@ public class GirlController : NetworkBehaviour
        
 		//  瀕死状態では処理を行わない
         if( m_rPlayerHP.m_IsDying ) return;
-        
+                
         //  ジャンプする
         if( Input.GetKeyDown( KeyCode.Space )
         &&  Mathf.Abs( m_rRigid.velocity.y ) < 0.01f ){
@@ -192,17 +192,19 @@ public class GirlController : NetworkBehaviour
 
                 if( m_PlaceState != PlaceState.None ){
                     //  配置しようとしている爆弾のＩＤ
-                    int     placeID =   ( int )m_PlaceState;
+                    int     placeID     =   ( int )m_PlaceState;
+                    bool    isRide      =   m_actionState == ActionState.Ride;
+                    float   rideAdvance =   ( isRide )? 2.0f : 1.0f;
 
                     //  サイズ更新
-                    m_rPlaceCircle.localScale   =   new Vector3( c_PlaceRange[ placeID ], c_PlaceRange[ placeID ], 1.0f ) * transform.lossyScale.x;
+                    m_rPlaceCircle.localScale   =   new Vector3( c_PlaceRange[ placeID ], c_PlaceRange[ placeID ], 1.0f ) * transform.lossyScale.x * rideAdvance;
                     m_rPlaceCircle_B.localScale =   new Vector3( c_BombRange[ placeID ],  c_BombRange[ placeID ],  1.0f ) * transform.lossyScale.x;
 
                     //  カーソル位置計算
                     Vector3 cursorPoint;
                     bool    checkOK =   CheckCursorPoint_OnPCRayTarget( out cursorPoint );
                     if( checkOK ){
-                        Vector3 placePoint      =   ClampInHorizontalRange( m_rPlaceCircle.position, cursorPoint, c_PlaceRange[ placeID ] * 1.1f );
+                        Vector3 placePoint      =   ClampInHorizontalRange( m_rPlaceCircle.position, cursorPoint, c_PlaceRange[ placeID ] * 1.1f * rideAdvance );
                                 placePoint.y    =   CheckHeight_OnField( placePoint + Vector3.up * 1000.0f ) + 0.35f;
 
                         m_rPlaceCircle_B.position       =   placePoint;
@@ -265,7 +267,7 @@ public class GirlController : NetworkBehaviour
             case UIGirlTaskSelect.RESULT.eOK:           Create(m_uiGirlTask.m_editTargetPosition,m_itemCntroller.GetForcus());     break;
             case UIGirlTaskSelect.RESULT.eLevel:        Convert(m_uiGirlTask.m_editTargetPosition);                                break;
             case UIGirlTaskSelect.RESULT.eBreak:        Break(m_uiGirlTask.m_editTargetPosition);                                  break;
-            case UIGirlTaskSelect.RESULT.eConfirming:   Confirming(editTarget);                                                    break;
+//            case UIGirlTaskSelect.RESULT.eConfirming:   Confirming(editTarget);                                                    break;
             default: break;
         }
         if ( task != UIGirlTaskSelect.RESULT.eNone && task != UIGirlTaskSelect.RESULT.eConfirming )
@@ -616,7 +618,7 @@ public class GirlController : NetworkBehaviour
         return false;
 
     }
-    void RideVehicle( GameObject vehicle, bool isEnable )
+    void RideVehicle( GameObject vehicle, bool isEnable, bool _ByMyself )
     {
         m_actionState      = ( isEnable ) ? ActionState.Ride  : ActionState.Common;
         m_ridingVehicle    = ( isEnable ) ? vehicle           : null;
@@ -638,7 +640,14 @@ public class GirlController : NetworkBehaviour
 
         //  降りた場合は少し上に出る 
         if( isLocalPlayer ){
-            if( !isEnable ) transform.position  =  transform.position + Vector3.up * 3.0f;
+            if( !isEnable ){
+                transform.position  =  transform.position + Vector3.up * 3.0f;
+
+                //  ロボットが下ろした場合は勢いよく飛び出る
+                if( !_ByMyself ){
+                    m_rRigid.AddForce( transform.forward.normalized * 20.0f + Vector3.up * 30.0f, ForceMode.Impulse );
+                }
+            }
         }
 
         //  搭乗メッセージ
@@ -772,7 +781,7 @@ public class GirlController : NetworkBehaviour
     [ Command ]
     void    CmdRidingVehicle( NetworkInstanceId _NetID, NetworkInstanceId _TargetNetID, bool _Enable )
     {
-        RpcRidingVehicle( _NetID, _TargetNetID, _Enable );
+        RpcRidingVehicle( _NetID, _TargetNetID, _Enable, true );
     }
     [ Command ]
     public  void    CmdPlaceDrone( NetworkInstanceId _NetID )
@@ -781,13 +790,13 @@ public class GirlController : NetworkBehaviour
     }
     
     [ ClientRpc ]
-    public  void    RpcRidingVehicle( NetworkInstanceId _NetID, NetworkInstanceId _TargetNetID, bool _Enable )
+    public  void    RpcRidingVehicle( NetworkInstanceId _NetID, NetworkInstanceId _TargetNetID, bool _Enable, bool _ByMyself )
     {
         //  対象オブジェクトを探す
         GameObject rIdentity        =  ClientScene.FindLocalObject( _NetID );
         GameObject rTarget          =  ClientScene.FindLocalObject( _TargetNetID );
         
-        rIdentity.GetComponent<GirlController>().RideVehicle( rTarget, _Enable );
+        rIdentity.GetComponent<GirlController>().RideVehicle( rTarget, _Enable, _ByMyself );
                 
     }
     [ ClientRpc ]

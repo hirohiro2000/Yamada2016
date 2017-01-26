@@ -205,7 +205,7 @@ public class UIGirlTaskSelect : MonoBehaviour
             {
                 SelectBreak();
             }
-            if ( Input.GetKeyDown(KeyCode.X ) || m_rightDoublePushChecker.GetDown() == DoublePushChecker.State.Push )
+            if ( Input.GetKeyDown(KeyCode.X ) || m_rightDoublePushChecker.GetDown() == DoublePushChecker.State.Push || !InRangeWorkArea(computePosition) )
             {
                 m_uiConvert.SetActive( false );
 
@@ -305,6 +305,19 @@ public class UIGirlTaskSelect : MonoBehaviour
                 
         return true;
 
+    }
+    public bool InRangeWorkArea( Vector3 pos )
+    {
+        Vector3 local = pos - m_editTargetPosition;
+
+        float halfScale = m_resourceInformation.m_gridSplitSpaceScale*0.5f;
+
+        if ( local.x > halfScale )      return false;
+        if ( local.x < -halfScale )     return false;
+        if ( local.z > halfScale )      return false;
+        if ( local.z < -halfScale )     return false;
+                   
+        return true;
     }
 
     //---------------------------------------------------------------------
@@ -462,6 +475,17 @@ public class UIGirlTaskSelect : MonoBehaviour
 
 
     }
-            
+
+    //---------------------------------------------------------------------
+    //      
+    //---------------------------------------------------------------------   	
+    // [m_uiResourceBG][m_uiForcusFrame][m_towerInfoPanel]を上２０に移動
+    public void UpPanel()
+    {
+        m_uiResourceBG.GetComponent<RectTransform>().localPosition      += new Vector3( 0.0f, 20.0f, 0.0f );
+        m_uiForcusFrame.GetComponent<RectTransform>().localPosition     += new Vector3( 0.0f, 20.0f, 0.0f );
+	    m_towerInfoPanel.GetComponent<RectTransform>().localPosition    += new Vector3( 0.0f, 20.0f, 0.0f );
+    }   
+             
 }
 

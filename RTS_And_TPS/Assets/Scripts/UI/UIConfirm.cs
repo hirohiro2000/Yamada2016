@@ -120,13 +120,13 @@ public class UIConfirm : MonoBehaviour
 
             if ( obj == m_clikedUI )
             {
-                rt.localScale *= 0.85f;
-                rt.localPosition += ( parentRt.localPosition - rt.localPosition )*0.1f;
+                rt.localScale *= 5.0f*Time.deltaTime;
+                rt.localPosition += ( parentRt.localPosition - rt.localPosition )*5.0f*Time.deltaTime;
             }                
             else
             {
-                rt.localScale *= 0.4f;
-                rt.localPosition += ( parentRt.localPosition - rt.localPosition )*0.25f;
+                rt.localScale *= 15.0f*Time.deltaTime;
+                rt.localPosition += ( parentRt.localPosition - rt.localPosition )*15.0f*Time.deltaTime;
             }
 
             
@@ -158,7 +158,7 @@ public class UIConfirm : MonoBehaviour
     }
     public bool IsClose()
     {
-        return m_clikedUI == null && gameObject.activeInHierarchy;
+        return m_clikedUI == null || !gameObject.activeInHierarchy;
     }
 
 }

@@ -107,6 +107,7 @@ public class TPSPlayer_Control : NetworkBehaviour {
 
             UIRadar.SetPlayer( gameObject );
             UICompasCore.SetPlayer( gameObject ); 
+            UIOwnHealth.SetPlayer( gameObject );
 
             m_rRideButton   =   rCanvasTrans.FindChild( "TPS_HUD" ).FindChild( "RideButton" ).gameObject;
             m_rGetOffButton =   rCanvasTrans.FindChild( "TPS_HUD" ).FindChild( "GetOffButton" ).gameObject;
@@ -221,7 +222,7 @@ public class TPSPlayer_Control : NetworkBehaviour {
             GirlController  rGirl   =   players[ i ].GetComponent< GirlController >();
             if( !rGirl )                        continue;
 
-            rGirl.RpcRidingVehicle( rGirl.netId, netId, _IsEnable );
+            rGirl.RpcRidingVehicle( rGirl.netId, netId, _IsEnable, false );
             return;
         }
     }

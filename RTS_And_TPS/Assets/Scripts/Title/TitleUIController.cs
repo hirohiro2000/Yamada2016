@@ -12,19 +12,24 @@ public class TitleUIController : MonoBehaviour {
 
     private GameObject m_menu_button_root = null;
     private GameObject m_staff_credit_root = null;
-    private Image            m_title_image = null;
+    private GameObject            m_title_button = null;
+    private FadeController m_fade_controller = null;
 
     void Awake()
     {
         m_menu_button_root = transform.FindChild("MemuButtonRoot").gameObject;
-        m_title_image = transform.FindChild("TitleImage").GetComponent<Image>();
+        m_fade_controller = GameObject.Find("FadeObject").GetComponent<FadeController>();
+        m_title_button = transform.FindChild("TitleButton").gameObject;
         m_staff_credit_root = transform.FindChild("StaffCreditRoot").gameObject;
         m_staff_credit_root.GetComponent<StaffCredit>().SetCreditEndNotifyFunction(EndCredit);
     }
 
     void Start()
     {
-     
+        m_fade_controller.BeginFade(FadeController.FadeMode.In, Color.black, 1.0f, () =>
+           {
+               //Debug.Log("done");
+           });
     }
 
     public void ChangeSceneSinglePlayer()
@@ -57,13 +62,13 @@ public class TitleUIController : MonoBehaviour {
             text.color = Color.white;
       
         m_menu_button_root.SetActive(false);
-        m_title_image.enabled = false;
+        m_title_button.SetActive(false);
     }
 
     void EnableAllButton()
     {
         m_menu_button_root.SetActive(true);
-        m_title_image.enabled = true;
+        m_title_button.SetActive(true);
     }
 
 }

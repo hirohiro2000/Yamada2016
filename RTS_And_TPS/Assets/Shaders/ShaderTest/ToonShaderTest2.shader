@@ -85,12 +85,12 @@ Shader "Custom/ToonShaderTest2"
 				o.uv0 = v.texcoord0;
 			
 			#ifdef LIGHTMAP_ON
-				o.ambientOrLightmapUV.xy = v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
+				o.ambientOrLightmapUV.xy = v.texcoord0.xy * unity_LightmapST.xy + unity_LightmapST.zw;
 				o.ambientOrLightmapUV.zw = 0;
 			#elif UNITY_SHOULD_SAMPLE_SH
 			#endif
 			#ifdef DYNAMICLIGHTMAP_ON
-				o.ambientOrLightmapUV.zw = v.texcoord2.xy * unity_DynamicLightmapST.xy + unity_DynamicLightmapST.zw;
+				o.ambientOrLightmapUV.zw = v.texcoord0.xy * unity_DynamicLightmapST.xy + unity_DynamicLightmapST.zw;
 			#endif
 				o.normalDir = UnityObjectToWorldNormal(v.normal);
 				o.tangentDir = normalize(mul(_Object2World, float4(v.tangent.xyz, 0.0)).xyz);
