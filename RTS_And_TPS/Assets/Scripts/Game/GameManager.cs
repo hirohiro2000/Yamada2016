@@ -35,6 +35,10 @@ public class GameManager : NetworkBehaviour {
             displayTime =   0.0f;
         }
     }
+    public  struct  HighScoreData{
+        public  int     wave;
+        public  int     score;
+    }
 
     //  公開パラメータ
     public  string                  c_RetryScene    =   "";
@@ -61,6 +65,8 @@ public class GameManager : NetworkBehaviour {
     public  float                   m_Resource      =   0.0f;
     [ SyncVar ]
     public  float                   m_GlobalScore   =   0.0f;
+    [ SyncVar ]
+    public  bool                    m_IsMulti       =   false;
 
     private Queue< MainMessage >    m_MainMessageQ  =   new Queue< MainMessage >();
     private float                   m_SDPlaceTimer  =   0.0f;
@@ -100,6 +106,11 @@ public class GameManager : NetworkBehaviour {
     //  関連パラメータ
     //private SoundController         m_rHeartSound   =   null;
 
+    //  ハイスコア
+    private HighScoreData[]         m_HSDataSingle  =   new HighScoreData[ 4 ];
+    private HighScoreData[]         m_HSDataMulti   =   new HighScoreData[ 4 ];
+    private bool                    m_NewRecord     =   false;
+
 	// Use this for initialization
 	void    Start()
     {
@@ -130,6 +141,9 @@ public class GameManager : NetworkBehaviour {
 
             //  BGM再生開始
             BGMManager.ChangeBGM( "BGM_Ready", 0.5f, 0.0f, 0.0f, 0.0f );
+
+            //  ハイスコアをロード
+            LoadHighScore();
         }
 
         //  サーバーでの処理
@@ -138,6 +152,18 @@ public class GameManager : NetworkBehaviour {
 
             //  難易度読み込み
             m_Difficulty    =   ( GameDifficulty )PlayerPrefs.GetInt( "Difficulty", ( int )GameDifficulty.Normal );
+
+            //  リスト数初期化
+            CheckWhetherExist_Bool( m_rIsReadyList, 2 );
+            CheckWhetherExist_String( m_rNameList, 2 );
+            CheckWhetherExist_Float( m_rScoreList, 2 );
+            CheckWhetherExist_Float( m_rDamageList, 2 );
+            CheckWhetherExist_Int( m_rKillList, 2 );
+            CheckWhetherExist_Int( m_rDeathList, 2 );
+            CheckWhetherExist_Int( m_rRivivalList, 2 );
+            CheckWhetherExist_Int( m_rHSKillList, 2 );
+            CheckWhetherExist_Float( m_rIncomeList, 2 );
+            CheckWhetherExist_Float( m_rConsumList, 2 );
         }
 	}
 	
@@ -251,6 +277,11 @@ public class GameManager : NetworkBehaviour {
             }
         }
 
+        //  マルチフラグ更新
+        if( m_IsMulti != m_rWaveManager.m_IsMultiMode ){
+            m_IsMulti   =   m_rWaveManager.m_IsMultiMode;
+        }
+
         //  状態に応じて処理を行う
 	    switch( m_State ){
             case    State.Ready:        Update_Ready();     break;
@@ -338,7 +369,7 @@ public class GameManager : NetworkBehaviour {
     void    UpdateListItem()
     {
         //  クライアント数
-        int numClient   =   NetworkServer.connections.Count;
+        int numClient   =   NetworkManager.singleton.numPlayers;
         
         //  項目数更新
         CheckWhetherExist_Bool( m_rIsReadyList, numClient );
@@ -573,7 +604,7 @@ public class GameManager : NetworkBehaviour {
             GUI.Label( new Rect( 22.0f, 138.0f, 200.0f, 26.0f ), "Score" );
 
             string[]    difficultName   =   {   "Easy",     "Normal",   "Hard",     "Death March"   };
-            string      modeStr         =   ( m_rWaveManager.m_IsMultiMode )? "Multi" : "Single";
+            string      modeStr         =   ( m_IsMulti )? "Multi" : "Single";
             string      difficultStr    =   difficultName[ ( int )m_Difficulty ];
             string      waveStr         =   m_WaveLevel.ToString();
             string      scoreStr        =   m_GlobalScore.ToString();
@@ -591,8 +622,101 @@ public class GameManager : NetworkBehaviour {
 
         //  ハイスコア
         {
-            GUI.Label( new Rect( 300.0f, 38.0f, 100.0f, 26.0f ), "High Score" );
-            //GUI.Label( new Rect( 200.0f, 40.0f, 300.0f, 26.0f ), "Easy      Normal       Hard        Death March" );
+            //  ラベル
+            GUI.Label( new Rect( 295.0f, 37.0f, 100.0f, 26.0f ), "High Score" ); 
+
+            //  線
+            GUI.BeginGroup( new Rect( 176.0f, 59.0f, 306, 1.0f ) );
+                GUI.Box( new Rect( -1.0f, -6, 308, 12 ), "" );
+            GUI.EndGroup();
+
+            //  罫線
+            for( int i = 0; i < 4; i++ ){
+                //  線
+                GUI.BeginGroup( new Rect( 176.0f, 83.0f + i * 23, 306, 1.0f ) );
+                    GUI.Box( new Rect( -1.0f, -6, 308, 12 ), "" );
+                GUI.EndGroup();
+            }
+
+            //  縦線
+            GUI.BeginGroup( new Rect( 221.0f, 59.0f, 1.0f, 116.0f ) );
+                GUI.Box( new Rect( -1.0f, -5.0f, 12.0f, 149.0f ), "" );
+            GUI.EndGroup();
+
+            //  縦線
+            GUI.BeginGroup( new Rect( 349.0f, 59.0f, 1.0f, 116.0f ) );
+                GUI.Box( new Rect( -1.0f, -5.0f, 12.0f, 149.0f ), "" );
+            GUI.EndGroup();
+
+            //  ラベル 
+            GUI.Label( new Rect( 186.0f, 62.0f, 100.0f, 24.0f ), "Diffy" );
+            GUI.Label( new Rect( 267.0f, 62.0f, 100.0f, 24.0f ), "Single" );
+            GUI.Label( new Rect( 400.0f, 62.0f, 100.0f, 24.0f ), "Multi" );
+
+            //  難易度 
+            GUI.Label( new Rect( 188, 62 + 23 * 1, 100, 24 ), "DM" );
+            GUI.Label( new Rect( 193, 62 + 23 * 2, 100, 24 ), "H" );
+            GUI.Label( new Rect( 193, 62 + 23 * 3, 100, 24 ), "N" );
+            GUI.Label( new Rect( 193, 62 + 23 * 4, 100, 24 ), "E" );
+
+            //  縦線（スコア）
+            GUI.BeginGroup( new Rect( 256.0f, 84.0f, 1.0f, 91.0f ) );
+                GUI.Box( new Rect( -1.0f, -5.0f, 12.0f, 149.0f ), "" );
+            GUI.EndGroup();
+
+            //  縦線（スコア）
+            GUI.BeginGroup( new Rect( 384.0f, 84.0f, 1.0f, 91.0f ) );
+                GUI.Box( new Rect( -1.0f, -5.0f, 12.0f, 149.0f ), "" );
+            GUI.EndGroup();
+
+            //  スコアを表示（シングル）
+            for( int i = 0; i < 4; i++ ){
+                //  ピックアップ  
+                if( m_NewRecord
+                &&  m_rWaveManager.m_IsMultiMode == false
+                &&  ( int )m_Difficulty == 3 - i ){
+                    int space   =   1;
+                    GUI.BeginGroup( new Rect( 222 + space, 84 + space + 23 * i, 34 - space * 2, 22 - space * 2 ), "" );
+                        GUI.Box( new Rect( -5, -5, 34 + 12, 22 + 12 ), "" );
+                    GUI.EndGroup();
+
+                    GUI.BeginGroup( new Rect( 257 + space, 84 + space + 23 * i, 92 - space * 2, 22 - space * 2 ), "" );
+                        GUI.Box( new Rect( -5, -5, 93 + 12, 22 + 12 ), "" );
+                    GUI.EndGroup();
+                }
+
+                if( m_HSDataSingle[ 3 - i ].wave == 0 ) continue;
+
+                //  ウェーブ数
+                FunctionManager.GUILabel( FunctionManager.AR_TYPE.TOP_CENTER, new Vector2( -1.0f, -85.0f - 23 * i ), m_HSDataSingle[ 3 - i ].wave.ToString(),  new Vector2( 0.5f, 1.0f ), new Vector2( 480, 310 ) ); 
+                //  スコア
+                FunctionManager.GUILabel( FunctionManager.AR_TYPE.TOP_CENTER, new Vector2( 63.0f, -85.0f - 23 * i ), m_HSDataSingle[ 3 - i ].score.ToString(), new Vector2( 0.5f, 1.0f ), new Vector2( 480, 310 ) ); 
+            }
+            //  スコアを表示（マルチ）
+            for( int i = 0; i < 4; i++ ){
+                //  ピックアップ  
+                if( m_NewRecord
+                &&  m_rWaveManager.m_IsMultiMode == true
+                &&  ( int )m_Difficulty == 3 - i ){
+                    int space   =   1;
+                    GUI.BeginGroup( new Rect( 350 + space, 84 + space + 23 * i, 34 - space * 2, 22 - space * 2 ), "" );
+                        GUI.Box( new Rect( -5, -5, 34 + 12, 22 + 12 ), "" );
+                        //GUI.Box( new Rect( -5, -5, 34 + 12, 22 + 12 ), "" );
+                    GUI.EndGroup();
+
+                    GUI.BeginGroup( new Rect( 385 + space, 84 + space + 23 * i, 93 - space * 2, 22 - space * 2 ), "" );
+                        GUI.Box( new Rect( -5, -5, 93 + 12, 22 + 12 ), "" );
+                        //GUI.Box( new Rect( -5, -5, 93 + 12, 22 + 12 ), "" );
+                    GUI.EndGroup();
+                }
+
+                if( m_HSDataMulti[ 3 - i ].wave == 0 )  continue;
+
+                //  ウェーブ数
+                FunctionManager.GUILabel( FunctionManager.AR_TYPE.TOP_CENTER, new Vector2( 127.0f, -85.0f - 23 * i ), m_HSDataMulti[ 3 - i ].wave.ToString(),  new Vector2( 0.5f, 1.0f ), new Vector2( 480, 310 ) ); 
+                //  スコア
+                FunctionManager.GUILabel( FunctionManager.AR_TYPE.TOP_CENTER, new Vector2( 191.0f, -85.0f - 23 * i ), m_HSDataMulti[ 3 - i ].score.ToString(), new Vector2( 0.5f, 1.0f ), new Vector2( 480, 310 ) ); 
+            }
         }
         
         //  項目の表示
@@ -707,6 +831,70 @@ public class GameManager : NetworkBehaviour {
         else                    return  false;
     }
 
+    //  ハイスコア関係
+    void    LoadHighScore()
+    {
+        string[]    c_ModeStr   =   {   "Single",   "Multi"     };
+        string[]    c_DiffyStr  =   {   "E",    "N",    "H",    "DM"    };
+        for( int m = 0; m < 2; m++ ){
+            string  modeStr     =   c_ModeStr[ m ];
+            for( int d = 0; d < 4; d++ ){
+                string  diffyStr    =   c_DiffyStr[ d ];
+
+                if( m == 0 ){
+                    m_HSDataSingle[ d ].wave    =   PlayerPrefs.GetInt( modeStr + "_" + diffyStr +  "_Wave", 0 );
+                    m_HSDataSingle[ d ].score   =   PlayerPrefs.GetInt( modeStr + "_" + diffyStr + "_Score", 0 );
+                }
+                else{
+                    m_HSDataMulti[ d ].wave     =   PlayerPrefs.GetInt( modeStr + "_" + diffyStr +  "_Wave", 0 );
+                    m_HSDataMulti[ d ].score    =   PlayerPrefs.GetInt( modeStr + "_" + diffyStr + "_Score", 0 );
+                }
+            }
+        }
+    }
+    void    SaveHighScore()
+    {
+        string[]    c_ModeStr   =   {   "Single",   "Multi"     };
+        string[]    c_DiffyStr  =   {   "E",    "N",    "H",    "DM"    };
+        for( int m = 0; m < 2; m++ ){
+            string  modeStr     =   c_ModeStr[ m ];
+            for( int d = 0; d < 4; d++ ){
+                string  diffyStr    =   c_DiffyStr[ d ];
+
+                if( m == 0 ){
+                    PlayerPrefs.SetInt( modeStr + "_" + diffyStr +  "_Wave", m_HSDataSingle[ d ].wave );
+                    PlayerPrefs.SetInt( modeStr + "_" + diffyStr + "_Score", m_HSDataSingle[ d ].score );
+                }
+                else{
+                    PlayerPrefs.SetInt( modeStr + "_" + diffyStr +  "_Wave", m_HSDataMulti[ d ].wave );
+                    PlayerPrefs.SetInt( modeStr + "_" + diffyStr + "_Score", m_HSDataMulti[ d ].score );
+                }
+            }
+        }
+    }
+
+    bool    UpdateHighScore( GameDifficulty _Difficulty, bool _IsMulti, int _Wave, int _Score )
+    {
+        if( _IsMulti ){
+            if( _Score >= m_HSDataMulti[ ( int )_Difficulty ].score ){
+                m_HSDataMulti[ ( int )_Difficulty ].score   =   _Score;
+                m_HSDataMulti[ ( int )_Difficulty ].wave    =   _Wave;
+
+                return  true;
+            }
+        }
+        else{
+            if( _Score >= m_HSDataSingle[ ( int )_Difficulty ].score ){
+                m_HSDataSingle[ ( int )_Difficulty ].score  =   _Score;
+                m_HSDataSingle[ ( int )_Difficulty ].wave   =   _Wave;
+
+                return  true;
+            }
+        }
+
+        return  false;
+    }
+
     //  リスト操作
     public  void    SetToList_IsReady( int _ClientID, bool _IsReady )
     {
@@ -726,6 +914,8 @@ public class GameManager : NetworkBehaviour {
     }
     public  void    SetToList_Score( int _ClientID, float _AddScore )
     {
+        if( m_State > State.InGame )    return;
+
         //  項目がなければ拡張する
         CheckWhetherExist_Float( m_rScoreList, _ClientID + 1 );
 
@@ -734,6 +924,8 @@ public class GameManager : NetworkBehaviour {
     }
     public  void    SetToList_Damage( int _ClientID, float _AddDamage )
     {
+        if( m_State > State.InGame )    return;
+
         //  項目がなければ拡張する
         CheckWhetherExist_Float( m_rDamageList, _ClientID + 1 );
 
@@ -742,6 +934,8 @@ public class GameManager : NetworkBehaviour {
     }
     public  void    SetToList_Kill( int _ClientID, int _AddValue )
     {
+        if( m_State > State.InGame )    return;
+
         //  項目がなければ拡張する
         CheckWhetherExist_Int( m_rKillList, _ClientID + 1 );
 
@@ -750,6 +944,8 @@ public class GameManager : NetworkBehaviour {
     }
     public  void    SetToList_Death( int _ClientID, int _AddValue )
     {
+        if( m_State > State.InGame )    return;
+
         //  項目がなければ拡張する
         CheckWhetherExist_Int( m_rDeathList, _ClientID + 1 );
 
@@ -758,6 +954,8 @@ public class GameManager : NetworkBehaviour {
     }
     public  void    SetToList_Rivival( int _ClientID, int _AddValue )
     {
+        if( m_State > State.InGame )    return;
+
         //  項目がなければ拡張する
         CheckWhetherExist_Int( m_rRivivalList, _ClientID + 1 );
 
@@ -766,6 +964,8 @@ public class GameManager : NetworkBehaviour {
     }
     public  void    SetToList_HSKill( int _ClientID, int _AddValue )
     {
+        if( m_State > State.InGame )    return;
+
         //  項目がなければ拡張する
         CheckWhetherExist_Int( m_rHSKillList, _ClientID + 1 );
 
@@ -774,6 +974,8 @@ public class GameManager : NetworkBehaviour {
     }
     public  void    SetToList_Income( int _ClientID, float _AddValue )
     {
+        if( m_State > State.InGame )    return;
+
         //  項目がなければ拡張する
         CheckWhetherExist_Float( m_rIncomeList, _ClientID + 1 );
 
@@ -782,6 +984,8 @@ public class GameManager : NetworkBehaviour {
     }
     public  void    SetToList_Consum( int _ClientID, float _AddValue )
     {
+        if( m_State > State.InGame )    return;
+
         //  項目がなければ拡張する
         CheckWhetherExist_Float( m_rConsumList, _ClientID + 1 );
 
@@ -1020,6 +1224,18 @@ public class GameManager : NetworkBehaviour {
     {
         //  BGM変更 
         BGMManager.ChangeBGM( "BGM_Result", 0.5f, 1.0f, 6.0f, 6.0f );
+
+        //  ハイスコアチェック
+        m_NewRecord     =   UpdateHighScore( m_Difficulty, m_IsMulti, m_WaveLevel, ( int )m_GlobalScore );
+        if( m_NewRecord ){
+            //  ハイスコアを保存
+            SaveHighScore();
+        }
+
+        //  終了
+        //SoundController.PlayNow( "Voice_G2D_Result", 16.0f, 0.1f, 1.0f, 10.0f ); 
+        if( !m_NewRecord )  SoundController.PlayNow( "Voice_G2D_Result_" + Random.Range( 0, 2 ), 16.4f, 0.1f, 1.0f, 10.0f );
+        else                SoundController.PlayNow( "Voice_G2D_Result_" + Random.Range( 2, 4 ), 16.4f, 0.1f, 1.0f, 10.0f );
     }
     void    StandbyProc_GameOverInServer()
     {
@@ -1151,12 +1367,16 @@ public class GameManager : NetworkBehaviour {
     [ Server ]
     public  void            AddResource( float _AddValue )
     {
+        if( m_State > State.InGame )    return;
+
         m_Resource      +=  _AddValue;
         m_Resource      =   Mathf.Max( m_Resource, 0.0f );
     }
     [ Server ]
     public  void            AddGlobalScore( float _AddScore, int _ClientID )
     {
+        if( m_State > State.InGame )    return;
+
         m_GlobalScore   +=  _AddScore;
 
         //  個人スコア加算

@@ -28,10 +28,10 @@ public class RTSCloneAnime_Control : NetworkBehaviour {
 
         //  速度を計算
         Vector3 vMove       =   transform.position - m_PrevPos;
-        float   moveSpeed   =   vMove.magnitude / vMove.magnitude / Time.deltaTime;
+        float   moveSpeed   =   vMove.magnitude;
 
         //  アニメーション
-        if( moveSpeed > 0.1f )  m_rAnimeControl.ChangeStateMove( moveSpeed );
+        if( moveSpeed > 0.1f )  m_rAnimeControl.ChangeStateMove( moveSpeed / moveSpeed / Time.deltaTime );
         else                    m_rAnimeControl.ChangeStateIdle();
 
         //  現在の座標を保存
