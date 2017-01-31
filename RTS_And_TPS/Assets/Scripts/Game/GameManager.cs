@@ -42,6 +42,7 @@ public class GameManager : NetworkBehaviour {
 
     //  公開パラメータ
     public  string                  c_RetryScene    =   "";
+    public  string                  c_QuitScene     =   "";
     public  Font                    c_Font          =   null;
     public  GameObject              c_StageDrum     =   null;
 
@@ -182,7 +183,8 @@ public class GameManager : NetworkBehaviour {
     {
         //  タイムスケール更新
         if( m_State == State.InGame
-        ||  m_State == State.CountDown )    Time.timeScale  =   m_GameSpeed;
+        ||  m_State == State.CountDown
+        ||  m_State == State.WaveReady )    Time.timeScale  =   m_GameSpeed;
         else                                Time.timeScale  =   1.0f;
 
         //  共通の処理
@@ -382,7 +384,7 @@ public class GameManager : NetworkBehaviour {
         {
             Rect    rect    =   FunctionManager.AdjustRectCanvasToGUI(
                 FunctionManager.AR_TYPE.TOP_RIGHT,
-                new Rect( -96.0f, -68.0f, 100, 20 )
+                new Rect( -54.0f, -110.0f, 100, 20 )
             );
             if( GUI.Button( rect, "x " + ( int )m_GameSpeed ) ){
                 m_rLinkManager.m_rLocalNPControl.CmdChange_GameSpeed( ( m_GameSpeed > 1.0f )? 1.0f : 2.0f );
@@ -430,9 +432,8 @@ public class GameManager : NetworkBehaviour {
                     SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.05f, 1.0f, 1.0f );
                 }
 
-                // 
-                if( m_rDifficultyText )     m_rDifficultyText.text  = difcultStr;
-
+                //  表示を更新
+                if( m_rDifficultyText )     m_rDifficultyText.text  =   difcultStr;
             }
         }
 
@@ -496,27 +497,31 @@ public class GameManager : NetworkBehaviour {
             PrintMessage( "お疲れ様でした" );
         }
 
-        //  リザルト画面表示
-        if( 
-            m_State == State.Reuslt 
-        &&  
-        m_StateTimer >= 1.5f
+        //  ほかのプレイヤーを待っています 
+        if( m_State == State.Reuslt
+        &&  GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) ){
+            PrintMessage( "他のプレイヤーを待っています" );
+        }
+
+        //  リザルト画面表示 
+        if( m_State == State.Reuslt 
+        &&  m_StateTimer >= 1.5f
         &&  !GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) )
         {
             ResultButton_Input  input;
             input   =   PrintResult( m_StateTimer - 1.7f );
 
             //  続けるボタンが押された
-            if( input.pushOK )  m_rLinkManager.m_rLocalNPControl.CmdSend_GMIsReady( true );
-            //  やめるボタンが押された
-            if( input.pushQuit ){}
-        }
+            if( input.pushOK )      m_rLinkManager.m_rLocalNPControl.CmdSend_GMIsReady( true );
+            //  やめるボタンが押された 
+            if( input.pushQuit ){
+                NetworkManager.singleton.GetComponent< MyNetworkManagerHUD >().Stop();
 
-        //  ほかのプレイヤーを待っています 
-        if( m_State == State.Reuslt
-        &&  GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) ){
-            PrintMessage( "他のプレイヤーを待っています" );
-        }
+                NetworkManager.singleton.dontDestroyOnLoad  =   false;
+                DestroyImmediate( NetworkManager.singleton.gameObject );
+                SceneManager.LoadScene( c_QuitScene );
+            }
+        }        
     }
 
     //  メッセージを表示
@@ -580,7 +585,7 @@ public class GameManager : NetworkBehaviour {
     {
         _Timer  =   10000.0f;
 
-        //  ボタンの入力データ
+        //  ボタンの入力データ 
         ResultButton_Input  inputData   =   new ResultButton_Input( false, false );
 
         //  グループ開始
@@ -598,10 +603,14 @@ public class GameManager : NetworkBehaviour {
 
         //  結果発表
         {
-            GUI.Label( new Rect( 22.0f, 50.0f, 200.0f, 26.0f ), "Mode" ); 
-            GUI.Label( new Rect( 22.0f, 76.0f, 200.0f, 26.0f ), "Difficult" );
-            GUI.Label( new Rect( 22.0f, 112.0f, 200.0f, 26.0f ), "Wave" );
-            GUI.Label( new Rect( 22.0f, 138.0f, 200.0f, 26.0f ), "Score" );
+            float   offsetY     =   0;
+            float   offsetY1    =   -6;
+            float   offsetY2    =   10;
+
+            GUI.Label( new Rect( 18.0f, offsetY + offsetY1 + 50.0f, 200.0f, 26.0f ), "Mode" ); 
+            GUI.Label( new Rect( 18.0f, offsetY + offsetY1 + 76.0f, 200.0f, 26.0f ), "Difficult" );
+            GUI.Label( new Rect( 18.0f, offsetY + offsetY2 + 112.0f, 200.0f, 26.0f ), "Wave" );
+            GUI.Label( new Rect( 18.0f, offsetY + offsetY2 + 138.0f, 200.0f, 26.0f ), "Score" );
 
             string[]    difficultName   =   {   "Easy",     "Normal",   "Hard",     "Death March"   };
             string      modeStr         =   ( m_IsMulti )? "Multi" : "Single";
@@ -609,10 +618,20 @@ public class GameManager : NetworkBehaviour {
             string      waveStr         =   m_WaveLevel.ToString();
             string      scoreStr        =   m_GlobalScore.ToString();
              
-            FunctionManager.GUILabel( FunctionManager.AR_TYPE.TOP_RIGHT, new Vector2( -326.0f,  -50.0f ), modeStr,      new Vector2( 1.0f, 1.0f ), new Vector2( 480, 310 ) );
-            FunctionManager.GUILabel( FunctionManager.AR_TYPE.TOP_RIGHT, new Vector2( -326.0f,  -76.0f ), difficultStr, new Vector2( 1.0f, 1.0f ), new Vector2( 480, 310 ) );
-            FunctionManager.GUILabel( FunctionManager.AR_TYPE.TOP_RIGHT, new Vector2( -326.0f, -112.0f ), waveStr,      new Vector2( 1.0f, 1.0f ), new Vector2( 480, 310 ) );
-            FunctionManager.GUILabel( FunctionManager.AR_TYPE.TOP_RIGHT, new Vector2( -326.0f, -138.0f ), scoreStr,     new Vector2( 1.0f, 1.0f ), new Vector2( 480, 310 ) );
+            FunctionManager.GUILabel( FunctionManager.AR_TYPE.TOP_RIGHT, new Vector2( -324.0f,  -50.0f - offsetY - offsetY1 ), modeStr,      new Vector2( 1.0f, 1.0f ), new Vector2( 480, 310 ) );
+            FunctionManager.GUILabel( FunctionManager.AR_TYPE.TOP_RIGHT, new Vector2( -324.0f,  -76.0f - offsetY - offsetY1 ), difficultStr, new Vector2( 1.0f, 1.0f ), new Vector2( 480, 310 ) );
+            FunctionManager.GUILabel( FunctionManager.AR_TYPE.TOP_RIGHT, new Vector2( -324.0f, -112.0f - offsetY - offsetY2 ), waveStr,      new Vector2( 1.0f, 1.0f ), new Vector2( 480, 310 ) );
+            FunctionManager.GUILabel( FunctionManager.AR_TYPE.TOP_RIGHT, new Vector2( -324.0f, -138.0f - offsetY - offsetY2 ), scoreStr,     new Vector2( 1.0f, 1.0f ), new Vector2( 480, 310 ) );
+
+            //  ハイスコア更新
+            {
+                GUI.BeginGroup( new Rect( 0, 97, 174, 23 ) );
+                    GUI.Box( new Rect( -10, 0, 260, 20 ), "" );
+                    if( m_NewRecord ){
+                        GUI.Label( new Rect( 13, 0, 160, 26 ), "ハイスコア更新！" );
+                    }
+                GUI.EndGroup();
+            }
         }
 
         //  線
@@ -774,7 +793,7 @@ public class GameManager : NetworkBehaviour {
                     GUIStyle    fontStyle   =   new GUIStyle( GUI.skin.label );
                     fontStyle.alignment     =   TextAnchor.MiddleRight;
 
-                    string      content     =   ( m_rScoreList.Count > playerID )? ( ( int )m_rScoreList[ playerID ] ).ToString() : "_______";
+                    string      content     =   ( m_rScoreList.Count > playerID )? ( ( int )m_rScoreList[ playerID ] ).ToString().PadLeft( 7, '_' ) : "_______";
                     Vector2     contentSize =   fontStyle.CalcSize( new GUIContent( content ) );
 
                     GUI.color           =   Color.white;
@@ -1191,6 +1210,9 @@ public class GameManager : NetworkBehaviour {
         &&  m_WaveLevel % 3 == 0 ){
             ReplaceStageDrum();
         }
+
+        //  ゲームスピードをリセット
+        m_GameSpeed     =   1.0f;
     }
     //  ウェーブ開始処理
     void    StandbyProc_Wave()
@@ -1386,6 +1408,17 @@ public class GameManager : NetworkBehaviour {
     public  void            SetDifficulty( GameDifficulty _Difficulty )
     {
         m_Difficulty    =   _Difficulty;
+    }
+    [ Server ]
+    public  void            OnConnectedNewPlayer( int _ConnectID )
+    {
+        RpcRecordNotice_ToOther( "新たなプレイヤーが参戦しました", _ConnectID );  
+        RpcRecordNotice( "ゲームに参加しました", _ConnectID );
+    }
+    [ Server ]
+    public  void            OnDisconnectedPlayer( int _ConnectID )
+    {
+        RpcRecordNoticeE_ToOther( GetFromList_PlayerName( _ConnectID ) + "  が離脱しました", _ConnectID );  
     }
 
     //  取得

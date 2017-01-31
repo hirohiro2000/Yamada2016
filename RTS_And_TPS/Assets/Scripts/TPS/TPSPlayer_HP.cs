@@ -50,8 +50,9 @@ public class TPSPlayer_HP : NetworkBehaviour {
     private bool                    m_RecoveryNow   =   false;
 
     //  無敵タイマー
-    private float                   c_InvTime       =   1.0f;
+    private float                   c_InvTime       =   0.1f;
     private float                   m_InvTimer      =   0.0f;
+    private bool                    m_InvUsed       =   false;
 
     //  外部へのアクセス
     private DamageFilter_Control    m_rDFCtrl       =   null;
@@ -300,6 +301,10 @@ public class TPSPlayer_HP : NetworkBehaviour {
 
             //  現在の体力を保存
             m_PrevHP    =   m_CurHP;
+        }
+        //  体力が満タンになったら無敵判定復活
+        if( m_CurHP >= m_MaxHP ){
+            m_InvUsed   =   false;
         }
 
         //  瀕死時の処理
@@ -559,12 +564,13 @@ public class TPSPlayer_HP : NetworkBehaviour {
         m_CurHP =   Mathf.Min( m_CurHP, m_MaxHP );
 
         //  元のHPが４割以上だったら最後に少し残す
-        if( prevHP  >  4
-        &&  m_CurHP <= 1 ){
+        if( m_CurHP   <= 1
+        &&  m_InvUsed == false ){
             m_CurHP     =   Mathf.Max( 1, m_CurHP );
 
             //  若干の無敵時間を設定
             m_InvTimer  =   c_InvTime;
+            m_InvUsed   =   true;
         }
 
         //  ダメージを記録

@@ -27,6 +27,9 @@ public class PlayerCommander_Control : NetworkBehaviour {
 
             //  プレイヤー名取得
             m_EditName          =   PlayerPrefs.GetString( "PlayerName", "Null" );
+
+            //  プレイヤー名仮送信
+            CmdSendPlayerName( m_EditName );
         }
     }
 	

@@ -31,7 +31,7 @@ public class RTSCloneAnime_Control : NetworkBehaviour {
         float   moveSpeed   =   vMove.magnitude;
 
         //  アニメーション
-        if( moveSpeed > 0.1f )  m_rAnimeControl.ChangeStateMove( moveSpeed / moveSpeed / Time.deltaTime );
+        if( moveSpeed > 0.05f )  m_rAnimeControl.ChangeStateMove( moveSpeed / moveSpeed / Time.deltaTime );
         else                    m_rAnimeControl.ChangeStateIdle();
 
         //  現在の座標を保存

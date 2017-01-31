@@ -9,7 +9,10 @@ public class MyNetworkManager : NetworkManager {
 	// Use this for initialization 
 	void    Start()
     {
-	    
+        //connectionConfig.DisconnectTimeout      =   1000 * 10;
+        //connectionConfig.ConnectTimeout         =   1000 * 10;
+
+        //connectionConfig.MaxConnectionAttempt   =   250;
 	}
 	
 	// Update is called once per frame
@@ -17,6 +20,25 @@ public class MyNetworkManager : NetworkManager {
     {
 	    
 	}
+    public  override    void    OnServerConnect( NetworkConnection _Connect )
+    {
+        base.OnServerConnect( _Connect );
+
+        GameManager rGM =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
+        if( !rGM )  return;
+
+        rGM.OnConnectedNewPlayer( _Connect.connectionId );
+    }
+    public  override    void    OnServerDisconnect( NetworkConnection _Connect )
+    {
+        base.OnServerDisconnect( _Connect );
+
+        GameManager rGM =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
+        if( !rGM )  return;
+
+        rGM.OnDisconnectedPlayer( _Connect.connectionId );
+    }
+
 
     public  override    void    OnServerSceneChanged( string _SceneName )
     {

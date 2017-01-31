@@ -211,7 +211,7 @@ public class TPSJumpController : MonoBehaviour {
         //  自分のキャラクター以外は処理を行わない
         if( !m_rIdentity.isLocalPlayer )    return;
 
-		GUI.Label(new Rect(0, 0, Screen.width, Screen.height), "fallPower:" + fallPower);
+		//GUI.Label(new Rect(0, 0, Screen.width, Screen.height), "fallPower:" + fallPower);
 	}
 
 }
