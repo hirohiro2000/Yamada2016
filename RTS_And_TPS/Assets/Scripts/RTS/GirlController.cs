@@ -149,10 +149,13 @@ public class GirlController : NetworkBehaviour
 		
         //  自分のキャラクターの場合のみ処理を行う
         if( !isLocalPlayer )        return;
-       
-		//  瀕死状態では処理を行わない
-        if( m_rPlayerHP.m_IsDying ) return;
-        
+
+        //  瀕死状態では処理を行わない
+        if (m_rPlayerHP.m_IsDying)
+        {
+            m_uiGirlTask.ForceClear();
+            return;
+        }
         //  ジャンプする
         if( Input.GetKeyDown( KeyCode.Space )
         &&  Mathf.Abs( m_rRigid.velocity.y ) < 0.01f ){
@@ -305,7 +308,7 @@ public class GirlController : NetworkBehaviour
         Vector3 editTarget = m_resourceInformation.ComputeGridPosition( transform.position );
 
         // 更新
-        UIGirlTaskSelect.RESULT task = m_uiGirlTask.Select( editTarget );
+        UIGirlTaskSelect.RESULT task = m_uiGirlTask.Select( editTarget, Mathf.Abs( m_rRigid.velocity.y ) >= 0.01f );
         switch ( task )
         {
             case UIGirlTaskSelect.RESULT.eOK:           Create(m_uiGirlTask.m_editTargetPosition,m_itemCntroller.GetForcus());     break;

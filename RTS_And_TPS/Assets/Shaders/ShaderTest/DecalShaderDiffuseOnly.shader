@@ -10,9 +10,14 @@ Shader "Decal/DecalShader"
 	{
 		Pass
 		{
+			Tags{ "RenderType" = "Transparent" "Queue" = "Transparent" }
 			Fog { Mode Off } // no fog in g-buffers pass
-			ZWrite Off
 			Blend SrcAlpha OneMinusSrcAlpha
+
+			ZTest    Always
+			ZWrite   Off
+			Lighting Off 
+			Cull     Off 
 
 			CGPROGRAM
 			#pragma target 3.0
