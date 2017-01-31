@@ -369,6 +369,7 @@ GameObject:
   - 114: {fileID: 11434552}
   - 114: {fileID: 11483856}
   - 114: {fileID: 11458216}
+  - 114: {fileID: 11403414}
   m_Layer: 0
   m_Name: CDestructEnemyS
   m_TagString: Enemy
@@ -1376,6 +1377,17 @@ Light:
   m_ShadowRadius: 0
   m_ShadowAngle: 0
   m_AreaSize: {x: 1, y: 1}
+--- !u!114 &11403414
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 161792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36dbf9a6f87378d4b941c712039785d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11405416
 MonoBehaviour:
   m_ObjectHideFlags: 1

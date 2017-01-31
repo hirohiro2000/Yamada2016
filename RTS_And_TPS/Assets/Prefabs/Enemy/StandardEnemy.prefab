@@ -120,6 +120,7 @@ GameObject:
   - 114: {fileID: 11411304}
   - 114: {fileID: 11471124}
   - 114: {fileID: 11411702}
+  - 114: {fileID: 11494596}
   m_Layer: 0
   m_Name: StandardEnemy
   m_TagString: Enemy
@@ -1355,6 +1356,7 @@ MonoBehaviour:
   MaxmoveSpeed: 20
   MaxAcceleration: 10
   AttackPowerIncrementRate: 0
+  MaxAttackPower: 1
   BurstIncrementRate: 0.2
   MaxBurstShot: 6
 --- !u!114 &11418742
@@ -1382,6 +1384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_ExplodedObj: {fileID: 106676, guid: 665a2285f8096464685e5624d31fe644, type: 2}
   c_DeathEmission: []
+  c_DeathExplosion: {fileID: 0}
   c_HitEmission: {fileID: 0}
   c_WeakEmission: {fileID: 0}
   c_THitEmission: {fileID: 0}
@@ -1778,6 +1781,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f5904dfb8560f654fb306c0c74927c0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11494596
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 109252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36dbf9a6f87378d4b941c712039785d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &11496752

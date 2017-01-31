@@ -352,6 +352,7 @@ GameObject:
   - 114: {fileID: 11434552}
   - 114: {fileID: 11483856}
   - 114: {fileID: 11458216}
+  - 114: {fileID: 11403958}
   m_Layer: 0
   m_Name: CrowdEnemyDestruct
   m_TagString: Enemy
@@ -1142,6 +1143,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.3, z: 0.5}
   m_Center: {x: 0, y: 0.8, z: 0}
+--- !u!114 &11403958
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 161792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36dbf9a6f87378d4b941c712039785d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11405416
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1497,6 +1509,7 @@ MonoBehaviour:
   c_ExplodedObj: {fileID: 102618, guid: c66536897f4a0164e91d83e720dfdd34, type: 2}
   c_DeathEmission:
   - {fileID: 158640, guid: b5436835d1c6a274b91afac7de96a911, type: 2}
+  c_DeathExplosion: {fileID: 0}
   c_HitEmission: {fileID: 158640, guid: 38f5b6ca5be88b24fa93fb9005151237, type: 2}
   c_WeakEmission: {fileID: 158640, guid: 87f7f9010dff2b24dab8eaa15d0461f3, type: 2}
   c_THitEmission: {fileID: 158640, guid: e30cf765421362b4db85bbf113a13ca7, type: 2}

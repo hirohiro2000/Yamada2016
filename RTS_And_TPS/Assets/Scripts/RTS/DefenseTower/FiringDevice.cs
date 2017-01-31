@@ -122,17 +122,28 @@ public class FiringDevice : NetworkBehaviour
 	void Targetting()
     {
 		var trs = m_rEnemyShell.GetNearEnemyTransform( m_orientatedTransform.position, m_resourceParam.GetCurLevelParam().range );
-        if( trs )
-        {
-            Vector3 forward = trs.GetComponent<DeviationCalculator>().Get() - m_orientatedTransform.position;
-            forward.Normalize();
-        
-			//	即時
-			//m_orientatedTransform.rotation	=   Quaternion.LookRotation( forward );
 
-			//	補間
-			m_orientatedTransform.rotation	=	Quaternion.Slerp( m_orientatedTransform.rotation, Quaternion.LookRotation( forward ), Time.deltaTime*5.0f );
-        }
+		if( trs == null )
+		{
+			Debug.Log("enemy transform is null");
+			return;
+		}
+
+        if( trs.GetComponent<DeviationCalculator>() == null )
+		{
+			Debug.Log("enemy DeviationCalculator is null");
+			return;
+		}
+        
+		//
+		Vector3 forward = trs.GetComponent<DeviationCalculator>().Get() - m_orientatedTransform.position;
+		forward.Normalize();
+        
+		//	即時
+		//m_orientatedTransform.rotation	=   Quaternion.LookRotation( forward );
+
+		//	補間
+		m_orientatedTransform.rotation	=	Quaternion.Slerp( m_orientatedTransform.rotation, Quaternion.LookRotation( forward ), Time.deltaTime*5.0f );
     }
 
 
