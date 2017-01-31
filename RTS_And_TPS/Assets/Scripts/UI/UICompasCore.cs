@@ -13,7 +13,7 @@ public class UICompasCore : MonoBehaviour
 
     GameObject   m_rPlayerOriginal = null;
 
-    class DATA
+    class DATA                                             
     {
         public GameObject reference;
         public GameObject dst;
@@ -59,6 +59,8 @@ public class UICompasCore : MonoBehaviour
 
                 if ( m_rPlayer == playerList[ i ] )  continue;
               
+                if ( playerList[ i ].GetComponent<PlayerCommander_Control>() )  continue;
+
                 //  リストに登録されているかチェック
                 if( CheckWhetherRegistedInList( playerList[ i ] ) )  continue;
 
@@ -98,6 +100,15 @@ public class UICompasCore : MonoBehaviour
             else
             {
                 item.dst.GetComponent<RawImage>().color = Color.white;
+            }
+
+            if ( item.reference.GetComponent<GirlController>() && item.reference.GetComponent<GirlController>().IsRide() )
+            {
+                item.dst.SetActive(false);
+            }
+            else
+            {
+                item.dst.SetActive(true);
             }
 
         }

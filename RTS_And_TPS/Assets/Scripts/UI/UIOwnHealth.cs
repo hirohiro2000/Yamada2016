@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class UIOwnHealth : MonoBehaviour
@@ -43,6 +44,8 @@ public class UIOwnHealth : MonoBehaviour
 
                 m_ownFighter = playerList[i].GetComponent<TPSPlayer_HP>();
 
+                transform.GetChild(4).GetComponent<Text>().text = playerList[i].GetComponent<NetPlayer_Control>().c_PlayerName;  
+                             
                 break;
 
             }
@@ -56,15 +59,18 @@ public class UIOwnHealth : MonoBehaviour
             if (m_uiGirlTask.gameObject.activeInHierarchy)
             {
                 m_uiGirlTask.UpPanel();
-            }
+            }            
             m_onetimeUpdate = false;
         }
 
         RectTransform rt = GetComponent<RectTransform>();
-        if ( rt.localPosition.x < -485.6 )
+
+        Text uiName = transform.GetChild(4).GetComponent<Text>();
+        float targetX = -509.97f + uiName.text.Length * uiName.fontSize * uiName.transform.localScale.x * 0.5f;
+        if ( rt.localPosition.x < targetX )
         {
             Vector3 p = rt.localPosition;
-            p.x += ( -485.6f - p.x ) * 0.25f;
+            p.x += ( targetX - p.x ) * 0.25f;                          
             rt.localPosition = p;
         }
                  

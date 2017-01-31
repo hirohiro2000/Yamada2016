@@ -357,9 +357,13 @@ public class TPSShotController : NetworkBehaviour {
 
 		}
 
-        m_uiWeapon = GameObject.Find("TPS_HUD").transform.FindChild("Weapon").GetChild(m_ID+1).GetComponent<UIWeapon>();
-        m_uiWeapon.Initialize();
-        m_uiWeapon.Change( 0 );
+		if (m_rParentIdentity.isLocalPlayer == true)
+        {
+            m_uiWeapon = GameObject.Find("TPS_HUD").transform.FindChild("Weapon").GetChild(m_ID+1).GetComponent<UIWeapon>();
+            m_uiWeapon.Initialize();
+            m_uiWeapon.Change( 0 );
+        }
+
 
 		return;
 	

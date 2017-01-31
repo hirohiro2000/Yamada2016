@@ -120,8 +120,8 @@ public class ResourceCreator : NetworkBehaviour
 
 		//
 		m_resourceRangeGuideRef.SetActive( true );
-		m_resourceRangeGuideRef.transform.position		= gridPos;
-		m_resourceRangeGuideRef.transform.localScale	= new Vector3( range, 0, range );
+		m_resourceRangeGuideRef.transform.position		    = gridPos;
+		m_resourceRangeGuideRef.transform.localScale	    = new Vector3( range, 0, range );
 	}
 
 

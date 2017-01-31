@@ -85,12 +85,14 @@ public class UIGirlTaskSelect : MonoBehaviour
     }
 
 
-    public	GameObject			m_uiResourceBG   			= null;
-    public	GameObject			m_uiForcusFrame 			= null;
-    public	GameObject			m_uiConvert 				= null;
-	public	GameObject			m_towerInfoPanel			= null;
-	public	GameObject			m_towerInfoPanelEx			= null;
-	public	GameObject			m_workingAreaAsset          = null;
+    public	GameObject			m_uiResourceBG   			        = null;
+    public	GameObject			m_uiForcusFrame 			        = null;
+    public	GameObject			m_uiConvert 				        = null;
+	public	GameObject			m_towerInfoPanel			        = null;
+	public	GameObject			m_towerInfoPanelEx			        = null;
+	public	GameObject			m_towerInfoPanelCrystalFarm			= null;
+	public	GameObject			m_towerInfoPanelCrystalFarmEx       = null;
+	public	GameObject			m_workingAreaAsset                  = null;
 
     public  Vector3             m_editTargetPosition        { get; set; }
     public  Vector3             m_computePosition           { get; set; }
@@ -139,7 +141,7 @@ public class UIGirlTaskSelect : MonoBehaviour
     }
 
     // ＵＩ情報を更新をして行うべきタスクを戻り値として返す
-    public RESULT Select( Vector3 girlPosition )
+    public RESULT Select( Vector3 girlPosition, bool isJump )
     {
         if ( m_isInit == false )
         {
@@ -150,7 +152,7 @@ public class UIGirlTaskSelect : MonoBehaviour
         m_computePosition = girlPosition;
         m_rightDoublePushChecker.Update();
         UpdateGuide( girlPosition );
-        UpdateEvent( girlPosition );
+        UpdateEvent( girlPosition, isJump );                    
         UpdateEveryTime( girlPosition );
 
         if (m_uiConvert.activeInHierarchy)
@@ -170,7 +172,7 @@ public class UIGirlTaskSelect : MonoBehaviour
     //---------------------------------------------------------------------
     //      入力情報の更新
     //---------------------------------------------------------------------   	
-    void UpdateEvent(Vector3 computePosition)
+    void UpdateEvent(Vector3 computePosition, bool isJump )
     {
         if ( !m_uiConvert.activeInHierarchy )
         {
@@ -188,7 +190,7 @@ public class UIGirlTaskSelect : MonoBehaviour
                 SoundController.PlayNow( "UI_MenuOpen", 0.0f, 0.1f, 1.0f, 1.0f );
 
             }        
-            else if ( !m_uiResourceBG.activeInHierarchy && ( Input.GetKeyDown( KeyCode.F ) || m_rightDoublePushChecker.GetDown() == DoublePushChecker.State.DoublePush ) )
+            else if ( !m_uiResourceBG.activeInHierarchy && !isJump && ( Input.GetKeyDown( KeyCode.F ) || m_rightDoublePushChecker.GetDown() == DoublePushChecker.State.DoublePush ) )
             {
                 ClikedForcusFrame();
                 m_rightDoublePushChecker.Reset();
@@ -203,9 +205,9 @@ public class UIGirlTaskSelect : MonoBehaviour
             }
             if ( Input.GetKeyDown( KeyCode.C ) )
             {
-                SelectBreak();
+                SelectBreak();                 
             }
-            if ( Input.GetKeyDown(KeyCode.X ) || m_rightDoublePushChecker.GetDown() == DoublePushChecker.State.Push )
+            if ( Input.GetKeyDown(KeyCode.X ) || m_rightDoublePushChecker.GetDown() == DoublePushChecker.State.Push || isJump || !InRangeWorkArea(computePosition) )
             {
                 m_uiConvert.SetActive( false );
 
@@ -231,32 +233,43 @@ public class UIGirlTaskSelect : MonoBehaviour
     //---------------------------------------------------------------------   	
     void UpdateGuide(Vector3 computePosition)
     {
-        if ( m_uiConvert.activeInHierarchy )
+        if ( TowerInfoActiveInHierarchy() || m_uiConvert.activeInHierarchy )
         {
-            var param = m_resourceInformation.GetResourceParamFromPosition(computePosition);
             m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = true;
-
-            if (!m_towerInfoPanelEx.activeInHierarchy)
+            
+            var param = m_resourceInformation.GetResourceParamFromPosition(m_editTargetPosition);
+            if ( param )
             {
-                m_resourceCreator.UpdateGuideResource(m_itemController.GetForcus(), m_editTargetPosition);
+                m_resourceCreator.UpdateGuideRange( m_editTargetPosition, param.GetCurLevelParam().range );
+
+                // ガイドの位置補正
+                RaycastHit  rHit        = new RaycastHit();
+                Ray         rRay        = new Ray( computePosition, Vector3.down );
+                int         layerMask   = LayerMask.GetMask( "Field" );
+                //  レイ判定
+                if (Physics.Raycast(rRay, out rHit, float.MaxValue, layerMask))
+                {
+                    computePosition = rHit.point;
+                }
+                m_resourceInformation.m_gridSplitSpacePlane.transform.position  = computePosition;
+                m_resourceInformation.m_gridSplitSpacePlane.transform.position += new Vector3(0, 0.04f, 0);
             }
             else
             {
-                m_resourceCreator.SetGuideVisibleDisable();
-            }
+                m_resourceCreator.UpdateGuideResource(m_itemController.GetForcus(), m_editTargetPosition);
+                m_resourceCreator.UpdateGuideRange( m_itemController.GetForcus(), m_editTargetPosition );
+            }            
 
             m_workingArea.SetActive(true);
-            m_workingArea.transform.position = m_editTargetPosition;
+            m_workingArea.transform.position = m_editTargetPosition;           
         }
         else
         {
             m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = false;
             m_resourceInformation.m_gridSplitSpacePlane.transform.position  = computePosition;
             m_resourceInformation.m_gridSplitSpacePlane.transform.position += new Vector3(0, 0.04f, 0);
-
             m_resourceCreator.SetGuideVisibleDisable();
             m_workingArea.SetActive(false);
-
         }
 
 
@@ -336,49 +349,85 @@ public class UIGirlTaskSelect : MonoBehaviour
         // フォーカス変更
         m_itemController.SetForcus( forcusID );
 
-        if (forcusID == -1)
-        {
-            m_towerInfoPanel.GetComponent<AppearInfopanel>().SetActive(false);
-        }
-        else    
+        if (forcusID != -1)
         {                   
 		    //	リソースのUI設定
-            m_towerInfoPanel.GetComponent<AppearInfopanel>().SetActive(true);
 		    var param = m_itemController.GetResourceParam( forcusID );
-		    m_towerInfoPanel.transform.FindChild("Kind").GetComponent<Text>().text      = param.m_name;
-		    m_towerInfoPanel.transform.FindChild("Summary").GetComponent<Text>().text   = "概要:　　　" + param.m_summary;
-            m_towerInfoPanel.transform.FindChild("HP").GetComponent<Text>().text        = "体力:  　　 " + param.GetLevelParam(0).hp;
-            m_towerInfoPanel.transform.FindChild("Power").GetComponent<Text>().text     = "攻撃力:　　" + param.GetLevelParam(0).power;
-            m_towerInfoPanel.transform.FindChild("Interval").GetComponent<Text>().text  = "発射間隔:　" + param.GetLevelParam(0).interval;
-            m_towerInfoPanel.transform.FindChild("Range").GetComponent<Text>().text     = "射程距離:　" + param.GetLevelParam(0).range;
+            if ( param.gameObject.GetComponent<CrystalFarm_Control>() == null )
+            {
+                m_towerInfoPanel.GetComponent<AppearInfopanel>().SetActive(true);
+    		    m_towerInfoPanel.transform.FindChild("Kind").GetComponent<Text>().text      = param.m_name;
+    		    m_towerInfoPanel.transform.FindChild("Summary").GetComponent<Text>().text   = "概要:　　　" + param.m_summary;
+                m_towerInfoPanel.transform.FindChild("HP").GetComponent<Text>().text        = "体力:  　　 " + param.GetLevelParam(0).hp;
+                m_towerInfoPanel.transform.FindChild("Power").GetComponent<Text>().text     = "攻撃力:　　" + param.GetLevelParam(0).power;
+                m_towerInfoPanel.transform.FindChild("Interval").GetComponent<Text>().text  = "発射間隔:　" + param.GetLevelParam(0).interval;
+                m_towerInfoPanel.transform.FindChild("Range").GetComponent<Text>().text     = "射程距離:　" + param.GetLevelParam(0).range;
+
+                m_towerInfoPanelCrystalFarm.GetComponent<AppearInfopanel>().SetActive(false);
+
+            }
+            else
+            {
+                m_towerInfoPanelCrystalFarm.GetComponent<AppearInfopanel>().SetActive(true);
+                m_towerInfoPanelCrystalFarm.transform.FindChild("HP").GetComponent<Text>().text         = "体力:  　　" + param.GetLevelParam(param.m_level).hp;
+                m_towerInfoPanelCrystalFarm.transform.FindChild("Interval").GetComponent<Text>().text   = "生成間隔:    " + "＃＃＃＃＃＃" + "      秒/発";
+
+                m_towerInfoPanel.GetComponent<AppearInfopanel>().SetActive(false);
+            }
 
             // 効果音再生
             SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.1f, Random.Range( 0.95f, 1.05f ), 1.0f );
         }
+        else
+        {
+            m_towerInfoPanel.GetComponent<AppearInfopanel>().SetActive(false);
+            m_towerInfoPanelCrystalFarm.GetComponent<AppearInfopanel>().SetActive(false);
+        }
+
     }
     public void SetInfopanelEx( Vector3 pos )
     {
         var param = m_resourceInformation.GetResourceParamFromPosition(pos);
-        if ( param && !m_towerInfoPanel.activeInHierarchy )
+        if ( param && !TowerInfoActiveInHierarchy() )
         {          
-            m_towerInfoPanelEx.GetComponent<AppearInfopanel>().SetActive(true);
-            m_towerInfoPanelEx.transform.FindChild("Kind").GetComponent<Text>().text       = param.m_name;
-            m_towerInfoPanelEx.transform.FindChild("HP").GetComponent<Text>().text         = "体力:  　　" + param.GetLevelParam(param.m_level).hp;
-            m_towerInfoPanelEx.transform.FindChild("Power").GetComponent<Text>().text      = "攻撃力:　　" + param.GetLevelParam(param.m_level).power;
-            m_towerInfoPanelEx.transform.FindChild("Interval").GetComponent<Text>().text   = "発射間隔:　" + param.GetLevelParam(param.m_level).interval;
-            m_towerInfoPanelEx.transform.FindChild("Range").GetComponent<Text>().text      = "射程距離:　" + param.GetLevelParam(param.m_level).range;
+            if ( param.gameObject.GetComponent<CrystalFarm_Control>() == null )
+            {
+                m_towerInfoPanelEx.GetComponent<AppearInfopanel>().SetActive(true);
+                m_towerInfoPanelEx.transform.FindChild("Kind").GetComponent<Text>().text       = param.m_name;
+                m_towerInfoPanelEx.transform.FindChild("HP").GetComponent<Text>().text         = "体力:  　　" + param.GetLevelParam(param.m_level).hp;
+                m_towerInfoPanelEx.transform.FindChild("Power").GetComponent<Text>().text      = "攻撃力:　　" + param.GetLevelParam(param.m_level).power;
+                m_towerInfoPanelEx.transform.FindChild("Interval").GetComponent<Text>().text   = "発射間隔:　" + param.GetLevelParam(param.m_level).interval;
+                m_towerInfoPanelEx.transform.FindChild("Range").GetComponent<Text>().text      = "射程距離:　" + param.GetLevelParam(param.m_level).range;
+    
+                int refLv = ( param.CheckWhetherCanUpALevel() ) ? param.m_level+1 : param.m_level;
+    
+                m_towerInfoPanelEx.transform.FindChild("HPLv").GetComponent<Text>().text         = param.GetLevelParam(refLv).hp.ToString();
+                m_towerInfoPanelEx.transform.FindChild("PowerLv").GetComponent<Text>().text      = param.GetLevelParam(refLv).power.ToString();
+                m_towerInfoPanelEx.transform.FindChild("IntervalLv").GetComponent<Text>().text   = param.GetLevelParam(refLv).interval.ToString();
+                m_towerInfoPanelEx.transform.FindChild("RangeLv").GetComponent<Text>().text      = param.GetLevelParam(refLv).range.ToString();
 
-            int refLv = ( param.CheckWhetherCanUpALevel() ) ? param.m_level+1 : param.m_level;
+                m_towerInfoPanelCrystalFarmEx.GetComponent<AppearInfopanel>().SetActive(false);
 
-            m_towerInfoPanelEx.transform.FindChild("HPLv").GetComponent<Text>().text         = param.GetLevelParam(refLv).hp.ToString();
-            m_towerInfoPanelEx.transform.FindChild("PowerLv").GetComponent<Text>().text      = param.GetLevelParam(refLv).power.ToString();
-            m_towerInfoPanelEx.transform.FindChild("IntervalLv").GetComponent<Text>().text   = param.GetLevelParam(refLv).interval.ToString();
-            m_towerInfoPanelEx.transform.FindChild("RangeLv").GetComponent<Text>().text      = param.GetLevelParam(refLv).range.ToString();
+            }
+            else
+            {
+                m_towerInfoPanelCrystalFarmEx.GetComponent<AppearInfopanel>().SetActive(true);
+                m_towerInfoPanelCrystalFarmEx.transform.FindChild("HP").GetComponent<Text>().text           = "体力:  　　" + param.GetLevelParam(param.m_level).hp;
+                m_towerInfoPanelCrystalFarmEx.transform.FindChild("IntervalLv").GetComponent<Text>().text   = "生成間隔:    " + "＃＃＃＃＃＃";
+
+                int refLv = ( param.CheckWhetherCanUpALevel() ) ? param.m_level+1 : param.m_level;
+    
+                m_towerInfoPanelCrystalFarmEx.transform.FindChild("HPLv").GetComponent<Text>().text         = param.GetLevelParam(refLv).hp.ToString();
+                m_towerInfoPanelCrystalFarmEx.transform.FindChild("IntervalLv").GetComponent<Text>().text   = "＃＃＃＃＃＃";
+
+                m_towerInfoPanelEx.GetComponent<AppearInfopanel>().SetActive(false);
+            }
 
         }
         else
         {
             m_towerInfoPanelEx.GetComponent<AppearInfopanel>().SetActive(false);
+            m_towerInfoPanelCrystalFarmEx.GetComponent<AppearInfopanel>().SetActive(false);
         }
 
     }
@@ -453,6 +502,15 @@ public class UIGirlTaskSelect : MonoBehaviour
         if (m_uiConvert.activeInHierarchy)  return;
 
         m_editTargetPosition = m_resourceInformation.m_gridSplitSpacePlane.transform.position;
+        RaycastHit  rHit        = new RaycastHit();
+        Ray         rRay        = new Ray( m_editTargetPosition, Vector3.down );
+        int         layerMask   = LayerMask.GetMask( "Field" );
+        //  レイ判定
+        if (Physics.Raycast(rRay, out rHit, float.MaxValue, layerMask))
+        {
+            m_editTargetPosition = rHit.point;
+        }
+
 
         var param = m_resourceInformation.GetResourceParamFromPosition(m_editTargetPosition);
         if (param == null)
@@ -482,7 +540,7 @@ public class UIGirlTaskSelect : MonoBehaviour
         }
 
 
-    }
+    }         
 
     //---------------------------------------------------------------------
     //      
@@ -490,10 +548,28 @@ public class UIGirlTaskSelect : MonoBehaviour
     // [m_uiResourceBG][m_uiForcusFrame][m_towerInfoPanel]を上２０に移動
     public void UpPanel()
     {
-        m_uiResourceBG.GetComponent<RectTransform>().localPosition      += new Vector3( 0.0f, 20.0f, 0.0f );
-        m_uiForcusFrame.GetComponent<RectTransform>().localPosition     += new Vector3( 0.0f, 20.0f, 0.0f );
-	    m_towerInfoPanel.GetComponent<RectTransform>().localPosition    += new Vector3( 0.0f, 20.0f, 0.0f );
+        m_uiResourceBG.GetComponent<RectTransform>().localPosition      += new Vector3( 0.0f, 35.0f, 0.0f );
+        m_uiForcusFrame.GetComponent<RectTransform>().localPosition     += new Vector3( 0.0f, 35.0f, 0.0f );
+	    m_towerInfoPanel.GetComponent<RectTransform>().localPosition    += new Vector3( 0.0f, 35.0f, 0.0f );
     }   
-             
+ 
+    
+    public bool TowerInfoActiveInHierarchy()
+    {
+        return m_towerInfoPanel.GetComponent<AppearInfopanel>().IsActive() || m_towerInfoPanelCrystalFarm.GetComponent<AppearInfopanel>().IsActive();
+    }
+    public bool TowerInfoExActiveInHierarchy()
+    {
+        return m_towerInfoPanelEx.GetComponent<AppearInfopanel>().IsActive() || m_towerInfoPanelCrystalFarmEx.GetComponent<AppearInfopanel>().IsActive();
+    }
+    public void ForceClear()
+    {              
+        m_uiForcusFrame.SetActive(true);
+        m_uiResourceBG.SetActive(false);
+        m_uiConvert.SetActive(false);
+
+        m_rightDoublePushChecker.Reset();
+    }
+                      
 }
 

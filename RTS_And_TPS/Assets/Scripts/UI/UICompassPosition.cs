@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class UICompassPosition : MonoBehaviour
 {
+    [SerializeField]
+    private float   m_uiCircle          = 45.0f;
+
     public float    m_clipDistanceSq    = 300.0f;
     public Vector3  m_rTargetPos        = Vector3.zero;
 
@@ -48,20 +51,22 @@ public class UICompassPosition : MonoBehaviour
         if ( isInScreen && ( distance <= m_clipDistanceSq ) )
         { 
             GetComponent<RawImage>().enabled = false;
+            transform.GetChild(0).GetComponent<Image>().enabled = false;
             return;
         }
 
         GetComponent<RawImage>().enabled = true;
 
         if (dz < 0.0f)
-        {
-            if ( Mathf.Abs( localPos.x ) < Mathf.Abs( localPos.y ) )
+        {              
+            localPos.x = -localPos.x;
+            if ( localPos.y < 0.0f )
             { 
-                localPos.y *= 10000.0f;
+                localPos.y = -10000.0f;
             }
             else
             {
-                localPos.x *= 10000.0f;
+                localPos.y = -10000.0f;
             }
         }
 
@@ -71,7 +76,16 @@ public class UICompassPosition : MonoBehaviour
 
 
 
-        rt.localPosition = localPos;
+        rt.localPosition = localPos;                      
+
+        RectTransform rtArrow = transform.GetChild(0).GetComponent<RectTransform>();
+       
+        float angle = Mathf.Atan2(localPos.y, localPos.x);
+        rtArrow.eulerAngles = new Vector3(rtArrow.eulerAngles.x, rtArrow.eulerAngles.y, (angle-Mathf.PI*0.5f) * Mathf.Rad2Deg);
+
+        rtArrow.localPosition = new Vector3( Mathf.Cos(angle), Mathf.Sin(angle), 0.0f ) * m_uiCircle;
+
+        transform.GetChild(0).GetComponent<Image>().enabled = !isInScreen;
 
     }
 
