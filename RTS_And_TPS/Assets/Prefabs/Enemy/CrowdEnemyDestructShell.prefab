@@ -9,6 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 418052}
   - 114: {fileID: 11464610}
+  - 114: {fileID: 11477684}
   m_Layer: 0
   m_Name: CrowdEnemyDestructShell
   m_TagString: Untagged
@@ -42,6 +43,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c_GenerateEnemy: {fileID: 161792, guid: 2a11c7d8b1719824fbcbae56f7591073, type: 2}
   c_PopCount: 3
+--- !u!114 &11477684
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 137694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36dbf9a6f87378d4b941c712039785d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
