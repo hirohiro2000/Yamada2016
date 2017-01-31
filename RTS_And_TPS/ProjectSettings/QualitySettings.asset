@@ -161,7 +161,8 @@ QualitySettings:
     particleRaycastBudget: 4096
     asyncUploadTimeSlice: 2
     asyncUploadBufferSize: 4
-    excludedTargetPlatforms: []
+    excludedTargetPlatforms:
+    - Web
   m_PerPlatformDefaultQuality:
     Standalone: 5
     Web: 5
