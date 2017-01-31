@@ -4,9 +4,9 @@ using System.Collections;
 public class TPS_PlayerAnimationController : MonoBehaviour
 {
     [SerializeField]
-    Animator animator = null;
-    
-    public enum InputDpad {
+    Animator[] animator = null;
+
+	public enum InputDpad {
         eFORWARD,
         eBACK,
         eRIGHT,
@@ -30,12 +30,17 @@ public class TPS_PlayerAnimationController : MonoBehaviour
     public void ChangeStateMove(InputDpad flag)
     {
         if ( flag == currentMoveDir )   return;
-
-        animator.SetBool( (string)inputFlags[flag], true );
+		for (int i = 0; i < animator.Length; i++)
+		{
+			 animator[i].SetBool( (string)inputFlags[flag], true );
+		}
         
         if (currentMoveDir != InputDpad.eNONE)
         {
-            animator.SetBool((string)inputFlags[currentMoveDir], false);
+			for (int i = 0; i < animator.Length; i++)
+			{
+				animator[i].SetBool((string)inputFlags[currentMoveDir], false);
+			}
         }
         currentMoveDir = flag;
 
@@ -43,13 +48,21 @@ public class TPS_PlayerAnimationController : MonoBehaviour
     public void ChangeStateIdle()
     {
         if ( currentMoveDir == InputDpad.eNONE )    return;
-        animator.SetBool( (string)inputFlags[currentMoveDir], false );        
+
+		for (int i = 0; i < animator.Length; i++)
+		{
+			animator[i].SetBool( (string)inputFlags[currentMoveDir], false );        
+		}
+
         currentMoveDir = InputDpad.eNONE;
     }
 
 	public void ChangeSpeed( float _Speed )
 	{
-		animator.speed	=	_Speed;
+		for (int i = 0; i < animator.Length; i++)
+		{
+			animator[i].speed	=	_Speed;
+		}	
 	}
 
 //   public void Update()
