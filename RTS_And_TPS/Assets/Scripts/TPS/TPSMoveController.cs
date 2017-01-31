@@ -146,16 +146,17 @@ public class TPSMoveController : MonoBehaviour
             if( m_Energy < energyCost ){
                 //  スタミナを０に
                 m_Energy    =   0.0f;
-                //  エネルギーが足りなければヒットポイントを消費して走る
-                if( _rParent.m_rTPSHP.m_CurHP - energyCost > 1.0f ){
-                    //  コマンド送信
-                    if( !_rParent.m_rTPSHP.IsExhaustion() ) _rParent.m_rTPSHP.CmdSetExhaustion( true );
+                ////  エネルギーが足りなければヒットポイントを消費して走る
+                //if( _rParent.m_rTPSHP.m_CurHP - energyCost > 1.0f ){
+                //    //  コマンド送信
+                //    if( !_rParent.m_rTPSHP.IsExhaustion() ) _rParent.m_rTPSHP.CmdSetExhaustion( true );
 
-                    //  ダッシュ
-                    _rParent.characterMover.AddSpeed( _rParent.transform.forward.normalized * c_DashSpeed );
-                }
-                //  瀕死状態ならダッシュをやめてリカバリー状態へ
-                else{
+                //    //  ダッシュ
+                //    _rParent.characterMover.AddSpeed( _rParent.transform.forward.normalized * c_DashSpeed );
+                //}
+                ////  瀕死状態ならダッシュをやめてリカバリー状態へ
+                //else
+                {
                     //  コマンド送信
                     if( _rParent.m_rTPSHP.IsExhaustion() )  _rParent.m_rTPSHP.CmdSetExhaustion( false );
 

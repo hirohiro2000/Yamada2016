@@ -62,8 +62,6 @@ public class GirlController : NetworkBehaviour
     private PlaceState          m_PlaceState                    = PlaceState.None;
 
     [ SyncVar ]
-    private bool                m_IsPlacing                     = false;
-    [ SyncVar ]
     private int                 m_PlaceObjID                    = 0;
     [ SyncVar ]
     private Vector2             m_PlaceLocalOffset              = Vector2.zero;
@@ -179,6 +177,8 @@ public class GirlController : NetworkBehaviour
         //  爆弾のショートカットキー
         if( m_actionState   == ActionState.Ride
         ||  c_PlaceRideOnly == false ){
+            if( Input.GetMouseButtonDown( 1 ) )         m_PlaceState    =   PlaceState.None;
+
             if( Input.GetKeyDown( KeyCode.Alpha1 ) )    PlaceDrum();
             if( Input.GetKeyDown( KeyCode.Alpha2 ) )    PlaceTimeBomb();
             if( Input.GetKeyDown( KeyCode.Alpha3 ) )    PlaceC4();
