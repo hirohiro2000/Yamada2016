@@ -182,7 +182,7 @@ namespace   UnityEngine.Networking
 
 			if( NetworkClient.active
             &&  !ClientScene.ready )
-			{
+			{ 
 				if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "Client Ready" ) )
 				{
 					ClientScene.Ready( m_rNetworkManager.client.connection );
