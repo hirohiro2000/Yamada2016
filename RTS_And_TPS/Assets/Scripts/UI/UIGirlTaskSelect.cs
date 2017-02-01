@@ -190,7 +190,7 @@ public class UIGirlTaskSelect : MonoBehaviour
                 SoundController.PlayNow( "UI_MenuOpen", 0.0f, 0.1f, 1.0f, 1.0f );
 
             }        
-            else if ( !m_uiResourceBG.activeInHierarchy && !isJump && ( Input.GetKeyDown( KeyCode.F ) || m_rightDoublePushChecker.GetDown() == DoublePushChecker.State.DoublePush ) )
+            else if ( !m_uiResourceBG.activeInHierarchy && !isJump && ( Input.GetKeyDown( KeyCode.F ) ) )
             {
                 ClikedForcusFrame();
                 m_rightDoublePushChecker.Reset();
