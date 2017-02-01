@@ -108,8 +108,8 @@ public class TPSPlayer_HP : NetworkBehaviour {
             //  ダメージ処理をセット
 		    m_rDamageBank.AdvancedDamagedCallback   +=  DamageProc_CallBack;
 
-            //  ＨＰバー初期化
-            TPSHpBar.Initialize( m_MaxHP );
+            //  ＨＰバー初期化   
+            TPSHpBar.Initialize( m_MaxHP, m_rLinkManager.m_rLocalPlayer.GetComponent<NetPlayer_Control>().c_PlayerName );
         }
         //  クローン側では敵プレイヤーからの攻撃のみ受け付ける
         else{

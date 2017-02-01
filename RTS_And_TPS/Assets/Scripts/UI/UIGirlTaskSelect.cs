@@ -256,12 +256,20 @@ public class UIGirlTaskSelect : MonoBehaviour
             {
                 m_resourceCreator.UpdateGuideResource(m_itemController.GetForcus(), m_editTargetPosition);
                 m_resourceCreator.UpdateGuideRange( m_itemController.GetForcus(), m_editTargetPosition );
-            }            
-
+            }
+            
             m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = true;
             m_workingArea.SetActive(true);
             m_workingArea.transform.position = m_editTargetPosition;           
 
+        }
+        else if ( m_uiResourceBG.activeInHierarchy )
+        {
+            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = true;
+            m_resourceInformation.m_gridSplitSpacePlane.transform.position  = computePosition;
+            m_resourceInformation.m_gridSplitSpacePlane.transform.position += new Vector3(0, 0.04f, 0);
+            m_resourceCreator.UpdateGuideResource(m_itemController.GetForcus(), computePosition);
+            m_resourceCreator.UpdateGuideRange( m_itemController.GetForcus(), computePosition );
         }
         else
         {
