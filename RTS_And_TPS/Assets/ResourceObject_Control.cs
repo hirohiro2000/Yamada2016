@@ -137,6 +137,8 @@ public class ResourceObject_Control : NetworkBehaviour {
     //  当たり判定
     void    OnCollisionEnter( Collision _rCollision )
     {
+        if( !m_rLinkManager )                                           return;
+
         //  衝突したオブジェクトがプレイヤーかどうかチェック 
         GameObject  rHitObj =   _rCollision.gameObject;
         if( rHitObj.tag != "Player" )                                   return;
@@ -153,6 +155,8 @@ public class ResourceObject_Control : NetworkBehaviour {
     }
     void    OnTriggerEnter( Collider _rCollider )
     {
+        if( !m_rLinkManager )                                           return;
+
         //  衝突したオブジェクトがプレイヤーかどうかチェック 
         GameObject  rHitObj =   _rCollider.gameObject;
         if( rHitObj.tag != "Player" )                                   return;

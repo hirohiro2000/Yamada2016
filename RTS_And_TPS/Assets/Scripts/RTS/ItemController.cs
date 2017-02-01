@@ -24,13 +24,13 @@ public class ItemController : NetworkBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-        //  自分のキャラクターの場合のみ処理を行う
-        if( !isLocalPlayer ) return;
-
         m_rGameManager          = GameObject.Find("GameManager").GetComponent<GameManager>();
         m_rLinkManager          = GameObject.Find("LinkManager").GetComponent<LinkManager>();
 		m_resourceCreator		= GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
 		m_kindMax				= m_resourceCreator.m_resources.Length;
+
+        //  自分のキャラクターの場合のみ処理を行う
+        if( !isLocalPlayer ) return;
 
 		m_frameList = new List<GameObject>();
 		m_textList = new List<Text>();
@@ -173,6 +173,8 @@ public class ItemController : NetworkBehaviour
 	}
     public void SetActive( bool isActive )
     {
+        if( !isLocalPlayer ) return;
+
 		for( int i=0; i<m_kindMax; ++i )
 		{
             m_frameList[i].SetActive( isActive );
