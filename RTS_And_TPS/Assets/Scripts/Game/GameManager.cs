@@ -1407,8 +1407,10 @@ public class GameManager : NetworkBehaviour {
         //m_Resource      +=  _AddValue;
         //m_Resource      =   Mathf.Max( m_Resource, 0.0f );
 
-        m_rResourceList[ _ClientID ]    +=  _AddValue;
-        m_rResourceList[ _ClientID ]    =   Mathf.Max( m_rResourceList[ _ClientID ], 0.0f );
+        for( int i = 0; i < m_rResourceList.Count; i++ ){
+            m_rResourceList[ i ]    +=  _AddValue;
+            m_rResourceList[ i ]    =   Mathf.Max( m_rResourceList[ i ], 0.0f );
+        }
     }
     [ Server ]
     public  void            AddGlobalScore( float _AddScore, int _ClientID )
