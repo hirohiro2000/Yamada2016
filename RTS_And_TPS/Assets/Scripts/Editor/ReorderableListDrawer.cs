@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEditorInternal;
 using System;
 using System.Text.RegularExpressions;
+using System.Reflection;
 
 [CustomPropertyDrawer(typeof(ReorderableListAttribute))]
 public class ReorderableListDrawer : PropertyDrawer
@@ -137,7 +138,25 @@ public class ReorderableListDrawer : PropertyDrawer
 						if (match.Success)
 						{
 							type = match.Groups[1].Value;
-							value.objectReferenceValue = EditorGUI.ObjectField(rect, value.objectReferenceValue, typeof(UnityEngine.Object).Assembly.GetType("UnityEngine." + type), true);
+							if (typeof(UnityEngine.Object).Assembly.GetType("UnityEngine." + type) != null)//UnityEngineのAPIならば
+							{
+								value.objectReferenceValue = EditorGUI.ObjectField(rect, value.objectReferenceValue, typeof(UnityEngine.Object).Assembly.GetType("UnityEngine." + type), true);
+							}
+							else //スクリプトならば
+							{
+								foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+								{
+									foreach (Type tyPe in assembly.GetTypes())
+									{
+										if (tyPe.Name == type)
+										{
+											value.objectReferenceValue = EditorGUI.ObjectField(rect, value.objectReferenceValue, tyPe, true);
+											break;
+										}
+									}
+								}
+								
+							}
 						}
 						else
 						{

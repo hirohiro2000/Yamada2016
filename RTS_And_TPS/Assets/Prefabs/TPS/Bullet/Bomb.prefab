@@ -31,15 +31,13 @@ GameObject:
   - 23: {fileID: 2393870}
   - 54: {fileID: 5438192}
   - 114: {fileID: 11437286}
-  - 114: {fileID: 11447414}
-  - 114: {fileID: 11413172}
   - 114: {fileID: 11421978}
   - 114: {fileID: 11451724}
   - 114: {fileID: 11486514}
   - 114: {fileID: 11448096}
   - 114: {fileID: 11490074}
   m_Layer: 12
-  m_Name: Bomb
+  m_Name: Bomb 1
   m_TagString: Player_Attack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -167,32 +165,6 @@ TrailRenderer:
       rgba: 16777215
   m_MinVertexDistance: 0
   m_Autodestruct: 1
---- !u!114 &11413172
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 184498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d981c2a930215e643ad6a35b460850d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shot_info_flags:
-    list:
-    - type: 1
-  shot_info_values:
-    list:
-    - type: 0
-      value: 0.3
-    - type: 1
-      value: 2000
-    - type: 2
-      value: 6
-    - type: 4
-      value: 9
-    - type: 3
-      value: 2
 --- !u!114 &11421978
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -239,24 +211,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alphaMat: {fileID: 2100000, guid: 32ce0ee5ef9aaf342ab937f39eff4a6a, type: 2}
---- !u!114 &11447414
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 184498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd00001f855ac274c8a122f54eae2b55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  armCriticalRateIncrement: 40
-  baseReticle:
-  - 0
-  baseRecoil: 1.5
-  recoveryTimeWithRecoil: 1.5
-  maxValueWithUpperRecoil: 3
-  maxValueWithHorizontalRecoil: 0.1
 --- !u!114 &11448096
 MonoBehaviour:
   m_ObjectHideFlags: 1
