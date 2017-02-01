@@ -85,6 +85,8 @@ public class GameManager : NetworkBehaviour {
     private SyncListFloat           m_rIncomeList   =   new SyncListFloat();
     private SyncListFloat           m_rConsumList   =   new SyncListFloat();
 
+    private SyncListFloat           m_rResourceList =   new SyncListFloat();
+
     //  外部へのアクセス
     private LinkManager             m_rLinkManager  =   null;
     private WaveManager             m_rWaveManager  =   null;
@@ -165,6 +167,13 @@ public class GameManager : NetworkBehaviour {
             CheckWhetherExist_Int( m_rHSKillList, 2 );
             CheckWhetherExist_Float( m_rIncomeList, 2 );
             CheckWhetherExist_Float( m_rConsumList, 2 );
+
+            CheckWhetherExist_Float( m_rResourceList, 2 );
+
+            //  リソース初期化
+            for( int i = 0; i < m_rResourceList.Count; i++ ){
+                m_rResourceList[ i ]    =   c_StartResource;
+            }
         }
 	}
 	
@@ -228,8 +237,8 @@ public class GameManager : NetworkBehaviour {
         //  ＵＩの更新  
         {
             if( m_rWaveText )               m_rWaveText.text                =   m_WaveLevel.ToString();
-            if( m_rResourceText )           m_rResourceText.text            =   ( ( int )m_Resource ).ToString();
-            if( m_rResourceTextOutline )    m_rResourceTextOutline.text     =   ( ( int )m_Resource ).ToString();
+            if( m_rResourceText )           m_rResourceText.text            =   ( ( int )m_rResourceList[ m_rLinkManager.m_LocalPlayerID ] ).ToString();
+            if( m_rResourceTextOutline )    m_rResourceTextOutline.text     =   ( ( int )m_rResourceList[ m_rLinkManager.m_LocalPlayerID ] ).ToString();
             if( m_rScoreText )              m_rScoreText.text               =   ( ( int )m_GlobalScore ).ToString();
 
             //  ダメージフィルター更新  
@@ -1279,6 +1288,10 @@ public class GameManager : NetworkBehaviour {
             float   resourceRate    =   c_ResourceRatio[ ( int )m_Difficulty ];
 
             m_Resource  =   c_StartResource * resourceRate;
+
+            for( int i = 0; i < m_rResourceList.Count; i++ ){
+                m_rResourceList[ i ]    =   c_StartResource * resourceRate;
+            }
         }
 
         //  難易度を保存
@@ -1387,12 +1400,15 @@ public class GameManager : NetworkBehaviour {
 
     //  アクセス
     [ Server ]
-    public  void            AddResource( float _AddValue )
+    public  void            AddResource( float _AddValue, int _ClientID )
     {
         if( m_State > State.InGame )    return;
 
-        m_Resource      +=  _AddValue;
-        m_Resource      =   Mathf.Max( m_Resource, 0.0f );
+        //m_Resource      +=  _AddValue;
+        //m_Resource      =   Mathf.Max( m_Resource, 0.0f );
+
+        m_rResourceList[ _ClientID ]    +=  _AddValue;
+        m_rResourceList[ _ClientID ]    =   Mathf.Max( m_rResourceList[ _ClientID ], 0.0f );
     }
     [ Server ]
     public  void            AddGlobalScore( float _AddScore, int _ClientID )
@@ -1431,7 +1447,7 @@ public class GameManager : NetworkBehaviour {
     }
     public  float           GetResource()
     {
-        return  m_Resource;
+        return  m_rResourceList[ m_rLinkManager.m_LocalPlayerID ];
     }
     public  float           GetGlobalScore()
     {

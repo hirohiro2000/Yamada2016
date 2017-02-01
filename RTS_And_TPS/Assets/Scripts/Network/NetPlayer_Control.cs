@@ -185,7 +185,7 @@ public class NetPlayer_Control : NetworkBehaviour {
     [ Command ]
     public  void    CmdAddResource( float _AddResource )
     {
-        m_rGameManager.AddResource( _AddResource );
+        m_rGameManager.AddResource( _AddResource, connectionToClient.connectionId );
 
         if( _AddResource > 0.0f )   m_rGameManager.SetToList_Income( connectionToClient.connectionId,  _AddResource );
         if( _AddResource < 0.0f )   m_rGameManager.SetToList_Consum( connectionToClient.connectionId, -_AddResource );
