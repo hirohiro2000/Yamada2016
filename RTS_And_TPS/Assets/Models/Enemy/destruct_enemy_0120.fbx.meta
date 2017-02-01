@@ -1,0 +1,376 @@
+fileFormatVersion: 2
+guid: b6f522696be03d64092fd857b9ad31d3
+timeCreated: 1485928826
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: bone
+    100002: bone10
+    100004: bone10_NeutralPose
+    100006: bone11
+    100008: bone11_NeutralPose
+    100010: bone12
+    100012: bone12_NeutralPose
+    100014: bone13
+    100016: bone13_NeutralPose
+    100018: bone14
+    100020: bone14_NeutralPose
+    100022: bone15
+    100024: bone15_NeutralPose
+    100026: bone8
+    100028: bone8_NeutralPose
+    100030: bone9
+    100032: bone9_NeutralPose
+    100034: bone_NeutralPose
+    100036: cube10
+    100038: cube11
+    100040: cube12
+    100042: cube8
+    100044: cube9
+    100046: cylinder18
+    100048: cylinder20
+    100050: //RootNode
+    100052: eff
+    100054: eff4
+    100056: eff5
+    100058: eff6
+    100060: eff7
+    100062: root
+    100064: root4
+    100066: root5
+    100068: root6
+    100070: root7
+    100072: sphere
+    100074: sphere1
+    400000: bone
+    400002: bone10
+    400004: bone10_NeutralPose
+    400006: bone11
+    400008: bone11_NeutralPose
+    400010: bone12
+    400012: bone12_NeutralPose
+    400014: bone13
+    400016: bone13_NeutralPose
+    400018: bone14
+    400020: bone14_NeutralPose
+    400022: bone15
+    400024: bone15_NeutralPose
+    400026: bone8
+    400028: bone8_NeutralPose
+    400030: bone9
+    400032: bone9_NeutralPose
+    400034: bone_NeutralPose
+    400036: cube10
+    400038: cube11
+    400040: cube12
+    400042: cube8
+    400044: cube9
+    400046: cylinder18
+    400048: cylinder20
+    400050: //RootNode
+    400052: eff
+    400054: eff4
+    400056: eff5
+    400058: eff6
+    400060: eff7
+    400062: root
+    400064: root4
+    400066: root5
+    400068: root6
+    400070: root7
+    400072: sphere
+    400074: sphere1
+    4300000: cube8
+    4300002: cube9
+    4300004: cube10
+    4300006: cube11
+    4300008: cube12
+    4300010: cylinder18
+    4300012: cylinder20
+    4300014: sphere
+    4300016: sphere1
+    7400000: Wait
+    7400002: Run
+    9500000: //RootNode
+    13700000: cube10
+    13700002: cube11
+    13700004: cube12
+    13700006: cube8
+    13700008: cube9
+    13700010: cylinder18
+    13700012: cylinder20
+    13700014: sphere
+    13700016: sphere1
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Wait
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: root4
+        weight: 1
+      - path: root4/bone8_NeutralPose
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root/bone_NeutralPose
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root/bone_NeutralPose/bone
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root/bone_NeutralPose/bone/bone9_NeutralPose
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root/bone_NeutralPose/bone/bone9_NeutralPose/bone9
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root/bone_NeutralPose/bone/bone9_NeutralPose/bone9/eff
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root5
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root5/bone10_NeutralPose
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root5/bone10_NeutralPose/bone10
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root5/bone10_NeutralPose/bone10/bone11_NeutralPose
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root5/bone10_NeutralPose/bone10/bone11_NeutralPose/bone11
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root5/bone10_NeutralPose/bone10/bone11_NeutralPose/bone11/eff5
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/cube8
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/cube9
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/cube10
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/cube11
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/cube12
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/cylinder18
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/cylinder20
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/eff6
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/sphere
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/sphere1
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root7
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root7/bone14_NeutralPose
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root7/bone14_NeutralPose/bone14
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root7/bone14_NeutralPose/bone14/bone15_NeutralPose
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root7/bone14_NeutralPose/bone14/bone15_NeutralPose/bone15
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root7/bone14_NeutralPose/bone14/bone15_NeutralPose/bone15/eff7
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Run
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: root4
+        weight: 1
+      - path: root4/bone8_NeutralPose
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root/bone_NeutralPose
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root/bone_NeutralPose/bone
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root/bone_NeutralPose/bone/bone9_NeutralPose
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root/bone_NeutralPose/bone/bone9_NeutralPose/bone9
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root/bone_NeutralPose/bone/bone9_NeutralPose/bone9/eff
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root5
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root5/bone10_NeutralPose
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root5/bone10_NeutralPose/bone10
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root5/bone10_NeutralPose/bone10/bone11_NeutralPose
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root5/bone10_NeutralPose/bone10/bone11_NeutralPose/bone11
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root5/bone10_NeutralPose/bone10/bone11_NeutralPose/bone11/eff5
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/cube8
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/cube9
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/cube10
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/cube11
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/cube12
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/cylinder18
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/cylinder20
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/eff6
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/sphere
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root6/bone12_NeutralPose/bone12/bone13_NeutralPose/bone13/sphere1
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root7
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root7/bone14_NeutralPose
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root7/bone14_NeutralPose/bone14
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root7/bone14_NeutralPose/bone14/bone15_NeutralPose
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root7/bone14_NeutralPose/bone14/bone15_NeutralPose/bone15
+        weight: 1
+      - path: root4/bone8_NeutralPose/bone8/eff4/root7/bone14_NeutralPose/bone14/bone15_NeutralPose/bone15/eff7
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 10
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

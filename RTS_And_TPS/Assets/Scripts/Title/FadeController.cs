@@ -70,7 +70,8 @@ public class FadeController : MonoBehaviour {
             
             yield return null;
         }
-        EndNotifyFunction();
+        if(EndNotifyFunction != null)
+            EndNotifyFunction();
     }
 
     public void BeginFade(FadeMode mode,
