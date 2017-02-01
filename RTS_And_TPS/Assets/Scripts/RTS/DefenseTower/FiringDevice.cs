@@ -23,6 +23,14 @@ public class FiringDevice : NetworkBehaviour
     private float                   m_IntervalTimer			= 0.0f;
 
     public  GameObject              c_ShotSound             = null;
+    public  float                   c_BulletSpeed           = 1.0f;
+    public  bool                    c_UseNewExpect          = false;
+
+    public  float                   c_AngleSpeed            = 0.0f;
+    public  bool                    c_UseNewTargetting      = false;
+
+    public  float                   c_ShotAngleThreshold    = 0.0f;
+    public  bool                    c_ShotAngleCheckHorizon = false;
 
 	// Use this for initialization
 	void Start ()
@@ -52,25 +60,44 @@ public class FiringDevice : NetworkBehaviour
 
 		if( !m_rEnemyShell.CheckWhetherWithinTheRange( transform.position, m_resourceParam.GetCurLevelParam().range ))
 			return;
+        		
+        //  ターゲット
+        Transform           rTarget     =   m_rEnemyShell.GetNearEnemyTransform_CheckWall( m_orientatedTransform.position, m_resourceParam.GetCurLevelParam().range );
+        if( !rTarget )
+            return;
 
+        Transform           rEye        =   rTarget.FindChild( "Eye" );
+        float               distance    =   ( rEye.position - m_firePointTransforms[ 0 ].position ).magnitude;
 
-		//	ターゲットに向く
-		Targetting();
-		
+        Vector3             targetPoint =   ( c_UseNewExpect )? rTarget.GetComponent< DeviationCalculator >().GetCorrectionPoint( c_BulletSpeed, distance )
+                                                            :   rTarget.GetComponent< DeviationCalculator >().Get();
+
+        //	ターゲットに向く
+		Targetting( targetPoint );
 	
 		//	壁判定
 		{
-			var		target		= m_rEnemyShell.GetNearEnemyTransform( transform.position, m_resourceParam.GetCurLevelParam().range ).FindChild("Eye");
-			var		vector		= target.position - m_orientatedTransform.position;
+			var		vector		= targetPoint - m_orientatedTransform.position;
 			Vector3	dir			= transform.TransformDirection( vector.normalized );
 			int     layerMask   = LayerMask.GetMask( "Field" );
 
-			if( Physics.Raycast( m_orientatedTransform.position, dir, vector.magnitude, layerMask ))
-				return;
+            RaycastHit  hitInfo;
+            if( Physics.Raycast( m_orientatedTransform.position, dir, out hitInfo, vector.magnitude, layerMask ) ){
+                //  床は無視
+                if( Vector3.Angle( Vector3.up, hitInfo.normal ) < 30.0f ){}
+                //  壁はだめ
+                else                                                        return;
+            }
 		}
 
+        //  照準判定
+        if( !CheckAiming( targetPoint, c_ShotAngleThreshold, c_ShotAngleCheckHorizon ) ){
+            //Debug.Log( "Aiming_False" );
+            return;
+        }
 
-		//	発射
+
+		//	発射  
 		if ( m_IntervalTimer >= m_resourceParam.GetCurLevelParam().interval )
 		{
 			foreach( var fires in m_firePointTransforms )
@@ -119,33 +146,56 @@ public class FiringDevice : NetworkBehaviour
 
 
 	//
-	void Targetting()
+	void    Targetting( Vector3 _TargetPoint )
     {
-		var trs = m_rEnemyShell.GetNearEnemyTransform( m_orientatedTransform.position, m_resourceParam.GetCurLevelParam().range );
+        //var trs = m_rEnemyShell.GetNearEnemyTransform( m_orientatedTransform.position, m_resourceParam.GetCurLevelParam().range );
 
-		if( trs == null )
-		{
-			Debug.Log("enemy transform is null");
-			return;
-		}
+        //if( trs == null )
+        //{
+        //    Debug.Log("enemy transform is null");
+        //    return;
+        //}
 
-        if( trs.GetComponent<DeviationCalculator>() == null )
-		{
-			Debug.Log("enemy DeviationCalculator is null");
-			return;
-		}
+        //if( trs.GetComponent<DeviationCalculator>() == null )
+        //{
+        //    Debug.Log("enemy DeviationCalculator is null");
+        //    return;
+        //}
         
 		//
-		Vector3 forward = trs.GetComponent<DeviationCalculator>().Get() - m_orientatedTransform.position;
+		//Vector3 forward = trs.GetComponent<DeviationCalculator>().Get() - m_orientatedTransform.position;
+        Vector3 forward     =   _TargetPoint - m_orientatedTransform.position;
 		forward.Normalize();
         
 		//	即時
 		//m_orientatedTransform.rotation	=   Quaternion.LookRotation( forward );
 
-		//	補間
-		m_orientatedTransform.rotation	=	Quaternion.Slerp( m_orientatedTransform.rotation, Quaternion.LookRotation( forward ), Time.deltaTime*5.0f );
+        //  速度制限ありの即時回転
+        if( c_UseNewTargetting ){
+            m_orientatedTransform.rotation  =   Quaternion.RotateTowards( m_orientatedTransform.rotation, Quaternion.LookRotation( forward ), c_AngleSpeed * Time.deltaTime * 60.0f );
+        }
+        //  
+        else{
+		    //	補間
+		    m_orientatedTransform.rotation	=	Quaternion.Slerp( m_orientatedTransform.rotation, Quaternion.LookRotation( forward ), Time.deltaTime*5.0f );
+        }
     }
 
+    //  振り向ききってるかどうかチェック
+    bool    CheckAiming( Vector3 _TargetPoint, float _AngleThreshold, bool _HorizontalOnly )
+    {
+        Vector3 vBarrel     =   m_orientatedTransform.forward.normalized;
+        Vector3 toTarget    =   ( _TargetPoint - m_orientatedTransform.position ).normalized;
+
+        if( _HorizontalOnly ){
+            vBarrel.y       =   0.0f;
+            toTarget.y      =   0.0f;
+        }
+
+        float   angleDist   =   Vector3.Angle( vBarrel, toTarget );
+
+        return  angleDist <= _AngleThreshold;
+    }
 
     //  リクエスト
     [ ClientRpc ]

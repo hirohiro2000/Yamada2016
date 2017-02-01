@@ -14,6 +14,8 @@ public class TurretBullet : MonoBehaviour
 	[SerializeField]
 	private bool				m_chaseable		= false;
 
+    public  bool                m_ChasePrecise  = false;
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -44,7 +46,9 @@ public class TurretBullet : MonoBehaviour
 		{
 			Vector3 vec = m_target.position - transform.position;
 			vec.Normalize();
-			transform.rotation	= Quaternion.Slerp ( transform.rotation, Quaternion.LookRotation( vec ), m_chaseSpeed*Time.deltaTime );
+
+            if( m_ChasePrecise )    transform.rotation  = Quaternion.RotateTowards( transform.rotation, Quaternion.LookRotation( vec ), m_chaseSpeed * Time.deltaTime );
+            else			        transform.rotation	= Quaternion.Slerp ( transform.rotation, Quaternion.LookRotation( vec ), m_chaseSpeed*Time.deltaTime );
 		}
 
 		transform.position	+= ( transform.forward * m_speed * Time.deltaTime );		

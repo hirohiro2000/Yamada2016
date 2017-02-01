@@ -395,7 +395,7 @@ public class GirlController : NetworkBehaviour
         GetComponent< NetPlayer_Control >().CmdAddResource( -forcusParam.GetCreateCost() );
 
         //  支出を通知
-        m_rGameManager.SetAcqResource_Minus( forcusParam.GetBreakCost() );
+        m_rGameManager.SetAcqResource_Minus( forcusParam.GetCreateCost() );
         
         //	置かれたのがドローンだったらドローン操作に切り替え
         const int droneID = 8;

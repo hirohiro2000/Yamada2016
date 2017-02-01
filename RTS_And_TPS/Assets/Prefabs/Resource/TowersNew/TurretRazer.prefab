@@ -120,6 +120,7 @@ GameObject:
   - 136: {fileID: 13634750}
   - 114: {fileID: 11434010}
   - 114: {fileID: 11406372}
+  - 54: {fileID: 5484722}
   m_Layer: 11
   m_Name: TurretRazer
   m_TagString: Untagged
@@ -736,6 +737,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 121770}
   m_Mesh: {fileID: 4300004, guid: ddad9d6c961e60d4882d856b30ad4304, type: 3}
+--- !u!54 &5484722
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 137458}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!114 &11406036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1134,6 +1150,12 @@ MonoBehaviour:
   - {fileID: 427594}
   m_orientatedTransform: {fileID: 474958}
   c_ShotSound: {fileID: 158640, guid: 8a981fc032d885a4581647b9db04836c, type: 2}
+  c_BulletSpeed: 100000000
+  c_UseNewExpect: 1
+  c_AngleSpeed: 1
+  c_UseNewTargetting: 1
+  c_ShotAngleThreshold: 1
+  c_ShotAngleCheckHorizon: 0
 --- !u!114 &11498874
 MonoBehaviour:
   m_ObjectHideFlags: 1

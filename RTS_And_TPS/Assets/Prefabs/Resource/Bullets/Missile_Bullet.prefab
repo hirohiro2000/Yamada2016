@@ -148,8 +148,6 @@ MonoBehaviour:
     list:
     - type: 2
       multiple: 1
-    - type: 155
-      multiple: 0
   autoDestroyObject: {fileID: 433514}
   autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 0}
@@ -179,6 +177,7 @@ MonoBehaviour:
   m_speed: 10
   m_chaseSpeed: 5
   m_chaseable: 1
+  m_ChasePrecise: 0
 --- !u!114 &11481930
 MonoBehaviour:
   m_ObjectHideFlags: 1

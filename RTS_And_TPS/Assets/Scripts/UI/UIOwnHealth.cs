@@ -42,9 +42,17 @@ public class UIOwnHealth : MonoBehaviour
                 if (playerList[i] == m_player) continue;
                 if (playerList[i].GetComponent<PlayerCommander_Control>()) continue;
 
-                m_ownFighter = playerList[i].GetComponent<TPSPlayer_HP>();
+                m_ownFighter = playerList[i].GetComponent<TPSPlayer_HP>(); 
 
-                transform.GetChild(4).GetComponent<Text>().text = playerList[i].GetComponent<NetPlayer_Control>().c_PlayerName;  
+                NetPlayer_Control   rNetControl =   playerList[ i ].GetComponent< NetPlayer_Control >();
+                Transform           rChild      =   transform.GetChild( 4 );
+                Text                rText       =   rChild.GetComponent< Text >();
+                if( !rText )        continue;
+                if( !rNetControl )  continue;
+
+                rText.text  =   rNetControl.c_PlayerName;
+
+                //transform.GetChild(4).GetComponent<Text>().text = playerList[i].GetComponent<NetPlayer_Control>().c_PlayerName;  
                              
                 break;
 

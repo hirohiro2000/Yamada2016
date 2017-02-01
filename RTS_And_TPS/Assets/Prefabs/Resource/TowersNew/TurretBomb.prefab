@@ -73,6 +73,7 @@ GameObject:
   - 114: {fileID: 11458356}
   - 136: {fileID: 13682656}
   - 114: {fileID: 11433042}
+  - 54: {fileID: 5476412}
   m_Layer: 11
   m_Name: TurretBomb
   m_TagString: Untagged
@@ -325,7 +326,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 121248}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.7992206, y: 12, z: 52.703743}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -545,6 +546,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 109104}
   m_Mesh: {fileID: 4300000, guid: c9b4f0b4197c0624e8dfcc44e866fe9b, type: 3}
+--- !u!54 &5476412
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 121248}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!95 &9551246
 Animator:
   serializedVersion: 3
@@ -617,7 +633,7 @@ MonoBehaviour:
     - hp: 40
       power: 28
       range: 18
-      interval: 5
+      interval: 2
       upCost: 0
 --- !u!114 &11410948
 MonoBehaviour:
@@ -882,9 +898,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_bullet: {fileID: 186000, guid: f098ca3b974fc464b9823cfb6bf36335, type: 2}
   m_firePointTransforms:
-  - {fileID: 469606}
+  - {fileID: 412096}
   m_orientatedTransform: {fileID: 477370}
   c_ShotSound: {fileID: 158640, guid: 87a902ff1db616a4a9bade18452605ec, type: 2}
+  c_BulletSpeed: 1
+  c_UseNewExpect: 0
+  c_AngleSpeed: 0
+  c_UseNewTargetting: 0
+  c_ShotAngleThreshold: 5
+  c_ShotAngleCheckHorizon: 1
 --- !u!114 &11476610
 MonoBehaviour:
   m_ObjectHideFlags: 1

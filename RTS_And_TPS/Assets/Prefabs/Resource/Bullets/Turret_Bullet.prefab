@@ -148,8 +148,6 @@ MonoBehaviour:
     list:
     - type: 2
       multiple: 1
-    - type: 155
-      multiple: 0
   autoDestroyObject: {fileID: 440786}
   autoEmitObjectOnMyPosition: {fileID: 0}
   autoEmitObjectOnHitPoint: {fileID: 0}
@@ -189,8 +187,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_speed: 40
-  m_chaseSpeed: 20
+  m_chaseSpeed: 10
   m_chaseable: 0
+  m_ChasePrecise: 0
 --- !u!136 &13692538
 CapsuleCollider:
   m_ObjectHideFlags: 1
