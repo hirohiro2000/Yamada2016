@@ -27,10 +27,10 @@ public class TitleUIController : NetworkBehaviour {
 
     void Start()
     {
-        m_fade_controller.BeginFade(FadeController.FadeMode.In, Color.black, 1.0f, () =>
-           {
-               //Debug.Log("done");
-           });
+        //m_fade_controller.BeginFade(FadeController.FadeMode.In, Color.black, 1.0f, () =>
+        //   {
+        //       //Debug.Log("done");
+        //   });
     }
 
     public void ChangeSceneSinglePlayer()
