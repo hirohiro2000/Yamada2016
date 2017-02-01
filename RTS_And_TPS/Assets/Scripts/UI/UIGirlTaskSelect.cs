@@ -148,7 +148,7 @@ public class UIGirlTaskSelect : MonoBehaviour
             m_isInit = true;
             return result;
         }
-
+        
         m_computePosition = girlPosition;
         m_rightDoublePushChecker.Update();
         UpdateGuide( girlPosition );
@@ -190,7 +190,7 @@ public class UIGirlTaskSelect : MonoBehaviour
                 SoundController.PlayNow( "UI_MenuOpen", 0.0f, 0.1f, 1.0f, 1.0f );
 
             }        
-            else if ( !m_uiResourceBG.activeInHierarchy && !isJump && ( Input.GetKeyDown( KeyCode.F ) || m_rightDoublePushChecker.GetDown() == DoublePushChecker.State.DoublePush ) )
+            else if ( !m_uiResourceBG.activeInHierarchy && !isJump && ( Input.GetKeyDown( KeyCode.F ) ) )
             {
                 ClikedForcusFrame();
                 m_rightDoublePushChecker.Reset();
@@ -233,24 +233,22 @@ public class UIGirlTaskSelect : MonoBehaviour
     //---------------------------------------------------------------------   	
     void UpdateGuide(Vector3 computePosition)
     {
-        if ( TowerInfoActiveInHierarchy() || m_uiConvert.activeInHierarchy )
+        if ( m_uiConvert.activeInHierarchy )
         {
-            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = true;
-            
+            // ガイドの位置補正
+            RaycastHit  rHit        = new RaycastHit();
+            Ray         rRay        = new Ray( computePosition, Vector3.down );
+            int         layerMask   = LayerMask.GetMask( "Field" );
+            //  レイ判定
+            if (Physics.Raycast(rRay, out rHit, float.MaxValue, layerMask))
+            {
+                computePosition = rHit.point;
+            }
+
             var param = m_resourceInformation.GetResourceParamFromPosition(m_editTargetPosition);
             if ( param )
             {
                 m_resourceCreator.UpdateGuideRange( m_editTargetPosition, param.GetCurLevelParam().range );
-
-                // ガイドの位置補正
-                RaycastHit  rHit        = new RaycastHit();
-                Ray         rRay        = new Ray( computePosition, Vector3.down );
-                int         layerMask   = LayerMask.GetMask( "Field" );
-                //  レイ判定
-                if (Physics.Raycast(rRay, out rHit, float.MaxValue, layerMask))
-                {
-                    computePosition = rHit.point;
-                }
                 m_resourceInformation.m_gridSplitSpacePlane.transform.position  = computePosition;
                 m_resourceInformation.m_gridSplitSpacePlane.transform.position += new Vector3(0, 0.04f, 0);
             }
@@ -258,10 +256,20 @@ public class UIGirlTaskSelect : MonoBehaviour
             {
                 m_resourceCreator.UpdateGuideResource(m_itemController.GetForcus(), m_editTargetPosition);
                 m_resourceCreator.UpdateGuideRange( m_itemController.GetForcus(), m_editTargetPosition );
-            }            
-
+            }
+            
+            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = true;
             m_workingArea.SetActive(true);
             m_workingArea.transform.position = m_editTargetPosition;           
+
+        }
+        else if ( m_uiResourceBG.activeInHierarchy )
+        {
+            m_resourceInformation.m_gridSplitSpacePlane.GetComponent<Renderer>().enabled = true;
+            m_resourceInformation.m_gridSplitSpacePlane.transform.position  = computePosition;
+            m_resourceInformation.m_gridSplitSpacePlane.transform.position += new Vector3(0, 0.04f, 0);
+            m_resourceCreator.UpdateGuideResource(m_itemController.GetForcus(), computePosition);
+            m_resourceCreator.UpdateGuideRange( m_itemController.GetForcus(), computePosition );
         }
         else
         {
@@ -346,6 +354,13 @@ public class UIGirlTaskSelect : MonoBehaviour
     //---------------------------------------------------------------------   	
     public void SetForcus( int forcusID )
     {
+        string[]    paramStr    =   new string[]{
+            "15/30/45",
+            "30/60/90",
+            "45/90/135",
+            "45/90/135",
+        };
+
         // フォーカス変更
         m_itemController.SetForcus( forcusID );
 
@@ -370,7 +385,7 @@ public class UIGirlTaskSelect : MonoBehaviour
             {
                 m_towerInfoPanelCrystalFarm.GetComponent<AppearInfopanel>().SetActive(true);
                 m_towerInfoPanelCrystalFarm.transform.FindChild("HP").GetComponent<Text>().text         = "体力:  　　" + param.GetLevelParam(param.m_level).hp;
-                m_towerInfoPanelCrystalFarm.transform.FindChild("Interval").GetComponent<Text>().text   = "生成間隔:    " + "＃＃＃＃＃＃" + "      秒/発";
+                m_towerInfoPanelCrystalFarm.transform.FindChild("Interval").GetComponent<Text>().text   = "生成量:　    " + paramStr[ param.m_level ] + "      秒/発";
 
                 m_towerInfoPanel.GetComponent<AppearInfopanel>().SetActive(false);
             }
@@ -387,6 +402,14 @@ public class UIGirlTaskSelect : MonoBehaviour
     }
     public void SetInfopanelEx( Vector3 pos )
     {
+        string[]    paramStr    =   new string[]{
+            "15/30/45",
+            "30/60/90",
+            "45/90/135",
+            "45/90/135",
+        };
+
+
         var param = m_resourceInformation.GetResourceParamFromPosition(pos);
         if ( param && !TowerInfoActiveInHierarchy() )
         {          
@@ -410,15 +433,15 @@ public class UIGirlTaskSelect : MonoBehaviour
 
             }
             else
-            {
+            { 
                 m_towerInfoPanelCrystalFarmEx.GetComponent<AppearInfopanel>().SetActive(true);
                 m_towerInfoPanelCrystalFarmEx.transform.FindChild("HP").GetComponent<Text>().text           = "体力:  　　" + param.GetLevelParam(param.m_level).hp;
-                m_towerInfoPanelCrystalFarmEx.transform.FindChild("IntervalLv").GetComponent<Text>().text   = "生成間隔:    " + "＃＃＃＃＃＃";
+                m_towerInfoPanelCrystalFarmEx.transform.FindChild("Interval").GetComponent<Text>().text     = "生成量:　    " + paramStr[ param.m_level ];//"＃＃＃＃＃＃";
 
                 int refLv = ( param.CheckWhetherCanUpALevel() ) ? param.m_level+1 : param.m_level;
     
                 m_towerInfoPanelCrystalFarmEx.transform.FindChild("HPLv").GetComponent<Text>().text         = param.GetLevelParam(refLv).hp.ToString();
-                m_towerInfoPanelCrystalFarmEx.transform.FindChild("IntervalLv").GetComponent<Text>().text   = "＃＃＃＃＃＃";
+                m_towerInfoPanelCrystalFarmEx.transform.FindChild("IntervalLv").GetComponent<Text>().text   = paramStr[ refLv ];//"＃＃＃＃＃＃";
 
                 m_towerInfoPanelEx.GetComponent<AppearInfopanel>().SetActive(false);
             }
@@ -482,6 +505,7 @@ public class UIGirlTaskSelect : MonoBehaviour
 
     }
     public void SelectBreak()
+
     {
         var param   = m_resourceInformation.GetResourceParamFromPosition(m_editTargetPosition);
 

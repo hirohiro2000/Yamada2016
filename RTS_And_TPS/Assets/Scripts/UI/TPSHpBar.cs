@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class TPSHpBar : MonoBehaviour
@@ -23,10 +24,11 @@ public class TPSHpBar : MonoBehaviour
         m_rRectTrans    =   instance.m_mainImage.GetComponent< RectTransform >();
     }
 
-    static public void Initialize(float maxHP)
+    static public void Initialize(float maxHP, string name)
     {
         instance.m_maxHP = maxHP;
         instance.m_hp = maxHP;
+        instance.transform.FindChild("Name").GetComponent<Text>().text = name;
     }
     static public void SetHP(float hp)
     {

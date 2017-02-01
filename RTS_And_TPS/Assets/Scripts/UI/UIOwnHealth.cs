@@ -74,7 +74,7 @@ public class UIOwnHealth : MonoBehaviour
         RectTransform rt = GetComponent<RectTransform>();
 
         Text uiName = transform.GetChild(4).GetComponent<Text>();
-        float targetX = -509.97f + uiName.text.Length * uiName.fontSize * uiName.transform.localScale.x * 0.5f;
+        float targetX = -496.0f;
         if ( rt.localPosition.x < targetX )
         {
             Vector3 p = rt.localPosition;

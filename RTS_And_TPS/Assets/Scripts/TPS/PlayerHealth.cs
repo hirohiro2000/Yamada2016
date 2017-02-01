@@ -28,7 +28,7 @@ public class PlayerHealth : NetworkBehaviour
 	{
 		hp = maxHp;
 
-        TPSHpBar.Initialize(maxHp);
+        TPSHpBar.Initialize(maxHp, GetComponent<NetPlayer_Control>().c_PlayerName );
 
         m_rIdentity     =   GetComponent< NetworkIdentity >();
         //m_rTPSControl   =   GetComponent< TPSPlayer_Control >();
