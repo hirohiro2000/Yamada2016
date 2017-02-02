@@ -275,6 +275,16 @@ public class GameManager : NetworkBehaviour {
                 else                        m_rLinkManager.m_rLocalNPControl.CmdSend_GMIsReady( true );
             }
         }
+
+        //  記録を削除（開発用コマンド）
+        if( Input.GetKey( KeyCode.RightShift )
+        &&  Input.GetKeyDown( KeyCode.Alpha0 ) ){
+            //  削除
+            PlayerPrefs.DeleteAll(); 
+
+            //  通知
+            SetAcqRecord( "記録を削除しました！", 2.0f, m_rLinkManager.m_LocalPlayerID, AcqRecord_Control.ColorType.Emergency );
+        }
     }
     void    UpdateIn_Server()
     {
