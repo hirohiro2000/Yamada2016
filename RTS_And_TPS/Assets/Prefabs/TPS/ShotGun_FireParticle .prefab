@@ -1,15 +1,31 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &119268
+--- !u!1 &139018
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 453322}
-  - 198: {fileID: 19874446}
-  - 199: {fileID: 19987170}
+  - 4: {fileID: 432280}
+  - 114: {fileID: 11479380}
+  m_Layer: 0
+  m_Name: 'ShotGun_FireParticle '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &198538
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 469562}
+  - 198: {fileID: 19825462}
+  - 199: {fileID: 19963670}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -17,71 +33,55 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &186830
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 405188}
-  - 114: {fileID: 11449338}
-  m_Layer: 0
-  m_Name: FireParticle
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &405188
+--- !u!4 &432280
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 186830}
+  m_GameObject: {fileID: 139018}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -45.624, y: 1.033, z: 63.596}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 453322}
+  - {fileID: 469562}
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!4 &453322
+--- !u!4 &469562
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 119268}
-  m_LocalRotation: {x: -0.6941574, y: -0.13470563, z: 0.13470563, w: 0.6941573}
+  m_GameObject: {fileID: 198538}
+  m_LocalRotation: {x: -0.5587995, y: 0.43329328, z: -0.43329328, w: 0.5587997}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: -68.0358, y: -90, z: 90}
+  m_LocalEulerAnglesHint: {x: -165.58, y: -90, z: 90}
   m_Children: []
-  m_Father: {fileID: 405188}
+  m_Father: {fileID: 432280}
   m_RootOrder: 0
---- !u!114 &11449338
+--- !u!114 &11479380
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 186830}
+  m_GameObject: {fileID: 139018}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de593ba5d0ffa4a4f9e1eccd89ac04c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   DeleteSecond: 2
---- !u!198 &19874446
+--- !u!198 &19825462
 ParticleSystem:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 119268}
+  m_GameObject: {fileID: 198538}
   serializedVersion: 2
   lengthInSec: 2
   startDelay:
-    scalar: 0
+    scalar: 0.1
     maxCurve:
       serializedVersion: 2
       m_Curve:
@@ -117,7 +117,7 @@ ParticleSystem:
     minMaxState: 0
   speed: 1
   randomSeed: 0
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   moveWithTransform: 0
@@ -290,7 +290,7 @@ ParticleSystem:
         rgba: 4294967295
       minMaxState: 0
     startSize:
-      scalar: 0.035
+      scalar: 0.09
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1571,12 +1571,12 @@ ParticleSystem:
     subEmitterCollision1: {fileID: 0}
     subEmitterDeath: {fileID: 0}
     subEmitterDeath1: {fileID: 0}
---- !u!199 &19987170
+--- !u!199 &19963670
 ParticleSystemRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 119268}
+  m_GameObject: {fileID: 198538}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -1621,5 +1621,5 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 186830}
+  m_RootGameObject: {fileID: 139018}
   m_IsPrefabParent: 1
