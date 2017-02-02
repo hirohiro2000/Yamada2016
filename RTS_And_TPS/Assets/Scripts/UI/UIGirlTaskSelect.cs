@@ -237,7 +237,7 @@ public class UIGirlTaskSelect : MonoBehaviour
         {
             // ガイドの位置補正
             RaycastHit  rHit        = new RaycastHit();
-            Ray         rRay        = new Ray( computePosition, Vector3.down );
+            Ray         rRay        = new Ray( computePosition + Vector3.up*2.0f, Vector3.down );
             int         layerMask   = LayerMask.GetMask( "Field" );
             //  レイ判定
             if (Physics.Raycast(rRay, out rHit, float.MaxValue, layerMask))
@@ -527,7 +527,7 @@ public class UIGirlTaskSelect : MonoBehaviour
 
         m_editTargetPosition = m_resourceInformation.m_gridSplitSpacePlane.transform.position;
         RaycastHit  rHit        = new RaycastHit();
-        Ray         rRay        = new Ray( m_editTargetPosition, Vector3.down );
+        Ray         rRay        = new Ray(m_editTargetPosition + Vector3.up * 2.0f, Vector3.down );
         int         layerMask   = LayerMask.GetMask( "Field" );
         //  レイ判定
         if (Physics.Raycast(rRay, out rHit, float.MaxValue, layerMask))
