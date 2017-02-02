@@ -82,8 +82,6 @@ public class GirlController : NetworkBehaviour
 	void Start ()
 	{
         Transform   rHUD                      = GameObject.Find( "Canvas" ).transform.FindChild("RTS_HUD");
-        m_uiGirlTask                          = rHUD.GetComponent<UIGirlTaskSelect>();
-        m_uiGirlTask.Initialize( this );
 
         m_rRideButton                   = rHUD.FindChild( "RideButton" ).gameObject;
         m_rGetOffButton                 = rHUD.FindChild( "GetOffButton" ).gameObject;
@@ -112,6 +110,11 @@ public class GirlController : NetworkBehaviour
             m_rPlaceCircle_Place.gameObject.SetActive( false );
             m_rPlaceCircle_B.gameObject.SetActive( false );
             m_rPlaceCircle.gameObject.SetActive( false );
+        }
+        else
+        {
+            m_uiGirlTask                          = rHUD.GetComponent<UIGirlTaskSelect>();
+            m_uiGirlTask.Initialize( this );
         }
     } 
 

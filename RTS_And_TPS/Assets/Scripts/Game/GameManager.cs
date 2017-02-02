@@ -171,9 +171,11 @@ public class GameManager : NetworkBehaviour {
             CheckWhetherExist_Float( m_rResourceList, 2 );
 
             //  リソース初期化
-            for( int i = 0; i < m_rResourceList.Count; i++ ){
-                m_rResourceList[ i ]    =   c_StartResource;
-            }
+            //for( int i = 0; i < m_rResourceList.Count; i++ ){
+            //    m_rResourceList[ i ]    =   c_StartResource;
+            //}
+
+            //this.enabled    =   false;
         }
 	}
 	
@@ -1404,12 +1406,15 @@ public class GameManager : NetworkBehaviour {
     {
         if( m_State > State.InGame )    return;
 
-        //m_Resource      +=  _AddValue;
-        //m_Resource      =   Mathf.Max( m_Resource, 0.0f );
-
-        for( int i = 0; i < m_rResourceList.Count; i++ ){
-            m_rResourceList[ i ]    +=  _AddValue;
-            m_rResourceList[ i ]    =   Mathf.Max( m_rResourceList[ i ], 0.0f );
+        if( _AddValue < 0 ){
+            m_rResourceList[ _ClientID ]    +=  _AddValue;
+            m_rResourceList[ _ClientID ]    =   Mathf.Max( m_rResourceList[ _ClientID ], 0.0f );
+        }
+        else{
+            for( int i = 0; i < m_rResourceList.Count; i++ ){
+                m_rResourceList[ i ]    +=  _AddValue;
+                m_rResourceList[ i ]    =   Mathf.Max( m_rResourceList[ i ], 0.0f );
+            }
         }
     }
     [ Server ]

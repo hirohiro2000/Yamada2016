@@ -572,9 +572,10 @@ public class UIGirlTaskSelect : MonoBehaviour
     // [m_uiResourceBG][m_uiForcusFrame][m_towerInfoPanel]を上２０に移動
     public void UpPanel()
     {
-        m_uiResourceBG.GetComponent<RectTransform>().localPosition      += new Vector3( 0.0f, 35.0f, 0.0f );
-        m_uiForcusFrame.GetComponent<RectTransform>().localPosition     += new Vector3( 0.0f, 35.0f, 0.0f );
-	    m_towerInfoPanel.GetComponent<RectTransform>().localPosition    += new Vector3( 0.0f, 35.0f, 0.0f );
+        m_uiResourceBG.GetComponent<RectTransform>().localPosition                  += new Vector3( 0.0f, 35.0f, 0.0f );
+        m_uiForcusFrame.GetComponent<RectTransform>().localPosition                 += new Vector3( 0.0f, 35.0f, 0.0f );
+	    m_towerInfoPanel.GetComponent<RectTransform>().localPosition                += new Vector3( 0.0f, 35.0f, 0.0f );
+	    m_towerInfoPanelCrystalFarm.GetComponent<RectTransform>().localPosition     += new Vector3( 0.0f, 35.0f, 0.0f );
     }   
  
     

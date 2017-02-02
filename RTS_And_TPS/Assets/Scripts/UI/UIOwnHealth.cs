@@ -5,9 +5,13 @@ using System.Collections;
 public class UIOwnHealth : MonoBehaviour
 {
     [SerializeField]
-    private UIGirlTaskSelect    m_uiGirlTask        = null;
+    private Texture             m_girl          = null;
     [SerializeField]
-    private GameObject          m_mainImage         =   null;
+    private Texture             m_robot         = null;
+    [SerializeField]
+    private UIGirlTaskSelect    m_uiGirlTask    = null;
+    [SerializeField]
+    private GameObject          m_mainImage     =   null;
     
     private bool                m_onetimeUpdate   { get; set; }
     private RectTransform       m_rRectTrans      { get; set; }
@@ -45,14 +49,21 @@ public class UIOwnHealth : MonoBehaviour
                 m_ownFighter = playerList[i].GetComponent<TPSPlayer_HP>(); 
 
                 NetPlayer_Control   rNetControl =   playerList[ i ].GetComponent< NetPlayer_Control >();
-                Transform           rChild      =   transform.GetChild( 4 );
+                Transform           rChild      =   transform.FindChild( "Name" );
                 Text                rText       =   rChild.GetComponent< Text >();
                 if( !rText )        continue;
                 if( !rNetControl )  continue;
 
                 rText.text  =   rNetControl.c_PlayerName;
 
-                //transform.GetChild(4).GetComponent<Text>().text = playerList[i].GetComponent<NetPlayer_Control>().c_PlayerName;  
+                if ( playerList[i].GetComponent<TPSPlayer_Control>() )
+                {
+                    transform.FindChild("Face").GetComponent<RawImage>().texture = m_robot;
+                }
+                if ( playerList[i].GetComponent<RTSPlayer_Control>() )
+                {
+                    transform.FindChild("Face").GetComponent<RawImage>().texture = m_girl;
+                }
                              
                 break;
 
