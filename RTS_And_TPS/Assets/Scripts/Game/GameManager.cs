@@ -233,7 +233,7 @@ public class GameManager : NetworkBehaviour {
             m_PreStateTimer =   curCount;
         }
 
-        //  空模様を更新
+        //  空模様を更新 
         m_rSkyManager.ChangeSky( Mathf.Max( m_WaveLevel - 1, 0 ) );
 
         //  ＵＩの更新  
@@ -261,7 +261,7 @@ public class GameManager : NetworkBehaviour {
             }
         }
 
-        //  キー入力  
+        //  キー入力   
         if( Input.GetKeyDown( KeyCode.Return ) ){
             if( m_State == State.CountDown
             &&  !GetFromList_IsReady( m_rLinkManager.m_LocalPlayerID ) ){

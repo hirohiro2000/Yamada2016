@@ -1,7 +1,9 @@
-
+Ôªø
 #if ENABLE_UNET
 
 using   System;
+using   System.Net;
+using   System.Net.Sockets;
 using   System.Collections.Generic;
 using   UnityEngine.SceneManagement;
 
@@ -15,6 +17,7 @@ namespace   UnityEngine.Networking
         public  uint                m_MatchSize         =   4;
 
         public  bool                showGUI             =   true;
+        public  Font                c_UseFont           =   null;
 
         private int                 offsetX             =   0;
         private int                 offsetY             =   0;
@@ -24,6 +27,10 @@ namespace   UnityEngine.Networking
         private string              m_NameFilter        =   "";
 
         private MyNetworkDiscovery  m_rDiscovery        =   null;
+
+        private string              m_HostName          =   "";
+        private string              m_MyIP              =   "";
+
 
 		// Runtime variable
 		//private bool                showServer          =   false;
@@ -36,6 +43,11 @@ namespace   UnityEngine.Networking
         void    Start()
         {
             m_rNetworkManager.matchName =   "";
+
+            //  „Éõ„Çπ„ÉàÂêç„ÇíÂèñÂæó„Åô„Çã
+            m_HostName  =   Dns.GetHostName();
+            //  IP„Ç¢„Éâ„É¨„Çπ„Çí‰øùÂ≠ò
+            m_MyIP      =   Network.player.ipAddress;
         }
 
 		void    Update()
@@ -48,15 +60,15 @@ namespace   UnityEngine.Networking
             {
                 //if( Input.GetKeyDown( KeyCode.S ) ) m_rNetworkManager.StartServer();
                 if( Input.GetKeyDown( KeyCode.H ) ){
-                    //  ÉuÉçÅ[ÉhÉLÉÉÉXÉgäJén 
+                    //  „Éñ„É≠„Éº„Éâ„Ç≠„É£„Çπ„ÉàÈñãÂßã 
                     m_rDiscovery.Initialize();
                     m_rDiscovery.StartAsServer();
 
-                    //  ÉzÉXÉgäJén
+                    //  „Éõ„Çπ„ÉàÈñãÂßã
                     m_rNetworkManager.StartHost();
                 }
                 if( Input.GetKeyDown( KeyCode.C ) ){
-                    //  ÉuÉçÅ[ÉhÉLÉÉÉXÉgäJén
+                    //  „Éñ„É≠„Éº„Éâ„Ç≠„É£„Çπ„ÉàÈñãÂßã
                     m_rDiscovery.Initialize();
                     m_rDiscovery.StartAsClient();
                 }
@@ -82,45 +94,55 @@ namespace   UnityEngine.Networking
             &&  !m_rDiscovery.running
             &&  ( !NetworkTransport.IsStarted || !NetworkTransport.IsBroadcastDiscoveryRunning() ) )
 			{
-				if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "LAN Host(H)" ) ){
-                    //  ÉuÉçÅ[ÉhÉLÉÉÉXÉgäJén 
+				if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "ÈÉ®Â±ã„ÇíÁ´ã„Å¶„Çã" ) ){
+                    //  „Éñ„É≠„Éº„Éâ„Ç≠„É£„Çπ„ÉàÈñãÂßã  „ÄÄ
                     m_rDiscovery.Initialize();
                     if( m_rDiscovery.StartAsServer() ){
-                        //  ÉzÉXÉgäJén 
+                        //  „Éõ„Çπ„ÉàÈñãÂßã 
                         m_rNetworkManager.StartHost();
                     }
                 }
 				ypos    +=  spacing;
 
-				if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "LAN Client(C)" ) ){
-                    //  ÉuÉçÅ[ÉhÉLÉÉÉXÉgäJén
+				if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "ÈÉ®Â±ã„ÇíÊé¢„Åô" ) ){
+                    //  „Éñ„É≠„Éº„Éâ„Ç≠„É£„Çπ„ÉàÈñãÂßã„ÄÄ 
                    m_rDiscovery.Initialize();
                    m_rDiscovery.StartAsClient();
                 }
                 //ypos    +=  spacing;
                 ypos    +=  ( int )( spacing * 1.5f );
 
-                if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "LAN Local" ) ){
-                    //  ÉzÉXÉgäJén 
+                if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "„Ç™„Éï„É©„Ç§„É≥„ÅßÈÅä„Å∂" ) ){
+                    //  „Éõ„Çπ„ÉàÈñãÂßã 
                     m_rNetworkManager.StartHost();
                 }
                 ypos    +=  spacing;
                 
-                if( GUI.Button( new Rect( xpos, ypos, 106, 20 ), "LAN IP" ) ){
-                    //  ÉNÉâÉCÉAÉìÉgäJén
+                if( GUI.Button( new Rect( xpos, ypos, 106, 20 ), "IP„ÅßÂèÇÂä†" ) ){
+                    //  „ÇØ„É©„Ç§„Ç¢„É≥„ÉàÈñãÂßã     
                     m_rNetworkManager.StartClient();
                 }
                 m_rNetworkManager.networkAddress
                     =   GUI.TextField( new Rect( xpos + 110, ypos, 90, 20 ), m_rNetworkManager.networkAddress );
                 ypos    +=  ( int )( spacing * 1.5f );
                 
+                //  Ôº©Ôº∞„Ç¢„Éâ„É¨„ÇπË°®Á§∫ 
+                {
+                    float   myLeft  =   10.0f;
+                    GUI.Box( new Rect( xpos + 210 + myLeft, 40 + offsetY + 8, 164, 22 ), "" );
+                    GUI.Box( new Rect( xpos + 210 + myLeft, 40 + offsetY + 8, 164, 84 ), "„ÅÇ„Å™„Åü„ÅÆÊÉÖÂ†±" );
+                    GUI.Label( new Rect( xpos + 210 + myLeft + 14, 40 + offsetY + 8 + 29, 300, 20 ), "„Éõ„Çπ„ÉàÂêç" );
+                    GUI.Label( new Rect( xpos + 210 + myLeft+ 14, 40 + offsetY + 8 + 54, 300, 20 ), "IP");
+                    FunctionManager.GUILabel( FunctionManager.AR_TYPE.TOP_LEFT, new Vector2( xpos + 210 + myLeft+ 164 - 14, -40 - offsetY - 8 - 29 ), m_HostName, new Vector2( 1.0f, 1.0f ) );
+                    FunctionManager.GUILabel( FunctionManager.AR_TYPE.TOP_LEFT, new Vector2( xpos + 210 + myLeft+ 164 - 14, -40 - offsetY - 8 - 54 ), m_MyIP, new Vector2( 1.0f, 1.0f ) );
 
+                }
                 //if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "LAN Server Only(S)" ) ){
-                //    //  ÉuÉçÅ[ÉhÉLÉÉÉXÉgäJén 
+                //    //  „Éñ„É≠„Éº„Éâ„Ç≠„É£„Çπ„ÉàÈñãÂßã 
                 //    m_rDiscovery.Initialize();
                 //    m_rDiscovery.StartAsServer();
 
-                //    //  ÉTÅ[ÉoÅ[ãNìÆ
+                //    //  „Çµ„Éº„Éê„ÉºËµ∑Âãï
                 //    m_rNetworkManager.StartServer();
                 //}
                 //ypos    +=  spacing;
@@ -140,7 +162,7 @@ namespace   UnityEngine.Networking
             if( !NetworkServer.active
             &&  !NetworkClient.active
             &&  m_rDiscovery.running ){
-                //  ÉTÅ[ÉoÅ[Ç™å©Ç¬Ç©Ç¡ÇΩ
+                //  „Çµ„Éº„Éê„Éº„ÅåË¶ã„Å§„Åã„Å£„Åü
                 if( m_rDiscovery.broadcastsReceived            != null
                 &&  m_rDiscovery.broadcastsReceived.Keys.Count >  0    ){ 
                     foreach( var key in m_rDiscovery.broadcastsReceived.Keys ){
@@ -150,21 +172,21 @@ namespace   UnityEngine.Networking
 
                         if( items.Length == 3 && items[ 0 ] == "NetworkManager" ){
                             if( NetworkManager.singleton != null && NetworkManager.singleton.client == null ){
-                                //  ÉNÉâÉCÉAÉìÉgäJén
+                                //  „ÇØ„É©„Ç§„Ç¢„É≥„ÉàÈñãÂßã
                                 NetworkManager.singleton.networkAddress =   items[ 1 ];
                                 NetworkManager.singleton.networkPort    =   Convert.ToInt32( items[ 2 ] );
                                 NetworkManager.singleton.StartClient();
 
-                                //  ÉuÉçÅ[ÉhÉLÉÉÉXÉgèIóπ
+                                //  „Éñ„É≠„Éº„Éâ„Ç≠„É£„Çπ„ÉàÁµÇ‰∫Ü
                                 m_rDiscovery.StopBroadcast();
                             }
                         }
 
-                        //  ç≈èâÇ…å©Ç¬Ç©Ç¡ÇΩÉAÉhÉåÉXà»äOÇÕñ≥éã
+                        //  ÊúÄÂàù„Å´Ë¶ã„Å§„Åã„Å£„Åü„Ç¢„Éâ„É¨„Çπ‰ª•Â§ñ„ÅØÁÑ°Ë¶ñ
                         break;
                     }
                 }
-                //  åüçıíÜ
+                //  Ê§úÁ¥¢‰∏≠
                 else{
                     GUIContent  content =   new GUIContent( "___  Searching Host  ___" );
                     GUIStyle    style   =   new GUIStyle( GUI.skin.label );
@@ -204,7 +226,7 @@ namespace   UnityEngine.Networking
                     if( m_rDiscovery.running )          m_rDiscovery.StopBroadcast();
                     if( NetworkTransport.IsStarted )    NetworkTransport.Shutdown();
 
-                    //  ÉVÅ[ÉìÇÉäÉçÅ[Éh
+                    //  „Ç∑„Éº„É≥„Çí„É™„É≠„Éº„Éâ
                     SceneManager.LoadScene( SceneManager.GetActiveScene().name );
 				}
 				ypos += spacing;
@@ -218,11 +240,11 @@ namespace   UnityEngine.Networking
 
 				if( m_rNetworkManager.matchMaker == null )
 				{
-					if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "Enable Match Maker" ) )
-					{
-						m_rNetworkManager.StartMatchMaker();
-					}
-					ypos += spacing;
+                    //if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "Enable Match Maker" ) )
+                    //{
+                    //    m_rNetworkManager.StartMatchMaker();
+                    //}
+                    //ypos += spacing;
 				}
 				else
 				{
@@ -258,7 +280,7 @@ namespace   UnityEngine.Networking
 						}
 						else
 						{
-                            //  ÉäÉçÅ[Éh
+                            //  „É™„É≠„Éº„Éâ
                             if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "Reload" ) )
 							{
 								m_rNetworkManager.matchMaker.ListMatches( 0, 20, m_NameFilter, m_rNetworkManager.OnMatchList );
@@ -266,10 +288,10 @@ namespace   UnityEngine.Networking
 							ypos += spacing;
                             ypos += 10;
 
-                            //  ïîâÆÉäÉXÉgï\é¶
+                            //  ÈÉ®Â±ã„É™„Çπ„ÉàË°®Á§∫
 							foreach( var match in m_rNetworkManager.matches )
 							{
-                                //  ïîâÆÇ…éQâ¡
+                                //  ÈÉ®Â±ã„Å´ÂèÇÂä†
 								if( GUI.Button( new Rect( xpos, ypos, 200, 20 ), "Join Match :  " + match.name ) )
 								{
 									m_rNetworkManager.matchName = match.name;
@@ -279,13 +301,13 @@ namespace   UnityEngine.Networking
 								ypos += spacing;
 							}
 
-                            //  éQâ¡ÉpÉXÉèÅ[ÉhÇê›íË
+                            //  ÂèÇÂä†„Éë„Çπ„ÉØ„Éº„Éâ„ÇíË®≠ÂÆö
                             if( m_rNetworkManager.matches.Count > 0 ){
                                 GUI.Label( new Rect( xpos, ypos, 100, 20 ), "Join Pass :  " );
 							    m_JoinPass  =   GUI.TextField( new Rect( xpos+100, ypos, 100, 20 ), m_JoinPass );
                                 ypos += spacing;
                             }
-                            //  ïîâÆÇ™å©Ç¬Ç©ÇÁÇ»Ç©Ç¡ÇΩ
+                            //  ÈÉ®Â±ã„ÅåË¶ã„Å§„Åã„Çâ„Å™„Åã„Å£„Åü 
                             else{
                                 GUIContent  content =   new GUIContent( "___  Room Not Found  ___" );
                                 GUIStyle    style   =   new GUIStyle( GUI.skin.label );
@@ -313,7 +335,7 @@ namespace   UnityEngine.Networking
 			}
 		}
 
-        //  ÉAÉNÉZÉX
+        //  „Ç¢„ÇØ„Çª„Çπ
         public  void    Stop()
         {
             m_rNetworkManager.StopHost();
@@ -321,7 +343,7 @@ namespace   UnityEngine.Networking
             if( NetworkTransport.IsStarted )    NetworkTransport.Shutdown();
         }
 
-        //  ÉRÅ[ÉãÉoÉbÉN
+        //  „Ç≥„Éº„É´„Éê„ÉÉ„ÇØ
         static  void    OnMatchJoinRequest_CallBack( Match.JoinMatchResponse _Response )
         {
 

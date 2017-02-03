@@ -835,19 +835,19 @@ MonoBehaviour:
   m_levelInformations:
     list:
     - hp: 15
-      power: 16
-      range: 50
-      interval: 4
-      upCost: 161
-    - hp: 20
-      power: 24
-      range: 50
-      interval: 3
-      upCost: 236
-    - hp: 40
       power: 32
       range: 50
+      interval: 3
+      upCost: 161
+    - hp: 20
+      power: 48
+      range: 50
       interval: 2
+      upCost: 236
+    - hp: 40
+      power: 64
+      range: 50
+      interval: 1.5
       upCost: 0
 --- !u!114 &11413732
 MonoBehaviour:

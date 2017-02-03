@@ -40,12 +40,19 @@ public class TitleUIController : NetworkBehaviour {
             FadeController.FadeMode.Out, Color.black, 1.0f,
             () =>
             {
-                //UnityEngine.SceneManagement.SceneManager.LoadScene(GameSceneName);
-                NetworkManager.singleton.networkPort    =   7781;
-                //  ホスト開始 
-                NetworkManager.singleton.StartHost();
-                //  シーンをリロード
-                NetworkManager.singleton.ServerChangeScene( GameSceneName );
+                ////UnityEngine.SceneManagement.SceneManager.LoadScene(GameSceneName);
+                //NetworkManager.singleton.networkPort    =   7781;
+                ////  ホスト開始 
+                //NetworkManager.singleton.StartHost();
+                ////  シーンをリロード
+                //NetworkManager.singleton.ServerChangeScene( GameSceneName );
+
+                NetworkManager.singleton.GetComponent< MyNetworkManagerHUD >().Stop();
+
+                NetworkManager.singleton.dontDestroyOnLoad  =   false;
+                DestroyImmediate( NetworkManager.singleton.gameObject );
+            
+                UnityEngine.SceneManagement.SceneManager.LoadScene(GameSceneName);
             });
     }
        

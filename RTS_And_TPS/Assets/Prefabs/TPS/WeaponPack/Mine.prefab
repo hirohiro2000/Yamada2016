@@ -10,6 +10,8 @@ GameObject:
   - 4: {fileID: 449668}
   - 114: {fileID: 11480952}
   - 114: {fileID: 11442762}
+  - 114: {fileID: 11400828}
+  - 114: {fileID: 11467530}
   m_Layer: 19
   m_Name: Mine
   m_TagString: Untagged
@@ -30,6 +32,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &11400828
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 176026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 251
+    i1: 178
+    i2: 25
+    i3: 86
+    i4: 197
+    i5: 209
+    i6: 137
+    i7: 4
+    i8: 106
+    i9: 253
+    i10: 212
+    i11: 17
+    i12: 253
+    i13: 133
+    i14: 107
+    i15: 77
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &11442762
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -44,6 +78,23 @@ MonoBehaviour:
   EmitBullet: {fileID: 449668, guid: 80af26de69ee8ad4b93bb5db1b88462f, type: 2}
   EmitBulletEffect: []
   EmitFireEffect: []
+--- !u!114 &11467530
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 176026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db88a9e66a59a2468e428f5cb59e70e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  c_AttackerID: 0
+  c_Spawn: 1
+  c_Explosion: {fileID: 0}
+  c_CallOnDestroy: 0
+  c_SetATKPoint: 0
+  c_ATK: 0
 --- !u!114 &11480952
 MonoBehaviour:
   m_ObjectHideFlags: 1

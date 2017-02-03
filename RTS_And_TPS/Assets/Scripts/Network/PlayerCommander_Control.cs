@@ -68,7 +68,7 @@ public class PlayerCommander_Control : NetworkBehaviour {
                     DetermPlayerName( m_EditName );
                     CmdLaunchTPSPlayer();
 
-                    //  効果音再生
+                    //  効果音再生　
                     SoundController.PlayNow( "UI_Click", 0.0f, 0.05f, 1.0f, 1.0f );
                 }
             }
@@ -82,16 +82,16 @@ public class PlayerCommander_Control : NetworkBehaviour {
                     SoundController.PlayNow( "UI_Click", 0.0f, 0.05f, 1.0f, 1.0f );
                 }
             }
-            //  敵ロボットで出撃 
-            if( GUI.Button( new Rect( 58, 320, 100, 20 ), "侵入" ) ){
-                if( m_rGameManager.GetState() <= GameManager.State.InGame ){
-                    DetermPlayerName( m_EditName );
-                    CmdLaunchTPSPlayerE();
+            ////  敵ロボットで出撃 
+            //if( GUI.Button( new Rect( 58, 320, 100, 20 ), "侵入" ) ){
+            //    if( m_rGameManager.GetState() <= GameManager.State.InGame ){
+            //        DetermPlayerName( m_EditName );
+            //        CmdLaunchTPSPlayerE();
 
-                    //  効果音再生
-                    SoundController.PlayNow( "UI_Click", 0.0f, 0.05f, 1.0f, 1.0f );
-                }
-            }
+            //        //  効果音再生
+            //        SoundController.PlayNow( "UI_Click", 0.0f, 0.05f, 1.0f, 1.0f );
+            //    }
+            //}
         }
     }
 
