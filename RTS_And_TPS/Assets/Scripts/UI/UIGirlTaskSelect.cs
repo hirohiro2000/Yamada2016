@@ -123,7 +123,7 @@ public class UIGirlTaskSelect : MonoBehaviour
     public void Initialize( GirlController girl )
     {
         result                      = RESULT.eNone;
-        m_rightDoublePushChecker    =   new DoublePushChecker( 1, 0.2f );
+        m_rightDoublePushChecker    =   new DoublePushChecker( 2, 0.2f );
 
         m_itemController         = girl.GetComponent<ItemController>();
         m_itemController.SetForcus( 0 );
