@@ -1215,6 +1215,13 @@ public class GameManager : NetworkBehaviour {
         //  BGM変更
         if( m_WaveLevel % 3 == 0 )  BGMManager.ChangeBGM( "BGM_Interval_0", 0.5f, 2.0f, 1.0f, 6.5f );
         else                        BGMManager.ChangeBGM( "BGM_Interval_0", 0.5f, 2.0f, 3.0f, 6.5f );
+
+        //  女の子がいたらMPを回復
+        GameObject      rMyPlayer   =   m_rLinkManager.m_rLocalPlayer;
+        GirlController  rMyGirl     =   rMyPlayer.GetComponent< GirlController >();
+        if( rMyGirl ){
+            rMyGirl.ResetMP();
+        }
     }
     void    StandbyProc_WaveIntervalInServer()
     {
