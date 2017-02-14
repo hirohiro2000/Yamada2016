@@ -119,12 +119,12 @@ public class UIConfirm : MonoBehaviour
 
             if ( obj == m_clikedUI )
             {
-                rt.localScale = Vector3.Lerp( rt.localScale, Vector3.zero, 5.0f*Time.deltaTime );
+                rt.localScale = Vector3.Lerp( rt.localScale, Vector3.zero, 20.0f*Time.deltaTime );
                 rt.localPosition += ( parentRt.localPosition - rt.localPosition )*5.0f*Time.deltaTime;
             }                
             else
             {
-                rt.localScale = Vector3.Lerp( rt.localScale, Vector3.zero, 15.0f*Time.deltaTime );
+                rt.localScale = Vector3.Lerp( rt.localScale, Vector3.zero, 50.0f*Time.deltaTime );
                 rt.localPosition += ( parentRt.localPosition - rt.localPosition )*15.0f*Time.deltaTime;
             }
 
