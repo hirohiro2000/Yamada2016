@@ -505,7 +505,6 @@ public class UIGirlTaskSelect : MonoBehaviour
 
     }
     public void SelectBreak()
-
     {
         var param   = m_resourceInformation.GetResourceParamFromPosition(m_editTargetPosition);
 
