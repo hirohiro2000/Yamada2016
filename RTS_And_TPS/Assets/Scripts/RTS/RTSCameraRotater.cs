@@ -22,7 +22,14 @@ public class RTSCameraRotater : MonoBehaviour {
         if( Input.GetMouseButton( 2 ) ){
 		    rtsCamera.m_dir.Normalize();
 
-		    Vector3 rotateVector = Quaternion.Euler(Input.GetAxis("Mouse Y") * 4.0f, Input.GetAxis("Mouse X") * 4.0f, .0f) * Vector3.forward;
+			float RotateSpeed;
+
+			//回転量をカメラの距離から算出
+			{
+				RotateSpeed = Mathf.Pow(250.0f / (rtsCamera.m_targetDistance + 200.0f), 1.0f);
+            }
+
+		    Vector3 rotateVector = Quaternion.Euler(Input.GetAxis("Mouse Y") * RotateSpeed, Input.GetAxis("Mouse X") * RotateSpeed, .0f) * Vector3.forward;
 
 		    rtsCamera.m_dir = (Quaternion.LookRotation(rtsCamera.m_dir) * rotateVector).normalized;
 

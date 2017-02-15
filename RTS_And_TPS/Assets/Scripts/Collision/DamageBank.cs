@@ -489,7 +489,7 @@ public class DamageBank : MonoBehaviour {
 			//その場しのぎ
 			if(workDamageResults.atk != null)
 			{
-				workDamageResults.atk.CallEmitObjectOnHitPoint(workDamageResults.info.contactPoint);
+				workDamageResults.atk.CallEmitObjectOnHitPoint(workDamageResults.info.contactPoint, workDamageResults.info.damagedObject);
 				workDamageResults.atk.Hited();
 			}
 		}

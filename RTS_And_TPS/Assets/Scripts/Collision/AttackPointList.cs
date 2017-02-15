@@ -151,11 +151,15 @@ public class AttackPointList : MonoBehaviour {
 	}
 
 
-	public void CallEmitObjectOnHitPoint(Vector3 hitPoint)
+	public void CallEmitObjectOnHitPoint(Vector3 hitPoint,Transform hitObject)
 	{
 		if (autoEmitObjectOnHitPoint != null)
 		{
-			Instantiate(autoEmitObjectOnHitPoint.gameObject, hitPoint, transform.rotation);
+			GameObject emit = (GameObject) Instantiate(autoEmitObjectOnHitPoint.gameObject, hitPoint, transform.rotation);
+
+			if(hitObject != null)
+				emit.transform.parent = hitObject;
+
 		}
 	}
 
