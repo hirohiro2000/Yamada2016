@@ -82,9 +82,9 @@ public class WaveManager : NetworkBehaviour {
             numPop  *=  2;
         }
         //  マルチプレイモードでは出現量が２倍
-        if( m_IsMultiMode ){
-            numPop  *=  2;
-        }
+        //if( m_IsMultiMode ){
+        //    numPop  *=  2;
+        //}
         //  難易度に応じて出現量変更
         float[] popDiffRate =   {
             1.0f,   1.0f,   1.5f,   2.0f

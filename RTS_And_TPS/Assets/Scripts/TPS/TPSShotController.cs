@@ -383,6 +383,9 @@ public class TPSShotController : NetworkBehaviour {
 		if(Input.GetKeyDown(weaponChangeKey))
 		{
 			WeaponChange();
+
+            //  効果音再生
+            SoundController.PlayNow( "UI_FocusChange", 0.0f, 0.05f, 1.0f, 1.0f );
 		}
 
 		//クールダウンタイムの更新

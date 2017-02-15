@@ -19,10 +19,10 @@ public class GirlController : NetworkBehaviour
     private float               c_DrumCost						= 15.0f;
 
     public  GameObject          c_TimeBomb						= null;
-    private float               c_TimeBombCost					= 25.0f;
+    private float               c_TimeBombCost					= 20.0f;
 
     public  GameObject          c_C4							= null;
-    private float               c_C4Cost						= 35.0f;
+    private float               c_C4Cost						= 30.0f;
 
     private UIGirlTaskSelect    m_uiGirlTask    				= null;
 
@@ -50,6 +50,13 @@ public class GirlController : NetworkBehaviour
     private GameObject          m_rRideButton                   = null;
     private GameObject          m_rGetOffButton                 = null;
     private GameObject          m_rBombButtonShell              = null;
+    private Text                m_rMPText                       = null;
+    private AcqScore_Control    m_rMPAcqMinus                   = null;
+
+    private Button              m_rButton_Drum                  = null;
+    private Button              m_rButton_TB                    = null;
+    private Button              m_rButton_C4                    = null;
+    private Button              m_rButton_Explode               = null;
 
     private Transform           m_rPlaceCircle                  = null;
     private Transform           m_rPlaceCircle_B                = null;
@@ -60,6 +67,10 @@ public class GirlController : NetworkBehaviour
     private float[]             c_PlaceRange                    = {     12.0f,   12.0f,   12.0f     };
     private float[]             c_BombRange                     = {     12.0f,    9.0f,    4.0f,    };
     private PlaceState          m_PlaceState                    = PlaceState.None;
+
+    private float               c_MPRecoveryTime                = 1.0f;
+    private float               m_MaxMP                         = 100.0f;
+    private float               m_CurMP                         = 0.0f;
 
     [ SyncVar ]
     private int                 m_PlaceObjID                    = 0;
@@ -86,6 +97,13 @@ public class GirlController : NetworkBehaviour
         m_rRideButton                   = rHUD.FindChild( "RideButton" ).gameObject;
         m_rGetOffButton                 = rHUD.FindChild( "GetOffButton" ).gameObject;
         m_rBombButtonShell              = rHUD.FindChild( "BombButton_Shell" ).gameObject;
+        m_rMPText                       = rHUD.FindChild( "BombButton_Shell/ITEM_MP/_MP" ).GetComponent< Text >();
+        m_rMPAcqMinus                   = rHUD.FindChild( "AcqMP_Minus" ).GetComponent< AcqScore_Control >();
+
+        m_rButton_Drum                  = m_rBombButtonShell.transform.FindChild( "Button_Drum" ).GetComponent< Button >();
+        m_rButton_TB                    = m_rBombButtonShell.transform.FindChild( "Button_TimeBomb" ).GetComponent< Button >();
+        m_rButton_C4                    = m_rBombButtonShell.transform.FindChild( "Button_C4_Place" ).GetComponent< Button >();
+        m_rButton_Explode               = m_rBombButtonShell.transform.FindChild( "Button_C4_Exploding" ).GetComponent< Button >();
 
 		m_resourceInformation			= GameObject.Find("ResourceInformation").GetComponent<ResourceInformation>();
 		m_resourceCreator				= GameObject.Find("ResourceCreator").GetComponent<ResourceCreator>();
@@ -116,6 +134,9 @@ public class GirlController : NetworkBehaviour
             m_uiGirlTask                          = rHUD.GetComponent<UIGirlTaskSelect>();
             m_uiGirlTask.Initialize( this );
         }
+
+        //  ステータス初期化
+        m_CurMP     =   m_MaxMP;
     } 
 
 	//	Write to the FixedUpdate if including physical behavior
@@ -262,36 +283,56 @@ public class GirlController : NetworkBehaviour
     }
     void    Update_PlaceUI()
     {
-         //  表示を更新
-         m_rPlaceCircle.gameObject.SetActive( m_PlaceState != PlaceState.None );
-         m_rPlaceCircle_B.gameObject.SetActive( m_PlaceState != PlaceState.None );
-         m_rPlaceCircle_Place.gameObject.SetActive( m_PlaceState != PlaceState.None );
+        //  MPを更新
+        {
+            //  自然回復（ゲーム中のみ）
+            if( m_rGameManager.GetState() == GameManager.State.InGame ){
+                m_CurMP     +=  ( 1.0f / c_MPRecoveryTime ) * Time.deltaTime;
+                m_CurMP     =   Mathf.Clamp( m_CurMP, 0.0f, m_MaxMP );  
+            }
+
+            //  表示を更新 
+            m_rMPText.text  =   ( ( int )m_CurMP ).ToString() + "  /  " + ( ( int )m_MaxMP ).ToString();
+        }
+
+        //  ボタンのアクティブ状態を更新
+        {
+            m_rButton_Drum.interactable     =   m_CurMP >= c_DrumCost;
+            m_rButton_TB.interactable       =   m_CurMP >= c_TimeBombCost;
+            m_rButton_C4.interactable       =   m_CurMP >= c_C4Cost;
+            m_rButton_Explode.interactable  =   true;
+        }
+
+        //  表示を更新
+        m_rPlaceCircle.gameObject.SetActive( m_PlaceState != PlaceState.None );
+        m_rPlaceCircle_B.gameObject.SetActive( m_PlaceState != PlaceState.None );
+        m_rPlaceCircle_Place.gameObject.SetActive( m_PlaceState != PlaceState.None );
         
-         if( m_PlaceState != PlaceState.None ){
-             //  配置しようとしている爆弾のＩＤ
-             int     placeID     =   ( int )m_PlaceState;
-             bool    isRide      =   m_actionState == ActionState.Ride;
-             float   rideAdvance =   ( isRide )? 2.0f : 1.0f;
+        if( m_PlaceState != PlaceState.None ){
+            //  配置しようとしている爆弾のＩＤ
+            int     placeID     =   ( int )m_PlaceState;
+            bool    isRide      =   m_actionState == ActionState.Ride;
+            float   rideAdvance =   ( isRide )? 2.0f : 1.0f;
 
-             //  サイズ更新
-             m_rPlaceCircle.localScale   =   new Vector3( c_PlaceRange[ placeID ], c_PlaceRange[ placeID ], 1.0f ) * transform.lossyScale.x * rideAdvance;
-             m_rPlaceCircle_B.localScale =   new Vector3( c_BombRange[ placeID ],  c_BombRange[ placeID ],  1.0f ) * transform.lossyScale.x;
+            //  サイズ更新
+            m_rPlaceCircle.localScale   =   new Vector3( c_PlaceRange[ placeID ], c_PlaceRange[ placeID ], 1.0f ) * transform.lossyScale.x * rideAdvance;
+            m_rPlaceCircle_B.localScale =   new Vector3( c_BombRange[ placeID ],  c_BombRange[ placeID ],  1.0f ) * transform.lossyScale.x;
 
-             //  カーソル位置計算
-             Vector3 cursorPoint;
-             bool    checkOK =   CheckCursorPoint_OnPCRayTarget( out cursorPoint );
-             if( checkOK ){
-                 Vector3 placePoint      =   ClampInHorizontalRange( m_rPlaceCircle.position, cursorPoint, c_PlaceRange[ placeID ] * 1.1f * rideAdvance );
-                         placePoint.y    =   CheckHeight_OnField( placePoint + Vector3.up * 1000.0f ) + 0.35f;
+            //  カーソル位置計算
+            Vector3 cursorPoint;
+            bool    checkOK =   CheckCursorPoint_OnPCRayTarget( out cursorPoint );
+            if( checkOK ){
+                Vector3 placePoint      =   ClampInHorizontalRange( m_rPlaceCircle.position, cursorPoint, c_PlaceRange[ placeID ] * 1.1f * rideAdvance );
+                        placePoint.y    =   CheckHeight_OnField( placePoint + Vector3.up * 1000.0f ) + 0.35f;
 
-                 m_rPlaceCircle_B.position       =   placePoint;
-                 m_rPlaceCircle_Place.position   =   placePoint;
-             }
+                m_rPlaceCircle_B.position       =   placePoint;
+                m_rPlaceCircle_Place.position   =   placePoint;
+            }
 
-             //  表示を更新 
-             m_rPlaceCircle_B.gameObject.SetActive( checkOK );
-             m_rPlaceCircle_Place.gameObject.SetActive( checkOK );
-         }
+            //  表示を更新 
+            m_rPlaceCircle_B.gameObject.SetActive( checkOK );
+            m_rPlaceCircle_Place.gameObject.SetActive( checkOK );
+        }
 
         //  クローン側への情報を更新
         {
@@ -510,7 +551,8 @@ public class GirlController : NetworkBehaviour
     //  ドラム缶を置く
     public  void    PlaceDrum()
     {
-        if( m_rGameManager.GetResource() < c_DrumCost )     return;
+        if( m_CurMP < c_DrumCost )  return;
+        //if( m_rGameManager.GetResource() < c_DrumCost )     return;
 
         if( m_PlaceState == PlaceState.Drum )   m_PlaceState    =   PlaceState.None;
         else                                    m_PlaceState    =   PlaceState.Drum;
@@ -518,7 +560,8 @@ public class GirlController : NetworkBehaviour
     //  時限爆弾を置く
     public  void    PlaceTimeBomb()
     {
-        if( m_rGameManager.GetResource() < c_TimeBombCost ) return;
+        if( m_CurMP < c_TimeBombCost )  return;
+        //if( m_rGameManager.GetResource() < c_TimeBombCost ) return;
 
         if( m_PlaceState == PlaceState.TimeBomb )   m_PlaceState    =   PlaceState.None;
         else                                        m_PlaceState    =   PlaceState.TimeBomb;
@@ -526,7 +569,8 @@ public class GirlController : NetworkBehaviour
     //  C4を置く
     public  void    PlaceC4()
     {
-        if( m_rGameManager.GetResource() < c_C4Cost )       return;
+        if( m_CurMP < c_C4Cost )  return;
+        //if( m_rGameManager.GetResource() < c_C4Cost )       return;
 
         if( m_PlaceState == PlaceState.C4 ) m_PlaceState    =   PlaceState.None;
         else                                m_PlaceState    =   PlaceState.C4;
@@ -563,6 +607,12 @@ public class GirlController : NetworkBehaviour
             //  配置状態解除
             m_PlaceState    =   PlaceState.None;
         }
+    }
+
+    //  MP回復
+    public  void    ResetMP()
+    {
+        m_CurMP =   m_MaxMP;
     }
 
     //  搭乗中かどうか
@@ -619,33 +669,51 @@ public class GirlController : NetworkBehaviour
 
     void    PlaceAction_Drum( Vector3 _Position )
     {
-        if( m_rGameManager.GetResource() < c_DrumCost )     return;
+        if( m_CurMP < c_DrumCost )  return;
+        //if( m_rGameManager.GetResource() < c_DrumCost )     return;
 
         CmdPlaceDrum( _Position, new Vector3( 0.0f, transform.eulerAngles.y, 0.0f ) );
-        m_rLinkManager.m_rLocalNPControl.CmdAddResource( -c_DrumCost );
+        //m_rLinkManager.m_rLocalNPControl.CmdAddResource( -c_DrumCost );
 
-        //  支出を通知
-        m_rGameManager.SetAcqResource_Minus( c_DrumCost );
+        //  支出
+        m_CurMP -=  c_DrumCost;
+        m_CurMP =   Mathf.Clamp( m_CurMP, 0.0f, m_MaxMP );
+
+        //  支出を通知 
+        //m_rGameManager.SetAcqResource_Minus( c_DrumCost );
+        m_rMPAcqMinus.SetAddScore( c_DrumCost );
     }
     void    PlaceAction_TimeBomb( Vector3 _Position )
     {
-        if( m_rGameManager.GetResource() < c_TimeBombCost ) return;
+        if( m_CurMP < c_DrumCost )  return;
+        //if( m_rGameManager.GetResource() < c_TimeBombCost ) return;
 
         CmdPlaceTimeBomb( _Position, new Vector3( 0.0f, transform.eulerAngles.y, 0.0f ) );
-        m_rLinkManager.m_rLocalNPControl.CmdAddResource( -c_TimeBombCost );
+        //m_rLinkManager.m_rLocalNPControl.CmdAddResource( -c_TimeBombCost );
+
+        //  支出
+        m_CurMP -=  c_TimeBombCost;
+        m_CurMP =   Mathf.Clamp( m_CurMP, 0.0f, m_MaxMP );
 
         //  支出を通知
-        m_rGameManager.SetAcqResource_Minus( c_TimeBombCost );
+        //m_rGameManager.SetAcqResource_Minus( c_TimeBombCost );
+        m_rMPAcqMinus.SetAddScore( c_TimeBombCost );
     }
     void    PlaceAction_C4( Vector3 _Position )
     {
-        if( m_rGameManager.GetResource() < c_C4Cost )       return;
+        if( m_CurMP < c_DrumCost )  return;
+        //if( m_rGameManager.GetResource() < c_C4Cost )       return;
 
         CmdPlaceC4( _Position, new Vector3( 0.0f, transform.eulerAngles.y, 0.0f ) );
-        m_rLinkManager.m_rLocalNPControl.CmdAddResource( -c_C4Cost );
+        //m_rLinkManager.m_rLocalNPControl.CmdAddResource( -c_C4Cost );
+
+        //  支出
+        m_CurMP -=  c_C4Cost;
+        m_CurMP =   Mathf.Clamp( m_CurMP, 0.0f, m_MaxMP );
 
         //  支出を通知
-        m_rGameManager.SetAcqResource_Minus( c_C4Cost );
+        //m_rGameManager.SetAcqResource_Minus( c_C4Cost );
+        m_rMPAcqMinus.SetAddScore( c_C4Cost );
     }
 
     //---------------------------------------------------------------------
