@@ -42,18 +42,40 @@ public class ExpSylinder_Control : MonoBehaviour {
 
             //  軽量化
             if( doSaving ){
+
+				bool doMostSaving = (m_rExpManager.SavingDeblisCount + 1 >= c_SavingLine) ? true : false;
+
                 for( int i = 0; i < transform.childCount; i++ ){
-                    Rigidbody   rRigid      =   transform.GetChild( i ).GetComponent< Rigidbody >();
-                    if( !rRigid )   continue;
+                    //Rigidbody   rRigid      =   transform.GetChild( i ).GetComponent< Rigidbody >();
+                    //if( !rRigid )   continue;
 
                     //rRigid.velocity         =   Vector3.zero;
                     //rRigid.angularVelocity  =   Vector3.zero;
                     //rRigid.isKinematic      =   true;
 
-                    //  物理コンポーネント削除
-                    Collider    rCol        =   transform.GetChild( i ).GetComponent< Collider >();
-                    if( rRigid )    DestroyImmediate( rRigid );
-                    if( rCol )      DestroyImmediate( rCol );
+                    ////  物理コンポーネント削除
+                    //Collider    rCol        =   transform.GetChild( i ).GetComponent< Collider >();
+                    //if( rRigid )    DestroyImmediate( rRigid );
+                    //if( rCol )      DestroyImmediate( rCol );
+
+					//軽量設定へ切り替え
+					Debris_Control deblis = transform.GetChild(i).GetComponent<Debris_Control>();
+					if (deblis)
+					{
+						//即レイヤー変更(最軽量設定)
+						if(doMostSaving == true)
+						{
+							deblis.gameObject.layer = LayerMask.NameToLayer("Debris_Light");
+						}
+						else
+						{
+							deblis.ActiveSaving();
+                        }
+					}
+                }
+				if(doMostSaving == false)
+				{
+					m_rExpManager.SavingDeblisCount++;
                 }
             }
             else{

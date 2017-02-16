@@ -41,6 +41,8 @@ public class Debris_Control : MonoBehaviour {
 
     private float           m_Timer         =   0.0f;
 
+	private bool			m_Saving		=	false;
+
     //  アクセス
     private LinkManager     m_rLinkManager  =   null;
     private GameManager     m_rGameManager  =   null;
@@ -81,6 +83,15 @@ public class Debris_Control : MonoBehaviour {
             }
         }
 
+		//Saving状態なら一定時間後軽量レイヤーへ切り替え
+		{
+			if(m_Timer < 0.2f)
+			{
+				if (m_Saving == true)
+					transform.gameObject.layer = LayerMask.NameToLayer("Debris_Light");
+			}
+		}
+
         //  状態ごとの処理
 	    switch( m_State ){
             case    State.Stay: Update_Stay();  break;
@@ -89,7 +100,15 @@ public class Debris_Control : MonoBehaviour {
 	}
 	void    Update_Stay()
     {
+		if(m_rRigid)
+		{
+			if(m_rRigid.velocity.magnitude < 0.0001f && m_rRigid.angularVelocity.magnitude < 0.0001f)
+			{
+				if (m_rRigid)
+					Destroy(m_rRigid);
+			}
 
+		}
     }
     void    Update_Move()
     {
@@ -230,4 +249,9 @@ public class Debris_Control : MonoBehaviour {
     {
         return  m_State == State.Move;
     }
+
+	public void		ActiveSaving()
+	{
+		m_Saving = true;
+	}
 }

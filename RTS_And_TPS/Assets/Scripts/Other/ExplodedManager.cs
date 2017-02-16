@@ -7,7 +7,7 @@ public class ExplodedManager : MonoBehaviour {
 
     public  List< GameObject >  m_rExpObjList   =   new List< GameObject >();
     public  List< Collider >    m_rDebrisList   =   new List< Collider >();
-  
+	public int SavingDeblisCount = 0;
 	// Use this for initialization
 	void    Start()
     {
@@ -24,5 +24,7 @@ public class ExplodedManager : MonoBehaviour {
         for( int i = 0; i < m_rExpObjList.Count; i++ ){
             m_rExpObjList.Remove( null );
         }
+		SavingDeblisCount = 0;
+
 	}
 }
