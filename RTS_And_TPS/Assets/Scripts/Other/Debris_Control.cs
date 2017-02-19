@@ -85,7 +85,7 @@ public class Debris_Control : MonoBehaviour {
 
 		//Saving状態なら一定時間後軽量レイヤーへ切り替え
 		{
-			if(m_Timer < 0.2f)
+			if(m_Timer > 0.2f)
 			{
 				if (m_Saving == true)
 					transform.gameObject.layer = LayerMask.NameToLayer("Debris_Light");
@@ -102,11 +102,12 @@ public class Debris_Control : MonoBehaviour {
     {
 		if(m_rRigid)
 		{
-			if(m_rRigid.velocity.magnitude < 0.0001f && m_rRigid.angularVelocity.magnitude < 0.0001f)
-			{
-				if (m_rRigid)
-					Destroy(m_rRigid);
-			}
+			if(m_Timer > 0.1f)
+				if(m_rRigid.velocity.magnitude < 0.0001f && m_rRigid.angularVelocity.magnitude < 0.0001f)
+				{
+					if (m_rRigid)
+						Destroy(m_rRigid);
+				}
 
 		}
     }
