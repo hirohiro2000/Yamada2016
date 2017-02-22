@@ -41,6 +41,8 @@ public class Debris_Control : MonoBehaviour {
 
     private float           m_Timer         =   0.0f;
 
+	private int				m_FixedUpdateCount = 0;
+
 	private bool			m_Saving		=	false;
 
     //  アクセス
@@ -83,14 +85,7 @@ public class Debris_Control : MonoBehaviour {
             }
         }
 
-		//Saving状態なら一定時間後軽量レイヤーへ切り替え
-		{
-			if(m_Timer > 0.2f)
-			{
-				if (m_Saving == true)
-					transform.gameObject.layer = LayerMask.NameToLayer("Debris_Light");
-			}
-		}
+	
 
         //  状態ごとの処理
 	    switch( m_State ){
@@ -100,16 +95,7 @@ public class Debris_Control : MonoBehaviour {
 	}
 	void    Update_Stay()
     {
-		if(m_rRigid)
-		{
-			if(m_Timer > 0.1f)
-				if(m_rRigid.velocity.magnitude < 0.0001f && m_rRigid.angularVelocity.magnitude < 0.0001f)
-				{
-					if (m_rRigid)
-						Destroy(m_rRigid);
-				}
-
-		}
+		
     }
     void    Update_Move()
     {
@@ -183,6 +169,26 @@ public class Debris_Control : MonoBehaviour {
             c_UseSpeedLimit =   false;
             return;
         }
+
+		m_FixedUpdateCount++;
+		if(m_rRigid)
+		{
+			if(m_FixedUpdateCount > 2)
+				if(m_rRigid.velocity.magnitude < 0.0001f && m_rRigid.angularVelocity.magnitude < 0.0001f)
+				{
+					if (m_rRigid)
+						Destroy(m_rRigid);
+				}
+		}
+
+		//Saving状態なら一定時間後軽量レイヤーへ切り替え
+		{
+			if(m_FixedUpdateCount > 10)
+			{
+				if (m_Saving == true)
+					transform.gameObject.layer = LayerMask.NameToLayer("Debris_Light");
+			}
+		}
 
         //  速度制限 
         Vector3 velocity    =   m_rRigid.velocity;
