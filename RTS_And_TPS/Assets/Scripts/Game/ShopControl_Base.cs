@@ -29,8 +29,13 @@ public class ShopControl_Base : MonoBehaviour {
         m_rLinkManager      =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
 
         Transform   rCanvas =   GameObject.Find( "Canvas" ).transform;
-        m_rShoppingUI       =   rCanvas.FindChild( "ShoppingGage" ).gameObject;
-        m_rShopGage         =   m_rShoppingUI.GetComponent< GageControl >();
+        if( rCanvas ){
+            Transform   rShopTrans  =   rCanvas.FindChild( "ShoppingGage" );
+            if( rShopTrans ){
+                m_rShoppingUI   =   rShopTrans.gameObject;
+                m_rShopGage     =   m_rShoppingUI.GetComponent< GageControl >();
+            }
+        }
 
         m_rCostText         =   transform.FindChild( "_TextCost" ).GetComponent< TextMesh >();
 
@@ -54,6 +59,17 @@ public class ShopControl_Base : MonoBehaviour {
         //  アクセスを取得
         if( !m_rGameManager )    m_rGameManager  =   FunctionManager.GetAccessComponent< GameManager >( "GameManager" );
         if( !m_rLinkManager )    m_rLinkManager  =   FunctionManager.GetAccessComponent< LinkManager >( "LinkManager" );
+
+        if( !m_rShoppingUI ){
+            Transform   rCanvas =   GameObject.Find( "Canvas" ).transform;
+            if( rCanvas ){
+                Transform   rShopTrans  =   rCanvas.FindChild( "ShoppingGage" );
+                if( rShopTrans ){
+                    m_rShoppingUI   =   rShopTrans.gameObject;
+                    m_rShopGage     =   m_rShoppingUI.GetComponent< GageControl >();
+                }
+            }
+        }
 
         //  タイマー更新
         if( m_ShopTimer > 0.0f ){

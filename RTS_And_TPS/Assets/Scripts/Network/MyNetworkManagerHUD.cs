@@ -48,6 +48,9 @@ namespace   UnityEngine.Networking
             m_HostName  =   Dns.GetHostName();
             //  IPアドレスを保存
             m_MyIP      =   Network.player.ipAddress;
+
+            //  前回使用したアドレスをロード
+            m_rNetworkManager.networkAddress    =   PlayerPrefs.GetString( "JoinIP", "localhost" );
         }
 
 		void    Update()
@@ -119,8 +122,15 @@ namespace   UnityEngine.Networking
                 ypos    +=  spacing;
                 
                 if( GUI.Button( new Rect( xpos, ypos, 106, 20 ), "IPで参加" ) ){
+                    if( m_rNetworkManager.networkAddress == "" ){
+                        m_rNetworkManager.networkAddress    =   "localhost";
+                    }
+
                     //  クライアント開始     
                     m_rNetworkManager.StartClient();
+
+                    //  IPを保存
+                    PlayerPrefs.SetString( "JoinIP", m_rNetworkManager.networkAddress );
                 }
                 m_rNetworkManager.networkAddress
                     =   GUI.TextField( new Rect( xpos + 110, ypos, 90, 20 ), m_rNetworkManager.networkAddress );
@@ -339,6 +349,9 @@ namespace   UnityEngine.Networking
         public  void    Stop()
         {
             m_rNetworkManager.StopHost();
+            m_rNetworkManager.StopClient();
+            m_rNetworkManager.StopAllCoroutines();
+
             if( m_rDiscovery.running )          m_rDiscovery.StopBroadcast();
             if( NetworkTransport.IsStarted )    NetworkTransport.Shutdown();
         }

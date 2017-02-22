@@ -18,6 +18,7 @@ GameObject:
   - 136: {fileID: 13635504}
   - 54: {fileID: 5463988}
   - 114: {fileID: 11402108}
+  - 114: {fileID: 11493558}
   m_Layer: 12
   m_Name: Turret_Bullet_Rifle
   m_TagString: Player_Attack
@@ -202,6 +203,18 @@ MonoBehaviour:
   m_chaseSpeed: 10
   m_chaseable: 0
   m_ChasePrecise: 0
+--- !u!114 &11493558
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 180896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de593ba5d0ffa4a4f9e1eccd89ac04c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DeleteSecond: 5
 --- !u!136 &13635504
 CapsuleCollider:
   m_ObjectHideFlags: 1
