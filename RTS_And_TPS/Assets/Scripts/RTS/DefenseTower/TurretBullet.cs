@@ -35,11 +35,11 @@ public class TurretBullet : MonoBehaviour
 	void Update ()
 	{
 		//	対象がないと消す
-		if( m_target == null )
-		{
-			Destroy( gameObject );
-			return;
-		}
+        //if( m_target == null )
+        //{
+        //    Destroy( gameObject );
+        //    return;
+        //}
 
 		//	跳ぶ
 		if( m_chaseable )
@@ -51,7 +51,7 @@ public class TurretBullet : MonoBehaviour
             else			        transform.rotation	= Quaternion.Slerp ( transform.rotation, Quaternion.LookRotation( vec ), m_chaseSpeed*Time.deltaTime );
 		}
 
-		transform.position	+= ( transform.forward * m_speed * Time.deltaTime );		
+		transform.position	+= ( transform.forward * m_speed * Time.deltaTime );
 	}
 
 	void    OnTriggerEnter( Collider _Collider )
