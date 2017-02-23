@@ -126,9 +126,9 @@ GameObject:
   - 114: {fileID: 11487314}
   - 114: {fileID: 11431084}
   - 114: {fileID: 11490268}
-  - 114: {fileID: 11434142}
   - 114: {fileID: 11466480}
-  - 114: {fileID: 11408728}
+  - 114: {fileID: 11499816}
+  - 114: {fileID: 11401324}
   m_Layer: 0
   m_Name: FlyEnemy
   m_TagString: Enemy
@@ -1059,6 +1059,40 @@ MonoBehaviour:
   m_health: {fileID: 11424602}
   m_healthBar: {fileID: 11411852}
   m_text: {fileID: 11419358}
+--- !u!114 &11401324
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 138818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be80c266eb5bf914f8eaef0e51ef2012, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11499816}
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  m_Distance: 30
+  m_Reverse: 0
+  m_OneFrame: 1
+  m_IgnoreX: 0
+  m_IgnoreY: 1
+  m_IgnoreZ: 0
+  m_Once: 1
 --- !u!114 &11403732
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1086,18 +1120,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &11408728
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 138818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8532787a416db624c9862913bfdf5690, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  c_Emission: {fileID: 158640, guid: b9343cd4f70f96842a915368257522c2, type: 2}
 --- !u!114 &11411852
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1260,18 +1282,6 @@ MonoBehaviour:
   m_always_perception_tag: 0200000001000000
   m_fav: 180
   m_use_raycast: 0
---- !u!114 &11434142
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 138818}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8532787a416db624c9862913bfdf5690, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  c_Emission: {fileID: 158640, guid: 33fa9ff503702e64b8a8294ba1a8b8f5, type: 2}
 --- !u!114 &11441660
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1644,6 +1654,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11499816
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 138818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5872646bfb39e104e9b45b457bd89ccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &13687060
 CapsuleCollider:
   m_ObjectHideFlags: 1
