@@ -40,4 +40,24 @@ public class TransformEditor : MonoBehaviour {
             rObj.isStatic       =   isStatic;
         }
     }
+
+    //  一番目に選択されているオブジェクトが持つメッシュの中心座標を、二番目に選択されているオブジェクトに設定
+    [ MenuItem( "Tools/SetCenterPos_1To2Select" ) ]
+    static  void    SetCenterPosition_1To2()
+    {
+        if( Selection.gameObjects.Length < 2 )  return;
+
+        GameObject  rSource =   Selection.gameObjects[ 0 ];
+        GameObject  rDest   =   Selection.gameObjects[ 1 ];
+
+        Transform   rSTrans =   rSource.transform;
+        MeshFilter  rFilter =   rSource.GetComponent< MeshFilter >();
+        if( !rFilter )                          return;
+
+        Vector3     centerL =   rFilter.sharedMesh.bounds.center;
+        Vector3     centerW =   rSTrans.TransformPoint( centerL );
+
+        //  座標をセット
+        rDest.transform.position    =   centerW;
+    }
 }
