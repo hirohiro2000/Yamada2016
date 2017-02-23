@@ -17,7 +17,7 @@ public class FlashLight_Control : MonoBehaviour {
     {
 	    m_rLight    =   transform.FindChild( "_Light" ).GetComponent< Light >();
 		m_SControl	=	SoundController.Create("TimeBombAlert", transform);
-
+		m_SControl.transform.localPosition = Vector3.zero;
 	}
 
 	// Update is called once per frame

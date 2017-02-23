@@ -9,6 +9,8 @@ public class UFO_Sound : MonoBehaviour {
 	void Start () {
 		StartSE = SoundController.Create("EnemySound_Fly_Start",transform);
 		RunningSE = SoundController.Create("EnemySound_Fly2",transform);
+		StartSE.transform.localPosition = Vector3.zero;
+		RunningSE.transform.localPosition = Vector3.zero;
 	}
 	
 	// Update is called once per frame

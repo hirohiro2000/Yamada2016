@@ -13,6 +13,8 @@ public class CrowdEnemyInitializer : EnemyInitializerBase {
         //  エネミーを生成
         for( int i = 0; i < c_PopCount; i++ ){
             GameObject      rObj    =   Instantiate( c_GenerateEnemy );
+			//NavMeshのWarpは遅延があるので最初のフレームは遠くに飛ばしておいて隠す
+			rObj.transform.position = new Vector3(10000.0f, 10000.0f, 10000.0f);
             NavMeshAgent    rAgent  =   rObj.GetComponent< NavMeshAgent >();
             var controller = rObj.GetComponent<EnemyController>();
             controller.SetWaveParametor(param);
